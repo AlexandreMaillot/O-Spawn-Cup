@@ -11,9 +11,25 @@ class RoundClassementMember {
   File? screenshot;
 
 
-  RoundClassementMember(
-      this.round, this.memberTournament, this.kill, this.rang);
+  RoundClassementMember({required this.round,required this.memberTournament,required this.kill,required this.rang});
 
+  RoundClassementMember.fromJson(Map<String, Object?> json) : this(
+    round: json["round"]! as Round,
+    memberTournament: json["memberTournament"]! as MemberTournament,
+    kill: json["kill"]! as int,
+    rang: json["rang"]! as int,
+  );
+
+
+  Map<String, Object?> toJson() {
+    return {
+      "round": round,
+      "memberTournament": memberTournament,
+      "kill": kill,
+      "rang": rang,
+      "screenshot": screenshot,
+    };
+  }
   createRoundClassement(){
 
   }

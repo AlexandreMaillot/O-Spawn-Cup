@@ -21,18 +21,47 @@ class Tournament {
  KillPointTournament killPointTournament;
 
 
- Tournament(
-      this.name,
-      this.date,
-      this.game,
-      this.server,
-      this.tournamentType,
-      this.capacity,
-      this.cashPrize,
-      this.roundNumber,
-      this.rangPointTournament,
-      this.killPointTournament);
+ Tournament({
+      required this.name,
+  required this.date,
+  required this.game,
+  required this.server,
+  required this.tournamentType,
+  required this.capacity,
+  required this.cashPrize,
+  required this.roundNumber,
+  required this.rangPointTournament,
+  required this.killPointTournament});
 
+
+ Tournament.fromJson(Map<String, Object?> json) : this(
+  name: json["name"]! as String,
+  date: json["date"]! as DateTime,
+  game: json["game"]! as GameName,
+  server: json["server"]! as ServerType,
+  tournamentType: json["tournamentType"]! as TournamentType,
+  capacity: json["capacity"]! as int,
+  cashPrize: json["cashPrize"]! as String,
+  roundNumber: json["roundNumber"]! as int,
+  rangPointTournament: json["rangPointTournament"]! as RangPointTournament,
+  killPointTournament: json["killPointTournament"]! as KillPointTournament,
+ );
+
+
+ Map<String, Object?> toJson() {
+  return {
+   "name": name,
+   "date": date,
+   "game": game,
+   "server": server,
+   "tournamentType": tournamentType,
+   "capacity": capacity,
+   "cashPrize": cashPrize,
+   "roundNumber": roundNumber,
+   "rangPointTournament": rangPointTournament,
+   "killPointTournament": killPointTournament,
+  };
+ }
   createTournament(){
 
  }

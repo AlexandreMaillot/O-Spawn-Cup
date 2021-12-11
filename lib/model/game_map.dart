@@ -5,12 +5,25 @@ class GameMap {
   String name;
   bool isDisabled = false;
 
-  GameMap(this.gameName, this.name);
+  GameMap({required this.gameName,required this.name});
 
+  GameMap.fromJson(Map<String, Object?> json) : this(
+    gameName: json["gameName"]! as GameName,
+    name: json["name"]! as String,
+  );
+
+
+  Map<String, Object?> toJson() {
+    return {
+      "name": name,
+      "gameName": gameName,
+      "isDisabled": isDisabled,
+    };
+  }
   createMap(){
 
   }
-  disactivedMap(){
+  disabledMap(){
 
   }
   updateMap(){

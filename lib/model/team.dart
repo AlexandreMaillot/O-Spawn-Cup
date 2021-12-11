@@ -8,8 +8,22 @@ class Team {
   bool isDisqualified = false;
 
 
-  Team(this.name);
+  Team({required this.name});
 
+
+  Team.fromJson(Map<String, Object?> json) : this(
+    name: json["name"]! as String,
+  );
+
+
+  Map<String, Object?> toJson() {
+    return {
+      "name": name,
+      "listMemberTournament": listMemberTournament,
+      "teamCode": teamCode,
+      "isDisqualified": isDisqualified,
+    };
+  }
   createTeam(Member teamLead){
 
   }

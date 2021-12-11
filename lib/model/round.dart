@@ -9,8 +9,23 @@ class Round {
   RoundState roundState = RoundState.EnAttente;
 
 
-  Round(this.map, this.tournament, this.roundState);
+  Round({required this.map,required this.tournament,required this.roundState});
 
+
+  Round.fromJson(Map<String, Object?> json) : this(
+    map: json["map"]! as GameMap,
+    tournament: json["tournament"]! as Tournament,
+    roundState: json["roundState"]! as RoundState,
+  );
+
+
+  Map<String, Object?> toJson() {
+    return {
+      "map": map,
+      "tournament": tournament,
+      "roundState": roundState,
+    };
+  }
   createRound(){
 
   }
