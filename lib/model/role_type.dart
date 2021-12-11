@@ -1,0 +1,4 @@
+enum RoleType {
+  leader,
+  player,
+}
