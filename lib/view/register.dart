@@ -32,7 +32,7 @@ Column showButtons(){
       ElevatedButton(
         child: Text("register with google"),
         onPressed: (){
-          auth.signInWithGoogle();
+
         },
       ),
 
