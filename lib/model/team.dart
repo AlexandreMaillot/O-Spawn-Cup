@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:o_spawn_cup/model/role_type.dart';
+
 import 'member.dart';
 import 'member_tournament.dart';
 
@@ -6,7 +9,7 @@ class Team {
   List<MemberTournament> listMemberTournament = [];
   late String teamCode;
   bool isDisqualified = false;
-
+  late CollectionReference teams;
 
   Team({required this.name});
 
@@ -24,14 +27,29 @@ class Team {
       "isDisqualified": isDisqualified,
     };
   }
-  createTeam(Member teamLead){
+
+  getInstanceTeam(){
+    teams = FirebaseFirestore.instance.collection('team');
+  }
+  createTeam(MemberTournament teamLead){
+    teamLead.role = RoleType.leader;
+    listMemberTournament.add(teamLead);
+    return teams
+        .add(toJson())
+        .then((value) => print("team Added"))
+        .catchError((error) => print("Failed to add team: $error"));
+  }
+  deleteMember(MemberTournament memberTournament){
 
   }
-  deleteMember(Member member){
-
-  }
-  addMember(Member member){
-
+  addMember(MemberTournament memberTournament,String uid){
+    memberTournament.role = RoleType.player;
+    listMemberTournament.add(memberTournament);
+    return teams
+        .doc(uid)
+        .update({"listMemberTournament":listMemberTournament})
+        .then((value) => print("team Added memberTournament in list"))
+        .catchError((error) => print("Failed to add memberTournament in list: $error"));
   }
   changeLeader(){
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/model/round_state.dart';
 import 'package:o_spawn_cup/model/tournament.dart';
 
@@ -7,7 +8,7 @@ class Round {
   GameMap map;
   Tournament tournament;
   RoundState roundState = RoundState.EnAttente;
-
+  late CollectionReference rounds;
 
   Round({required this.map,required this.tournament,required this.roundState});
 
@@ -23,14 +24,25 @@ class Round {
     return {
       "map": map,
       "tournament": tournament,
-      "roundState": roundState,
+      "roundState": roundState.index,
     };
   }
-  createRound(){
-
+  getInstanceRound(){
+    rounds = FirebaseFirestore.instance.collection('round');
   }
-  updateStateRound(){
-
+  createRound(){
+    return rounds
+        .add(toJson())
+        .then((value) => print("rounds Added"))
+        .catchError((error) => print("Failed to add Map: $error"));
+  }
+  updateStateRound(RoundState rs,String uid){
+    roundState = rs;
+    return rounds
+        .doc(uid)
+        .update({"roundState": roundState,})
+        .then((value) => print("rounds update"))
+        .catchError((error) => print("Failed to update round: $error"));
   }
 }
 
