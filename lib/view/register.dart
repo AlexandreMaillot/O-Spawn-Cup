@@ -13,13 +13,29 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.pinkAccent,
-      child: ElevatedButton(
-        child: Text("test"),
-        onPressed: (){
-          Authentification auth = Authentification();
-          auth.signUpWithMail();
-        },
-      ),
+      child: showButtons(),
     );
   }
+}
+
+Column showButtons(){
+  Authentification auth = Authentification();
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      ElevatedButton(
+      child: Text("register with mail"),
+        onPressed: (){
+          auth.signUpWithMail("barry.allen@example.com","SuperSecretPassword!");
+        },
+      ),
+      ElevatedButton(
+        child: Text("register with google"),
+        onPressed: (){
+
+        },
+      ),
+
+    ],
+  );
 }

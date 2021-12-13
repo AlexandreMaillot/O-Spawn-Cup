@@ -1,31 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 class Authentification{
 
 
   Authentification();
 
-  void signInWithGoogle(){
-
-  }
   void signInWithFacebook(){
 
   }
   void signInWithMail(){
 
   }
-  //inscription
-  void signUpWithGoogle(){
-
-  }
   void signUpWithFacebook(){
 
   }
-  void signUpWithMail() async{
+  void signUpWithMail(String email, String password) async{
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: "barry.allen@example.com",
-          password: "SuperSecretPassword!"
+          email: email,
+          password: password
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
