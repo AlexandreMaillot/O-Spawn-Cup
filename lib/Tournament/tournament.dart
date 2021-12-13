@@ -1,10 +1,9 @@
 import 'package:o_spawn_cup/model/rang_point_tournament.dart';
 import 'package:o_spawn_cup/model/server_type.dart';
-import 'package:o_spawn_cup/model/tournament_state.dart';
+import 'package:o_spawn_cup/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/model/tournament_type.dart';
 
-import 'game_name.dart';
-import 'kill_point_tournament.dart';
+import '../model/game_name.dart';
 
 class Tournament {
  String name;
@@ -17,8 +16,8 @@ class Tournament {
  int roundNumber;
  TournamentState state = TournamentState.enAttente;
  String? image;
- RangPointTournament rangPointTournament;
- KillPointTournament killPointTournament;
+ List<RangPointTournament> listRangPointTournament;
+ int killPointTournament;
 
 
  Tournament({
@@ -30,7 +29,7 @@ class Tournament {
   required this.capacity,
   required this.cashPrize,
   required this.roundNumber,
-  required this.rangPointTournament,
+  required this.listRangPointTournament,
   required this.killPointTournament});
 
 
@@ -43,8 +42,8 @@ class Tournament {
   capacity: json["capacity"]! as int,
   cashPrize: json["cashPrize"]! as String,
   roundNumber: json["roundNumber"]! as int,
-  rangPointTournament: json["rangPointTournament"]! as RangPointTournament,
-  killPointTournament: json["killPointTournament"]! as KillPointTournament,
+  listRangPointTournament: json["listRangPointTournament"]! as List<RangPointTournament>,
+  killPointTournament: json["killPointTournament"]! as int,
  );
 
 
@@ -58,19 +57,11 @@ class Tournament {
    "capacity": capacity,
    "cashPrize": cashPrize,
    "roundNumber": roundNumber,
-   "rangPointTournament": rangPointTournament,
+   "listRangPointTournament": listRangPointTournament,
    "killPointTournament": killPointTournament,
   };
  }
-  createTournament(){
 
- }
- updateTournament(){
-
- }
- generateRangPointTournament(int capacity){
-
- }
 }
 
 

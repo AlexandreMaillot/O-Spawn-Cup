@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/model/role_type.dart';
 import 'package:o_spawn_cup/model/round_classement_member.dart';
 import 'package:o_spawn_cup/model/team.dart';
-import 'package:o_spawn_cup/model/tournament.dart';
+import 'package:o_spawn_cup/Tournament/tournament.dart';
 
-import 'member.dart';
+import '../Member/member.dart';
 
 class MemberTournament {
   Member member;

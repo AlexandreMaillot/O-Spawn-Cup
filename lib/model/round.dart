@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/model/round_state.dart';
-import 'package:o_spawn_cup/model/tournament.dart';
+import 'package:o_spawn_cup/Tournament/tournament.dart';
 
-import 'game_map.dart';
+import '../GameMap/game_map.dart';
 
 class Round {
   GameMap map;

@@ -1,5 +1,5 @@
 import 'package:o_spawn_cup/model/team.dart';
-import 'package:o_spawn_cup/model/tournament.dart';
+import 'package:o_spawn_cup/Tournament/tournament.dart';
 
 class TeamClassementTournament {
   Tournament tournament;

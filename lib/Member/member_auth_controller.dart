@@ -1,18 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:o_spawn_cup/Member/member.dart';
+import 'package:o_spawn_cup/Member/member_dao.dart';
+
+import 'member_controller.dart';
+
+class MemberAuthController implements MemberController{
+  @override
+  Member member;
+
+  MemberAuthController(this.member);
 
 
-class Authentification{
+  signOut(){
+
+  }
 
 
-  Authentification();
 
-  void signInWithFacebook(){
+  void signWithGoogle(){
 
   }
   void signInWithMail(){
 
   }
-  void signUpWithFacebook(){
+  void signWithFacebook(){
 
   }
   void signUpWithMail(String email, String password) async{
@@ -21,6 +32,8 @@ class Authentification{
           email: email,
           password: password
       );
+      MemberDao(memberController: this).create();
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');

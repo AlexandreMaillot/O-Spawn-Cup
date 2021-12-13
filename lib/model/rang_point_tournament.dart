@@ -1,4 +1,4 @@
-import 'package:o_spawn_cup/model/tournament.dart';
+import 'package:o_spawn_cup/Tournament/tournament.dart';
 
 class RangPointTournament {
   int rang;

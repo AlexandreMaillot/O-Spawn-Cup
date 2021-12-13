@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'game_name.dart';
+import '../model/game_name.dart';
 
 class GameMap {
   GameName gameName;

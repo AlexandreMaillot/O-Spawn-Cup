@@ -15,20 +15,6 @@ class Member {
       "pseudo": pseudo,
     };
   }
-  signOut(){
 
-  }
-  updateProfile(){
-
-  }
-  deleteAccount(){
-
-  }
-  createMember(String uid){
-
-  }
-  reinitPassword(){
-
-  }
 
 }

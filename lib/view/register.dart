@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/model/authentification.dart';
+import 'package:o_spawn_cup/Member/member.dart';
+import 'package:o_spawn_cup/Member/member_auth_controller.dart';
+
 
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
@@ -19,14 +21,17 @@ class _RegisterState extends State<Register> {
 }
 
 Column showButtons(){
-  Authentification auth = Authentification();
+  
+  MemberAuthController memberAuthController;
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       ElevatedButton(
       child: Text("register with mail"),
         onPressed: (){
-          auth.signUpWithMail("barry.allen@example.com","SuperSecretPassword!");
+          Member member = Member(pseudo: "MonPseudo");
+          memberAuthController = MemberAuthController(member);
+          memberAuthController.signUpWithMail("barry.allen@example.com","SuperSecretPassword!");
         },
       ),
       ElevatedButton(
