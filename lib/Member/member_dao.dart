@@ -17,7 +17,8 @@ class MemberDao implements Dao{
   @override
   create() {
     return collectionReference
-        .add(memberController.member.toJson())
+        .doc(memberController.member.uid)
+        .set(memberController.member.toJson())
         .then((value) => print("Member Added"))
         .catchError((error) => print("Failed to add Member: $error"));
   }

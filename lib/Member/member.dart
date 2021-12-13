@@ -1,6 +1,6 @@
 class Member {
   String pseudo;
-
+  late String uid;
 
   Member({required this.pseudo});
 
@@ -13,6 +13,7 @@ class Member {
   Map<String, Object?> toJson() {
     return {
       "pseudo": pseudo,
+      "uid": uid,
     };
   }
 

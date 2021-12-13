@@ -32,6 +32,7 @@ class MemberAuthController implements MemberController{
           email: email,
           password: password
       );
+      member.uid = userCredential.user!.uid;
       MemberDao(memberController: this).create();
 
     } on FirebaseAuthException catch (e) {
