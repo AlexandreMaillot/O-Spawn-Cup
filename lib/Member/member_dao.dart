@@ -3,11 +3,12 @@ import 'package:o_spawn_cup/Member/member_firebase_controller.dart';
 import 'package:o_spawn_cup/Member/member_controller.dart';
 
 import '../dao.dart';
+import 'member.dart';
 
 class MemberDao implements Dao{
-  MemberController memberController;
-
-  MemberDao({required this.memberController}){
+  late Member member;
+  MemberDao? instance;
+  MemberDao(this.member){
     collectionReference = getCollection();
   }
 
@@ -17,31 +18,31 @@ class MemberDao implements Dao{
   @override
   create() {
     return collectionReference
-        .doc(memberController.member.uid)
-        .set(memberController.member.toJson())
+        .doc(member.uid)
+        .set(member.toJson())
         .then((value) => print("Member Added"))
         .catchError((error) => print("Failed to add Member: $error"));
   }
 
   @override
-  delete(String uid) {
+  delete() {
     return collectionReference
-        .doc(uid)
+        .doc(member.uid)
         .delete()
         .then((value) => print("Member deleted"))
         .catchError((error) => print("Failed to delete Member: $error"));
   }
 
   @override
-  Stream select(String uid) {
-    return FirebaseFirestore.instance.collection('Member').doc(uid).snapshots();
+  Stream select() {
+    return FirebaseFirestore.instance.collection('Member').doc(member.uid).snapshots();
   }
 
   @override
-  update(String uid) {
+  update() {
     return collectionReference
-        .doc(uid)
-        .update(memberController.member.toJson())
+        .doc(member.uid)
+        .update(member.toJson())
         .then((value) => print("Member updated"))
         .catchError((error) => print("Failed to update Member: $error"));
   }

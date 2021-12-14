@@ -6,6 +6,7 @@ import 'package:o_spawn_cup/model/tournament_type.dart';
 import '../model/game_name.dart';
 
 class Tournament {
+ String? uid;
  String name;
  DateTime date;
  GameName game;
@@ -49,6 +50,7 @@ class Tournament {
 
  Map<String, Object?> toJson() {
   return {
+   "uid": uid,
    "name": name,
    "date": date,
    "game": game,

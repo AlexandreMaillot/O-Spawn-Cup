@@ -7,8 +7,10 @@ import 'member_controller.dart';
 class MemberAuthController implements MemberController{
   @override
   Member member;
-
-  MemberAuthController(this.member);
+  late MemberDao memberDao;
+  MemberAuthController(this.member){
+    memberDao = MemberDao(member);
+  }
 
 
   signOut(){
@@ -27,13 +29,15 @@ class MemberAuthController implements MemberController{
 
   }
   void signUpWithMail(String email, String password) async{
+
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password
       );
+
       member.uid = userCredential.user!.uid;
-      MemberDao(memberController: this).create();
+      memberDao.create();
 
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

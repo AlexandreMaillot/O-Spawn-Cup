@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'Member/member.dart';
+
 abstract class Dao {
   late final CollectionReference collectionReference;
   create();
-  update(String uid);
-  delete(String uid);
-  Stream select(String uid);
+  update();
+  delete();
+  Stream select();
   CollectionReference<Object?> getCollection();
 }

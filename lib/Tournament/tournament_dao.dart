@@ -1,27 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:o_spawn_cup/Member/member_dao.dart';
+import 'package:o_spawn_cup/Tournament/tournament.dart';
 import 'package:o_spawn_cup/Tournament/tournament_controller.dart';
 import 'package:o_spawn_cup/dao.dart';
 
 class TournamentDao implements Dao {
-  TournamentController tournamentController;
+  late Tournament tournament;
   @override
   late CollectionReference<Object?> collectionReference;
 
-  TournamentDao({required this.tournamentController}){
+  TournamentDao(this.tournament){
     collectionReference = getCollection();
   }
   @override
   create() {
     return collectionReference
-        .add(tournamentController.tournament.toJson())
+        .add(tournament.toJson())
         .then((value) => print("Tournament Added"))
         .catchError((error) => print("Failed to add Member: $error"));
   }
 
   @override
-  delete(String uid) {
+  delete() {
     return collectionReference
-        .doc(uid)
+        .doc(tournament.uid)
         .delete()
         .then((value) => print("Tournament deleted"))
         .catchError((error) => print("Failed to delete Tournament: $error"));
@@ -33,15 +35,15 @@ class TournamentDao implements Dao {
   }
 
   @override
-  Stream select(String uid) {
-    return FirebaseFirestore.instance.collection('Tournament').doc(uid).snapshots();
+  Stream select() {
+    return FirebaseFirestore.instance.collection('Tournament').doc(tournament.uid).snapshots();
   }
 
   @override
-  update(String uid) {
+  update() {
     return collectionReference
-        .doc(uid)
-        .update(tournamentController.tournament.toJson())
+        .doc(tournament.uid)
+        .update(tournament.toJson())
         .then((value) => print("Tournament updated"))
         .catchError((error) => print("Failed to update Tournament: $error"));
   }

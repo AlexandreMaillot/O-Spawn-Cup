@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/game_name.dart';
 
 class GameMap {
+  String? uid;
   GameName gameName;
   String name;
   bool isDisabled = false;
@@ -17,6 +18,7 @@ class GameMap {
 
   Map<String, Object?> toJson() {
     return {
+      "uid": uid,
       "name": name,
       "gameName": gameName.index,
       "isDisabled": isDisabled,

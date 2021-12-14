@@ -1,28 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../dao.dart';
+import 'game_map.dart';
 import 'game_map_controller.dart';
 
 class GameMapDao implements Dao {
-  GameMapController gameMapController;
+  GameMap gameMap;
   @override
   late CollectionReference<Object?> collectionReference;
 
-  GameMapDao({required this.gameMapController}){
+  GameMapDao(this.gameMap){
     collectionReference = getCollection();
   }
   @override
   create() {
     return collectionReference
-        .add(gameMapController.gameMap.toJson())
+        .add(gameMap.toJson())
         .then((value) => print("GameMap Added"))
         .catchError((error) => print("Failed to add GameMap: $error"));
   }
 
   @override
-  delete(String uid) {
+  delete() {
     return collectionReference
-        .doc(uid)
+        .doc(gameMap.uid)
         .delete()
         .then((value) => print("GameMap deleted"))
         .catchError((error) => print("Failed to delete GameMap: $error"));
@@ -34,15 +35,15 @@ class GameMapDao implements Dao {
   }
 
   @override
-  Stream select(String uid) {
-    return FirebaseFirestore.instance.collection('GameMap').doc(uid).snapshots();
+  Stream select() {
+    return FirebaseFirestore.instance.collection('GameMap').doc(gameMap.uid).snapshots();
   }
 
   @override
-  update(String uid) {
+  update() {
     return collectionReference
-        .doc(uid)
-        .update(gameMapController.gameMap.toJson())
+        .doc(gameMap.uid)
+        .update(gameMap.toJson())
         .then((value) => print("GameMap updated"))
         .catchError((error) => print("Failed to update GameMap: $error"));
   }
