@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:o_spawn_cup/model/member_tournament.dart';
-import 'package:o_spawn_cup/model/round.dart';
+import 'package:o_spawn_cup/MemberTournament/member_tournament.dart';
+import 'package:o_spawn_cup/Round/round.dart';
 
 class RoundClassementMember {
   Round round;

@@ -1,4 +1,4 @@
-import 'package:o_spawn_cup/model/team.dart';
+import 'package:o_spawn_cup/Team/team.dart';
 import 'package:o_spawn_cup/Tournament/tournament.dart';
 
 class TeamClassementTournament {

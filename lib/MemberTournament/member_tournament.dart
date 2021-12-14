@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/model/role_type.dart';
 import 'package:o_spawn_cup/model/round_classement_member.dart';
-import 'package:o_spawn_cup/model/team.dart';
+import 'package:o_spawn_cup/Team/team.dart';
 import 'package:o_spawn_cup/Tournament/tournament.dart';
 
 import '../Member/member.dart';
 
 class MemberTournament {
+  String? uid;
   Member member;
   Tournament tournament;
   String gamerTag;
@@ -28,6 +29,7 @@ class MemberTournament {
 
   Map<String, Object?> toJson() {
     return {
+      "uid": uid,
       "member": member,
       "tournament": tournament,
       "gamerTag": gamerTag,
@@ -36,22 +38,6 @@ class MemberTournament {
       "listRoundClassementMember": listRoundClassementMember,
     };
   }
-  getInstanceMemberTournament(){
-    memberTournaments = FirebaseFirestore.instance.collection('memberTournament');
-  }
-  signIntoTournament(){
-    return memberTournaments
-        .add(toJson())
-        .then((value) => print("MemberTournament Added"))
-        .catchError((error) => print("Failed to add Map: $error"));
-  }
-  addListRoundClassement(RoundClassementMember roundClassementMember,){
-    listRoundClassementMember.add(roundClassementMember);
-    return memberTournaments
-        .doc("")
-        .update({"listRoundClassementMember": listRoundClassementMember})
-        .then((value) => print("MemberTournament update listroundclassement"))
-        .catchError((error) => print("Failed to add Map: $error"));
-  }
+
 }
 
