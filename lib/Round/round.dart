@@ -5,6 +5,7 @@ import 'package:o_spawn_cup/Tournament/tournament.dart';
 import '../GameMap/game_map.dart';
 
 class Round {
+  String? uid;
   GameMap map;
   Tournament tournament;
   RoundState roundState = RoundState.EnAttente;
@@ -22,27 +23,12 @@ class Round {
 
   Map<String, Object?> toJson() {
     return {
+      "uid": uid,
       "map": map,
       "tournament": tournament,
       "roundState": roundState.index,
     };
   }
-  getInstanceRound(){
-    rounds = FirebaseFirestore.instance.collection('round');
-  }
-  createRound(){
-    return rounds
-        .add(toJson())
-        .then((value) => print("rounds Added"))
-        .catchError((error) => print("Failed to add Map: $error"));
-  }
-  updateStateRound(RoundState rs,String uid){
-    roundState = rs;
-    return rounds
-        .doc(uid)
-        .update({"roundState": roundState,})
-        .then((value) => print("rounds update"))
-        .catchError((error) => print("Failed to update round: $error"));
-  }
+
 }
 

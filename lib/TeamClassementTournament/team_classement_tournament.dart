@@ -2,6 +2,7 @@ import 'package:o_spawn_cup/Team/team.dart';
 import 'package:o_spawn_cup/Tournament/tournament.dart';
 
 class TeamClassementTournament {
+  String? uid;
   Tournament tournament;
   Team team;
   int rang;
@@ -21,20 +22,13 @@ class TeamClassementTournament {
 
   Map<String, Object?> toJson() {
     return {
+      "uid": uid,
       "tournament": tournament,
       "team": team,
       "rang": rang,
       "totalPoints": totalPoints,
     };
   }
-  createTeamClassement(){
 
-  }
-  calculPointTeam(Team team){
-
-  }
-  updateTeamClassement(){
-
-  }
 
 }
