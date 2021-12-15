@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/Member/member.dart';
-import 'package:o_spawn_cup/Member/member_auth_controller.dart';
+import 'package:o_spawn_cup/model/Member/member.dart';
+import 'package:o_spawn_cup/model/Member/member_auth_controller.dart';
 
 
 class Register extends StatefulWidget {

@@ -2,7 +2,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:o_spawn_cup/GameMap/game_map.dart';
+import 'package:o_spawn_cup/model/GameMap/game_map.dart';
 import 'package:o_spawn_cup/model/game_name.dart';
 
 void main() {
