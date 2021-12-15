@@ -17,58 +17,158 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom: screenSize.height*0.02),
-                child:  Stack(
+                padding: EdgeInsets.only(bottom: screenSize.height * 0.02),
+                child: Stack(
                   children: [
                     Container(
-                      color: Color(0xffF2E96B),
+                      color: Color(0xffA9E5C7),
                       width: screenSize.width,
-                      height: screenSize.height/2,
+                      height: screenSize.height / 2,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: screenSize.height*0.1,left: screenSize.width * 0.06),
-                      child:
-                      imageFromAsset(250,210,"assets/images/logoOSpawnCup.png"),
+                      padding: EdgeInsets.only(
+                          top: screenSize.height * 0.16,
+                          left: screenSize.width * 0.1),
+                      child: imageFromAsset(
+                          screenSize.width * 0.78,
+                          screenSize.height * 0.3,
+                          "assets/images/logoOSpawnCup.png"),
                     ),
                   ],
                 ),
               ),
+              simpleTextField(screenSize, "E-MAIL"),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: screenSize.height * 0.012,
+                    bottom: screenSize.height * 0.044),
+                child: simpleTextField(screenSize, "MOT DE PASSE"),
+              ),
               SizedBox(
-                width: screenSize.width*0.87,
-                height: screenSize.height*0.06,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  textAlignVertical: TextAlignVertical.bottom,
-                  showCursor: false,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
+                width: screenSize.width * 0.87,
+                height: screenSize.height * 0.06,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xffA9E5C7)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(31),
-                      borderSide: const BorderSide(color: Colors.white),
-                    ),
-                    hintText: 'E-MAIL',
-                    hintStyle: TextStyle(
-                      color: Color(0xff707070),
-                      fontFamily: 'o_spawn_cup_font',
-                      fontSize: 14,
-                    ),
+                    )),
                   ),
+                  child: Text("CONNEXION",
+                      style: TextStyle(
+                        color: Color(0xff1B2522),
+                      )),
                 ),
-              )
-
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: screenSize.height * 0.037,
+                    left: screenSize.width * 0.069,
+                    right: screenSize.width * 0.069,
+                    bottom: screenSize.height*0.024),
+                child: Row(
+                  children: const [
+                    Expanded(
+                      child: Divider(
+                        color: Colors.white,
+                        thickness: 1,
+                      ),
+                    ),
+                    Text(
+                      " OU ",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'o_spawn_cup_font',
+                        fontSize: 14,
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.white,
+                        thickness: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(bottom: screenSize.height * 0.0064),
+                  child: buttonOtherConnexion(screenSize,"assets/images/google.png","CONNEXION AVEC GOOGLE"),
+              ),
+              buttonOtherConnexion(screenSize,"assets/images/facebook.png","CONNEXION AVEC FACEBOOK"),
             ],
           ),
-        )
-    );
+        ));
   }
 }
 
-Image imageFromAsset(double width, double height, String imageName){
+Image imageFromAsset(double width, double height, String imageName) {
   return Image.asset(
     imageName,
-    fit: BoxFit.cover,
     height: height,
     width: width,
+  );
+}
+
+SizedBox simpleTextField(Size screenSize, String text) {
+  return SizedBox(
+    width: screenSize.width * 0.87,
+    height: screenSize.height * 0.06,
+    child: TextField(
+      textAlign: TextAlign.center,
+      textAlignVertical: TextAlignVertical.bottom,
+      showCursor: false,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(31),
+          borderSide: const BorderSide(color: Colors.white),
+        ),
+        hintText: text,
+        hintStyle: TextStyle(
+          color: Color(0xff707070).withOpacity(0.43),
+          fontFamily: 'o_spawn_cup_font',
+          fontSize: 14,
+        ),
+      ),
+    ),
+  );
+}
+
+SizedBox buttonOtherConnexion(Size screenSize,String imageName,String text){
+  return SizedBox(
+    width: screenSize.width * 0.87,
+    height: screenSize.height * 0.06,
+    child: ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(31),
+              )),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(right: screenSize.width*0.02),
+              child: imageFromAsset(screenSize.width*0.05, screenSize.height*0.045, imageName),
+            ),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xff1B2522),
+                fontFamily: 'o_spawn_cup_font',
+                fontSize: 13,
+              ),
+            ),
+          ],
+        )
+    ),
   );
 }
