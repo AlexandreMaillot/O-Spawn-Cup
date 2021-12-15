@@ -22,7 +22,7 @@ void main() {
 
   });
   test('add GameMap', () async {
-    gameMap.createMap();
+
 
   });
 }

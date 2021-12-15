@@ -24,26 +24,5 @@ class GameMap {
       "isDisabled": isDisabled,
     };
   }
-  CollectionReference getInstanceGameMap(){
-    return FirebaseFirestore.instance.collection('gameMap');
-  }
-  createMap(){
-    CollectionReference gameMaps = getInstanceGameMap();
-    return gameMaps
-        .add(toJson())
-        .then((value) => print("GameMap Added"))
-        .catchError((error) => print("Failed to add Map: $error"));
-  }
-  disabledMap(String uidMap){
-    isDisabled = false;
-    CollectionReference gameMaps = getInstanceGameMap();
-    return gameMaps
-        .doc(uidMap)
-        .update({"isDisabled": true,})
-        .then((value) => print("GameMap update disabled true"))
-        .catchError((error) => print("Failed to update Map: $error"));
-  }
-  updateMap(){
 
-  }
 }

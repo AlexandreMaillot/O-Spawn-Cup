@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/Member/member_firebase_controller.dart';
-import 'package:o_spawn_cup/Member/member_controller.dart';
 
 import '../dao.dart';
 import 'member.dart';

@@ -2,10 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:o_spawn_cup/Member/member.dart';
 import 'package:o_spawn_cup/Member/member_dao.dart';
 
-import 'member_controller.dart';
 
-class MemberAuthController implements MemberController{
-  @override
+class MemberAuthController{
+
   Member member;
   late MemberDao memberDao;
   MemberAuthController(this.member){

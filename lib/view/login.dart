@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constant.dart';
+
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
@@ -12,7 +14,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Color(0xff191919),
+        backgroundColor: const Color(0xff191919),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -21,7 +23,7 @@ class _LoginState extends State<Login> {
                 child: Stack(
                   children: [
                     Container(
-                      color: Color(0xffA9E5C7),
+                      color: const Color(0xffA9E5C7),
                       width: screenSize.width,
                       height: screenSize.height / 2,
                     ),
@@ -44,25 +46,7 @@ class _LoginState extends State<Login> {
                     bottom: screenSize.height * 0.044),
                 child: simpleTextField(screenSize, "MOT DE PASSE"),
               ),
-              SizedBox(
-                width: screenSize.width * 0.87,
-                height: screenSize.height * 0.06,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xffA9E5C7)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(31),
-                    )),
-                  ),
-                  child: Text("CONNEXION",
-                      style: TextStyle(
-                        color: Color(0xff1B2522),
-                      )),
-                ),
-              ),
+              ConnectionButton(screenSize: screenSize),
               Padding(
                 padding: EdgeInsets.only(
                     top: screenSize.height * 0.037,
@@ -105,6 +89,38 @@ class _LoginState extends State<Login> {
   }
 }
 
+class ConnectionButton extends StatelessWidget {
+  const ConnectionButton({
+    Key? key,
+    required this.screenSize,
+  }) : super(key: key);
+
+  final Size screenSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: screenSize.width * 0.87,
+      height: screenSize.height * 0.06,
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(colorButton),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(31),
+          )),
+        ),
+        child: const Text("CONNEXION",
+            style: TextStyle(
+              color: Color(0xff1B2522),
+            )),
+      ),
+    );
+  }
+}
+
 Image imageFromAsset(double width, double height, String imageName) {
   return Image.asset(
     imageName,
@@ -134,7 +150,7 @@ SizedBox simpleTextField(Size screenSize, String text) {
         ),
         hintText: text,
         hintStyle: TextStyle(
-          color: Color(0xff707070).withOpacity(0.43),
+          color: const Color(0xff707070).withOpacity(0.43),
           fontFamily: 'o_spawn_cup_font',
           fontSize: 14,
         ),
@@ -165,7 +181,7 @@ SizedBox buttonOtherConnexion(Size screenSize,String imageName,String text){
             Text(
               text,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xff1B2522),
                 fontFamily: 'o_spawn_cup_font',
                 fontSize: 13,

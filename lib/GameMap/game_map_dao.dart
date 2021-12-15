@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../dao.dart';
 import 'game_map.dart';
-import 'game_map_controller.dart';
 
 class GameMapDao implements Dao {
   GameMap gameMap;
