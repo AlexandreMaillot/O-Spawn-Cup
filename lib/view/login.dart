@@ -128,6 +128,10 @@ SizedBox simpleTextField(Size screenSize, String text) {
           borderRadius: BorderRadius.circular(31),
           borderSide: const BorderSide(color: Colors.white),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(31),
+        ),
         hintText: text,
         hintStyle: TextStyle(
           color: Color(0xff707070).withOpacity(0.43),
