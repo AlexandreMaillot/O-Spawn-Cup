@@ -1,7 +1,7 @@
-import 'package:o_spawn_cup/model/rang_point_tournament.dart';
+import 'package:o_spawn_cup/RangPointTournament/rang_point_tournament.dart';
 import 'package:o_spawn_cup/model/server_type.dart';
 import 'package:o_spawn_cup/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/model/tournament_type.dart';
+import 'package:o_spawn_cup/TournamentType/tournament_type.dart';
 
 import '../model/game_name.dart';
 

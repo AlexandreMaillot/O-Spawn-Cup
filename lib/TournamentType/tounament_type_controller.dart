@@ -1,0 +1,8 @@
+class TournamentTypeController {
+  create(){
+
+  }
+  delete(){
+    
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:o_spawn_cup/Tournament/tournament.dart';
 
 class RangPointTournament {
+  String? uid;
   int rang;
   int point;
   Tournament tournament;
@@ -17,15 +18,11 @@ class RangPointTournament {
 
   Map<String, Object?> toJson() {
     return {
+      "uid": uid,
       "rang": rang,
       "point": point,
       "tournament": tournament,
     };
   }
-  updateRangPointTournament(){
 
-  }
-  calculRangPoint(int rang){
-
-  }
 }

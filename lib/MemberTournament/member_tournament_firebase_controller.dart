@@ -1,6 +1,6 @@
 import 'package:o_spawn_cup/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/MemberTournament/member_tournament_dao.dart';
-import 'package:o_spawn_cup/model/round_classement_member.dart';
+import 'package:o_spawn_cup/RoundClassementMember/round_classement_member.dart';
 
 class MemberTournamentFirebaseController {
   late MemberTournamentDao memberTournamentDao;

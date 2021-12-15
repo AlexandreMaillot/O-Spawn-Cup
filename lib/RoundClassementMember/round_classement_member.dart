@@ -5,6 +5,7 @@ import 'package:o_spawn_cup/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/Round/round.dart';
 
 class RoundClassementMember {
+  String? uid;
   Round round;
   MemberTournament memberTournament;
   int kill;
@@ -24,6 +25,7 @@ class RoundClassementMember {
 
   Map<String, Object?> toJson() {
     return {
+      "uid": uid,
       "round": round,
       "memberTournament": memberTournament,
       "kill": kill,
@@ -31,17 +33,6 @@ class RoundClassementMember {
       "screenshot": screenshot,
     };
   }
-  getInstanceRoundClassementMember(){
-    roundClassementMembers = FirebaseFirestore.instance.collection('roundClassementMember');
-  }
-  createRoundClassement(){
-    return roundClassementMembers
-        .add(toJson())
-        .then((value) => print("roundClassementMembers Added"))
-        .catchError((error) => print("Failed to add roundClassementMembers: $error"));
-  }
-  calculPointRound(){
 
-  }
 
 }

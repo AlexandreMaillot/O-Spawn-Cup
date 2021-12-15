@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/model/role_type.dart';
-import 'package:o_spawn_cup/model/round_classement_member.dart';
+import 'package:o_spawn_cup/RoundClassementMember/round_classement_member.dart';
 import 'package:o_spawn_cup/Team/team.dart';
 import 'package:o_spawn_cup/Tournament/tournament.dart';
 

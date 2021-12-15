@@ -1,4 +1,5 @@
 class TournamentType {
+  String? uid;
   String name;
   int capacityTeam;
 
@@ -12,6 +13,7 @@ class TournamentType {
 
   Map<String, Object?> toJson() {
     return {
+      "uid": uid,
       "name": name,
       "capacityTeam": capacityTeam,
     };
