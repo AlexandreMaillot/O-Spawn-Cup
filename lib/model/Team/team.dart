@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:o_spawn_cup/model/role_type.dart';
-
-import '../Member/member.dart';
 import '../MemberTournament/member_tournament.dart';
 
 class Team {
