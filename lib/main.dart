@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:o_spawn_cup/view/home.dart';
 
+import 'constant.dart';
 import 'firebase_options.dart';
 import 'view/login.dart';
 
@@ -23,9 +25,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: AppBarTheme(color: colorTheme),
+        backgroundColor: colorBackgroundTheme,
         primarySwatch: Colors.blue,
       ),
-      home: Login(),
+      home: Home(),
     );
   }
 }

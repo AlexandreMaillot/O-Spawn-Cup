@@ -12,13 +12,13 @@ class GameMapFirebase {
 
 
   createMap(){
-
+    gameMapDao.create();
   }
   disabledMap(String uidMap) {
     gameMap.isDisabled = false;
     gameMapDao.update();
   }
   updateMap(){
-
+    gameMapDao.update();
   }
 }

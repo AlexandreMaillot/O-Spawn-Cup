@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'member.dart';
 import 'member_dao.dart';
@@ -9,26 +11,61 @@ class MemberAuthController{
 
   Member member;
   late MemberDao memberDao;
-  MemberAuthController(this.member){
+  MemberAuthController({required this.member}){
     memberDao = MemberDao(member);
   }
 
 
-  signOut(){
-
+  signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
 
 
-  void signWithGoogle(){
+  Future<UserCredential> signWithGoogle() async{
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-  }
-  void signInWithMail(){
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
-  }
-  void signWithFacebook(){
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+  Future<void> signInWithMail(String email,String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
+
+  Future<UserCredential> signWithFacebook() async{
+// Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
+
+
   void signUpWithMail(String email, String password) async{
 
     try {
@@ -39,7 +76,11 @@ class MemberAuthController{
 
       member.uid = userCredential.user!.uid;
       memberDao.create();
+      User? user = FirebaseAuth.instance.currentUser;
 
+      if (user!= null && !user.emailVerified) {
+        await user.sendEmailVerification();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');

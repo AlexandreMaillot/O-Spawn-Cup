@@ -30,7 +30,7 @@ Column showButtons(){
       child: Text("register with mail"),
         onPressed: (){
           Member member = Member(pseudo: "MonPseudo");
-          memberAuthController = MemberAuthController(member);
+          memberAuthController = MemberAuthController(member: member);
           memberAuthController.signUpWithMail("barry.allen@example.com","SuperSecretPassword!");
         },
       ),

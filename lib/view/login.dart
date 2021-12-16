@@ -106,7 +106,7 @@ class ConnectionButton extends StatelessWidget {
         onPressed: () {},
         style: ButtonStyle(
           backgroundColor:
-              MaterialStateProperty.all<Color>(colorButton),
+              MaterialStateProperty.all<Color>(colorTheme),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(31),
