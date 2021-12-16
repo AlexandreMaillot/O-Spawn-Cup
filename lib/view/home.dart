@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:o_spawn_cup/constant.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,42 +13,189 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  PageController pageController = PageController(viewportFraction: 0.3);
+  var currentPageValue = 0.0;
+  int menuActive = 1;
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      setState(() {
+        currentPageValue = pageController.page!;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      drawer: Drawer(),
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: () {
 
-          }, icon: Icon(Icons.create)),
-        ],
-        title: const Text(
-          "JEUX",
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'o_spawn_cup_font',
-            fontSize: 29,
-            fontWeight: FontWeight.normal,
+    Size screenSize = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Scaffold(
+
+        drawer: Drawer(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  // padding: EdgeInsets.only(top: 70),
+                  color: colorBackgroundTheme,
+                  width: screenSize.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(),
+                      Text("Mon Pseudo"),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  color: colorTheme,
+                ),
+              )
+            ],
           ),
         ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Container(
-            child: simpleTextField(screenSize, "RECHERCHEZ"),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: SvgPicture.asset("assets/images/drawer.svg",
+                  height: 30,
+                  width: 37,
+                ),
+
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
           ),
-          Expanded(
-              child: Container(
-            color: colorBackgroundTheme,
-          ))
-        ],
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset("assets/images/settingIcon.svg",
+                height: 38,
+                width: 38,
+              ),
+
+              onPressed: () {
+
+              },
+            ),
+          ],
+          title: const Text(
+            "JEUX",
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'o_spawn_cup_font',
+              fontSize: 29,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            // Container(
+            //   child: simpleTextField(screenSize, "RECHERCHEZ"),
+            // ),
+            CupList(screenSize: screenSize, pageController: pageController, currentPageValue: currentPageValue)
+          ],
+        ),
       ),
     );
   }
 }
+
+class CupList extends StatelessWidget {
+  const CupList({
+    Key? key,
+    required this.screenSize,
+    required this.pageController,
+    required this.currentPageValue,
+  }) : super(key: key);
+
+  final Size screenSize;
+  final PageController pageController;
+  final double currentPageValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Container(
+          child: Center(
+            child: SizedBox(
+              height: screenSize.height,
+              child: PageView.builder(
+                  scrollDirection: Axis.vertical,
+
+                  controller: pageController,
+                   itemCount: listCardGame.length,
+                  itemBuilder: (context, position) {
+                    if (position == currentPageValue) {
+                      return Transform.scale(
+                        scale: 1,
+                        child: GameCard(position),
+                      );
+                    } else if (position < currentPageValue) {
+                      return Transform.scale(
+                        scale: max(1 - (currentPageValue - position), 0.75),
+                        child: GameCard(position),
+                      );
+                    } else {
+                      return Transform.scale(
+                        scale: max(1 - (position - currentPageValue), 0.75),
+                        child: GameCard(position),
+                      );
+                    }
+                  }),
+            ),
+          ),
+      color: colorBackgroundTheme,
+    )
+    );
+  }
+}
+
+class GameCard extends StatelessWidget {
+  final int index;
+
+  GameCard(this.index);
+
+  @override
+  Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.only(top: 0),
+      child: InkWell(
+        onTap: () {
+
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: Container(
+            color: Colors.white,
+            child: Stack(
+              children: [
+                Image.asset(
+                  listCardGame[index].img,
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
 
 SizedBox simpleTextField(Size screenSize, String text) {
   return SizedBox(

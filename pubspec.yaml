@@ -41,6 +41,7 @@ dependencies:
   flutter_svg: ^1.0.0
   flutter_facebook_auth: ^3.5.7
   google_sign_in: ^5.2.1
+  flutter_staggered_animations: "^1.0.0"
 dev_dependencies:
   flutter_test:
     sdk: flutter
