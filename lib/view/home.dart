@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_app_bar.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_drawer.dart';
+import 'package:o_spawn_cup/view/list_cup.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,8 +14,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  PageController pageController = PageController(viewportFraction: 0.3);
-  var currentPageValue = 0.0;
+  PageController pageController =
+      PageController(viewportFraction: 0.3, initialPage: 1);
+  var currentPageValue = 1.0;
   int menuActive = 1;
   @override
   void initState() {
@@ -25,88 +27,25 @@ class _HomeState extends State<Home> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     Size screenSize = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-
-        drawer: Drawer(
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  // padding: EdgeInsets.only(top: 70),
-                  color: colorBackgroundTheme,
-                  width: screenSize.width,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(),
-                      Text("Mon Pseudo"),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Container(
-                  color: colorTheme,
-                ),
-              )
-            ],
-          ),
-        ),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: SvgPicture.asset("assets/images/drawer.svg",
-                  height: 30,
-                  width: 37,
-                ),
-
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: SvgPicture.asset("assets/images/settingIcon.svg",
-                height: 38,
-                width: 38,
-              ),
-
-              onPressed: () {
-
-              },
-            ),
-          ],
-          title: const Text(
-            "JEUX",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'o_spawn_cup_font',
-              fontSize: 29,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-          centerTitle: true,
-        ),
+    return Scaffold(
+        drawer: CustomDrawer(screenSize: screenSize),
+        appBar: CustomAppBar(),
         body: Column(
           children: [
             // Container(
             //   child: simpleTextField(screenSize, "RECHERCHEZ"),
             // ),
-            CupList(screenSize: screenSize, pageController: pageController, currentPageValue: currentPageValue)
+            CupList(
+                screenSize: screenSize,
+                pageController: pageController,
+                currentPageValue: currentPageValue)
           ],
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -126,37 +65,35 @@ class CupList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: Container(
-          child: Center(
-            child: SizedBox(
-              height: screenSize.height,
-              child: PageView.builder(
-                  scrollDirection: Axis.vertical,
-
-                  controller: pageController,
-                   itemCount: listCardGame.length,
-                  itemBuilder: (context, position) {
-                    if (position == currentPageValue) {
-                      return Transform.scale(
-                        scale: 1,
-                        child: GameCard(position),
-                      );
-                    } else if (position < currentPageValue) {
-                      return Transform.scale(
-                        scale: max(1 - (currentPageValue - position), 0.75),
-                        child: GameCard(position),
-                      );
-                    } else {
-                      return Transform.scale(
-                        scale: max(1 - (position - currentPageValue), 0.75),
-                        child: GameCard(position),
-                      );
-                    }
-                  }),
-            ),
-          ),
+      child: Center(
+        child: SizedBox(
+          height: screenSize.height,
+          child: PageView.builder(
+              scrollDirection: Axis.vertical,
+              controller: pageController,
+              itemCount: listCardGame.length,
+              itemBuilder: (context, position) {
+                if (position == currentPageValue) {
+                  return Transform.scale(
+                    scale: 1,
+                    child: GameCard(position),
+                  );
+                } else if (position < currentPageValue) {
+                  return Transform.scale(
+                    scale: max(1 - (currentPageValue - position), 0.75),
+                    child: GameCard(position),
+                  );
+                } else {
+                  return Transform.scale(
+                    scale: max(1 - (position - currentPageValue), 0.75),
+                    child: GameCard(position),
+                  );
+                }
+              }),
+        ),
+      ),
       color: colorBackgroundTheme,
-    )
-    );
+    ));
   }
 }
 
@@ -172,7 +109,11 @@ class GameCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 0),
       child: InkWell(
         onTap: () {
-
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return ListCup(gameName: listCardGame[index].gameName);
+            },
+          ));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
@@ -194,8 +135,6 @@ class GameCard extends StatelessWidget {
     );
   }
 }
-
-
 
 SizedBox simpleTextField(Size screenSize, String text) {
   return SizedBox(

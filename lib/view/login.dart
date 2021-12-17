@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../constant.dart';
+import 'package:o_spawn_cup/constant.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
                     top: screenSize.height * 0.037,
                     left: screenSize.width * 0.069,
                     right: screenSize.width * 0.069,
-                    bottom: screenSize.height*0.024),
+                    bottom: screenSize.height * 0.024),
                 child: Row(
                   children: const [
                     Expanded(
@@ -79,10 +79,12 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.only(bottom: screenSize.height * 0.0064),
-                  child: buttonOtherConnexion(screenSize,"assets/images/google.png","CONNEXION AVEC GOOGLE"),
+                padding: EdgeInsets.only(bottom: screenSize.height * 0.0064),
+                child: buttonOtherConnexion(screenSize,
+                    "assets/images/google.png", "CONNEXION AVEC GOOGLE"),
               ),
-              buttonOtherConnexion(screenSize,"assets/images/facebook.png","CONNEXION AVEC FACEBOOK"),
+              buttonOtherConnexion(screenSize, "assets/images/facebook.png",
+                  "CONNEXION AVEC FACEBOOK"),
             ],
           ),
         ));
@@ -99,25 +101,7 @@ class ConnectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: screenSize.width * 0.87,
-      height: screenSize.height * 0.06,
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(colorTheme),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(31),
-          )),
-        ),
-        child: const Text("CONNEXION",
-            style: TextStyle(
-              color: Color(0xff1B2522),
-            )),
-      ),
-    );
+    return CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION",);
   }
 }
 
@@ -159,7 +143,7 @@ SizedBox simpleTextField(Size screenSize, String text) {
   );
 }
 
-SizedBox buttonOtherConnexion(Size screenSize,String imageName,String text){
+SizedBox buttonOtherConnexion(Size screenSize, String imageName, String text) {
   return SizedBox(
     width: screenSize.width * 0.87,
     height: screenSize.height * 0.06,
@@ -169,14 +153,15 @@ SizedBox buttonOtherConnexion(Size screenSize,String imageName,String text){
           backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(31),
-              )),
+            borderRadius: BorderRadius.circular(31),
+          )),
         ),
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(right: screenSize.width*0.02),
-              child: imageFromAsset(screenSize.width*0.05, screenSize.height*0.045, imageName),
+              padding: EdgeInsets.only(right: screenSize.width * 0.02),
+              child: imageFromAsset(screenSize.width * 0.05,
+                  screenSize.height * 0.045, imageName),
             ),
             Text(
               text,
@@ -188,7 +173,6 @@ SizedBox buttonOtherConnexion(Size screenSize,String imageName,String text){
               ),
             ),
           ],
-        )
-    ),
+        )),
   );
 }
