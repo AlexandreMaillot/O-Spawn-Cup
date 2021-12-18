@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_app_bar.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_drawer.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/model/game_name.dart';
 
@@ -16,6 +17,7 @@ class ListCup extends StatefulWidget {
 
 class _ListCupState extends State<ListCup> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  bool sheetShow = false;
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -23,27 +25,22 @@ class _ListCupState extends State<ListCup> {
       key: _globalKey,
       drawer: CustomDrawer(screenSize: screenSize),
       appBar: const CustomAppBar(),
-      bottomNavigationBar: this._buildBottomAppBar(context),
-      body: Container(
-        padding: const EdgeInsets.only(left: 20,right: 20,top: 18),
-        child: GridView.count(
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this produces 2 rows.
-          crossAxisCount: 2,
-          // Generate 100 widgets that display their index in the List.
-          children: List.generate(100, (index) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(22),
-              ),
-              child: Center(
-                child: Text(
-                  'Item $index',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ),
-            );
-          }),
+      bottomNavigationBar: _buildBottomAppBar(context),
+      body: GestureDetector(
+        onTap: () {
+          if(sheetShow) {
+            sheetShow = false;
+            Navigator.pop(context);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.only(left: 20,right: 20,top: 18),
+          child: GridView.count(
+            crossAxisCount: 2,
+            children: List.generate(100, (index) {
+              return CardCup(index: index);
+            }),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -55,12 +52,27 @@ class _ListCupState extends State<ListCup> {
         width: 30,
       ),
         onPressed: () {
-          _globalKey.currentState!.showBottomSheet((context) => Container(
-            child: Text("é"),
-            height: screenSize.height * 0.4,
-            width: screenSize.width,
-            color: colorTheme,
-          ));
+          if(sheetShow == false) {
+            sheetShow = true;
+            _globalKey.currentState!.showBottomSheet((context) => Container(
+              child: Column(
+                children: [
+                  CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                  CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                  CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                  CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                  CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                ],
+              ),
+              height: screenSize.height * 0.4,
+              width: screenSize.width,
+              color: colorTheme,
+            ));
+          } else {
+            sheetShow = false;
+            Navigator.pop(context);
+          }
+
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -75,6 +87,29 @@ class _ListCupState extends State<ListCup> {
         children: <Widget>[
           Container(height: 25,)
         ],
+      ),
+    );
+  }
+}
+
+class CardCup extends StatelessWidget {
+  int index;
+  CardCup({
+    Key? key,
+    required this.index,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: Center(
+        child: Text(
+          'Item ${index.toString()}',
+          style: Theme.of(context).textTheme.headline5,
+        ),
       ),
     );
   }

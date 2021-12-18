@@ -21,11 +21,25 @@ class CustomDrawer extends StatelessWidget {
               // padding: EdgeInsets.only(top: 70),
               color: colorBackgroundTheme,
               width: screenSize.width,
+              padding: const EdgeInsets.only(left: 22,bottom: 26),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(),
-                  Text("Mon Pseudo"),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: CircleAvatar(
+                      radius: 56,
+                    ),
+                  ),
+                  SizedBox(
+                    // width: 56,
+                    child: Text(
+                        "Mon Pseudo",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white,),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -33,7 +47,7 @@ class CustomDrawer extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Container(
-              padding: EdgeInsets.only(left: 11, right: 11, top: 14),
+              padding: const EdgeInsets.only(left: 11, right: 11, top: 14),
               color: colorTheme,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
