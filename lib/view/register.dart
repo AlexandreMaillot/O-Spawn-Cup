@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_button_connect_with.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_divider.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
+import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/model/Member/member.dart';
 import 'package:o_spawn_cup/model/Member/member_auth_controller.dart';
-
 
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
@@ -11,36 +15,64 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  hideKeyBoard() {
+    FocusScope.of(context).requestFocus(FocusNode());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.pinkAccent,
-      child: showButtons(),
+    Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: colorBackgroundTheme,
+      body: GestureDetector(
+        onTap: () {
+          hideKeyBoard();
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                color: colorTheme,
+                width: screenSize.width,
+                height: screenSize.height * 0.37,
+                child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: screenSize.height * 0.028, bottom: screenSize.height * 0.044),
+                child: Container(
+                  width: screenSize.width,
+                  height: screenSize.height * 0.27,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                      CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                      CustomTextField(screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                      CustomTextField(screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white),
+                    ],
+                  ),
+                ),
+              ),
+              CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "S'INSCRIRE"),
+              Padding(
+                padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
+                child: CustomDivider(screenSize: screenSize),
+              ),
+              Container(
+                width: screenSize.width,
+                height: screenSize.height*0.125,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE"),
+                    CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK"),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
-}
-
-Column showButtons(){
-  
-  MemberAuthController memberAuthController;
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      ElevatedButton(
-      child: Text("register with mail"),
-        onPressed: (){
-          Member member = Member(pseudo: "MonPseudo");
-          memberAuthController = MemberAuthController(member: member);
-          memberAuthController.signUpWithMail("barry.allen@example.com","SuperSecretPassword!");
-        },
-      ),
-      ElevatedButton(
-        child: Text("register with google"),
-        onPressed: (){
-
-        },
-      ),
-
-    ],
-  );
 }
