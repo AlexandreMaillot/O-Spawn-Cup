@@ -6,6 +6,7 @@ import 'package:o_spawn_cup/view/test.dart';
 import 'constant.dart';
 import 'firebase_options.dart';
 import 'view/login.dart';
+import 'view/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: colorBackgroundTheme,
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: Login(),
     );
   }
 }
