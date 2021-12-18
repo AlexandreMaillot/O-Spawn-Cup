@@ -13,53 +13,62 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  hideKeyBoard() {
+    FocusScope.of(context).requestFocus(FocusNode());
+  }
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: colorBackgroundTheme,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                color: colorTheme,
-                width: screenSize.width,
-                height: screenSize.height * 0.48,
-                child: Center(
-                  child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: screenSize.height * 0.062,bottom: screenSize.height * 0.044),
-                child: Container(
+        body: GestureDetector(
+          onTap: () {
+            hideKeyBoard();
+          },
+          child: SingleChildScrollView(
+          child:  Column(
+              children: [
+                Container(
+                  color: colorTheme,
                   width: screenSize.width,
-                  height: screenSize.height * 0.13,
+                  height: screenSize.height * 0.48,
+                  child: Center(
+                    child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: screenSize.height * 0.062,bottom: screenSize.height * 0.044),
+                  child: Container(
+                    width: screenSize.width,
+                    height: screenSize.height * 0.13,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                      ],
+                    ),
+                  ),
+                ),
+                CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION"),
+                Padding(
+                    padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
+                    child: CustomDivider(screenSize: screenSize),
+                ),
+                Container(
+                  width: screenSize.width,
+                  height: screenSize.height*0.125,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
-                      CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                      CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE"),
+                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK"),
                     ],
                   ),
                 ),
-              ),
-              CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION"),
-              Padding(
-                  padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
-                  child: CustomDivider(screenSize: screenSize),
-              ),
-              Container(
-                width: screenSize.width,
-                height: screenSize.height*0.125,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE"),
-                    CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK"),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }
