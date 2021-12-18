@@ -35,7 +35,22 @@ class _RegisterState extends State<Register> {
                 color: colorTheme,
                 width: screenSize.width,
                 height: screenSize.height * 0.37,
-                child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: screenSize.height * 0.015),
+                      child: IconButton(
+                        onPressed: (){
+                          print('retour');
+                        },
+                        icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
+                      ),
+                    ),
+                    Center(
+                      child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                    )
+                  ],
+                )
               ),
               Padding(
                 padding: EdgeInsets.only(top: screenSize.height * 0.028, bottom: screenSize.height * 0.044),
@@ -64,8 +79,8 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE"),
-                    CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK"),
+                    CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "S'INSCRIRE AVEC GOOGLE"),
+                    CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK"),
                   ],
                 ),
               ),
