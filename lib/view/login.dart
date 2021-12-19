@@ -5,6 +5,8 @@ import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
 
+import 'login_register.dart';
+
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
@@ -41,7 +43,10 @@ class _LoginState extends State<Login> {
                         padding: EdgeInsets.only(top: screenSize.height * 0.015),
                         child: IconButton(
                           onPressed: (){
-                            print('retour');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginRegister()),
+                            );
                           },
                           icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
                         ),
@@ -66,7 +71,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION"),
+                CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION",onPressedMethod: (context){}),
                 Padding(
                     padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                     child: CustomDivider(screenSize: screenSize),

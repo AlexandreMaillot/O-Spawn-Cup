@@ -3,6 +3,9 @@ import 'package:o_spawn_cup/CustomsWidgets/custom_button_connect_with.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_divider.dart';
 import 'package:o_spawn_cup/constant.dart';
+import 'package:o_spawn_cup/view/register.dart';
+
+import 'login.dart';
 
 class LoginRegister extends StatefulWidget {
   const LoginRegister({Key? key}) : super(key: key);
@@ -35,8 +38,8 @@ class _LoginRegisterState extends State<LoginRegister> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomButtonTheme(screenSize: screenSize,colorButton: Colors.white,text: "CONNEXION"),
-                    CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "INSCRIPTION"),
+                    CustomButtonTheme(screenSize: screenSize,colorButton: Colors.white,text: "CONNEXION",onPressedMethod: goToLogin),
+                    CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "INSCRIPTION",onPressedMethod: goToRegister),
                   ],
                 ),
               ),
@@ -60,4 +63,18 @@ class _LoginRegisterState extends State<LoginRegister> {
         ),
     );
   }
+}
+
+
+void goToLogin(context){
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Login()),
+  );
+}
+void goToRegister(context){
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Register()),
+  );
 }

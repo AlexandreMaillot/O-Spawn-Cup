@@ -7,6 +7,8 @@ import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/model/Member/member.dart';
 import 'package:o_spawn_cup/model/Member/member_auth_controller.dart';
 
+import 'login_register.dart';
+
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
 
@@ -41,7 +43,10 @@ class _RegisterState extends State<Register> {
                       padding: EdgeInsets.only(top: screenSize.height * 0.015),
                       child: IconButton(
                         onPressed: (){
-                          print('retour');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginRegister()),
+                          );
                         },
                         icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
                       ),
@@ -68,7 +73,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "S'INSCRIRE"),
+              CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: (context){}),
               Padding(
                 padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                 child: CustomDivider(screenSize: screenSize),

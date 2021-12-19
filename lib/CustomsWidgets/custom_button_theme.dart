@@ -5,15 +5,17 @@ import '../constant.dart';
 class CustomButtonTheme extends StatelessWidget {
   Color colorButton;
   String text;
+  Function(BuildContext) onPressedMethod;
+  final Size screenSize;
+
   CustomButtonTheme({
     Key? key,
     required this.colorButton,
     required this.screenSize,
     required this.text,
-
+    required this.onPressedMethod,
   }) : super(key: key);
 
-  final Size screenSize;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,9 @@ class CustomButtonTheme extends StatelessWidget {
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.06,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          onPressedMethod(context);
+        },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(colorButton),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
