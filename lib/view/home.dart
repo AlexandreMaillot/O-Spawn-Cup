@@ -31,21 +31,23 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-        drawer: CustomDrawer(screenSize: screenSize),
-        appBar: CustomAppBar(title: "JEUX"),
-        body: Column(
-          children: [
-            // Container(
-            //   child: simpleTextField(screenSize, "RECHERCHEZ"),
-            // ),
-            CupList(
-                screenSize: screenSize,
-                pageController: pageController,
-                currentPageValue: currentPageValue)
-          ],
+    return SafeArea(
+      child: Scaffold(
+          drawer: CustomDrawer(screenSize: screenSize),
+          appBar: CustomAppBar(title: "JEUX"),
+          body: Column(
+            children: [
+              // Container(
+              //   child: simpleTextField(screenSize, "RECHERCHEZ"),
+              // ),
+              CupList(
+                  screenSize: screenSize,
+                  pageController: pageController,
+                  currentPageValue: currentPageValue)
+            ],
+          ),
         ),
-      );
+    );
   }
 }
 

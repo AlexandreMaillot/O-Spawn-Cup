@@ -5,7 +5,7 @@ import '../constant.dart';
 class CustomButtonTheme extends StatelessWidget {
   Color colorButton;
   String text;
-  Function(BuildContext) onPressedMethod;
+  VoidCallback onPressedMethod;
   final Size screenSize;
 
   CustomButtonTheme({
@@ -23,9 +23,7 @@ class CustomButtonTheme extends StatelessWidget {
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.06,
       child: ElevatedButton(
-        onPressed: () {
-          onPressedMethod(context);
-        },
+        onPressed: onPressedMethod,
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(colorButton),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(

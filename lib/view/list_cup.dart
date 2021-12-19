@@ -5,10 +5,12 @@ import 'package:o_spawn_cup/CustomsWidgets/custom_drawer.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
+import 'package:o_spawn_cup/model/card_cup.dart';
 import 'package:o_spawn_cup/model/game_name.dart';
 
 class ListCup extends StatefulWidget {
   GameName gameName;
+
   ListCup({Key? key, required this.gameName}) : super(key: key);
 
   @override
@@ -16,6 +18,7 @@ class ListCup extends StatefulWidget {
 }
 
 class _ListCupState extends State<ListCup> {
+  final GlobalKey<_FloatingActionBottomSheetState> _keyFloating = GlobalKey<_FloatingActionBottomSheetState>();
   @override
   void initState() {
     super.initState();
@@ -35,7 +38,11 @@ class _ListCupState extends State<ListCup> {
       bottomNavigationBar: _buildBottomAppBar(context),
       body: GestureDetector(
         onTap: () {
-          Navigator.of(context).pop();
+          if(_keyFloating.currentState!.bottomSheetIsShow){
+            Navigator.of(context).pop();
+
+          }
+
         },
         child: Container(
           color: colorBackgroundTheme,
@@ -49,6 +56,7 @@ class _ListCupState extends State<ListCup> {
         ),
       ),
       floatingActionButton: FloatingActionBottomSheet(
+        key: _keyFloating,
         screenSize: screenSize,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -71,12 +79,14 @@ class _ListCupState extends State<ListCup> {
 }
 
 class FloatingActionBottomSheet extends StatefulWidget {
+
   FloatingActionBottomSheet({
     Key? key,
     required this.screenSize,
   }) : super(key: key);
 
   final Size screenSize;
+
 
   @override
   State<FloatingActionBottomSheet> createState() =>
@@ -85,7 +95,7 @@ class FloatingActionBottomSheet extends StatefulWidget {
 
 class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   PersistentBottomSheetController<dynamic>? bottomSheetController;
-
+  bool bottomSheetIsShow = false;
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
@@ -97,15 +107,20 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
         width: 30,
       ),
       onPressed: () {
+        bottomSheetIsShow = true;
         bottomSheetController = buildShowBottomSheet(context);
-        bottomSheetController!.closed.then((value) => print("ok"));
+        bottomSheetController!.closed.then((value){
+          setState(() {
+            bottomSheetIsShow = false;
+          });
+
+        } );
       },
     );
   }
 
-  PersistentBottomSheetController<dynamic> buildShowBottomSheet(
-      BuildContext context) {
-    var tournamentState;
+  PersistentBottomSheetController<dynamic> buildShowBottomSheet(BuildContext context) {
+    TournamentState? tournamentState;
     Size screenSize = MediaQuery.of(context).size;
     return showBottomSheet(
       context: context,
@@ -115,21 +130,25 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomTextField(
+                textAlign: TextAlign.left,
                 screenSize: widget.screenSize,
                 text: "E-MAIL",
                 buttonColor: Colors.white,
                 borderColor: Colors.white),
             CustomTextField(
+                textAlign: TextAlign.left,
                 screenSize: widget.screenSize,
                 text: "E-MAIL",
                 buttonColor: Colors.white,
                 borderColor: Colors.white),
             CustomTextField(
+                textAlign: TextAlign.left,
                 screenSize: widget.screenSize,
                 text: "NOM DU TOURNOIS",
                 buttonColor: Colors.white,
                 borderColor: Colors.white),
             CustomTextField(
+                textAlign: TextAlign.left,
                 screenSize: widget.screenSize,
                 text: "E-MAIL",
                 buttonColor: Colors.white,
@@ -142,7 +161,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(31),
               ),
-              child: DropdownButton(
+              child: DropdownButton<TournamentState>(
                   isExpanded: true,
                   // alignment: AlignmentDirectional.center,
                   hint: Center(
@@ -163,13 +182,13 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                   ),
                   value: tournamentState,
                   underline: SizedBox(),
-                  onChanged: (value) {
-                    // setState(() {
-                      tournamentState = value;
-                    // });
+                  onChanged: (TournamentState? state) {
+                    setState(() {
+                      print(state);
+                      tournamentState = state;
+                    });
                   },
-                  items: TournamentState.values
-                      .map((TournamentState tournamentState) {
+                  items: TournamentState.values.map((TournamentState tournamentState) {
                     return DropdownMenuItem<TournamentState>(
                         value: tournamentState,
                         child: Text(tournamentState.toString()));
@@ -185,25 +204,4 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   }
 }
 
-class CardCup extends StatelessWidget {
-  int index;
-  CardCup({
-    Key? key,
-    required this.index,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Center(
-        child: Text(
-          'Item ${index.toString()}',
-          style: Theme.of(context).textTheme.headline5,
-        ),
-      ),
-    );
-  }
-}

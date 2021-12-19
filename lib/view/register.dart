@@ -24,72 +24,74 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: colorBackgroundTheme,
-      body: GestureDetector(
-        onTap: () {
-          hideKeyBoard();
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                color: colorTheme,
-                width: screenSize.width,
-                height: screenSize.height * 0.37,
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: screenSize.height * 0.015),
-                      child: IconButton(
-                        onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginRegister()),
-                          );
-                        },
-                        icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
-                      ),
-                    ),
-                    Center(
-                      child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
-                    )
-                  ],
-                )
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: screenSize.height * 0.028, bottom: screenSize.height * 0.044),
-                child: Container(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: colorBackgroundTheme,
+        body: GestureDetector(
+          onTap: () {
+            hideKeyBoard();
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  color: colorTheme,
                   width: screenSize.width,
-                  height: screenSize.height * 0.27,
+                  height: screenSize.height * 0.37,
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: screenSize.height * 0.015),
+                        child: IconButton(
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginRegister()),
+                            );
+                          },
+                          icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
+                        ),
+                      ),
+                      Center(
+                        child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                      )
+                    ],
+                  )
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: screenSize.height * 0.028, bottom: screenSize.height * 0.044),
+                  child: Container(
+                    width: screenSize.width,
+                    height: screenSize.height * 0.27,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white),
+                      ],
+                    ),
+                  ),
+                ),
+                CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: () => print("okdd")),
+                Padding(
+                  padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
+                  child: CustomDivider(screenSize: screenSize),
+                ),
+                Container(
+                  width: screenSize.width,
+                  height: screenSize.height*0.125,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
-                      CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
-                      CustomTextField(screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
-                      CustomTextField(screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white),
+                      CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "S'INSCRIRE AVEC GOOGLE"),
+                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK"),
                     ],
                   ),
                 ),
-              ),
-              CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: (context){}),
-              Padding(
-                padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
-                child: CustomDivider(screenSize: screenSize),
-              ),
-              Container(
-                width: screenSize.width,
-                height: screenSize.height*0.125,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "S'INSCRIRE AVEC GOOGLE"),
-                    CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK"),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:o_spawn_cup/view/login_register.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   String title;
@@ -32,7 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             height: 38,
             width: 38,
           ),
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
         ),
       ],
       title: Text(

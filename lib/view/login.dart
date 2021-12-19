@@ -4,6 +4,7 @@ import 'package:o_spawn_cup/CustomsWidgets/custom_divider.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
+import 'package:o_spawn_cup/model/authentification.dart';
 
 import 'login_register.dart';
 
@@ -15,82 +16,97 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  late Authentification authentification;
+  late TextEditingController emailText;
+  late TextEditingController passwordText;
 
   hideKeyBoard() {
     FocusScope.of(context).requestFocus(FocusNode());
   }
+
+  @override
+  void initState() {
+    authentification = Authentification();
+    emailText = TextEditingController();
+    passwordText = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-        backgroundColor: colorBackgroundTheme,
-        body: GestureDetector(
-          onTap: () {
-            hideKeyBoard();
-          },
-          child: SingleChildScrollView(
-          child:  Column(
-              children: [
-                Container(
-                  color: colorTheme,
-                  width: screenSize.width,
-                  height: screenSize.height * 0.48,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: screenSize.height * 0.015),
-                        child: IconButton(
-                          onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => LoginRegister()),
-                            );
-                          },
-                          icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
-                        ),
-                      ),
-                      Center(
-                            child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: screenSize.height * 0.062,bottom: screenSize.height * 0.044),
-                  child: Container(
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: colorBackgroundTheme,
+          body: GestureDetector(
+            onTap: () {
+              hideKeyBoard();
+            },
+            child: SingleChildScrollView(
+            child:  Column(
+                children: [
+                  Container(
+                    color: colorTheme,
                     width: screenSize.width,
-                    height: screenSize.height * 0.13,
+                    height: screenSize.height * 0.48,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
-                        CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                        Padding(
+                          padding: EdgeInsets.only(top: screenSize.height * 0.015),
+                          child: IconButton(
+                            onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginRegister()),
+                              );
+                            },
+                            icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
+                          ),
+                        ),
+                        Center(
+                              child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                        ),
                       ],
                     ),
                   ),
-                ),
-                CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION",onPressedMethod: (context){}),
-                Padding(
-                    padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
-                    child: CustomDivider(screenSize: screenSize),
-                ),
-                Container(
-                  width: screenSize.width,
-                  height: screenSize.height*0.125,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE"),
-                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK"),
-                    ],
+                  Padding(
+                    padding: EdgeInsets.only(top: screenSize.height * 0.062,bottom: screenSize.height * 0.044),
+                    child: Container(
+                      width: screenSize.width,
+                      height: screenSize.height * 0.13,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                          CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION",onPressedMethod: () => authentification.signUpWithMail(emailText.text, passwordText.text)),
+                  Padding(
+                      padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
+                      child: CustomDivider(screenSize: screenSize),
+                  ),
+                  Container(
+                    width: screenSize.width,
+                    height: screenSize.height*0.125,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE"),
+                        CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }
 
