@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+  String title;
+  CustomAppBar({
     Key? key,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -33,9 +35,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {},
         ),
       ],
-      title: const Text(
-        "JEUX",
-        style: TextStyle(
+      title: Text(
+        title,
+        style: const TextStyle(
           color: Colors.black,
           fontFamily: 'o_spawn_cup_font',
           fontSize: 29,

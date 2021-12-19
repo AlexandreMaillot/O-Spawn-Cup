@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
         drawer: CustomDrawer(screenSize: screenSize),
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(title: "JEUX"),
         body: Column(
           children: [
             // Container(
@@ -104,7 +104,6 @@ class GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(top: 0),
       child: InkWell(
