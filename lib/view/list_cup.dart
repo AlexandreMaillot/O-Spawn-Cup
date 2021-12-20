@@ -7,6 +7,9 @@ import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/model/card_cup.dart';
 import 'package:o_spawn_cup/model/game_name.dart';
+import 'package:o_spawn_cup/view/test.dart';
+
+import 'floating_action_bottom_sheet.dart';
 
 class ListCup extends StatefulWidget {
   GameName gameName;
@@ -18,7 +21,7 @@ class ListCup extends StatefulWidget {
 }
 
 class _ListCupState extends State<ListCup> {
-  final GlobalKey<_FloatingActionBottomSheetState> _keyFloating = GlobalKey<_FloatingActionBottomSheetState>();
+
   @override
   void initState() {
     super.initState();
@@ -26,11 +29,10 @@ class _ListCupState extends State<ListCup> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<State<FloatingActionBottomSheet>> keyFloating = GlobalKey<State<FloatingActionBottomSheet>>();
     Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      // key: _globalKey,
-
       drawer: CustomDrawer(screenSize: screenSize),
       appBar: CustomAppBar(
         title: "TOURNOIS",
@@ -38,9 +40,10 @@ class _ListCupState extends State<ListCup> {
       bottomNavigationBar: _buildBottomAppBar(context),
       body: GestureDetector(
         onTap: () {
-          if(_keyFloating.currentState!.bottomSheetIsShow){
-            Navigator.of(context).pop();
+          print(keyFloating.currentState!.widget.bottomSheetIsShow);
+          if(keyFloating.currentState!.widget.bottomSheetIsShow){
 
+            Navigator.of(context).pop();
           }
 
         },
@@ -56,7 +59,7 @@ class _ListCupState extends State<ListCup> {
         ),
       ),
       floatingActionButton: FloatingActionBottomSheet(
-        key: _keyFloating,
+        key: keyFloating,
         screenSize: screenSize,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -78,130 +81,5 @@ class _ListCupState extends State<ListCup> {
   }
 }
 
-class FloatingActionBottomSheet extends StatefulWidget {
-
-  FloatingActionBottomSheet({
-    Key? key,
-    required this.screenSize,
-  }) : super(key: key);
-
-  final Size screenSize;
-
-
-  @override
-  State<FloatingActionBottomSheet> createState() =>
-      _FloatingActionBottomSheetState();
-}
-
-class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
-  PersistentBottomSheetController<dynamic>? bottomSheetController;
-  bool bottomSheetIsShow = false;
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      elevation: 0,
-      backgroundColor: colorTheme,
-      child: SvgPicture.asset(
-        "assets/images/parameterIcon.svg",
-        height: 30,
-        width: 30,
-      ),
-      onPressed: () {
-        bottomSheetIsShow = true;
-        bottomSheetController = buildShowBottomSheet(context);
-        bottomSheetController!.closed.then((value){
-          setState(() {
-            bottomSheetIsShow = false;
-          });
-
-        } );
-      },
-    );
-  }
-
-  PersistentBottomSheetController<dynamic> buildShowBottomSheet(BuildContext context) {
-    TournamentState? tournamentState;
-    Size screenSize = MediaQuery.of(context).size;
-    return showBottomSheet(
-      context: context,
-      builder: (context) => Container(
-        padding: const EdgeInsets.only(top: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomTextField(
-                textAlign: TextAlign.left,
-                screenSize: widget.screenSize,
-                text: "E-MAIL",
-                buttonColor: Colors.white,
-                borderColor: Colors.white),
-            CustomTextField(
-                textAlign: TextAlign.left,
-                screenSize: widget.screenSize,
-                text: "E-MAIL",
-                buttonColor: Colors.white,
-                borderColor: Colors.white),
-            CustomTextField(
-                textAlign: TextAlign.left,
-                screenSize: widget.screenSize,
-                text: "NOM DU TOURNOIS",
-                buttonColor: Colors.white,
-                borderColor: Colors.white),
-            CustomTextField(
-                textAlign: TextAlign.left,
-                screenSize: widget.screenSize,
-                text: "E-MAIL",
-                buttonColor: Colors.white,
-                borderColor: Colors.white),
-            Container(
-              width: screenSize.width * 0.87,
-              height: screenSize.height * 0.06,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(31),
-              ),
-              child: DropdownButton<TournamentState>(
-                  isExpanded: true,
-                  // alignment: AlignmentDirectional.center,
-                  hint: Center(
-                    child: Text(
-                      "ETAT",
-                      style: TextStyle(
-                        color: Color(0xff707070).withOpacity(0.43),
-                        fontFamily: 'o_spawn_cup_font',
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                  dropdownColor: Colors.white,
-                  icon: SvgPicture.asset(
-                    "assets/images/downArrow.svg",
-                    height: 10,
-                    width: 15,
-                  ),
-                  value: tournamentState,
-                  underline: SizedBox(),
-                  onChanged: (TournamentState? state) {
-                    setState(() {
-                      print(state);
-                      tournamentState = state;
-                    });
-                  },
-                  items: TournamentState.values.map((TournamentState tournamentState) {
-                    return DropdownMenuItem<TournamentState>(
-                        value: tournamentState,
-                        child: Text(tournamentState.toString()));
-                  }).toList()),
-            )
-          ],
-        ),
-        height: widget.screenSize.height * 0.4,
-        width: widget.screenSize.width,
-        color: colorTheme,
-      ),
-    );
-  }
-}
 
 

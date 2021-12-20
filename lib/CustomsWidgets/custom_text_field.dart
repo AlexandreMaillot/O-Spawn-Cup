@@ -40,7 +40,7 @@ class CustomTextField extends StatelessWidget{
           ),
           hintText: text,
           hintStyle: TextStyle(
-            color: Color(0xff707070).withOpacity(0.43),
+            color: const Color(0xff707070).withOpacity(0.43),
             fontFamily: 'o_spawn_cup_font',
             fontSize: 14,
           ),
