@@ -4,8 +4,7 @@ import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_divider.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/model/Member/member.dart';
-import 'package:o_spawn_cup/model/Member/member_auth_controller.dart';
+
 
 import 'login_register.dart';
 
@@ -74,7 +73,7 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
-                CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: () => print("okdd")),
+                CustomButtonTheme(screenSize: screenSize,colorText: colorTextTheme,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: () => print("okdd")),
                 Padding(
                   padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                   child: CustomDivider(screenSize: screenSize),

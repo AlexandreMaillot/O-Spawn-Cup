@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../constant.dart';
 
 class CustomButtonTheme extends StatelessWidget {
   Color colorButton;
+  Color colorText;
   String text;
   VoidCallback onPressedMethod;
   final Size screenSize;
@@ -11,6 +11,7 @@ class CustomButtonTheme extends StatelessWidget {
   CustomButtonTheme({
     Key? key,
     required this.colorButton,
+    required this.colorText,
     required this.screenSize,
     required this.text,
     required this.onPressedMethod,
@@ -34,8 +35,8 @@ class CustomButtonTheme extends StatelessWidget {
           // ),
         ),
         child: Text(text,
-            style: const TextStyle(
-              color: Color(0xff1B2522),
+            style: TextStyle(
+              color: colorText,
             )),
       ),
     );

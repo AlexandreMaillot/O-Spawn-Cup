@@ -86,7 +86,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "CONNEXION",onPressedMethod: () => authentification.signUpWithMail(emailText.text, passwordText.text)),
+                  CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,colorText: colorTextTheme,text: "CONNEXION",onPressedMethod: () => authentification.signUpWithMail(emailText.text, passwordText.text)),
                   Padding(
                       padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                       child: CustomDivider(screenSize: screenSize),

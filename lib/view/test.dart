@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
@@ -46,7 +45,6 @@ class _DropdownTournamentFilterState extends State<DropdownTournamentFilter> {
                 setState(() {
                   dropdownValue = newValue!;
                 });
-
               },
               items: TournamentState.values.map<DropdownMenuItem<TournamentState>>((TournamentState value) {
                 return DropdownMenuItem<TournamentState>(

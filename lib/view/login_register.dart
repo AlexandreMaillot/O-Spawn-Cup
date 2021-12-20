@@ -18,8 +18,7 @@ class _LoginRegisterState extends State<LoginRegister> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
           backgroundColor: colorBackgroundTheme,
           body: Column(
             children: [
@@ -39,8 +38,8 @@ class _LoginRegisterState extends State<LoginRegister> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomButtonTheme(screenSize: screenSize,colorButton: Colors.white,text: "CONNEXION",onPressedMethod: () => goToLogin(context)),
-                      CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,text: "INSCRIPTION",onPressedMethod: () => goToRegister(context)),
+                      CustomButtonTheme(screenSize: screenSize,colorText: colorTextTheme,colorButton: Colors.white,text: "CONNEXION",onPressedMethod: () => goToLogin(context)),
+                      CustomButtonTheme(screenSize: screenSize,colorText: colorTextTheme,colorButton: colorTheme,text: "INSCRIPTION",onPressedMethod: () => goToRegister(context)),
                     ],
                   ),
                 ),
@@ -62,8 +61,7 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
             ],
           ),
-      ),
-    );
+      );
   }
 }
 

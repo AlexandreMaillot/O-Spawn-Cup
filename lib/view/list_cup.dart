@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_app_bar.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_drawer.dart';
-import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/model/card_cup.dart';
 import 'package:o_spawn_cup/model/game_name.dart';
-import 'package:o_spawn_cup/view/test.dart';
 
 import 'floating_action_bottom_sheet.dart';
 
@@ -40,11 +36,11 @@ class _ListCupState extends State<ListCup> {
       bottomNavigationBar: _buildBottomAppBar(context),
       body: GestureDetector(
         onTap: () {
-          print(keyFloating.currentState!.widget.bottomSheetIsShow);
-          if(keyFloating.currentState!.widget.bottomSheetIsShow){
-
-            Navigator.of(context).pop();
-          }
+          // print("aa");
+          // print(keyFloating.currentState!.widget.bottomSheetIsShow);
+          // if(keyFloating.currentState!.widget.bottomSheetIsShow){
+          //   Navigator.of(context).pop();
+          // }
 
         },
         child: Container(
@@ -60,7 +56,6 @@ class _ListCupState extends State<ListCup> {
       ),
       floatingActionButton: FloatingActionBottomSheet(
         key: keyFloating,
-        screenSize: screenSize,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

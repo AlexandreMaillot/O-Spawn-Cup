@@ -57,18 +57,21 @@ class CustomDrawer extends StatelessWidget {
                     child: Column(
                       children: [
                         CustomButtonTheme(
+                          colorText: colorTextTheme,
                           screenSize: screenSize,
                           colorButton: Colors.white,
                           text: "ACCUEIL",
                           onPressedMethod: () => print("home"),
                         ),
                         CustomButtonTheme(
+                          colorText: colorTextTheme,
                           screenSize: screenSize,
                           colorButton: Colors.white,
                           text: "PROFIL",
                           onPressedMethod: () => print("profil"),
                         ),
                         CustomButtonTheme(
+                          colorText: colorTextTheme,
                           screenSize: screenSize,
                           colorButton: Colors.white,
                           text: "RESULTATS DES TOURNOIS",
