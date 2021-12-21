@@ -67,14 +67,8 @@ class _LoginRegisterState extends State<LoginRegister> {
 
 
 void goToLogin(context){
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Login()),
-  );
+  Navigator.pushNamed(context, '/login');
 }
 void goToRegister(context){
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Register()),
-  );
+  Navigator.pushNamed(context, '/register');
 }

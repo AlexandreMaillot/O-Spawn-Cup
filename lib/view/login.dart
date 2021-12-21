@@ -58,10 +58,7 @@ class _LoginState extends State<Login> {
                           padding: EdgeInsets.only(top: screenSize.height * 0.014),
                           child: IconButton(
                             onPressed: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => LoginRegister()),
-                              );
+                              Navigator.pushNamed(context, '/');
                             },
                             icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
                           ),

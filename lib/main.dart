@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:o_spawn_cup/view/home.dart';
+import 'package:o_spawn_cup/view/login.dart';
 import 'package:o_spawn_cup/view/login_register.dart';
 import 'package:o_spawn_cup/view/test.dart';
 
 import 'constant.dart';
 import 'firebase_options.dart';
+import 'view/list_cup.dart';
+import 'view/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +33,14 @@ class MyApp extends StatelessWidget {
         backgroundColor: colorBackgroundTheme,
         primarySwatch: Colors.blue,
       ),
-      home: LoginRegister(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginRegister(),
+        '/login': (context) => Login(),
+        '/register': (context) => Register(),
+        '/home': (context) => Home(),
+        //'/list_cup': (context) => ListCup(gameName: ),
+      },
     );
   }
 }
