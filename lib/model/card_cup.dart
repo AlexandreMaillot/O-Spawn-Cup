@@ -9,14 +9,19 @@ class CardCup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Center(
-        child: Text(
-          'Item ${index.toString()}',
-          style: Theme.of(context).textTheme.headline5,
+    return InkWell(
+      onTap: () {
+
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Center(
+          child: Text(
+            'Item ${index.toString()}',
+            style: Theme.of(context).textTheme.headline5,
+          ),
         ),
       ),
     );

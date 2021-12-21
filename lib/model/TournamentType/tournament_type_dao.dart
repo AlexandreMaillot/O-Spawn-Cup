@@ -6,7 +6,7 @@ import '../../dao.dart';
 
 
 class TournamentTypeDao implements Dao {
-  TournamentType tournamentType;
+  TournamentType? tournamentType;
 
   TournamentTypeDao(this.tournamentType){
     collectionReference = getCollection();
@@ -17,8 +17,9 @@ class TournamentTypeDao implements Dao {
 
   @override
   create() {
+
     return collectionReference
-        .add(tournamentType.toJson())
+        .add(tournamentType!.toJson())
         .then((value) => print("TournamentType Added"))
         .catchError((error) => print("Failed to add TournamentType: $error"));
   }
@@ -26,7 +27,7 @@ class TournamentTypeDao implements Dao {
   @override
   delete() {
     return collectionReference
-        .doc(tournamentType.uid)
+        .doc(tournamentType!.uid)
         .delete()
         .then((value) => print("TournamentType deleted"))
         .catchError((error) => print("Failed to delete TournamentType: $error"));
@@ -39,14 +40,14 @@ class TournamentTypeDao implements Dao {
 
   @override
   Stream select() {
-    return FirebaseFirestore.instance.collection('TournamentType').doc(tournamentType.uid).snapshots();
+    return FirebaseFirestore.instance.collection('TournamentType').doc(tournamentType!.uid).snapshots();
   }
 
   @override
   update() {
     return collectionReference
-        .doc(tournamentType.uid)
-        .update(tournamentType.toJson())
+        .doc(tournamentType!.uid)
+        .update(tournamentType!.toJson())
         .then((value) => print("TournamentType updated"))
         .catchError((error) => print("Failed to update TournamentType: $error"));
   }

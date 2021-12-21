@@ -6,6 +6,7 @@ import 'package:o_spawn_cup/model/game_name.dart';
 Color colorTheme = const Color(0xffFFD739);
 Color colorBackgroundTheme = const Color(0xff191919);
 Color colorTextTheme = const Color(0xff201607);
+Color colorHintTextTheme = const Color(0xff707070);
 
 
 List<CardGame> listCardGame = [

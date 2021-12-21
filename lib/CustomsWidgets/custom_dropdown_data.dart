@@ -4,13 +4,17 @@ import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
 
 import '../constant.dart';
 
-class DropdownTournamentFilter extends StatefulWidget {
+class CustomDropdownData extends StatefulWidget {
+  List<Object>? listObject;
+  String hintText;
+  CustomDropdownData({required this.listObject,required this.hintText});
+
   @override
-  _DropdownTournamentFilterState createState() => _DropdownTournamentFilterState();
+  _CustomDropdownDataState createState() => _CustomDropdownDataState();
 }
 
-class _DropdownTournamentFilterState extends State<DropdownTournamentFilter> {
-  TournamentState? dropdownValue;
+class _CustomDropdownDataState extends State<CustomDropdownData> {
+  Object? dropdownValue;
 
 
   @override
@@ -25,11 +29,11 @@ class _DropdownTournamentFilterState extends State<DropdownTournamentFilter> {
             borderRadius: BorderRadius.circular(31),
           ),
           child: Center(
-            child: DropdownButton<TournamentState>(
+            child: DropdownButton(
               value: dropdownValue,
               isExpanded: true,
-              hint: Text("ETAT",style: TextStyle(
-                color: Color(0xff707070).withOpacity(0.43),
+              hint: Text(widget.hintText,style: TextStyle(
+                color: colorHintTextTheme.withOpacity(0.43),
                 fontFamily: 'o_spawn_cup_font',
                 fontSize: 14,
               ),),
@@ -40,14 +44,14 @@ class _DropdownTournamentFilterState extends State<DropdownTournamentFilter> {
               ),
               elevation: 16,
               style: TextStyle(color: colorBackgroundTheme),
-              underline: SizedBox(),
-              onChanged: (TournamentState? newValue) {
+              underline: const SizedBox(),
+              onChanged: (newValue) {
                 setState(() {
                   dropdownValue = newValue!;
                 });
               },
-              items: TournamentState.values.map<DropdownMenuItem<TournamentState>>((TournamentState value) {
-                return DropdownMenuItem<TournamentState>(
+              items: widget.listObject!.map((value) {
+                return DropdownMenuItem<Object>(
                   value: value,
                   child: Text(value.toString()),
                 );

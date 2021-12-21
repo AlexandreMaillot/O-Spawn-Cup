@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_app_bar.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_drawer.dart';
+import 'package:o_spawn_cup/model/TournamentType/tounament_type_controller.dart';
+import 'package:o_spawn_cup/model/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/view/list_cup.dart';
 
 class Home extends StatefulWidget {
