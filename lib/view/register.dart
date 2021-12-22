@@ -6,6 +6,8 @@ import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
 
 
+import '../constant.dart';
+import '../constant.dart';
 import 'login_register.dart';
 
 class Register extends StatefulWidget {
@@ -36,17 +38,14 @@ class _RegisterState extends State<Register> {
                 Container(
                   color: colorTheme,
                   width: screenSize.width,
-                  height: screenSize.height * 0.37,
+                  height: screenSize.height * 0.31,
                   child: Stack(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: screenSize.height * 0.015),
+                        padding: EdgeInsets.only(top: screenSize.height * 0.014),
                         child: IconButton(
                           onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => LoginRegister()),
-                            );
+                            Navigator.pushNamed(context, '/');
                           },
                           icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
                         ),
@@ -58,7 +57,7 @@ class _RegisterState extends State<Register> {
                   )
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: screenSize.height * 0.028, bottom: screenSize.height * 0.044),
+                  padding: EdgeInsets.only(top: screenSize.height * 0.022, bottom: screenSize.height * 0.044),
                   child: Container(
                     width: screenSize.width,
                     height: screenSize.height * 0.27,

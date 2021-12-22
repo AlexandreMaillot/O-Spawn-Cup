@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_button_connect_with.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_divider.dart';
-import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/view/register.dart';
 
+import '../constant.dart';
 import 'login.dart';
 
 class LoginRegister extends StatefulWidget {
@@ -67,14 +67,8 @@ class _LoginRegisterState extends State<LoginRegister> {
 
 
 void goToLogin(context){
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Login()),
-  );
+  Navigator.pushNamed(context, '/login');
 }
 void goToRegister(context){
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Register()),
-  );
+  Navigator.pushNamed(context, '/register');
 }

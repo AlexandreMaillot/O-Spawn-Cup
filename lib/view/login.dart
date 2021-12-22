@@ -49,19 +49,16 @@ class _LoginState extends State<Login> {
                   Container(
                     color: colorTheme,
                     width: screenSize.width,
-                    height: screenSize.height * 0.48,
+                    height: screenSize.height * 0.46,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(top: screenSize.height * 0.015),
+                          padding: EdgeInsets.only(top: screenSize.height * 0.014),
                           child: IconButton(
                             onPressed: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => LoginRegister()),
-                              );
+                              Navigator.pushNamed(context, '/');
                             },
                             icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
                           ),
@@ -73,7 +70,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: screenSize.height * 0.062,bottom: screenSize.height * 0.044),
+                    padding: EdgeInsets.only(top: screenSize.height * 0.031,bottom: screenSize.height * 0.044),
                     child: Container(
                       width: screenSize.width,
                       height: screenSize.height * 0.13,
