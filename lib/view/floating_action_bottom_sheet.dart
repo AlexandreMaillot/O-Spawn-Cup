@@ -28,12 +28,8 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   late Future<List<Object?>> collectionTournament;
   List<TournamentType> listTournamentType = [];
   List<String> listTournamentTypeName = [];
-
   @override
   void initState() {
-
-    tournamentTypeController = TournamentTypeController(null);
-    listTournamentType = tournamentTypeController.getTournamentType();
     // listTournamentType.forEach((element) {
     //   print(element.name);
     //   listTournamentTypeName.add(element.name);

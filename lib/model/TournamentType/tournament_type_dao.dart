@@ -18,10 +18,10 @@ class TournamentTypeDao implements Dao {
   @override
   create() {
 
-    return collectionReference
-        .add(tournamentType!.toJson())
-        .then((value) => print("TournamentType Added"))
-        .catchError((error) => print("Failed to add TournamentType: $error"));
+    // return collectionReference
+    //     .add(tournamentType!.toJson())
+    //     .then((value) => print("TournamentType Added"))
+    //     .catchError((error) => print("Failed to add TournamentType: $error"));
   }
 
   @override
@@ -45,10 +45,10 @@ class TournamentTypeDao implements Dao {
 
   @override
   update() {
-    return collectionReference
-        .doc(tournamentType!.uid)
-        .update(tournamentType!.toJson())
-        .then((value) => print("TournamentType updated"))
-        .catchError((error) => print("Failed to update TournamentType: $error"));
+    // return collectionReference
+    //     .doc(tournamentType!.uid)
+    //     .update(tournamentType!.toJson())
+    //     .then((value) => print("TournamentType updated"))
+    //     .catchError((error) => print("Failed to update TournamentType: $error"));
   }
 }

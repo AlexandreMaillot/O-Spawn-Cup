@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore_odm/annotation.dart';
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 import '../game_name.dart';
-
-
+part 'game_map.g.dart';
+@JsonSerializable()
 class GameMap {
   String? uid;
   GameName gameName;
@@ -8,20 +13,6 @@ class GameMap {
   bool isDisabled = false;
 
   GameMap({required this.gameName,required this.name});
-
-  GameMap.fromJson(Map<String, Object?> json) : this(
-    gameName: json["gameName"]! as GameName,
-    name: json["name"]! as String,
-  );
-
-
-  Map<String, Object?> toJson() {
-    return {
-      "uid": uid,
-      "name": name,
-      "gameName": gameName.index,
-      "isDisabled": isDisabled,
-    };
-  }
-
 }
+@Collection<GameMap>('GameMaps')
+final gameMapsRef = GameMapCollectionReference();

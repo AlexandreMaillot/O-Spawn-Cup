@@ -14,11 +14,11 @@ class MemberDao implements Dao{
 
   @override
   create() {
-    return collectionReference
-        .doc(member.uid)
-        .set(member.toJson())
-        .then((value) => print("Member Added"))
-        .catchError((error) => print("Failed to add Member: $error"));
+    // return collectionReference
+    //     .doc(member.uid)
+    //     .set(member.toJson())
+    //     .then((value) => print("Member Added"))
+    //     .catchError((error) => print("Failed to add Member: $error"));
   }
 
   @override
@@ -37,11 +37,11 @@ class MemberDao implements Dao{
 
   @override
   update() {
-    return collectionReference
-        .doc(member.uid)
-        .update(member.toJson())
-        .then((value) => print("Member updated"))
-        .catchError((error) => print("Failed to update Member: $error"));
+    // return collectionReference
+    //     .doc(member.uid)
+    //     .update(member.toJson())
+    //     .then((value) => print("Member updated"))
+    //     .catchError((error) => print("Failed to update Member: $error"));
   }
 
   @override

@@ -1,21 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore_odm/annotation.dart';
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'member.g.dart';
+@JsonSerializable()
 class Member {
   String pseudo;
   late String uid;
 
   Member({required this.pseudo});
-
-
-  Member.fromJson(Map<String, Object?> json) : this(
-    pseudo: json["pseudo"]! as String,
-  );
-
-
-  Map<String, Object?> toJson() {
-    return {
-      "pseudo": pseudo,
-      "uid": uid,
-    };
-  }
-
-
 }
+@Collection<Member>('members')
+final membersRef = MemberCollectionReference();

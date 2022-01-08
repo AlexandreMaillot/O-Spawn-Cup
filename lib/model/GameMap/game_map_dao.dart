@@ -13,10 +13,10 @@ class GameMapDao implements Dao {
   }
   @override
   create() {
-    return collectionReference
-        .add(gameMap.toJson())
-        .then((value) => print("GameMap Added"))
-        .catchError((error) => print("Failed to add GameMap: $error"));
+    // return collectionReference
+    //     .add(gameMap.toJson())
+    //     .then((value) => print("GameMap Added"))
+    //     .catchError((error) => print("Failed to add GameMap: $error"));
   }
 
   @override
@@ -40,11 +40,11 @@ class GameMapDao implements Dao {
 
   @override
   update() {
-    return collectionReference
-        .doc(gameMap.uid)
-        .update(gameMap.toJson())
-        .then((value) => print("GameMap updated"))
-        .catchError((error) => print("Failed to update GameMap: $error"));
+    // return collectionReference
+    //     .doc(gameMap.uid)
+    //     .update(gameMap.toJson())
+    //     .then((value) => print("GameMap updated"))
+    //     .catchError((error) => print("Failed to update GameMap: $error"));
   }
 
 }

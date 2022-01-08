@@ -1,3 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore_odm/annotation.dart';
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'tournament_type.g.dart';
+@JsonSerializable()
 class TournamentType {
   String? uid;
   String name;
@@ -5,17 +12,6 @@ class TournamentType {
 
   TournamentType({required this.name,required this.capacityTeam});
 
-  TournamentType.fromJson(Map<String, Object?> json) : this(
-    name: json["name"]! as String,
-    capacityTeam: json["capacityTeam"]! as int,
-  );
-
-
-  Map<String, Object?> toJson() {
-    return {
-      "uid": uid,
-      "name": name,
-      "capacityTeam": capacityTeam,
-    };
-  }
 }
+@Collection<TournamentType>('TournamentType')
+final tournamentTypesRef = TournamentTypeCollectionReference();
