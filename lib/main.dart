@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:o_spawn_cup/view/home.dart';
 import 'package:o_spawn_cup/view/login.dart';
 import 'package:o_spawn_cup/view/login_register.dart';
-import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_tournament_type.dart';
 
 import 'constant.dart';
 import 'firebase_options.dart';

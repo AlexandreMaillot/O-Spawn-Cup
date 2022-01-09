@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_disponibilite.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_tournament_type.dart';
 import 'package:o_spawn_cup/model/TournamentType/tounament_type_controller.dart';
 import 'package:o_spawn_cup/model/TournamentType/tournament_type.dart';
 
@@ -54,9 +55,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
       ),
       onPressed: () {
         setState(() {
-          print("ggg");
           widget.bottomSheetIsShow = true;
-          print(widget.bottomSheetIsShow);
         });
 
         bottomSheetController = showModalBottomSheet(
@@ -108,8 +107,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                         ),
                       ),
 
-                      CustomDropdown(
-                        listObject: listTournamentType,
+                      TournamentTypeDropdown(
                         hintText: "TYPE DE TOURNOIS",
                       ),
                       CustomTextField(
@@ -118,18 +116,13 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                           text: "NOM DU TOURNOIS",
                           buttonColor: Colors.white,
                           borderColor: Colors.white),
-                      CustomDropdown(
-                        listObject: Disponibilite.values,
-                        hintText: "DISPONIBILITE",
-                      ),
-                      CustomDropdown(
-                        listObject: TournamentState.values,
+                      DisponibiliteDropdown(
                         hintText: "ETAT",
                       ),
                       SearchButton(screenSize: screenSize),
                     ],
                   ),
-                  height: screenSize.height * 0.45,
+                  height: screenSize.height * 0.4,
                   width: screenSize.width,
                 ),
               ),

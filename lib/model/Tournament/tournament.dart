@@ -15,7 +15,7 @@ class Tournament {
  int capacity;
  String cashPrize;
  int roundNumber;
- TournamentState state = TournamentState.enAttente;
+ TournamentState state = TournamentState.inscriptionFermer;
  String? image;
  List<RangPointTournament> listRangPointTournament;
  int killPointTournament;
