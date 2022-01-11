@@ -1,13 +1,12 @@
 import 'package:o_spawn_cup/model/Round/round.dart';
-import 'package:o_spawn_cup/model/Round/round_dao.dart';
+
 import 'package:o_spawn_cup/model/round_state.dart';
 
 class RoundFirebaseController {
-  late RoundDao roundDao;
   Round round;
 
   RoundFirebaseController(this.round){
-    roundDao = RoundDao(round: round);
+
   }
 
   createRound(){
@@ -15,6 +14,6 @@ class RoundFirebaseController {
   }
   updateStateRound(RoundState rs){
     round.roundState = rs;
-    roundDao.update();
+    // roundDao.update();
   }
 }

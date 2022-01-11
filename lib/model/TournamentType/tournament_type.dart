@@ -6,12 +6,11 @@ import 'package:json_annotation/json_annotation.dart';
 part 'tournament_type.g.dart';
 @JsonSerializable()
 class TournamentType {
-  String? uid;
   String name;
   int capacityTeam;
 
   TournamentType({required this.name,required this.capacityTeam});
-
+  factory TournamentType.fromJson(Map<String, dynamic> json) => _$TournamentTypeFromJson(json);
 }
 @Collection<TournamentType>('TournamentType')
 final tournamentTypesRef = TournamentTypeCollectionReference();

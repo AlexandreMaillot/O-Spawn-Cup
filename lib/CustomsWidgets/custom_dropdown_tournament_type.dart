@@ -9,6 +9,7 @@ import '../constant.dart';
 
 class TournamentTypeDropdown extends StatefulWidget {
   String hintText;
+  Object? dropdownValue;
   TournamentTypeDropdown({required this.hintText});
 
   @override
@@ -16,13 +17,9 @@ class TournamentTypeDropdown extends StatefulWidget {
 }
 
 class _TournamentTypeDropdownState extends State<TournamentTypeDropdown> {
-  Object? dropdownValue;
 
   @override
   void initState() {
-    TournamentType tournamentType =
-        TournamentType(name: "test", capacityTeam: 999);
-    // tournamentTypesRef.add(tournamentType);
     super.initState();
   }
 
@@ -37,22 +34,21 @@ class _TournamentTypeDropdownState extends State<TournamentTypeDropdown> {
           if (snapshot.hasError) {
             return BackgroundAroundField(
               screenSize: screenSize,
-              child: Center(child: const Text("Erreur de chargement")),
+              child: const Center(child: Text("Erreur de chargement")),
             );
           }
           if (!snapshot.hasData) {
             return BackgroundAroundField(
                 screenSize: screenSize,
-                child: Center(child: const Text("Chargement...")));
+                child: const Center(child: Text("Chargement...")));
           }
 
-          // Access the QuerySnapshot
           TournamentTypeQuerySnapshot querySnapshot = snapshot.requireData;
           return BackgroundAroundField(
             screenSize: screenSize,
             child: Center(
               child: DropdownButton(
-                value: dropdownValue,
+                value: widget.dropdownValue,
                 isExpanded: true,
                 hint: Text(
                   widget.hintText,
@@ -62,7 +58,7 @@ class _TournamentTypeDropdownState extends State<TournamentTypeDropdown> {
                     fontSize: 14,
                   ),
                 ),
-                icon: dropdownValue == null
+                icon: widget.dropdownValue == null
                     ? IconButton(
                     onPressed: () {},
                     icon: SvgPicture.asset(
@@ -73,19 +69,19 @@ class _TournamentTypeDropdownState extends State<TournamentTypeDropdown> {
                     : IconButton(
                     icon: const Icon(Icons.clear),
                     onPressed: () => setState(() {
-                      dropdownValue = null;
+                      widget.dropdownValue = null;
                     })),
                 elevation: 16,
                 style: TextStyle(color: colorBackgroundTheme),
                 underline: const SizedBox(),
                 onChanged: (newValue) {
                   setState(() {
-                    dropdownValue = newValue!;
+                    widget.dropdownValue = newValue!;
                   });
                 },
                 items: querySnapshot.docs.map((value) {
                   return DropdownMenuItem<Object>(
-                    value: value.reference,
+                    value: value.id,
                     child: Text(value.data.name),
                   );
                 }).toList(),

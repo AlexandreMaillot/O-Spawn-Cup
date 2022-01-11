@@ -52,7 +52,7 @@ class CustomDrawer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
                     height: screenSize.height * 0.23,
                     child: Column(
                       children: [
@@ -81,7 +81,7 @@ class CustomDrawer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: screenSize.width,
                     child: TextButton(
                       child: Row(

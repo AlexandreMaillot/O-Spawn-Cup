@@ -7,12 +7,12 @@ import '../game_name.dart';
 part 'game_map.g.dart';
 @JsonSerializable()
 class GameMap {
-  String? uid;
   GameName gameName;
   String name;
   bool isDisabled = false;
 
   GameMap({required this.gameName,required this.name});
+  factory GameMap.fromJson(Map<String, dynamic> json) => _$GameMapFromJson(json);
 }
 @Collection<GameMap>('GameMaps')
 final gameMapsRef = GameMapCollectionReference();

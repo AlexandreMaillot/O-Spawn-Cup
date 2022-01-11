@@ -30,7 +30,7 @@ abstract class TournamentTypeCollectionReference
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return _$TournamentTypeFromJson(snapshot.data()!);
+    return TournamentType.fromJson(snapshot.data()!);
   }
 
   static Map<String, Object?> toFirestore(
@@ -119,7 +119,6 @@ abstract class TournamentTypeDocumentReference
   Future<void> delete();
 
   Future<void> update({
-    String? uid,
     String name,
     int capacityTeam,
   });
@@ -166,12 +165,10 @@ class _$TournamentTypeDocumentReference
   }
 
   Future<void> update({
-    Object? uid = _sentinel,
     Object? name = _sentinel,
     Object? capacityTeam = _sentinel,
   }) async {
     final json = {
-      if (uid != _sentinel) "uid": uid as String?,
       if (name != _sentinel) "name": name as String,
       if (capacityTeam != _sentinel) "capacityTeam": capacityTeam as int,
     };
@@ -223,17 +220,6 @@ abstract class TournamentTypeQuery
   @override
   TournamentTypeQuery limitToLast(int limit);
 
-  TournamentTypeQuery whereUid({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-  });
   TournamentTypeQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -255,18 +241,6 @@ abstract class TournamentTypeQuery
     bool? isNull,
     List<int>? whereIn,
     List<int>? whereNotIn,
-  });
-
-  TournamentTypeQuery orderByUid({
-    bool descending = false,
-    String? startAt,
-    String? startAfter,
-    String? endAt,
-    String? endBefore,
-    TournamentTypeDocumentSnapshot? startAtDocument,
-    TournamentTypeDocumentSnapshot? endAtDocument,
-    TournamentTypeDocumentSnapshot? endBeforeDocument,
-    TournamentTypeDocumentSnapshot? startAfterDocument,
   });
 
   TournamentTypeQuery orderByName({
@@ -355,34 +329,6 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
     );
   }
 
-  TournamentTypeQuery whereUid({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-  }) {
-    return _$TournamentTypeQuery(
-      reference.where(
-        'uid',
-        isEqualTo: isEqualTo,
-        isNotEqualTo: isNotEqualTo,
-        isLessThan: isLessThan,
-        isLessThanOrEqualTo: isLessThanOrEqualTo,
-        isGreaterThan: isGreaterThan,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isNull: isNull,
-        whereIn: whereIn,
-        whereNotIn: whereNotIn,
-      ),
-      _collection,
-    );
-  }
-
   TournamentTypeQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -437,48 +383,6 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
       ),
       _collection,
     );
-  }
-
-  TournamentTypeQuery orderByUid({
-    bool descending = false,
-    Object? startAt = _sentinel,
-    Object? startAfter = _sentinel,
-    Object? endAt = _sentinel,
-    Object? endBefore = _sentinel,
-    TournamentTypeDocumentSnapshot? startAtDocument,
-    TournamentTypeDocumentSnapshot? endAtDocument,
-    TournamentTypeDocumentSnapshot? endBeforeDocument,
-    TournamentTypeDocumentSnapshot? startAfterDocument,
-  }) {
-    var query = reference.orderBy('uid', descending: false);
-
-    if (startAtDocument != null) {
-      query = query.startAtDocument(startAtDocument.snapshot);
-    }
-    if (startAfterDocument != null) {
-      query = query.startAfterDocument(startAfterDocument.snapshot);
-    }
-    if (endAtDocument != null) {
-      query = query.endAtDocument(endAtDocument.snapshot);
-    }
-    if (endBeforeDocument != null) {
-      query = query.endBeforeDocument(endBeforeDocument.snapshot);
-    }
-
-    if (startAt != _sentinel) {
-      query = query.startAt([startAt]);
-    }
-    if (startAfter != _sentinel) {
-      query = query.startAfter([startAfter]);
-    }
-    if (endAt != _sentinel) {
-      query = query.endAt([endAt]);
-    }
-    if (endBefore != _sentinel) {
-      query = query.endBefore([endBefore]);
-    }
-
-    return _$TournamentTypeQuery(query, _collection);
   }
 
   TournamentTypeQuery orderByName({
@@ -618,11 +522,10 @@ TournamentType _$TournamentTypeFromJson(Map<String, dynamic> json) =>
     TournamentType(
       name: json['name'] as String,
       capacityTeam: json['capacityTeam'] as int,
-    )..uid = json['uid'] as String?;
+    );
 
 Map<String, dynamic> _$TournamentTypeToJson(TournamentType instance) =>
     <String, dynamic>{
-      'uid': instance.uid,
       'name': instance.name,
       'capacityTeam': instance.capacityTeam,
     };

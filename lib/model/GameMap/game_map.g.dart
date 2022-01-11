@@ -30,7 +30,7 @@ abstract class GameMapCollectionReference
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return _$GameMapFromJson(snapshot.data()!);
+    return GameMap.fromJson(snapshot.data()!);
   }
 
   static Map<String, Object?> toFirestore(
@@ -116,7 +116,6 @@ abstract class GameMapDocumentReference
   Future<void> delete();
 
   Future<void> update({
-    String? uid,
     String name,
     bool isDisabled,
   });
@@ -163,12 +162,10 @@ class _$GameMapDocumentReference
   }
 
   Future<void> update({
-    Object? uid = _sentinel,
     Object? name = _sentinel,
     Object? isDisabled = _sentinel,
   }) async {
     final json = {
-      if (uid != _sentinel) "uid": uid as String?,
       if (name != _sentinel) "name": name as String,
       if (isDisabled != _sentinel) "isDisabled": isDisabled as bool,
     };
@@ -219,17 +216,6 @@ abstract class GameMapQuery implements QueryReference<GameMapQuerySnapshot> {
   @override
   GameMapQuery limitToLast(int limit);
 
-  GameMapQuery whereUid({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-  });
   GameMapQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -251,18 +237,6 @@ abstract class GameMapQuery implements QueryReference<GameMapQuerySnapshot> {
     bool? isNull,
     List<bool>? whereIn,
     List<bool>? whereNotIn,
-  });
-
-  GameMapQuery orderByUid({
-    bool descending = false,
-    String? startAt,
-    String? startAfter,
-    String? endAt,
-    String? endBefore,
-    GameMapDocumentSnapshot? startAtDocument,
-    GameMapDocumentSnapshot? endAtDocument,
-    GameMapDocumentSnapshot? endBeforeDocument,
-    GameMapDocumentSnapshot? startAfterDocument,
   });
 
   GameMapQuery orderByName({
@@ -351,34 +325,6 @@ class _$GameMapQuery extends QueryReference<GameMapQuerySnapshot>
     );
   }
 
-  GameMapQuery whereUid({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
-  }) {
-    return _$GameMapQuery(
-      reference.where(
-        'uid',
-        isEqualTo: isEqualTo,
-        isNotEqualTo: isNotEqualTo,
-        isLessThan: isLessThan,
-        isLessThanOrEqualTo: isLessThanOrEqualTo,
-        isGreaterThan: isGreaterThan,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isNull: isNull,
-        whereIn: whereIn,
-        whereNotIn: whereNotIn,
-      ),
-      _collection,
-    );
-  }
-
   GameMapQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -433,48 +379,6 @@ class _$GameMapQuery extends QueryReference<GameMapQuerySnapshot>
       ),
       _collection,
     );
-  }
-
-  GameMapQuery orderByUid({
-    bool descending = false,
-    Object? startAt = _sentinel,
-    Object? startAfter = _sentinel,
-    Object? endAt = _sentinel,
-    Object? endBefore = _sentinel,
-    GameMapDocumentSnapshot? startAtDocument,
-    GameMapDocumentSnapshot? endAtDocument,
-    GameMapDocumentSnapshot? endBeforeDocument,
-    GameMapDocumentSnapshot? startAfterDocument,
-  }) {
-    var query = reference.orderBy('uid', descending: false);
-
-    if (startAtDocument != null) {
-      query = query.startAtDocument(startAtDocument.snapshot);
-    }
-    if (startAfterDocument != null) {
-      query = query.startAfterDocument(startAfterDocument.snapshot);
-    }
-    if (endAtDocument != null) {
-      query = query.endAtDocument(endAtDocument.snapshot);
-    }
-    if (endBeforeDocument != null) {
-      query = query.endBeforeDocument(endBeforeDocument.snapshot);
-    }
-
-    if (startAt != _sentinel) {
-      query = query.startAt([startAt]);
-    }
-    if (startAfter != _sentinel) {
-      query = query.startAfter([startAfter]);
-    }
-    if (endAt != _sentinel) {
-      query = query.endAt([endAt]);
-    }
-    if (endBefore != _sentinel) {
-      query = query.endBefore([endBefore]);
-    }
-
-    return _$GameMapQuery(query, _collection);
   }
 
   GameMapQuery orderByName({
@@ -612,12 +516,9 @@ class GameMapQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 GameMap _$GameMapFromJson(Map<String, dynamic> json) => GameMap(
       gameName: $enumDecode(_$GameNameEnumMap, json['gameName']),
       name: json['name'] as String,
-    )
-      ..uid = json['uid'] as String?
-      ..isDisabled = json['isDisabled'] as bool;
+    )..isDisabled = json['isDisabled'] as bool;
 
 Map<String, dynamic> _$GameMapToJson(GameMap instance) => <String, dynamic>{
-      'uid': instance.uid,
       'gameName': _$GameNameEnumMap[instance.gameName],
       'name': instance.name,
       'isDisabled': instance.isDisabled,

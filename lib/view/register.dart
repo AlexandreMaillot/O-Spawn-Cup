@@ -18,8 +18,21 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  late TextEditingController emailText;
+  late TextEditingController passwordText;
+  late TextEditingController passwordverifText;
+  late TextEditingController pseudoText;
   hideKeyBoard() {
     FocusScope.of(context).requestFocus(FocusNode());
+  }
+
+  @override
+  void initState() {
+    emailText = TextEditingController();
+    passwordText = TextEditingController();
+    passwordverifText = TextEditingController();
+    pseudoText = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -64,10 +77,10 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomTextField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
-                        CustomTextField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
-                        CustomTextField(screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
-                        CustomTextField(screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(controller: emailText,screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(controller: passwordText,screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(controller: passwordverifText,screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white),
+                        CustomTextField(controller: pseudoText,screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white),
                       ],
                     ),
                   ),

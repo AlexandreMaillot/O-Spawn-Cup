@@ -1,22 +1,20 @@
-import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_background_around_field.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/model/TournamentType/tournament_type.dart';
 
 import '../constant.dart';
 
-class DisponibiliteDropdown extends StatefulWidget {
+class TournamentStateDropdown extends StatefulWidget {
   String hintText;
-  DisponibiliteDropdown({required this.hintText});
+  Object? dropdownValue;
+  TournamentStateDropdown({Key? key, required this.hintText}) : super(key: key);
 
   @override
-  _DisponibiliteDropdownState createState() => _DisponibiliteDropdownState();
+  _TournamentStateDropdownState createState() => _TournamentStateDropdownState();
 }
 
-class _DisponibiliteDropdownState extends State<DisponibiliteDropdown> {
-  Object? dropdownValue;
+class _TournamentStateDropdownState extends State<TournamentStateDropdown> {
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class _DisponibiliteDropdownState extends State<DisponibiliteDropdown> {
       screenSize: screenSize,
       child: Center(
         child: DropdownButton(
-          value: dropdownValue,
+          value: widget.dropdownValue,
           isExpanded: true,
           hint: Text(
             widget.hintText,
@@ -35,7 +33,7 @@ class _DisponibiliteDropdownState extends State<DisponibiliteDropdown> {
               fontSize: 14,
             ),
           ),
-          icon: dropdownValue == null
+          icon: widget.dropdownValue == null
               ? IconButton(
                   onPressed: () {},
                   icon: SvgPicture.asset(
@@ -46,19 +44,19 @@ class _DisponibiliteDropdownState extends State<DisponibiliteDropdown> {
               : IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () => setState(() {
-                        dropdownValue = null;
+                    widget.dropdownValue = null;
                       })),
           elevation: 16,
           style: TextStyle(color: colorBackgroundTheme),
           underline: const SizedBox(),
           onChanged: (newValue) {
             setState(() {
-              dropdownValue = newValue!;
+              widget.dropdownValue = newValue!;
             });
           },
           items: TournamentState.values.map((value) {
             return DropdownMenuItem<Object>(
-              value: value,
+              value: value.toString(),
               child: Text(value.state),
             );
           }).toList(),

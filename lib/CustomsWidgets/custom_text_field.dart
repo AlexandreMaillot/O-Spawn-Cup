@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget{
   Color buttonColor;
   Color borderColor;
   TextAlign textAlign;
+  TextEditingController? controller;
 
   CustomTextField({
     Key? key,
@@ -15,6 +16,7 @@ class CustomTextField extends StatelessWidget{
     required this.text,
     required this.buttonColor,
     required this.borderColor,
+    required this.controller,
     this.textAlign = TextAlign.center,
   }): super(key: key);
 
@@ -24,6 +26,7 @@ class CustomTextField extends StatelessWidget{
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.06,
       child: TextField(
+        controller: controller,
         textAlign: textAlign,
         textAlignVertical: TextAlignVertical.bottom,
         showCursor: false,

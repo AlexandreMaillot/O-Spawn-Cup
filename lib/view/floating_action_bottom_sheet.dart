@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_disponibilite.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
+import 'package:o_spawn_cup/CustomsWidgets/search_button.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_tournament_type.dart';
 import 'package:o_spawn_cup/model/TournamentType/tounament_type_controller.dart';
 import 'package:o_spawn_cup/model/TournamentType/tournament_type.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant.dart';
 
@@ -25,26 +29,64 @@ class FloatingActionBottomSheet extends StatefulWidget {
 
 class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   late Future<dynamic> bottomSheetController;
-  late TournamentTypeController tournamentTypeController;
-  late Future<List<Object?>> collectionTournament;
-  List<TournamentType> listTournamentType = [];
-  List<String> listTournamentTypeName = [];
+  late TextEditingController dayController;
+  late TextEditingController monthController;
+  late TextEditingController yearsController;
+  late TextEditingController tournamentNameController;
+  late TournamentTypeDropdown tournamentTypeDropdown;
+  late TournamentStateDropdown tournamentStateDropdown;
+  late SharedPreferences filters;
   @override
-  void initState() {
-    // listTournamentType.forEach((element) {
-    //   print(element.name);
-    //   listTournamentTypeName.add(element.name);
-    // });
-
-    // collectionTournament.then((value) => print(value));
-    // print(listTournamentType.toString());
-    // print(collectionTournament.then((value) => listTournamentType.add(value)));
+  initState() {
+    dayController = TextEditingController();
+    monthController = TextEditingController();
+    yearsController = TextEditingController();
+    tournamentNameController = TextEditingController();
+    tournamentTypeDropdown = TournamentTypeDropdown(hintText: "TYPE DE TOURNOIS");
+    tournamentStateDropdown = TournamentStateDropdown(hintText: "ETAT");
     super.initState();
   }
+
+  Future<void> initFilter() async {
+    filters = await SharedPreferences.getInstance();
+    String day = filters.get("day").toString();
+    if (day != "null") {
+      dayController.text = day;
+    }
+    String month = filters.get("month").toString();
+    if (month != "null") {
+      monthController.text = month;
+    }
+    String? years = filters.get("years").toString();
+    if (years != "null") {
+      yearsController.text = years;
+    }
+    String? tournamentName = filters.get("tournamentName").toString();
+    if (tournamentName != "null") {
+      tournamentNameController.text = tournamentName;
+    }
+    String? tournamentType = filters.getString("tournamentType");
+    if (tournamentType != "null") {
+      tournamentTypeDropdown.dropdownValue = tournamentType;
+    }
+    String? tournamentState = filters.getString("tournamentState");
+    if (tournamentState != "null") {
+      tournamentStateDropdown.dropdownValue = tournamentState;
+    }
+  }
+  // @override
+  // void dispose() {
+  //   dayController.dispose();
+  //   monthController.dispose();
+  //   yearsController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+    DateTime selectedDate = DateTime.now();
+
     return FloatingActionButton(
       elevation: 0,
       backgroundColor: colorTheme,
@@ -59,6 +101,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
         });
 
         bottomSheetController = showModalBottomSheet(
+
           isScrollControlled: true,
           context: context,
           builder: (context) => Stack(
@@ -90,76 +133,116 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text("JOUR"),
-                            DottedLine(
-                              direction: Axis.vertical,
-                                lineThickness: 0.5,
-                              dashColor: colorHintTextTheme.withOpacity(0.43),
+                            Expanded(
+                              child: TextField(
+                                controller: dayController,
+                                maxLength: 2,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                decoration: const InputDecoration(
+                                  hintText: "JOUR",
+                                  counterText: "",
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                ),
+                              ),
                             ),
-                            Text("MOIS"),
                             DottedLine(
                               direction: Axis.vertical,
                               lineThickness: 0.5,
                               dashColor: colorHintTextTheme.withOpacity(0.43),
                             ),
-                            Text("ANNEE"),
+                            Expanded(
+                              child: TextField(
+                                controller: monthController,
+                                maxLength: 2,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(),
+                                decoration: const InputDecoration(
+                                  hintText: "MOIS",
+                                  counterText: "",
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                            DottedLine(
+                              direction: Axis.vertical,
+                              lineThickness: 0.5,
+                              dashColor: colorHintTextTheme.withOpacity(0.43),
+                            ),
+                            Expanded(
+                              child: TextField(
+                                controller: yearsController,
+                                maxLength: 4,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                decoration: const InputDecoration(
+                                  hintText: "ANNEE",
+                                  counterText: "",
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-
-                      TournamentTypeDropdown(
-                        hintText: "TYPE DE TOURNOIS",
-                      ),
+                      tournamentTypeDropdown,
                       CustomTextField(
+                          controller: tournamentNameController,
                           textAlign: TextAlign.left,
                           screenSize: screenSize,
                           text: "NOM DU TOURNOIS",
                           buttonColor: Colors.white,
                           borderColor: Colors.white),
-                      DisponibiliteDropdown(
-                        hintText: "ETAT",
+                      tournamentStateDropdown,
+                      SearchButton(
+                        screenSize: screenSize,
+                        onPressedMethod: () {
+                          saveFilter();
+                          Navigator.pop(context);
+                        },
                       ),
-                      SearchButton(screenSize: screenSize),
                     ],
                   ),
                   height: screenSize.height * 0.4,
                   width: screenSize.width,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    transform: Matrix4.translationValues(
-                        0.0, screenSize.height * 0.96 - screenSize.height, 0.0),
-                    child: FloatingActionButton(
-                      elevation: 0,
-                      backgroundColor: colorTheme,
-                      child: SvgPicture.asset(
-                        "assets/images/arrowFilter.svg",
-                        height: 25,
-                        width: 24,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
+              ArrowButton(screenSize: screenSize),
             ],
           ),
         );
-        // bottomSheetController!.closed.then((value) {
-        //   print("ee");
-        //   widget.bottomSheetIsShow = false;
-        //   print(widget.bottomSheetIsShow);
-        // });
+
+        initFilter();
       },
     );
   }
+
+  void saveFilter() async {
+    filters = await SharedPreferences.getInstance();
+    filters.setString("day", dayController.text.toString());
+    filters.setString("month", monthController.text);
+    filters.setString("years", yearsController.text);
+    filters.setString("tournamentName", tournamentNameController.text);
+
+    if (tournamentTypeDropdown.dropdownValue != "null") {
+      filters.setString(
+          "tournamentType", tournamentTypeDropdown.dropdownValue.toString());
+    }
+    if (tournamentStateDropdown.dropdownValue != "null") {
+      filters.setString(
+          "tournamentState", tournamentStateDropdown.dropdownValue.toString());
+    }
+
+    // print(tournamentStateDropdown.toString());
+  }
 }
 
-class SearchButton extends StatelessWidget {
-  const SearchButton({
+class ArrowButton extends StatelessWidget {
+  const ArrowButton({
     Key? key,
     required this.screenSize,
   }) : super(key: key);
@@ -168,28 +251,24 @@ class SearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: screenSize.width * 0.60,
-      height: screenSize.height * 0.06,
-      child: ElevatedButton(
-        onPressed: () => Navigator.of(context).pop(),
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(colorBackgroundTheme),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(31),
-          )),
-          // elevation: MaterialStateProperty.all<double>(
-          // ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          transform: Matrix4.translationValues(
+              0.0, screenSize.height * 0.96 - screenSize.height, 0.0),
+          child: FloatingActionButton(
+            elevation: 0,
+            backgroundColor: colorTheme,
+            child: SvgPicture.asset(
+              "assets/images/arrowFilter.svg",
+              height: 25,
+              width: 24,
+            ),
+            onPressed: () {},
+          ),
         ),
-        child: const Text("RECHERCHER",
-            style: TextStyle(
-              color: Color(0xffF2E96B),
-            )),
-      ),
+      ],
     );
   }
 }
-
-enum Disponibilite { OUI, NON }

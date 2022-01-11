@@ -1,31 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 import '../MemberTournament/member_tournament.dart';
 
+part 'team.g.dart';
+@JsonSerializable()
 class Team {
-  String? uid;
   String name;
   List<MemberTournament> listMemberTournament = [];
   late String teamCode;
   bool isDisqualified = false;
-  late CollectionReference teams;
 
   Team({required this.name});
-
-
-  Team.fromJson(Map<String, Object?> json) : this(
-    name: json["name"]! as String,
-  );
-
-
-  Map<String, Object?> toJson() {
-    return {
-      "uid": uid,
-      "name": name,
-      "listMemberTournament": listMemberTournament,
-      "teamCode": teamCode,
-      "isDisqualified": isDisqualified,
-    };
-  }
-
-
+  factory Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
 }
+@Collection<Team>('Team')
+final teamsRef = TeamCollectionReference();

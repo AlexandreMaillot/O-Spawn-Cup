@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:o_spawn_cup/view/home.dart';
 import 'package:o_spawn_cup/view/login.dart';
-import 'package:o_spawn_cup/view/login_register.dart';
-import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_tournament_type.dart';
 
 import 'constant.dart';
 import 'firebase_options.dart';
-import 'view/list_cup.dart';
 import 'view/register.dart';
 
 void main() async {
@@ -16,7 +13,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   //await FirebaseAuth.instance.setPersistence(Persistence.NONE);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +35,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const Home(),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
-        '/home': (context) => Home(),
+        '/home': (context) => const Home(),
         //'/list_cup': (context) => ListCup(gameName: ),
       },
     );

@@ -3,16 +3,13 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'member.dart';
-import 'member_dao.dart';
 
 
 
 class MemberAuthController{
 
   Member member;
-  late MemberDao memberDao;
   MemberAuthController({required this.member}){
-    memberDao = MemberDao(member);
   }
 
 
@@ -75,7 +72,7 @@ class MemberAuthController{
       );
 
       member.uid = userCredential.user!.uid;
-      memberDao.create();
+      // memberDao.create();
       User? user = FirebaseAuth.instance.currentUser;
 
       if (user!= null && !user.emailVerified) {

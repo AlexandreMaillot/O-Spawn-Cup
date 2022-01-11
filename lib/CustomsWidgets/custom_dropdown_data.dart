@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
 
 import '../constant.dart';
 
 class CustomDropdownData extends StatefulWidget {
   List<Object>? listObject;
   String hintText;
-  CustomDropdownData({required this.listObject,required this.hintText});
+  CustomDropdownData({Key? key, required this.listObject,required this.hintText}) : super(key: key);
 
   @override
   _CustomDropdownDataState createState() => _CustomDropdownDataState();

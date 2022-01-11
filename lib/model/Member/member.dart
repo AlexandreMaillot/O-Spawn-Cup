@@ -10,6 +10,7 @@ class Member {
   late String uid;
 
   Member({required this.pseudo});
+  factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
 }
 @Collection<Member>('members')
 final membersRef = MemberCollectionReference();
