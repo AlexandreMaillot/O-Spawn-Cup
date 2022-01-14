@@ -10,9 +10,9 @@ extension TournamentStateExt on TournamentState {
       case TournamentState.terminer:
         return "Terminer";
         case TournamentState.inscriptionFermer:
-        return "Inscription ouvert";
-        case TournamentState.incriptionOuverte:
         return "Inscription fermer";
+        case TournamentState.incriptionOuverte:
+        return "Inscription ouverte";
       default:
         return "";
     }

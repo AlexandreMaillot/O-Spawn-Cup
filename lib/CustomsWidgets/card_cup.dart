@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 
+import '../model/Tournament/tournament.dart';
+
 class CardCup extends StatelessWidget {
-  int index;
+  Tournament? tournamentSnap;
   CardCup({
     Key? key,
-    required this.index,
+    required this.tournamentSnap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    String? image = "";
+    if(tournamentSnap?.image != null){
+      image = tournamentSnap!.image;
+    }
     return InkWell(
       onTap: () {
 
       },
-      child: Card(
-
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(22),
-        ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(22),
 
           child: Container(
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new ExactAssetImage('assets/images/forniteBackground.png'),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(image!,),
                 fit: BoxFit.cover,
               ),
             ),
@@ -33,14 +35,13 @@ class CardCup extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Item ${index.toString()}',
+                  tournamentSnap!.name,
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ],
             ),
           ),
         ),
-      ),
     );
   }
 }

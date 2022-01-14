@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_disponibilite.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_dropdowwn_tournament_state.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/CustomsWidgets/search_button.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
@@ -17,9 +17,10 @@ import '../constant.dart';
 
 class FloatingActionBottomSheet extends StatefulWidget {
   bool bottomSheetIsShow = false;
-
+  final Function functionFilter;
   FloatingActionBottomSheet({
     Key? key,
+    required this.functionFilter,
   }) : super(key: key);
 
   @override
@@ -36,13 +37,18 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   late TournamentTypeDropdown tournamentTypeDropdown;
   late TournamentStateDropdown tournamentStateDropdown;
   late SharedPreferences filters;
+
+  FocusNode dayFocus = FocusNode();
+  FocusNode monthFocus = FocusNode();
+  FocusNode yearsFocus = FocusNode();
+  FocusNode typeFocus = FocusNode();
   @override
   initState() {
     dayController = TextEditingController();
     monthController = TextEditingController();
     yearsController = TextEditingController();
     tournamentNameController = TextEditingController();
-    tournamentTypeDropdown = TournamentTypeDropdown(hintText: "TYPE DE TOURNOIS");
+    tournamentTypeDropdown = TournamentTypeDropdown(hintText: "TYPE DE TOURNOIS",typeFocus: typeFocus);
     tournamentStateDropdown = TournamentStateDropdown(hintText: "ETAT");
     super.initState();
   }
@@ -135,6 +141,13 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                           children: [
                             Expanded(
                               child: TextField(
+                                onChanged: (value) {
+                                  if(value.length == 2){
+                                    FocusScope.of(context).requestFocus(monthFocus);
+                                  }
+
+                                },
+                                focusNode: dayFocus,
                                 controller: dayController,
                                 maxLength: 2,
                                 keyboardType: TextInputType.number,
@@ -154,6 +167,12 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                             ),
                             Expanded(
                               child: TextField(
+                                onChanged: (value) {
+                                  if(value.length == 2){
+                                    FocusScope.of(context).requestFocus(yearsFocus);
+                                  }
+                                },
+                                focusNode: monthFocus,
                                 controller: monthController,
                                 maxLength: 2,
                                 keyboardType: TextInputType.number,
@@ -174,6 +193,12 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                             ),
                             Expanded(
                               child: TextField(
+                                onChanged: (value) {
+                                  // if(value.length == 4) {
+                                  //   FocusScope.of(context).requestFocus(typeFocus);
+                                  // }
+                                },
+                                focusNode: yearsFocus,
                                 controller: yearsController,
                                 maxLength: 4,
                                 keyboardType: TextInputType.number,
@@ -200,9 +225,11 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                       tournamentStateDropdown,
                       SearchButton(
                         screenSize: screenSize,
-                        onPressedMethod: () {
-                          saveFilter();
-                          Navigator.pop(context);
+                        onPressedMethod: () async {
+
+                          await saveFilter();
+                          widget.functionFilter();
+                          Navigator.pop(context,tournamentNameController.text);
                         },
                       ),
                     ],
@@ -221,9 +248,9 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
     );
   }
 
-  void saveFilter() async {
+  saveFilter() async {
     filters = await SharedPreferences.getInstance();
-    filters.setString("day", dayController.text.toString());
+    filters.setString("day", dayController.text);
     filters.setString("month", monthController.text);
     filters.setString("years", yearsController.text);
     filters.setString("tournamentName", tournamentNameController.text);
@@ -232,12 +259,13 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
       filters.setString(
           "tournamentType", tournamentTypeDropdown.dropdownValue.toString());
     }
+
     if (tournamentStateDropdown.dropdownValue != "null") {
       filters.setString(
           "tournamentState", tournamentStateDropdown.dropdownValue.toString());
     }
-
-    // print(tournamentStateDropdown.toString());
+    // print(tournamentTypeDropdown.dropdownValue.toString());
+    // print(tournamentStateDropdown.dropdownValue.toString());
   }
 }
 

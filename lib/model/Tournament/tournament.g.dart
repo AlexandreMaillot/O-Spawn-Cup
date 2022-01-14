@@ -37,7 +37,7 @@ abstract class TournamentCollectionReference
     Tournament value,
     SetOptions? options,
   ) {
-    return _$TournamentToJson(value);
+    return value.toJson();
   }
 
   @override
@@ -117,6 +117,7 @@ abstract class TournamentDocumentReference
 
   Future<void> update({
     String name,
+    int date,
     int capacity,
     String cashPrize,
     int roundNumber,
@@ -167,6 +168,7 @@ class _$TournamentDocumentReference
 
   Future<void> update({
     Object? name = _sentinel,
+    Object? date = _sentinel,
     Object? capacity = _sentinel,
     Object? cashPrize = _sentinel,
     Object? roundNumber = _sentinel,
@@ -175,6 +177,7 @@ class _$TournamentDocumentReference
   }) async {
     final json = {
       if (name != _sentinel) "name": name as String,
+      if (date != _sentinel) "date": date as int,
       if (capacity != _sentinel) "capacity": capacity as int,
       if (cashPrize != _sentinel) "cashPrize": cashPrize as String,
       if (roundNumber != _sentinel) "roundNumber": roundNumber as int,
@@ -241,6 +244,17 @@ abstract class TournamentQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
+  TournamentQuery whereDate({
+    int? isEqualTo,
+    int? isNotEqualTo,
+    int? isLessThan,
+    int? isLessThanOrEqualTo,
+    int? isGreaterThan,
+    int? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<int>? whereIn,
+    List<int>? whereNotIn,
+  });
   TournamentQuery whereCapacity({
     int? isEqualTo,
     int? isNotEqualTo,
@@ -303,6 +317,18 @@ abstract class TournamentQuery
     String startAfter,
     String endAt,
     String endBefore,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  });
+
+  TournamentQuery orderByDate({
+    bool descending = false,
+    int startAt,
+    int startAfter,
+    int endAt,
+    int endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -445,6 +471,34 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     return _$TournamentQuery(
       reference.where(
         'name',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  TournamentQuery whereDate({
+    int? isEqualTo,
+    int? isNotEqualTo,
+    int? isLessThan,
+    int? isLessThanOrEqualTo,
+    int? isGreaterThan,
+    int? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<int>? whereIn,
+    List<int>? whereNotIn,
+  }) {
+    return _$TournamentQuery(
+      reference.where(
+        'date',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -611,6 +665,48 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('name', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TournamentQuery(query, _collection);
+  }
+
+  TournamentQuery orderByDate({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('date', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -901,11 +997,10 @@ class TournamentQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 
 Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
       name: json['name'] as String,
-      date: DateTime.parse(json['date'] as String),
+      date: json['date'] as int,
       game: $enumDecode(_$GameNameEnumMap, json['game']),
       server: $enumDecode(_$ServerTypeEnumMap, json['server']),
-      tournamentType: TournamentType.fromJson(
-          json['tournamentType'] as Map<String, dynamic>),
+      tournamentType: json['tournamentType'] as Map<String, dynamic>?,
       capacity: json['capacity'] as int,
       cashPrize: json['cashPrize'] as String,
       roundNumber: json['roundNumber'] as int,
@@ -917,7 +1012,7 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'date': instance.date.toIso8601String(),
+      'date': instance.date,
       'game': _$GameNameEnumMap[instance.game],
       'server': _$ServerTypeEnumMap[instance.server],
       'tournamentType': instance.tournamentType,

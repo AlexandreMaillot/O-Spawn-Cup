@@ -28,7 +28,7 @@ abstract class MemberCollectionReference
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return _$MemberFromJson(snapshot.data()!);
+    return Member.fromJson(snapshot.data()!);
   }
 
   static Map<String, Object?> toFirestore(

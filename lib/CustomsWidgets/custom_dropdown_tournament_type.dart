@@ -10,7 +10,8 @@ import '../constant.dart';
 class TournamentTypeDropdown extends StatefulWidget {
   String hintText;
   Object? dropdownValue;
-  TournamentTypeDropdown({required this.hintText});
+  FocusNode typeFocus;
+  TournamentTypeDropdown({required this.hintText,required this.typeFocus});
 
   @override
   _TournamentTypeDropdownState createState() => _TournamentTypeDropdownState();
@@ -48,6 +49,8 @@ class _TournamentTypeDropdownState extends State<TournamentTypeDropdown> {
             screenSize: screenSize,
             child: Center(
               child: DropdownButton(
+
+                focusNode: widget.typeFocus,
                 value: widget.dropdownValue,
                 isExpanded: true,
                 hint: Text(
@@ -81,7 +84,7 @@ class _TournamentTypeDropdownState extends State<TournamentTypeDropdown> {
                 },
                 items: querySnapshot.docs.map((value) {
                   return DropdownMenuItem<Object>(
-                    value: value.id,
+                    value: value.data.name,
                     child: Text(value.data.name),
                   );
                 }).toList(),

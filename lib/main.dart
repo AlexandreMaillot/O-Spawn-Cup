@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/home': (context) => const Home(),
-        //'/list_cup': (context) => ListCup(gameName: ),
+        // '/list_cup': (context) => ListCup(gameName: ),
       },
     );
   }

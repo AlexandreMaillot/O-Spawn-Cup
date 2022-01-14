@@ -37,7 +37,7 @@ abstract class TournamentTypeCollectionReference
     TournamentType value,
     SetOptions? options,
   ) {
-    return _$TournamentTypeToJson(value);
+    return value.toJson();
   }
 
   @override

@@ -11,6 +11,7 @@ class TournamentType {
 
   TournamentType({required this.name,required this.capacityTeam});
   factory TournamentType.fromJson(Map<String, dynamic> json) => _$TournamentTypeFromJson(json);
+  Map<String, dynamic> toJson() => _$TournamentTypeToJson(this);
 }
 @Collection<TournamentType>('TournamentType')
 final tournamentTypesRef = TournamentTypeCollectionReference();
