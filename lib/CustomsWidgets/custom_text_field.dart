@@ -24,7 +24,7 @@ class CustomTextField extends StatelessWidget{
   Widget build(BuildContext context) {
     return SizedBox(
       width: screenSize.width * 0.87,
-      height: screenSize.height * 0.06,
+      height: screenSize.height * 0.05,
       child: TextField(
         controller: controller,
         textAlign: textAlign,

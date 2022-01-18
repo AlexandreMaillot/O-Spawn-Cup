@@ -40,7 +40,7 @@ class _SignCupState extends State<SignCup> {
       backgroundColor: colorBackgroundTheme,
       drawer: CustomDrawer(screenSize: screenSize),
       appBar: CustomAppBar(
-        title: "INSCRIPTPION",
+        title: "INSCRIPTION",
       ),
       body: SingleChildScrollView(
         child: Column(
