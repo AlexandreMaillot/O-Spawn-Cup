@@ -35,7 +35,7 @@ abstract class TeamCollectionReference
     Team value,
     SetOptions? options,
   ) {
-    return _$TeamToJson(value);
+    return value.toJson();
   }
 
   @override
@@ -52,7 +52,7 @@ class _$TeamCollectionReference extends _$TeamQuery
     firestore ??= FirebaseFirestore.instance;
 
     return _$TeamCollectionReference._(
-      firestore.collection('Team').withConverter(
+      firestore.collection('Teams').withConverter(
             fromFirestore: TeamCollectionReference.fromFirestore,
             toFirestore: TeamCollectionReference.toFirestore,
           ),
@@ -116,7 +116,7 @@ abstract class TeamDocumentReference
   Future<void> update({
     String name,
     List<MemberTournament> listMemberTournament,
-    String teamCode,
+    String? teamCode,
     bool isDisqualified,
   });
 
@@ -171,7 +171,7 @@ class _$TeamDocumentReference
       if (name != _sentinel) "name": name as String,
       if (listMemberTournament != _sentinel)
         "listMemberTournament": listMemberTournament as List<MemberTournament>,
-      if (teamCode != _sentinel) "teamCode": teamCode as String,
+      if (teamCode != _sentinel) "teamCode": teamCode as String?,
       if (isDisqualified != _sentinel) "isDisqualified": isDisqualified as bool,
     };
 
@@ -250,8 +250,8 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   });
   TeamQuery whereIsDisqualified({
     bool? isEqualTo,
@@ -291,10 +291,10 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
 
   TeamQuery orderByTeamCode({
     bool descending = false,
-    String startAt,
-    String startAfter,
-    String endAt,
-    String endBefore,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
     TeamDocumentSnapshot? startAtDocument,
     TeamDocumentSnapshot? endAtDocument,
     TeamDocumentSnapshot? endBeforeDocument,
@@ -437,8 +437,8 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   }) {
     return _$TeamQuery(
       reference.where(
@@ -707,7 +707,7 @@ Team _$TeamFromJson(Map<String, dynamic> json) => Team(
       ..listMemberTournament = (json['listMemberTournament'] as List<dynamic>)
           .map((e) => MemberTournament.fromJson(e as Map<String, dynamic>))
           .toList()
-      ..teamCode = json['teamCode'] as String
+      ..teamCode = json['teamCode'] as String?
       ..isDisqualified = json['isDisqualified'] as bool;
 
 Map<String, dynamic> _$TeamToJson(Team instance) => <String, dynamic>{

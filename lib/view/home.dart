@@ -33,8 +33,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
           drawer: CustomDrawer(screenSize: screenSize),
           appBar: CustomAppBar(title: "JEUX"),
           body: Column(
@@ -48,8 +47,7 @@ class _HomeState extends State<Home> {
                   currentPageValue: currentPageValue)
             ],
           ),
-        ),
-    );
+        );
   }
 }
 

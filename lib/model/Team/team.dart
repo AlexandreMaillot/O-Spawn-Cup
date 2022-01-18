@@ -9,11 +9,13 @@ part 'team.g.dart';
 class Team {
   String name;
   List<MemberTournament> listMemberTournament = [];
-  late String teamCode;
+  String? teamCode;
   bool isDisqualified = false;
 
   Team({required this.name});
   factory Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
+  Map<String, dynamic> toJson() => _$TeamToJson(this);
+
 }
-@Collection<Team>('Team')
+@Collection<Team>('Teams')
 final teamsRef = TeamCollectionReference();

@@ -86,15 +86,19 @@ class CustomDrawer extends StatelessWidget {
                     child: TextButton(
                       child: Row(
 
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.power_settings_new,color: colorBackgroundTheme,),
+                          ),
                           Text(
                             "Déconnexion",
                             style: TextStyle(
                               color: colorBackgroundTheme,
                             ),
                           ),
-                          Icon(Icons.power_settings_new,color: colorBackgroundTheme,),
+
                         ],
                       ),
                       onPressed: () {},

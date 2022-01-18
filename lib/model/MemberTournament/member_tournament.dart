@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:o_spawn_cup/model/RoundClassementMember/round_classement_member.dart';
 import 'package:o_spawn_cup/model/Team/team.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament.dart';
+
 import 'package:o_spawn_cup/model/role_type.dart';
 
 import '../Member/member.dart';
@@ -22,5 +23,7 @@ class MemberTournament {
 
 
 }
-@Collection<MemberTournament>('MemberTournament')
+@Collection<MemberTournament>('MemberTournaments')
+@Collection<Team>('MemberTournaments/*/Teams')
+@Collection<Tournament>('MemberTournaments/*/Tournaments')
 final memberTournamentsRef = MemberTournamentCollectionReference();

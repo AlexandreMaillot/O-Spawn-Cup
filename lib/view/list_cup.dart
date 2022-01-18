@@ -11,6 +11,7 @@ import 'package:o_spawn_cup/CustomsWidgets/card_cup.dart';
 import 'package:o_spawn_cup/model/game_name.dart';
 import 'package:o_spawn_cup/model/server_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'floating_action_bottom_sheet.dart';
 
@@ -31,8 +32,9 @@ class _ListCupState extends State<ListCup> {
   initState() {
 
     clearPref();
-    TournamentType? tournamentType;
-
+    TournamentType tournamentType;
+    // tournamentType = tournamentTypesRef.doc("").select((snapshot) => snapshot.data!.toJson()) as TournamentType;
+    // Tournament tournament = Tournament(name: "sdy", date: 20220118, game: GameName.CSGO, server: ServerType.EU, tournamentType: tournamentType, capacity: 50, cashPrize: "cashPrize", roundNumber: 2, killPointTournament: 1);
     super.initState();
   }
 
@@ -71,7 +73,27 @@ class _ListCupState extends State<ListCup> {
                   return const Center(child: Text("Impossible de charger les tournois !",style: TextStyle(color: Colors.white),),);
                 }
                 if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Shimmer.fromColors(enabled: true,baseColor: Colors.grey[300]!, highlightColor: Colors.grey[100]!,
+                      child: GridView.count(
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        crossAxisCount: 2,
+                        children: List.generate(8, (index) {
+                          return ClipRRect(
+                              borderRadius: BorderRadius.circular(22),
+
+                              child: Container(
+                                color: Colors.grey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [],
+                                ),
+                              )
+
+                          );
+                        }),
+                      ));
                 }
 
                 QuerySnapshot<Tournament?>? querySnapshot = snapshot.requireData as QuerySnapshot<Tournament?>?;
@@ -82,7 +104,7 @@ class _ListCupState extends State<ListCup> {
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
                     crossAxisCount: 2,
-                    children: querySnapshot.docs.map((e) => CardCup(tournamentSnap: e.data(),)).toList(),
+                    children: querySnapshot.docs.map((e) => CardCup(tournamentSnap: e)).toList(),
                     // return Container(child: CardCup(index: index,));
                   );
                 }
