@@ -7,10 +7,11 @@ part 'member.g.dart';
 @JsonSerializable()
 class Member {
   String pseudo;
-  late String uid;
+  String uid;
 
-  Member({required this.pseudo});
+  Member({required this.pseudo,required this.uid});
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
+  Map<String, dynamic> toJson() => _$MemberToJson(this);
 }
-@Collection<Member>('members')
+@Collection<Member>('Members')
 final membersRef = MemberCollectionReference();

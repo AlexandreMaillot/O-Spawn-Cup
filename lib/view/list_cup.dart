@@ -73,6 +73,7 @@ class _ListCupState extends State<ListCup> {
                   return const Center(child: Text("Impossible de charger les tournois !",style: TextStyle(color: Colors.white),),);
                 }
                 if (!snapshot.hasData) {
+                  // return Center(child: CircularProgressIndicator());
                   return Shimmer.fromColors(enabled: true,baseColor: Colors.grey[300]!, highlightColor: Colors.grey[100]!,
                       child: GridView.count(
                         mainAxisSpacing: 10,
@@ -138,13 +139,6 @@ class _ListCupState extends State<ListCup> {
     String date = dateYears! + dateMonth! + dateDay!;
     // int? capacity = filters.getInt("date");
 
-    // print("iiui");
-    print(name);
-    print(date);
-    print(type);
-
-    print(state);
-    print(widget.gameName);
     setState(() {
       tournamentList = tournamentsRef.reference
           .where("game",isEqualTo: widget.gameName.name)

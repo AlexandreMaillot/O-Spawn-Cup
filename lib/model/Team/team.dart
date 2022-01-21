@@ -19,3 +19,5 @@ class Team {
 }
 @Collection<Team>('Teams')
 final teamsRef = TeamCollectionReference();
+
+

@@ -6,6 +6,7 @@ import 'package:o_spawn_cup/view/login.dart';
 
 import 'constant.dart';
 import 'firebase_options.dart';
+import 'model/Team/test.dart';
 import 'view/register.dart';
 
 void main() async {
@@ -13,10 +14,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  ok();
   FirebaseFirestore.instance.settings =
       const Settings(persistenceEnabled: true);
   //await FirebaseAuth.instance.setPersistence(Persistence.NONE);
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {

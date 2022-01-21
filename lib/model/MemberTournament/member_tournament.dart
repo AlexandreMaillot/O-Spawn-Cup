@@ -15,13 +15,21 @@ class MemberTournament {
   Tournament tournament;
   String gamerTag;
   RoleType role;
-  late Team team;
+  Team team;
   List<RoundClassementMember> listRoundClassementMember = [];
 
-  MemberTournament({required this.member,required this.tournament,required this.gamerTag,required this.role});
+  MemberTournament({required this.member,required this.tournament,required this.gamerTag,required this.role,required this.team});
   factory MemberTournament.fromJson(Map<String, dynamic> json) => _$MemberTournamentFromJson(json);
-
-
+  Map<String, dynamic> toJson() => _$MemberTournamentToJson(this);
+  Map<String, dynamic> _$MemberTournamentToJson(MemberTournament instance) =>
+      <String, dynamic>{
+        'member': instance.member.toJson(),
+        'tournament': instance.tournament.toJson(),
+        'gamerTag': instance.gamerTag,
+        'role': _$RoleTypeEnumMap[instance.role],
+        'team': instance.team.toJson(),
+        'listRoundClassementMember': instance.listRoundClassementMember,
+      };
 }
 @Collection<MemberTournament>('MemberTournaments')
 @Collection<Team>('MemberTournaments/*/Teams')

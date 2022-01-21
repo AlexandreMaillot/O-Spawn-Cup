@@ -8,16 +8,16 @@ class TeamFirebaseController {
   TeamFirebaseController(this.team){
   }
   createTeam(MemberTournament teamLead){
-    teamLead.role = RoleType.leader;
-    team.listMemberTournament.add(teamLead);
+    // teamLead.role = RoleType.leader;
+    // team.listMemberTournament.add(teamLead);
     // teamDao.create();
   }
   deleteMember(MemberTournament memberTournament){
 
   }
   addMember(MemberTournament memberTournament){
-    memberTournament.role = RoleType.player;
-    team.listMemberTournament.add(memberTournament);
+    // memberTournament.role = RoleType.player;
+    // team.listMemberTournament.add(memberTournament);
     // teamDao.update();
   }
   changeLeader(){

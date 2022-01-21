@@ -37,7 +37,7 @@ abstract class MemberTournamentCollectionReference
     MemberTournament value,
     SetOptions? options,
   ) {
-    return _$MemberTournamentToJson(value);
+    return value.toJson();
   }
 
   @override
@@ -1356,7 +1356,7 @@ abstract class TournamentDocumentReference
     int roundNumber,
     String? image,
     int killPointTournament,
-    List<Team>? listTeam,
+    List<Team> listTeam,
   });
 
   Future<void> set(Tournament value);
@@ -1424,7 +1424,7 @@ class _$TournamentDocumentReference
       if (image != _sentinel) "image": image as String?,
       if (killPointTournament != _sentinel)
         "killPointTournament": killPointTournament as int,
-      if (listTeam != _sentinel) "listTeam": listTeam as List<Team>?,
+      if (listTeam != _sentinel) "listTeam": listTeam as List<Team>,
     };
 
     return reference.update(json);
@@ -1648,10 +1648,10 @@ abstract class TournamentQuery
 
   TournamentQuery orderByListTeam({
     bool descending = false,
-    List<Team>? startAt,
-    List<Team>? startAfter,
-    List<Team>? endAt,
-    List<Team>? endBefore,
+    List<Team> startAt,
+    List<Team> startAfter,
+    List<Team> endAt,
+    List<Team> endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -2333,12 +2333,11 @@ MemberTournament _$MemberTournamentFromJson(Map<String, dynamic> json) =>
           Tournament.fromJson(json['tournament'] as Map<String, dynamic>),
       gamerTag: json['gamerTag'] as String,
       role: $enumDecode(_$RoleTypeEnumMap, json['role']),
-    )
-      ..team = Team.fromJson(json['team'] as Map<String, dynamic>)
-      ..listRoundClassementMember = (json['listRoundClassementMember']
-              as List<dynamic>)
-          .map((e) => RoundClassementMember.fromJson(e as Map<String, dynamic>))
-          .toList();
+      team: Team.fromJson(json['team'] as Map<String, dynamic>),
+    )..listRoundClassementMember = (json['listRoundClassementMember']
+            as List<dynamic>)
+        .map((e) => RoundClassementMember.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$MemberTournamentToJson(MemberTournament instance) =>
     <String, dynamic>{

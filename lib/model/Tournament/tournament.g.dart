@@ -106,8 +106,7 @@ abstract class TournamentDocumentReference
     return _$TournamentCollectionReference(reference.firestore);
   }
 
-  late final TournamentTypeCollectionReference tournamentType =
-      _$TournamentTypeCollectionReference(
+  late final TeamCollectionReference listTeam = _$TeamCollectionReference(
     reference,
   );
 
@@ -128,7 +127,7 @@ abstract class TournamentDocumentReference
     int roundNumber,
     String? image,
     int killPointTournament,
-    List<Team>? listTeam,
+    List<Team> listTeam,
   });
 
   Future<void> set(Tournament value);
@@ -147,8 +146,7 @@ class _$TournamentDocumentReference
     return _$TournamentCollectionReference(reference.firestore);
   }
 
-  late final TournamentTypeCollectionReference tournamentType =
-      _$TournamentTypeCollectionReference(
+  late final TeamCollectionReference listTeam = _$TeamCollectionReference(
     reference,
   );
 
@@ -196,7 +194,7 @@ class _$TournamentDocumentReference
       if (image != _sentinel) "image": image as String?,
       if (killPointTournament != _sentinel)
         "killPointTournament": killPointTournament as int,
-      if (listTeam != _sentinel) "listTeam": listTeam as List<Team>?,
+      if (listTeam != _sentinel) "listTeam": listTeam as List<Team>,
     };
 
     return reference.update(json);
@@ -420,10 +418,10 @@ abstract class TournamentQuery
 
   TournamentQuery orderByListTeam({
     bool descending = false,
-    List<Team>? startAt,
-    List<Team>? startAfter,
-    List<Team>? endAt,
-    List<Team>? endBefore,
+    List<Team> startAt,
+    List<Team> startAfter,
+    List<Team> endAt,
+    List<Team> endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -1097,23 +1095,21 @@ class TournamentQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 /// A collection reference object can be used for adding documents,
 /// getting document references, and querying for documents
 /// (using the methods inherited from Query).
-abstract class TournamentTypeCollectionReference
-    implements
-        TournamentTypeQuery,
-        FirestoreCollectionReference<TournamentTypeQuerySnapshot> {
-  factory TournamentTypeCollectionReference(
+abstract class TeamCollectionReference
+    implements TeamQuery, FirestoreCollectionReference<TeamQuerySnapshot> {
+  factory TeamCollectionReference(
     DocumentReference<Tournament> parent,
-  ) = _$TournamentTypeCollectionReference;
+  ) = _$TeamCollectionReference;
 
-  static TournamentType fromFirestore(
+  static Team fromFirestore(
     DocumentSnapshot<Map<String, Object?>> snapshot,
     SnapshotOptions? options,
   ) {
-    return TournamentType.fromJson(snapshot.data()!);
+    return Team.fromJson(snapshot.data()!);
   }
 
   static Map<String, Object?> toFirestore(
-    TournamentType value,
+    Team value,
     SetOptions? options,
   ) {
     return value.toJson();
@@ -1123,30 +1119,30 @@ abstract class TournamentTypeCollectionReference
   TournamentDocumentReference get parent;
 
   @override
-  TournamentTypeDocumentReference doc([String? id]);
+  TeamDocumentReference doc([String? id]);
 
   /// Add a new document to this collection with the specified data,
   /// assigning it a document ID automatically.
-  Future<TournamentTypeDocumentReference> add(TournamentType value);
+  Future<TeamDocumentReference> add(Team value);
 }
 
-class _$TournamentTypeCollectionReference extends _$TournamentTypeQuery
-    implements TournamentTypeCollectionReference {
-  factory _$TournamentTypeCollectionReference(
+class _$TeamCollectionReference extends _$TeamQuery
+    implements TeamCollectionReference {
+  factory _$TeamCollectionReference(
     DocumentReference<Tournament> parent,
   ) {
-    return _$TournamentTypeCollectionReference._(
+    return _$TeamCollectionReference._(
       TournamentDocumentReference(parent),
-      parent.collection('TournamentType').withConverter(
-            fromFirestore: TournamentTypeCollectionReference.fromFirestore,
-            toFirestore: TournamentTypeCollectionReference.toFirestore,
+      parent.collection('listTeam').withConverter(
+            fromFirestore: TeamCollectionReference.fromFirestore,
+            toFirestore: TeamCollectionReference.toFirestore,
           ),
     );
   }
 
-  _$TournamentTypeCollectionReference._(
+  _$TeamCollectionReference._(
     this.parent,
-    CollectionReference<TournamentType> reference,
+    CollectionReference<Team> reference,
   ) : super(reference, reference);
 
   @override
@@ -1155,26 +1151,24 @@ class _$TournamentTypeCollectionReference extends _$TournamentTypeQuery
   String get path => reference.path;
 
   @override
-  CollectionReference<TournamentType> get reference =>
-      super.reference as CollectionReference<TournamentType>;
+  CollectionReference<Team> get reference =>
+      super.reference as CollectionReference<Team>;
 
   @override
-  TournamentTypeDocumentReference doc([String? id]) {
-    return TournamentTypeDocumentReference(
+  TeamDocumentReference doc([String? id]) {
+    return TeamDocumentReference(
       reference.doc(id),
     );
   }
 
   @override
-  Future<TournamentTypeDocumentReference> add(TournamentType value) {
-    return reference
-        .add(value)
-        .then((ref) => TournamentTypeDocumentReference(ref));
+  Future<TeamDocumentReference> add(Team value) {
+    return reference.add(value).then((ref) => TeamDocumentReference(ref));
   }
 
   @override
   bool operator ==(Object other) {
-    return other is _$TournamentTypeCollectionReference &&
+    return other is _$TeamCollectionReference &&
         other.runtimeType == runtimeType &&
         other.reference == reference;
   }
@@ -1183,17 +1177,16 @@ class _$TournamentTypeCollectionReference extends _$TournamentTypeQuery
   int get hashCode => Object.hash(runtimeType, reference);
 }
 
-abstract class TournamentTypeDocumentReference
-    extends FirestoreDocumentReference<TournamentTypeDocumentSnapshot> {
-  factory TournamentTypeDocumentReference(
-          DocumentReference<TournamentType> reference) =
-      _$TournamentTypeDocumentReference;
+abstract class TeamDocumentReference
+    extends FirestoreDocumentReference<TeamDocumentSnapshot> {
+  factory TeamDocumentReference(DocumentReference<Team> reference) =
+      _$TeamDocumentReference;
 
-  DocumentReference<TournamentType> get reference;
+  DocumentReference<Team> get reference;
 
-  /// A reference to the [TournamentTypeCollectionReference] containing this document.
-  TournamentTypeCollectionReference get parent {
-    return _$TournamentTypeCollectionReference(
+  /// A reference to the [TeamCollectionReference] containing this document.
+  TeamCollectionReference get parent {
+    return _$TeamCollectionReference(
       reference.parent.parent!.withConverter<Tournament>(
         fromFirestore: TournamentCollectionReference.fromFirestore,
         toFirestore: TournamentCollectionReference.toFirestore,
@@ -1202,33 +1195,35 @@ abstract class TournamentTypeDocumentReference
   }
 
   @override
-  Stream<TournamentTypeDocumentSnapshot> snapshots();
+  Stream<TeamDocumentSnapshot> snapshots();
 
   @override
-  Future<TournamentTypeDocumentSnapshot> get([GetOptions? options]);
+  Future<TeamDocumentSnapshot> get([GetOptions? options]);
 
   @override
   Future<void> delete();
 
   Future<void> update({
     String name,
-    int capacityTeam,
+    List<MemberTournament> listMemberTournament,
+    String? teamCode,
+    bool isDisqualified,
   });
 
-  Future<void> set(TournamentType value);
+  Future<void> set(Team value);
 }
 
-class _$TournamentTypeDocumentReference
-    extends FirestoreDocumentReference<TournamentTypeDocumentSnapshot>
-    implements TournamentTypeDocumentReference {
-  _$TournamentTypeDocumentReference(this.reference);
+class _$TeamDocumentReference
+    extends FirestoreDocumentReference<TeamDocumentSnapshot>
+    implements TeamDocumentReference {
+  _$TeamDocumentReference(this.reference);
 
   @override
-  final DocumentReference<TournamentType> reference;
+  final DocumentReference<Team> reference;
 
-  /// A reference to the [TournamentTypeCollectionReference] containing this document.
-  TournamentTypeCollectionReference get parent {
-    return _$TournamentTypeCollectionReference(
+  /// A reference to the [TeamCollectionReference] containing this document.
+  TeamCollectionReference get parent {
+    return _$TeamCollectionReference(
       reference.parent.parent!.withConverter<Tournament>(
         fromFirestore: TournamentCollectionReference.fromFirestore,
         toFirestore: TournamentCollectionReference.toFirestore,
@@ -1237,9 +1232,9 @@ class _$TournamentTypeDocumentReference
   }
 
   @override
-  Stream<TournamentTypeDocumentSnapshot> snapshots() {
+  Stream<TeamDocumentSnapshot> snapshots() {
     return reference.snapshots().map((snapshot) {
-      return TournamentTypeDocumentSnapshot._(
+      return TeamDocumentSnapshot._(
         snapshot,
         snapshot.data(),
       );
@@ -1247,9 +1242,9 @@ class _$TournamentTypeDocumentReference
   }
 
   @override
-  Future<TournamentTypeDocumentSnapshot> get([GetOptions? options]) {
+  Future<TeamDocumentSnapshot> get([GetOptions? options]) {
     return reference.get(options).then((snapshot) {
-      return TournamentTypeDocumentSnapshot._(
+      return TeamDocumentSnapshot._(
         snapshot,
         snapshot.data(),
       );
@@ -1263,23 +1258,28 @@ class _$TournamentTypeDocumentReference
 
   Future<void> update({
     Object? name = _sentinel,
-    Object? capacityTeam = _sentinel,
+    Object? listMemberTournament = _sentinel,
+    Object? teamCode = _sentinel,
+    Object? isDisqualified = _sentinel,
   }) async {
     final json = {
       if (name != _sentinel) "name": name as String,
-      if (capacityTeam != _sentinel) "capacityTeam": capacityTeam as int,
+      if (listMemberTournament != _sentinel)
+        "listMemberTournament": listMemberTournament as List<MemberTournament>,
+      if (teamCode != _sentinel) "teamCode": teamCode as String?,
+      if (isDisqualified != _sentinel) "isDisqualified": isDisqualified as bool,
     };
 
     return reference.update(json);
   }
 
-  Future<void> set(TournamentType value) {
+  Future<void> set(Team value) {
     return reference.set(value);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TournamentTypeDocumentReference &&
+    return other is TeamDocumentReference &&
         other.runtimeType == runtimeType &&
         other.parent == parent &&
         other.id == id;
@@ -1289,35 +1289,34 @@ class _$TournamentTypeDocumentReference
   int get hashCode => Object.hash(runtimeType, parent, id);
 }
 
-class TournamentTypeDocumentSnapshot extends FirestoreDocumentSnapshot {
-  TournamentTypeDocumentSnapshot._(
+class TeamDocumentSnapshot extends FirestoreDocumentSnapshot {
+  TeamDocumentSnapshot._(
     this.snapshot,
     this.data,
   );
 
   @override
-  final DocumentSnapshot<TournamentType> snapshot;
+  final DocumentSnapshot<Team> snapshot;
 
   @override
-  TournamentTypeDocumentReference get reference {
-    return TournamentTypeDocumentReference(
+  TeamDocumentReference get reference {
+    return TeamDocumentReference(
       snapshot.reference,
     );
   }
 
   @override
-  final TournamentType? data;
+  final Team? data;
 }
 
-abstract class TournamentTypeQuery
-    implements QueryReference<TournamentTypeQuerySnapshot> {
+abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
   @override
-  TournamentTypeQuery limit(int limit);
+  TeamQuery limit(int limit);
 
   @override
-  TournamentTypeQuery limitToLast(int limit);
+  TeamQuery limitToLast(int limit);
 
-  TournamentTypeQuery whereName({
+  TeamQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -1328,46 +1327,91 @@ abstract class TournamentTypeQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  TournamentTypeQuery whereCapacityTeam({
-    int? isEqualTo,
-    int? isNotEqualTo,
-    int? isLessThan,
-    int? isLessThanOrEqualTo,
-    int? isGreaterThan,
-    int? isGreaterThanOrEqualTo,
+  TeamQuery whereListMemberTournament({
+    List<MemberTournament>? isEqualTo,
+    List<MemberTournament>? isNotEqualTo,
+    List<MemberTournament>? isLessThan,
+    List<MemberTournament>? isLessThanOrEqualTo,
+    List<MemberTournament>? isGreaterThan,
+    List<MemberTournament>? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<int>? whereIn,
-    List<int>? whereNotIn,
+    List<MemberTournament>? arrayContainsAny,
+  });
+  TeamQuery whereTeamCode({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
+  TeamQuery whereIsDisqualified({
+    bool? isEqualTo,
+    bool? isNotEqualTo,
+    bool? isLessThan,
+    bool? isLessThanOrEqualTo,
+    bool? isGreaterThan,
+    bool? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<bool>? whereIn,
+    List<bool>? whereNotIn,
   });
 
-  TournamentTypeQuery orderByName({
+  TeamQuery orderByName({
     bool descending = false,
     String startAt,
     String startAfter,
     String endAt,
     String endBefore,
-    TournamentTypeDocumentSnapshot? startAtDocument,
-    TournamentTypeDocumentSnapshot? endAtDocument,
-    TournamentTypeDocumentSnapshot? endBeforeDocument,
-    TournamentTypeDocumentSnapshot? startAfterDocument,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
   });
 
-  TournamentTypeQuery orderByCapacityTeam({
+  TeamQuery orderByListMemberTournament({
     bool descending = false,
-    int startAt,
-    int startAfter,
-    int endAt,
-    int endBefore,
-    TournamentTypeDocumentSnapshot? startAtDocument,
-    TournamentTypeDocumentSnapshot? endAtDocument,
-    TournamentTypeDocumentSnapshot? endBeforeDocument,
-    TournamentTypeDocumentSnapshot? startAfterDocument,
+    List<MemberTournament> startAt,
+    List<MemberTournament> startAfter,
+    List<MemberTournament> endAt,
+    List<MemberTournament> endBefore,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
+  });
+
+  TeamQuery orderByTeamCode({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
+  });
+
+  TeamQuery orderByIsDisqualified({
+    bool descending = false,
+    bool startAt,
+    bool startAfter,
+    bool endAt,
+    bool endBefore,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
   });
 }
 
-class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
-    implements TournamentTypeQuery {
-  _$TournamentTypeQuery(
+class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
+    implements TeamQuery {
+  _$TeamQuery(
     this.reference,
     this._collection,
   );
@@ -1375,25 +1419,25 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
   final CollectionReference<Object?> _collection;
 
   @override
-  final Query<TournamentType> reference;
+  final Query<Team> reference;
 
-  TournamentTypeQuerySnapshot _decodeSnapshot(
-    QuerySnapshot<TournamentType> snapshot,
+  TeamQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<Team> snapshot,
   ) {
     final docs = snapshot.docs.map((e) {
-      return TournamentTypeQueryDocumentSnapshot._(e, e.data());
+      return TeamQueryDocumentSnapshot._(e, e.data());
     }).toList();
 
     final docChanges = snapshot.docChanges.map((change) {
-      return FirestoreDocumentChange<TournamentTypeDocumentSnapshot>(
+      return FirestoreDocumentChange<TeamDocumentSnapshot>(
         type: change.type,
         oldIndex: change.oldIndex,
         newIndex: change.newIndex,
-        doc: TournamentTypeDocumentSnapshot._(change.doc, change.doc.data()),
+        doc: TeamDocumentSnapshot._(change.doc, change.doc.data()),
       );
     }).toList();
 
-    return TournamentTypeQuerySnapshot._(
+    return TeamQuerySnapshot._(
       snapshot,
       docs,
       docChanges,
@@ -1401,32 +1445,32 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
   }
 
   @override
-  Stream<TournamentTypeQuerySnapshot> snapshots([SnapshotOptions? options]) {
+  Stream<TeamQuerySnapshot> snapshots([SnapshotOptions? options]) {
     return reference.snapshots().map(_decodeSnapshot);
   }
 
   @override
-  Future<TournamentTypeQuerySnapshot> get([GetOptions? options]) {
+  Future<TeamQuerySnapshot> get([GetOptions? options]) {
     return reference.get(options).then(_decodeSnapshot);
   }
 
   @override
-  TournamentTypeQuery limit(int limit) {
-    return _$TournamentTypeQuery(
+  TeamQuery limit(int limit) {
+    return _$TeamQuery(
       reference.limit(limit),
       _collection,
     );
   }
 
   @override
-  TournamentTypeQuery limitToLast(int limit) {
-    return _$TournamentTypeQuery(
+  TeamQuery limitToLast(int limit) {
+    return _$TeamQuery(
       reference.limitToLast(limit),
       _collection,
     );
   }
 
-  TournamentTypeQuery whereName({
+  TeamQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -1437,7 +1481,7 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
     List<String>? whereIn,
     List<String>? whereNotIn,
   }) {
-    return _$TournamentTypeQuery(
+    return _$TeamQuery(
       reference.where(
         'name',
         isEqualTo: isEqualTo,
@@ -1454,20 +1498,46 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
     );
   }
 
-  TournamentTypeQuery whereCapacityTeam({
-    int? isEqualTo,
-    int? isNotEqualTo,
-    int? isLessThan,
-    int? isLessThanOrEqualTo,
-    int? isGreaterThan,
-    int? isGreaterThanOrEqualTo,
+  TeamQuery whereListMemberTournament({
+    List<MemberTournament>? isEqualTo,
+    List<MemberTournament>? isNotEqualTo,
+    List<MemberTournament>? isLessThan,
+    List<MemberTournament>? isLessThanOrEqualTo,
+    List<MemberTournament>? isGreaterThan,
+    List<MemberTournament>? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<int>? whereIn,
-    List<int>? whereNotIn,
+    List<MemberTournament>? arrayContainsAny,
   }) {
-    return _$TournamentTypeQuery(
+    return _$TeamQuery(
       reference.where(
-        'capacityTeam',
+        'listMemberTournament',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
+      ),
+      _collection,
+    );
+  }
+
+  TeamQuery whereTeamCode({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$TeamQuery(
+      reference.where(
+        'teamCode',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -1482,16 +1552,44 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
     );
   }
 
-  TournamentTypeQuery orderByName({
+  TeamQuery whereIsDisqualified({
+    bool? isEqualTo,
+    bool? isNotEqualTo,
+    bool? isLessThan,
+    bool? isLessThanOrEqualTo,
+    bool? isGreaterThan,
+    bool? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<bool>? whereIn,
+    List<bool>? whereNotIn,
+  }) {
+    return _$TeamQuery(
+      reference.where(
+        'isDisqualified',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  TeamQuery orderByName({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    TournamentTypeDocumentSnapshot? startAtDocument,
-    TournamentTypeDocumentSnapshot? endAtDocument,
-    TournamentTypeDocumentSnapshot? endBeforeDocument,
-    TournamentTypeDocumentSnapshot? startAfterDocument,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('name', descending: false);
 
@@ -1521,21 +1619,21 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$TournamentTypeQuery(query, _collection);
+    return _$TeamQuery(query, _collection);
   }
 
-  TournamentTypeQuery orderByCapacityTeam({
+  TeamQuery orderByListMemberTournament({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
     Object? endAt = _sentinel,
     Object? endBefore = _sentinel,
-    TournamentTypeDocumentSnapshot? startAtDocument,
-    TournamentTypeDocumentSnapshot? endAtDocument,
-    TournamentTypeDocumentSnapshot? endBeforeDocument,
-    TournamentTypeDocumentSnapshot? startAfterDocument,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('capacityTeam', descending: false);
+    var query = reference.orderBy('listMemberTournament', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1563,12 +1661,96 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
       query = query.endBefore([endBefore]);
     }
 
-    return _$TournamentTypeQuery(query, _collection);
+    return _$TeamQuery(query, _collection);
+  }
+
+  TeamQuery orderByTeamCode({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('teamCode', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TeamQuery(query, _collection);
+  }
+
+  TeamQuery orderByIsDisqualified({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('isDisqualified', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TeamQuery(query, _collection);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is _$TournamentTypeQuery &&
+    return other is _$TeamQuery &&
         other.runtimeType == runtimeType &&
         other.reference == reference;
   }
@@ -1577,38 +1759,37 @@ class _$TournamentTypeQuery extends QueryReference<TournamentTypeQuerySnapshot>
   int get hashCode => Object.hash(runtimeType, reference);
 }
 
-class TournamentTypeQuerySnapshot
-    extends FirestoreQuerySnapshot<TournamentTypeQueryDocumentSnapshot> {
-  TournamentTypeQuerySnapshot._(
+class TeamQuerySnapshot
+    extends FirestoreQuerySnapshot<TeamQueryDocumentSnapshot> {
+  TeamQuerySnapshot._(
     this.snapshot,
     this.docs,
     this.docChanges,
   );
 
-  final QuerySnapshot<TournamentType> snapshot;
+  final QuerySnapshot<Team> snapshot;
 
   @override
-  final List<TournamentTypeQueryDocumentSnapshot> docs;
+  final List<TeamQueryDocumentSnapshot> docs;
 
   @override
-  final List<FirestoreDocumentChange<TournamentTypeDocumentSnapshot>>
-      docChanges;
+  final List<FirestoreDocumentChange<TeamDocumentSnapshot>> docChanges;
 }
 
-class TournamentTypeQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
-    implements TournamentTypeDocumentSnapshot {
-  TournamentTypeQueryDocumentSnapshot._(this.snapshot, this.data);
+class TeamQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
+    implements TeamDocumentSnapshot {
+  TeamQueryDocumentSnapshot._(this.snapshot, this.data);
 
   @override
-  final QueryDocumentSnapshot<TournamentType> snapshot;
+  final QueryDocumentSnapshot<Team> snapshot;
 
   @override
-  TournamentTypeDocumentReference get reference {
-    return TournamentTypeDocumentReference(snapshot.reference);
+  TeamDocumentReference get reference {
+    return TeamDocumentReference(snapshot.reference);
   }
 
   @override
-  final TournamentType data;
+  final Team data;
 }
 
 // **************************************************************************
@@ -1629,8 +1810,8 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
     )
       ..state = $enumDecode(_$TournamentStateEnumMap, json['state'])
       ..image = json['image'] as String?
-      ..listTeam = (json['listTeam'] as List<dynamic>?)
-          ?.map((e) => Team.fromJson(e as Map<String, dynamic>))
+      ..listTeam = (json['listTeam'] as List<dynamic>)
+          .map((e) => Team.fromJson(e as Map<String, dynamic>))
           .toList();
 
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
@@ -1639,14 +1820,14 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'date': instance.date,
       'game': _$GameNameEnumMap[instance.game],
       'server': _$ServerTypeEnumMap[instance.server],
-      'tournamentType': instance.tournamentType,
+      'tournamentType': instance.tournamentType.toJson(),
       'capacity': instance.capacity,
       'cashPrize': instance.cashPrize,
       'roundNumber': instance.roundNumber,
       'state': _$TournamentStateEnumMap[instance.state],
       'image': instance.image,
       'killPointTournament': instance.killPointTournament,
-      'listTeam': instance.listTeam,
+      'listTeam': instance.listTeam.map((e) => e.toJson()).toList(),
     };
 
 const _$GameNameEnumMap = {

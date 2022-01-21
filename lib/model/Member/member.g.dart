@@ -35,7 +35,7 @@ abstract class MemberCollectionReference
     Member value,
     SetOptions? options,
   ) {
-    return _$MemberToJson(value);
+    return value.toJson();
   }
 
   @override
@@ -52,7 +52,7 @@ class _$MemberCollectionReference extends _$MemberQuery
     firestore ??= FirebaseFirestore.instance;
 
     return _$MemberCollectionReference._(
-      firestore.collection('members').withConverter(
+      firestore.collection('Members').withConverter(
             fromFirestore: MemberCollectionReference.fromFirestore,
             toFirestore: MemberCollectionReference.toFirestore,
           ),
@@ -513,7 +513,8 @@ class MemberQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 
 Member _$MemberFromJson(Map<String, dynamic> json) => Member(
       pseudo: json['pseudo'] as String,
-    )..uid = json['uid'] as String;
+      uid: json['uid'] as String,
+    );
 
 Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{
       'pseudo': instance.pseudo,

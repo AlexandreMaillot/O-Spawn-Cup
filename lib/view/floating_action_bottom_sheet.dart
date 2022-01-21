@@ -94,6 +94,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
     DateTime selectedDate = DateTime.now();
 
     return FloatingActionButton(
+      heroTag: "filterMenu",
       elevation: 0,
       backgroundColor: colorTheme,
       child: SvgPicture.asset(
@@ -286,6 +287,7 @@ class ArrowButton extends StatelessWidget {
           transform: Matrix4.translationValues(
               0.0, screenSize.height * 0.96 - screenSize.height, 0.0),
           child: FloatingActionButton(
+            heroTag: "validFilter",
             elevation: 0,
             backgroundColor: colorTheme,
             child: SvgPicture.asset(

@@ -21,26 +21,26 @@ class CustomDrawer extends StatelessWidget {
               // padding: EdgeInsets.only(top: 70),
               color: colorBackgroundTheme,
               width: screenSize.width,
-              padding: const EdgeInsets.only(left: 22,bottom: 26),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: CircleAvatar(
-                      radius: 56,
+              padding: const EdgeInsets.only(bottom: 26),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: CircleAvatar(
+                        radius: 56,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    // width: 56,
-                    child: Text(
-                        "Mon Pseudo",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white,),
+                    SizedBox(
+                      child: Text(
+                          "Mon Pseudo",
+                        style: TextStyle(color: Colors.white,),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -61,7 +61,7 @@ class CustomDrawer extends StatelessWidget {
                           screenSize: screenSize,
                           colorButton: Colors.white,
                           text: "ACCUEIL",
-                          onPressedMethod: () => print("home"),
+                          onPressedMethod: () => Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false),
                         ),
                         CustomButtonTheme(
                           colorText: colorTextTheme,
@@ -74,7 +74,7 @@ class CustomDrawer extends StatelessWidget {
                           colorText: colorTextTheme,
                           screenSize: screenSize,
                           colorButton: Colors.white,
-                          text: "RESULTATS DES TOURNOIS",
+                          text: "CREER UN TOURNOIS",
                           onPressedMethod: () => print("result"),
                         ),
                       ],

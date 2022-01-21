@@ -7,9 +7,12 @@ class CustomButtonTheme extends StatelessWidget {
   String text;
   VoidCallback onPressedMethod;
   final Size screenSize;
-
+  double width;
+  double height;
   CustomButtonTheme({
     Key? key,
+    this.width = 0,
+    this.height = 0,
     required this.colorButton,
     required this.colorText,
     required this.screenSize,
@@ -21,8 +24,8 @@ class CustomButtonTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: screenSize.width * 0.87,
-      height: screenSize.height * 0.06,
+      width: (width == 0.0 ) ? screenSize.width * 0.87 : width,
+      height: (height == 0.0) ? screenSize.height * 0.06 : height,
       child: ElevatedButton(
         onPressed: onPressedMethod,
         style: ButtonStyle(
