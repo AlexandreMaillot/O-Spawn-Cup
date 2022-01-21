@@ -43,7 +43,7 @@ class _SignCupState extends State<SignCup> {
   void initState() {
     gamerTagController = TextEditingController();
     teamNameController = TextEditingController();
-
+    tournament = widget.tournamentSnap.data()!;
     years = tournament.date.toString().substring(0, 4);
     month = tournament.date.toString().substring(4, 6);
     day = tournament.date.toString().substring(6, 8);
@@ -53,7 +53,7 @@ class _SignCupState extends State<SignCup> {
 
   @override
   Widget build(BuildContext context) {
-    tournament = widget.tournamentSnap.data()!;
+
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
@@ -187,6 +187,8 @@ class _SignCupState extends State<SignCup> {
                                 if (isLeader()) {
                                   team = await verifTeamName(team);
                                   if (team != null) {
+                                    // print(getRandomString(5));
+                                    team.teamCode = await getRandomString(5);
                                     tournament.listTeam.add(team);
                                     await tournamentsRef
                                         .doc(widget.tournamentSnap.id)
@@ -215,6 +217,12 @@ class _SignCupState extends State<SignCup> {
         ),
       ),
     );
+  }
+  final String _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final Random _rnd = Random();
+  String getRandomString(int length) {
+    return widget.tournamentSnap.id.substring(0,5) + String.fromCharCodes(Iterable.generate(
+        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
   }
 
   Member addMember() {
