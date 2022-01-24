@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_dropdowwn_tournament_state.dart';
+import 'package:o_spawn_cup/CustomsWidgets/custom_row_textfield_date.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_text_field.dart';
-import 'package:o_spawn_cup/CustomsWidgets/search_button.dart';
 import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/CustomsWidgets/custom_dropdown_tournament_type.dart';
 import 'package:o_spawn_cup/model/TournamentType/tounament_type_controller.dart';
@@ -128,93 +129,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: screenSize.width * 0.87,
-                        height: screenSize.height * 0.06,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(31),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                onChanged: (value) {
-                                  if(value.length == 2){
-                                    FocusScope.of(context).requestFocus(monthFocus);
-                                  }
-
-                                },
-                                focusNode: dayFocus,
-                                controller: dayController,
-                                maxLength: 2,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                decoration: const InputDecoration(
-                                  hintText: "JOUR",
-                                  counterText: "",
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            DottedLine(
-                              direction: Axis.vertical,
-                              lineThickness: 0.5,
-                              dashColor: colorHintTextTheme.withOpacity(0.43),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                onChanged: (value) {
-                                  if(value.length == 2){
-                                    FocusScope.of(context).requestFocus(yearsFocus);
-                                  }
-                                },
-                                focusNode: monthFocus,
-                                controller: monthController,
-                                maxLength: 2,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(),
-                                decoration: const InputDecoration(
-                                  hintText: "MOIS",
-                                  counterText: "",
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            DottedLine(
-                              direction: Axis.vertical,
-                              lineThickness: 0.5,
-                              dashColor: colorHintTextTheme.withOpacity(0.43),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                onChanged: (value) {
-                                  // if(value.length == 4) {
-                                  //   FocusScope.of(context).requestFocus(typeFocus);
-                                  // }
-                                },
-                                focusNode: yearsFocus,
-                                controller: yearsController,
-                                maxLength: 4,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                decoration: const InputDecoration(
-                                  hintText: "ANNEE",
-                                  counterText: "",
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      RowTextfieldDate(screenSize: screenSize, monthFocus: monthFocus, dayFocus: dayFocus, dayController: dayController, yearsFocus: yearsFocus, monthController: monthController, yearsController: yearsController),
                       tournamentTypeDropdown,
                       CustomTextField(
                           controller: tournamentNameController,
@@ -224,14 +139,15 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                           buttonColor: Colors.white,
                           borderColor: Colors.white),
                       tournamentStateDropdown,
-                      SearchButton(
+                      CustomButtonTheme(
                         screenSize: screenSize,
                         onPressedMethod: () async {
 
                           await saveFilter();
                           widget.functionFilter();
                           Navigator.pop(context,tournamentNameController.text);
-                        },
+                        }, text: 'RECHERCHER', colorText: colorTheme, colorButton: colorBackgroundTheme,
+                        
                       ),
                     ],
                   ),
@@ -269,6 +185,10 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
     // print(tournamentStateDropdown.dropdownValue.toString());
   }
 }
+
+
+
+
 
 class ArrowButton extends StatelessWidget {
   const ArrowButton({

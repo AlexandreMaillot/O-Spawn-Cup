@@ -96,8 +96,8 @@ class _ListCupState extends State<ListCup> {
                         }),
                       ));
                 }
-
                 QuerySnapshot<Tournament?>? querySnapshot = snapshot.requireData as QuerySnapshot<Tournament?>?;
+
                 if(querySnapshot!.docs.isEmpty){
                   return const Center(child: Text("Il n'y a aucun tournois !",style: TextStyle(color: Colors.white),));
                 } else {

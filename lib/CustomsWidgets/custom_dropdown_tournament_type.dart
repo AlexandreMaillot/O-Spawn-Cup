@@ -79,12 +79,12 @@ class _TournamentTypeDropdownState extends State<TournamentTypeDropdown> {
                 underline: const SizedBox(),
                 onChanged: (newValue) {
                   setState(() {
-                    widget.dropdownValue = newValue!;
+                    widget.dropdownValue = newValue;
                   });
                 },
                 items: querySnapshot.docs.map((value) {
                   return DropdownMenuItem<Object>(
-                    value: value.data.name,
+                    value: value.id,
                     child: Text(value.data.name),
                   );
                 }).toList(),

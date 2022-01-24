@@ -25,7 +25,7 @@ class CustomButtonTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: (width == 0.0 ) ? screenSize.width * 0.87 : width,
-      height: (height == 0.0) ? screenSize.height * 0.06 : height,
+      height: (height == 0.0) ? screenSize.height * 0.05 : height,
       child: ElevatedButton(
         onPressed: onPressedMethod,
         style: ButtonStyle(

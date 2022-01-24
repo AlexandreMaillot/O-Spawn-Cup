@@ -174,7 +174,7 @@ class _SignCupState extends State<SignCup> {
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: CustomButtonTheme(
-                            width: screenSize.width * 0.6,
+
                             colorButton: colorTheme,
                             colorText: colorBackgroundTheme,
                             screenSize: screenSize,
@@ -188,7 +188,7 @@ class _SignCupState extends State<SignCup> {
                                   team = await verifTeamName(team);
                                   if (team != null) {
                                     // print(getRandomString(5));
-                                    team.teamCode = await getRandomString(5);
+                                    team.teamCode = getRandomString(5);
                                     tournament.listTeam.add(team);
                                     await tournamentsRef
                                         .doc(widget.tournamentSnap.id)
@@ -283,40 +283,43 @@ class _SignCupState extends State<SignCup> {
 
   bool isLeader() => _roleType == RoleType.leader;
 
-  Container buildContainerHeader(Size screenSize, Tournament tournament) {
-    return Container(
-      width: screenSize.width,
-      height: screenSize.height * 0.25,
-      // color: Colors.orange,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.95), BlendMode.dstATop),
-          opacity: 0.31,
-          image: Image.network(tournament.image!).image,
-          fit: BoxFit.cover,
+  Hero buildContainerHeader(Size screenSize, Tournament tournament) {
+    return Hero(
+      tag: "tagcard_cup_${widget.tournamentSnap.id}",
+      child: Container(
+        width: screenSize.width,
+        height: screenSize.height * 0.25,
+        // color: Colors.orange,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.95), BlendMode.dstATop),
+            opacity: 0.31,
+            image: Image.network(tournament.image!).image,
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            tournament.name,
-            style: TextStyle(
-                color: colorTheme,
-                fontSize: 35,
-                fontFamily: 'o_spawn_cup_font',
-                fontWeight: FontWeight.normal),
-          ),
-          Text(
-            tournament.game.name,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontFamily: 'o_spawn_cup_font',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              tournament.name,
+              style: TextStyle(
+                  color: colorTheme,
+                  fontSize: 35,
+                  fontFamily: 'o_spawn_cup_font',
+                  fontWeight: FontWeight.normal),
             ),
-          ),
-        ],
+            Text(
+              tournament.game.name,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontFamily: 'o_spawn_cup_font',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -377,6 +380,7 @@ class _SignCupState extends State<SignCup> {
 
               // Access the QuerySnapshot
               TournamentDocumentSnapshot querySnapshot = snapshot.requireData;
+              tournament = querySnapshot.data!;;
               if (querySnapshot.data!.listTeam.isNotEmpty) {
                 return DataTable(
                     columnSpacing: 50,

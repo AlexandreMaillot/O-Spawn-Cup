@@ -14,7 +14,7 @@ class BackgroundAroundField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: screenSize.width * 0.87,
-        height: screenSize.height * 0.06,
+        height: screenSize.height * 0.05,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: Colors.white,

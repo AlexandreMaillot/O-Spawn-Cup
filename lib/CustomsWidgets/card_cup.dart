@@ -28,28 +28,30 @@ class CardCup extends StatelessWidget {
           },
         ));
       },
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(22),
-
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(image!,),
-                fit: BoxFit.cover,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(22),
+              child: Hero(
+                tag: "tagcard_cup_${tournamentSnap.id}",
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(image!,),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Text(
+                      //   tournamentSnap!.name,
+                      //   style: Theme.of(context).textTheme.headline5,
+                      // ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Text(
-                //   tournamentSnap!.name,
-                //   style: Theme.of(context).textTheme.headline5,
-                // ),
-              ],
-            ),
           ),
-        ),
     );
   }
 }
