@@ -15,6 +15,7 @@ import 'package:o_spawn_cup/model/Team/team.dart' as t;
 import 'dart:math';
 
 import 'package:o_spawn_cup/model/Tournament/tournament.dart';
+import 'package:o_spawn_cup/model/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/model/role_type.dart';
 
 import '../constant.dart';
@@ -66,7 +67,7 @@ class _SignCupState extends State<SignCup> {
           children: [
             buildContainerHeader(screenSize, tournament),
             Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.only(top: 25, right: 15,left: 15 , bottom: 15),
               child: Column(
                 children: [
                   rowDate(date: date),
@@ -291,6 +292,17 @@ class _SignCupState extends State<SignCup> {
         height: screenSize.height * 0.25,
         // color: Colors.orange,
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: (widget.tournamentSnap.data()!.state == TournamentState.incriptionOuverte) ? colorOpen : (widget.tournamentSnap.data()!.state == TournamentState.enCours) ? colorInProgress : colorClose,
+              blurRadius: 25.0, // soften the shadow
+              spreadRadius: 10, //extend the shadow
+              offset: Offset(
+                0, // Move to right 10  horizontally
+                -15, // Move to bottom 10 Vertically
+              ),
+            )
+          ],
           image: DecorationImage(
             colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.95), BlendMode.dstATop),

@@ -11,7 +11,6 @@ class TextElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     ScreenSize screenSize = MakeItResponsive().getScreenSize(context);
     return Text(
       text,
@@ -20,7 +19,7 @@ class TextElement extends StatelessWidget {
           color: color,
           fontWeight: fontWeight,
           fontSize: (screenSize == ScreenSize.small) ? 12 : 28,
-          fontFamily: "ospawn_text"),
+          fontFamily: "o_spawn_cup_font"),
     );
   }
 
