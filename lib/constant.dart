@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/model/card_game.dart';
-import 'package:o_spawn_cup/model/game_name.dart';
+import 'package:o_spawn_cup/models/card_game.dart';
+import 'package:o_spawn_cup/models/game_name.dart';
 
 Color colorTheme = const Color(0xffFFD739);
 Color colorBackgroundTheme = const Color(0xff191919);

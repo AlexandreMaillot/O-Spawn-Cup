@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:o_spawn_cup/view/form_tournament.dart';
-import 'package:o_spawn_cup/view/home.dart';
-import 'package:o_spawn_cup/view/login.dart';
+import 'package:o_spawn_cup/ui/view/form_tournament.dart';
+import 'package:o_spawn_cup/ui/view/home.dart';
+import 'package:o_spawn_cup/ui/view/home2.dart';
+import 'package:o_spawn_cup/ui/view/login.dart';
 
+import 'bloc/bloc_router.dart';
 import 'constant.dart';
 import 'firebase_options.dart';
-import 'model/Team/test.dart';
-import 'view/register.dart';
+import 'models/Team/test.dart';
+import 'ui/view/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +41,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const Home(),
+        // '/': (context) => Home(),
+        '/': (context) => BlocRouter().allGames(),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/home': (context) => const Home(),
