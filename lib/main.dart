@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:o_spawn_cup/ui/view/form_tournament.dart';
-import 'package:o_spawn_cup/ui/view/home.dart';
-import 'package:o_spawn_cup/ui/view/home2.dart';
+
 import 'package:o_spawn_cup/ui/view/login.dart';
 
 import 'bloc/bloc_router.dart';
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => BlocRouter().allGames(),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
-        '/home': (context) => const Home(),
+        '/home': (context) => BlocRouter().allGames(),
         '/create_tournament': (context) => const FormTournament(),
         // '/list_cup': (context) => ListCup(gameName: ),
       },

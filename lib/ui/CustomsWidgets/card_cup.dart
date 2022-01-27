@@ -5,7 +5,6 @@ import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/text_element.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/ui/view/home.dart';
 import 'package:o_spawn_cup/ui/view/sign_cup.dart';
 
 
