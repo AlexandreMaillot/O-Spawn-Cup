@@ -1,34 +1,34 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
-import 'package:mailer/smtp_server/gmail.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/text_element.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/models/Member/member.dart';
-import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart'
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:cloud_firestore_odm/cloud_firestore_odm.dart";
+import "package:dotted_border/dotted_border.dart";
+import "package:dotted_line/dotted_line.dart";
+import "package:flutter/material.dart";
+import "package:flutter_switch/flutter_switch.dart";
+import "package:mailer/mailer.dart";
+import "package:mailer/smtp_server.dart";
+import "package:mailer/smtp_server/gmail.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/models/Member/member.dart";
+import "package:o_spawn_cup/models/MemberTournament/member_tournament.dart"
     as Mt;
-import 'package:o_spawn_cup/models/Team/team.dart' as t;
-import 'dart:math';
+import "package:o_spawn_cup/models/Team/team.dart" as t;
+import "dart:math";
 
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/models/role_type.dart';
+import "package:o_spawn_cup/models/Tournament/tournament.dart";
+import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
+import "package:o_spawn_cup/models/role_type.dart";
 
 
 
 class SignCup extends StatefulWidget {
-  QueryDocumentSnapshot<Tournament?> tournamentSnap;
-  SignCup({Key? key, required this.tournamentSnap}) : super(key: key);
+  Tournament tournament;
+  SignCup({Key? key, required this.tournament}) : super(key: key);
 
   @override
   _SignCupState createState() => _SignCupState();
@@ -255,8 +255,8 @@ class _SignCupState extends State<SignCup> {
   }
 
   SmtpServer paramEmail() {
-    String username = 'tamoro974@gmail.com';
-    String token = 'fftvuferdeyhpqqh';
+    String username = "tamoro974@gmail.com";
+    String token = "fftvuferdeyhpqqh";
     // String password = 'AIzaSyC67O8S6jcsHAnV0ursdHN2gTcjeaj76wA';
     // String password = 'fgmpfizenmfzmdlb';
 
@@ -266,12 +266,12 @@ class _SignCupState extends State<SignCup> {
 
   Message createMessage() {
     final message = Message()
-      ..from = Address("contact@o-spawn.re", 'O-Spawn')
-      ..recipients.add('alexandre.maillot97@gmail.com')
-      ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
-      ..bccRecipients.add(Address('bccAddress@example.com'))
-      ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
-      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..from = Address("contact@o-spawn.re", "O-Spawn")
+      ..recipients.add("alexandre.maillot97@gmail.com")
+      ..ccRecipients.addAll(["destCc1@example.com", "destCc2@example.com"])
+      ..bccRecipients.add(Address("bccAddress@example.com"))
+      ..subject = "Test Dart Mailer library :: 😀 :: ${DateTime.now()}"
+      ..text = "This is the plain text.\nThis is line 2 of the text part."
       ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
     return message;
   }
@@ -279,17 +279,17 @@ class _SignCupState extends State<SignCup> {
   Future<void> showReport(Message message, SmtpServer smtpServer) async {
     try {
       final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
+      print("Message sent: " + sendReport.toString());
     } on MailerException catch (e) {
-      print('$e Message not sent.');
+      print("$e Message not sent.");
       for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
+        print("Problem: ${p.code}: ${p.msg}");
       }
     }
   }
 
   final String _chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+      "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
   final Random _rnd = Random();
   String getRandomString(int length) {
     return widget.tournamentSnap.id.substring(0, 5) +
@@ -399,7 +399,7 @@ class _SignCupState extends State<SignCup> {
               style: TextStyle(
                   color: colorTheme,
                   fontSize: 35,
-                  fontFamily: 'o_spawn_cup_font',
+                  fontFamily: "o_spawn_cup_font",
                   fontWeight: FontWeight.normal),
             ),
             SubtitleElement(
@@ -530,15 +530,15 @@ class _SignCupState extends State<SignCup> {
             color: colorTheme,
           )),
           const DataCell(Text(
-            '0',
+            "0",
             style: TextStyle(color: Colors.white),
           )),
           const DataCell(Text(
-            '0',
+            "0",
             style: TextStyle(color: Colors.white),
           )),
           const DataCell(Text(
-            '0',
+            "0",
             style: TextStyle(color: Colors.white),
           ))
         ]));

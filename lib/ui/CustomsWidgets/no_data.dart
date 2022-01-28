@@ -9,9 +9,10 @@ class NoData extends StatelessWidget {
     return Center(child: Text(
       string,
       style: const TextStyle(
-        color: Colors.teal,
+        color: Colors.white,
         fontSize: 25,
-        fontStyle: FontStyle.italic
+        fontStyle: FontStyle.italic,
+        fontFamily: "o_spawn_cup_font",
       ),
     ));
   }

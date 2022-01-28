@@ -1,34 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/text_element.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/ui/view/sign_cup.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/flutter_svg.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/models/Tournament/tournament.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
+import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
+import "package:o_spawn_cup/ui/view/sign_cup.dart";
 
 
 
 class CardCup extends StatelessWidget {
-  QueryDocumentSnapshot<Tournament?> tournamentSnap;
+  Tournament tournament;
   CardCup({
     Key? key,
-    required this.tournamentSnap,
+    required this.tournament,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Tournament tournament = tournamentSnap.data()!;
-    String? image = "";
-    if(tournament.image != null){
-      image = tournament.image;
-    }
+
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
 
-            return SignCup(tournamentSnap: tournamentSnap,);
+            return SignCup(tournament: tournament,);
           },
         ));
       },
@@ -37,16 +33,16 @@ class CardCup extends StatelessWidget {
                   borderRadius:
                   const BorderRadius.all(Radius.circular(22)),
                   border:
-                  Border.all(color: (tournamentSnap.data()!.state == TournamentState.incriptionOuverte) ? colorOpen : (tournamentSnap.data()!.state == TournamentState.enCours) ? colorInProgress : colorClose,width: 2)),
+                  Border.all(color: (tournament.state == TournamentState.incriptionOuverte) ? colorOpen : (tournament.state == TournamentState.enCours) ? colorInProgress : colorClose,width: 2)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(22),
                 child: Hero(
-                  tag: "tagcard_cup_${tournamentSnap.id}",
+                  tag: "tagcard_cup_${tournament.hashCode}",
                   child: Container(
                     decoration: BoxDecoration(
 
                       image: DecorationImage(
-                        image: NetworkImage(image!,),
+                        image: NetworkImage(tournament.image!,),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -56,14 +52,14 @@ class CardCup extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0,top: 8),
-                          child: TextElement(text: tournamentSnap.data()!.date.toString().substring(6, 8) + "/" + tournamentSnap.data()!.date.toString().substring(4, 6) + "/" + tournamentSnap.data()!.date.toString().substring(0, 4),color: Colors.white,),
+                          child: TextElement(text: tournament.date.toString().substring(6, 8) + "/" + tournament.date.toString().substring(4, 6) + "/" + tournament.date.toString().substring(0, 4),color: Colors.white,),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
                               SvgPicture.asset("assets/images/tournament_type_icon.svg"),
-                              TextElement(text: tournamentSnap.data()!.tournamentType.name,color: Colors.white,),
+                              TextElement(text: tournament.tournamentType.name,color: Colors.white,),
                             ],
                           ),
                         ),

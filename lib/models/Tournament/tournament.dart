@@ -13,6 +13,7 @@ part 'tournament.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Tournament {
+  String? documentId;
   String name;
   int date;
   GameName game;
@@ -44,7 +45,6 @@ class Tournament {
       _$TournamentFromJson(json);
 
   Map<String, dynamic> toJson() => _$TournamentToJson(this);
-
 }
 
 @Collection<Tournament>('Tournament')
