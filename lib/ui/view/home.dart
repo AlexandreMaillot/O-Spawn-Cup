@@ -1,14 +1,14 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/bloc/bloc_list_game.dart';
-import 'package:o_spawn_cup/bloc/bloc_provider.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/models/card_game.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/game_card.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/no_data.dart';
+import "package:flutter/material.dart";
+import "package:o_spawn_cup/bloc/bloc_list_game.dart";
+import "package:o_spawn_cup/bloc/bloc_provider.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/models/card_game.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/game_card.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/no_data.dart";
 
 
 class Home extends StatelessWidget {

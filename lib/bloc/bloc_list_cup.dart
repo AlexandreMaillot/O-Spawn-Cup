@@ -43,8 +43,7 @@ class BlocListCup extends Bloc {
         .where("tournamentType.name", isEqualTo: (type == "") ? null : type)
         .orderBy("date", descending: true)
         .snapshots();
-    Stream<List<QueryDocumentSnapshot<Object?>>> listSnap =
-    querySnap.map((event) => event.docs);
+    Stream<List<QueryDocumentSnapshot<Object?>>> listSnap = querySnap.map((event) => event.docs);
     listSnap.forEach((element) {
       tournamentList = element.map((e) => e.data()).cast<Tournament>().toList();
     });
@@ -60,17 +59,21 @@ class BlocListCup extends Bloc {
         .orderBy("date", descending: true)
         .where("game", isEqualTo: gameName.name)
         .snapshots();
-    querySnap.listen((event) {
-
-    });
     Stream<List<QueryDocumentSnapshot<Object?>>> listSnap =
         querySnap.map((event) => event.docs);
 
-
+    var t;
     listSnap.forEach((element) {
       tournamentList = element.map((e) => e.data()).cast<Tournament>().toList();
-    });
-    sink.add(tournamentList);
+      t = element.map((e) => e).toList();
+      t.asMap().forEach((key, value) {
+        tournamentList[key].name = "plop";
+
+      });
+
+      // tournamentList
+    }).then((value) => sink.add(tournamentList));
+
     // tournamentList =
   }
 
