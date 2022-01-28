@@ -46,9 +46,10 @@ class BlocListCup extends Bloc {
     Stream<List<QueryDocumentSnapshot<Object?>>> listSnap = querySnap.map((event) => event.docs);
     listSnap.forEach((element) {
       tournamentList = element.map((e) => e.data()).cast<Tournament>().toList();
+      sink.add(tournamentList);
     });
     // tournamentsRef.get()snapshots()
-    sink.add(tournamentList);
+
 
   }
 
@@ -61,18 +62,15 @@ class BlocListCup extends Bloc {
         .snapshots();
     Stream<List<QueryDocumentSnapshot<Object?>>> listSnap =
         querySnap.map((event) => event.docs);
-
-    var t;
     listSnap.forEach((element) {
       tournamentList = element.map((e) => e.data()).cast<Tournament>().toList();
-      t = element.map((e) => e).toList();
-      t.asMap().forEach((key, value) {
-        tournamentList[key].name = "plop";
-
+      element.asMap().forEach((key, value) {
+        tournamentList[key].documentId = value.id;
       });
+      sink.add(tournamentList);
 
-      // tournamentList
-    }).then((value) => sink.add(tournamentList));
+    });
+
 
     // tournamentList =
   }
