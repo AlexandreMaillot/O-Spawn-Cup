@@ -6,12 +6,14 @@ class CustomButtonConnectWith extends StatelessWidget{
   Size screenSize;
   String imageName;
   String text;
+  VoidCallback onPressedMethod;
 
   CustomButtonConnectWith({
     Key? key,
     required this.screenSize,
     required this.imageName,
     required this.text,
+    required this.onPressedMethod,
   }): super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class CustomButtonConnectWith extends StatelessWidget{
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.06,
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: onPressedMethod,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

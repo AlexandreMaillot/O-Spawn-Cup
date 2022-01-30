@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:o_spawn_cup/ui/view/form_tournament.dart';
 
 import 'package:o_spawn_cup/ui/view/login.dart';
+import 'package:o_spawn_cup/ui/view/login_register.dart';
 
 import 'bloc/bloc_router.dart';
 import 'constant.dart';
@@ -40,8 +41,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        // '/': (context) => Home(),
-        '/': (context) => BlocRouter().allGames(),
+        '/': (context) => const LoginRegister(),
+        //'/': (context) => BlocRouter().allGames(),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/home': (context) => BlocRouter().allGames(),

@@ -26,7 +26,6 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    authentification = Authentification();
     emailText = TextEditingController();
     passwordText = TextEditingController();
     super.initState();
@@ -34,8 +33,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     Size screenSize = MediaQuery.of(context).size;
+    Authentification auth = Authentification();
     return SafeArea(
       child: Scaffold(
           backgroundColor: colorBackgroundTheme,
@@ -83,7 +82,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,colorText: colorTextTheme,text: "CONNEXION",onPressedMethod: () => authentification.signUpWithMail(emailText.text, passwordText.text)),
+                  CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,colorText: colorTextTheme,text: "CONNEXION",onPressedMethod: () => auth.signInWithMail(emailText.text, passwordText.text)),
                   Padding(
                       padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                       child: CustomDivider(screenSize: screenSize),
@@ -94,8 +93,8 @@ class _LoginState extends State<Login> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE"),
-                        CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK"),
+                        CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE", onPressedMethod: () => print('test')),
+                        CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK", onPressedMethod: () => print('test')),
                       ],
                     ),
                   ),

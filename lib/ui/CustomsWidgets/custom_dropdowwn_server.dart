@@ -58,7 +58,7 @@ class _ServerDropdownState extends State<ServerDropdown> {
           items: ServerType.values.map((value) {
             return DropdownMenuItem<Object>(
               value: value,
-              child: Text(value.name),
+              child: Text(value.toString()),
             );
           }).toList(),
         ),

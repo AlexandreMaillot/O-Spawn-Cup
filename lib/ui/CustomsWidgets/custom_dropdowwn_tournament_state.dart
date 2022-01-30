@@ -56,7 +56,7 @@ class _TournamentStateDropdownState extends State<TournamentStateDropdown> {
           },
           items: TournamentState.values.map((value) {
             return DropdownMenuItem<Object>(
-              value: value.name,
+              value: value,
               child: Text(value.state),
             );
           }).toList(),
