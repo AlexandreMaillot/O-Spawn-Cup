@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
+import 'package:o_spawn_cup/bloc/bloc_router.dart';
 import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
@@ -20,14 +21,7 @@ class CardCup extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) {
-
-            return SignCup(tournament: tournament,);
-          },
-        ));
-      },
+      onTap: () => Navigator.of(context).push(BlocRouter().cupDetail(tournament)),
           child: Container(
               decoration: BoxDecoration(
                   borderRadius:
@@ -37,7 +31,7 @@ class CardCup extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(22),
                 child: Hero(
-                  tag: "tagcard_cup_${tournament.hashCode}",
+                  tag: "tagcard_cup_${tournament.documentId}",
                   child: Container(
                     decoration: BoxDecoration(
 

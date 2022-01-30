@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_background_around_field.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_background_around_field.dart";
+import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 
 
 class TournamentStateDropdown extends StatefulWidget {
@@ -29,7 +29,7 @@ class _TournamentStateDropdownState extends State<TournamentStateDropdown> {
             widget.hintText,
             style: TextStyle(
               color: colorHintTextTheme.withOpacity(0.43),
-              fontFamily: 'o_spawn_cup_font',
+              fontFamily: "o_spawn_cup_font",
               fontSize: 14,
             ),
           ),
