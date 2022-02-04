@@ -1,28 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'package:o_spawn_cup/bloc/bloc_list_cup.dart';
-import 'package:o_spawn_cup/bloc/bloc_provider.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn_tournament_state.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown_tournament_type.dart';
-import 'package:o_spawn_cup/models/TournamentType/tounament_type_controller.dart';
-import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:dotted_line/dotted_line.dart";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:flutter_svg/svg.dart";
+import "package:numberpicker/numberpicker.dart";
+import "package:o_spawn_cup/bloc/bloc_list_cup.dart";
+import "package:o_spawn_cup/bloc/bloc_provider.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn_tournament_state.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown_tournament_type.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 
 
 class FloatingActionBottomSheet extends StatefulWidget {
   bool bottomSheetIsShow = false;
+  Function onPress;
   FloatingActionBottomSheet({
     Key? key,
+    required this.onPress,
   }) : super(key: key);
 
   @override
@@ -92,7 +92,6 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<BlocListCup>(context);
     Size screenSize = MediaQuery.of(context).size;
     DateTime selectedDate = DateTime.now();
 
@@ -146,9 +145,9 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                         onPressedMethod: () async {
 
                           await saveFilter();
-                          bloc.loadCup();
+                          widget.onPress();
                           Navigator.pop(context,tournamentNameController.text);
-                        }, text: 'RECHERCHER', colorText: colorTheme, colorButton: colorBackgroundTheme,
+                        }, text: "RECHERCHER", colorText: colorTheme, colorButton: colorBackgroundTheme,
                         
                       ),
                     ],

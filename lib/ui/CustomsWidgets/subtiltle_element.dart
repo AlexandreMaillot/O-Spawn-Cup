@@ -17,7 +17,7 @@ class SubtitleElement extends StatelessWidget {
       style: TextStyle(
           color: color,
           fontWeight: fontWeight,
-          fontSize: (screenSize == ScreenSize.small) ? 18 : 28,
+          fontSize: (screenSize == ScreenSize.small) ? 20 : 28,
           fontFamily: "o_spawn_cup_font"),
     );
   }

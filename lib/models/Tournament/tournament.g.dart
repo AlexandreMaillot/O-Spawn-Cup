@@ -120,6 +120,7 @@ abstract class TournamentDocumentReference
   Future<void> delete();
 
   Future<void> update({
+    String? documentId,
     String name,
     int date,
     int capacity,
@@ -128,6 +129,7 @@ abstract class TournamentDocumentReference
     String? image,
     int killPointTournament,
     List<Team> listTeam,
+    List<Object?> props,
   });
 
   Future<void> set(Tournament value);
@@ -176,6 +178,7 @@ class _$TournamentDocumentReference
   }
 
   Future<void> update({
+    Object? documentId = _sentinel,
     Object? name = _sentinel,
     Object? date = _sentinel,
     Object? capacity = _sentinel,
@@ -184,8 +187,10 @@ class _$TournamentDocumentReference
     Object? image = _sentinel,
     Object? killPointTournament = _sentinel,
     Object? listTeam = _sentinel,
+    Object? props = _sentinel,
   }) async {
     final json = {
+      if (documentId != _sentinel) "documentId": documentId as String?,
       if (name != _sentinel) "name": name as String,
       if (date != _sentinel) "date": date as int,
       if (capacity != _sentinel) "capacity": capacity as int,
@@ -195,6 +200,7 @@ class _$TournamentDocumentReference
       if (killPointTournament != _sentinel)
         "killPointTournament": killPointTournament as int,
       if (listTeam != _sentinel) "listTeam": listTeam as List<Team>,
+      if (props != _sentinel) "props": props as List<Object?>,
     };
 
     return reference.update(json);
@@ -244,6 +250,17 @@ abstract class TournamentQuery
   @override
   TournamentQuery limitToLast(int limit);
 
+  TournamentQuery whereDocumentId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
   TournamentQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -330,6 +347,28 @@ abstract class TournamentQuery
     List<Team>? isGreaterThanOrEqualTo,
     bool? isNull,
     List<Team>? arrayContainsAny,
+  });
+  TournamentQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  });
+
+  TournamentQuery orderByDocumentId({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
   });
 
   TournamentQuery orderByName({
@@ -427,6 +466,18 @@ abstract class TournamentQuery
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   });
+
+  TournamentQuery orderByProps({
+    bool descending = false,
+    List<Object?> startAt,
+    List<Object?> startAfter,
+    List<Object?> endAt,
+    List<Object?> endBefore,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  });
 }
 
 class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
@@ -486,6 +537,34 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
   TournamentQuery limitToLast(int limit) {
     return _$TournamentQuery(
       reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  TournamentQuery whereDocumentId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$TournamentQuery(
+      reference.where(
+        'documentId',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
       _collection,
     );
   }
@@ -710,6 +789,74 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
       ),
       _collection,
     );
+  }
+
+  TournamentQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  }) {
+    return _$TournamentQuery(
+      reference.where(
+        'props',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
+      ),
+      _collection,
+    );
+  }
+
+  TournamentQuery orderByDocumentId({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('documentId', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TournamentQuery(query, _collection);
   }
 
   TournamentQuery orderByName({
@@ -1018,6 +1165,48 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('listTeam', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TournamentQuery(query, _collection);
+  }
+
+  TournamentQuery orderByProps({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('props', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

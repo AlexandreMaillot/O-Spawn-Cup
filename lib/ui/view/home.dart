@@ -1,8 +1,9 @@
 import "dart:math";
 
 import "package:flutter/material.dart";
+import 'package:flutter_bloc/flutter_bloc.dart';
 import "package:o_spawn_cup/bloc/bloc_list_game.dart";
-import "package:o_spawn_cup/bloc/bloc_provider.dart";
+import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/card_game.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
@@ -10,31 +11,42 @@ import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/game_card.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/no_data.dart";
 
-
 class Home extends StatelessWidget {
-  PageController pageController = PageController(viewportFraction: 0.3, initialPage: 1);
+  Home({
+    Key? key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) =>
+          SelectGameBloc(listGameName: listCardGame,initialIndex: 1.0)..add(SelectGameInit()),
+      child: HomeView(),
+    );
+  }
+}
 
-  Home({Key? key}) : super(key: key);
+class HomeView extends StatelessWidget {
+  PageController pageController =
+      PageController(viewportFraction: 0.3, initialPage: 1);
+
+  HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<BlocListGame>(context);
     Size screenSize = MediaQuery.of(context).size;
 
     pageController.addListener(() {
-      bloc.changeGameSelect(pageController.page!);
+
+      context.read<SelectGameBloc>().add(SelectGameChange(indexSelect: pageController.page!));
     });
     return Scaffold(
       drawer: CustomDrawer(screenSize: screenSize),
       appBar: CustomAppBar(title: "JEUX"),
-      body: StreamBuilder<double>(
-        stream: bloc.streamValue,
-        builder: (context, snapshot) {
-          if(snapshot.hasError) {
+      body: BlocBuilder<SelectGameBloc, SelectGameState>(
+        builder: (context, state) {
+          final index = context.select((SelectGameBloc bloc) => bloc.state.index);
+          if ((state.runtimeType == SelectGameNoData)) {
             return NoData(string: "Erreur survenue lors du chargement...");
-          }
-          if(!snapshot.hasData){
-            return NoData(string: "Aucune données !");
           } else {
             return Container(
               color: colorBackgroundTheme,
@@ -44,26 +56,26 @@ class Home extends StatelessWidget {
                   controller: pageController,
                   itemCount: listCardGame.length,
                   itemBuilder: (context, position) {
-                    if (position == snapshot.data) {
+                    if (position == state) {
                       return Transform.scale(
                         scale: 1,
                         child: GameCard(position),
                       );
-                    } else if (position < snapshot.data!) {
+                    } else if (position < state.index) {
                       return Transform.scale(
-                        scale: max(1 - (snapshot.data! - position), 0.75),
+                        scale: max(1 - (index - position), 0.75),
                         child: GameCard(position),
                       );
                     } else {
                       return Transform.scale(
-                        scale: max(1 - (position - snapshot.data!), 0.75),
+                        scale: max(1 - (position - index), 0.75),
                         child: GameCard(position),
                       );
                     }
                   }),
             );
           }
-        }
+        },
       ),
     );
   }

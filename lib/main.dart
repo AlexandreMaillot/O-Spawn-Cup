@@ -1,16 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:o_spawn_cup/ui/view/form_tournament.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flutter/material.dart";
+import "package:firebase_core/firebase_core.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 
-import 'package:o_spawn_cup/ui/view/login.dart';
-import 'package:o_spawn_cup/ui/view/login_register.dart';
 
-import 'bloc/bloc_router.dart';
-import 'constant.dart';
-import 'firebase_options.dart';
-import 'models/Team/test.dart';
-import 'ui/view/register.dart';
+import "package:o_spawn_cup/ui/view/login.dart";
+import "package:o_spawn_cup/ui/view/login_register.dart";
+
+import "bloc/bloc_router.dart";
+import "constant.dart";
+import "firebase_options.dart";
+import "models/Team/test.dart";
+import "ui/view/register.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,21 +33,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'O-SPAWN-CUP',
+      title: "O-SPAWN-CUP",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: colorTheme),
         backgroundColor: colorBackgroundTheme,
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: "/",
+
       routes: {
-        '/': (context) => const LoginRegister(),
-        //'/': (context) => BlocRouter().allGames(),
-        '/login': (context) => Login(),
-        '/register': (context) => Register(),
-        '/home': (context) => BlocRouter().allGames(),
-        '/create_tournament': (context) => const FormTournament(),
+        // '/': (context) => const LoginRegister(),
+        "/": (context) => BlocRouter().allGames(),
+        "/login": (context) => Login(),
+        "/register": (context) => Register(),
+        "/home": (context) => BlocRouter().allGames(),
+        // "/create_tournament": (context) => BlocRouter().cupForm(),
         // '/list_cup': (context) => ListCup(gameName: ),
       },
     );

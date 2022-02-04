@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:o_spawn_cup/bloc/bloc_router.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
 
@@ -27,7 +28,7 @@ class CustomDrawer extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       Padding(
                         padding: EdgeInsets.only(bottom: 5),
                         child: CircleAvatar(
@@ -76,7 +77,7 @@ class CustomDrawer extends StatelessWidget {
                             screenSize: screenSize,
                             colorButton: Colors.white,
                             text: "CREER UN TOURNOIS",
-                            onPressedMethod: () => Navigator.of(context).popAndPushNamed('/create_tournament'),
+                            onPressedMethod: () => Navigator.of(context).push(BlocRouter().cupForm()),
                           ),
                         ],
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

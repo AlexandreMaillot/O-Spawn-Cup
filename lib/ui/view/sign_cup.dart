@@ -3,13 +3,13 @@ import "package:cloud_firestore_odm/cloud_firestore_odm.dart";
 import "package:dotted_border/dotted_border.dart";
 import "package:dotted_line/dotted_line.dart";
 import "package:flutter/material.dart";
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import "package:flutter_switch/flutter_switch.dart";
 import "package:mailer/mailer.dart";
 import "package:mailer/smtp_server.dart";
 import "package:mailer/smtp_server/gmail.dart";
-import 'package:o_spawn_cup/bloc/bloc_provider.dart';
-import 'package:o_spawn_cup/bloc/bloc_tournament_detail.dart';
+import 'package:o_spawn_cup/bloc/member_tournament_firestore_bloc/member_tournament_firestore_bloc.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
@@ -27,8 +27,20 @@ import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/models/role_type.dart";
 
+
 class SignCup extends StatelessWidget {
-  SignCup({Key? key, required this.tournament}) : super(key: key);
+  Tournament tournament;
+  SignCup({Key? key,required this.tournament}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => MemberTournamentFirestoreBloc(tournament: tournament),
+      child: SignCupView(tournament: tournament,),
+    );
+  }
+}
+class SignCupView extends StatelessWidget {
+  SignCupView({Key? key, required this.tournament}) : super(key: key);
   late TextEditingController gamerTagController;
   late TextEditingController teamNameController;
   late Tournament tournament;
@@ -39,11 +51,10 @@ class SignCup extends StatelessWidget {
   String msgSnack = "Inscription validée !";
   bool errorSign = false;
   String teamNameTextFieldHint = "Nom d'équipe";
-  RoleType _roleType = RoleType.player;
+  RoleType _roleType = RoleType.leader;
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<BlocTournamentDetail>(context);
     gamerTagController = TextEditingController();
     teamNameController = TextEditingController();
     years = tournament.date.toString().substring(0, 4);
@@ -195,35 +206,11 @@ class SignCup extends StatelessWidget {
                             text: "Confirmation",
                             onPressedMethod: () async {
                               await () async {
-                                // await sendEmailMessage();
-                                if (teamNameController.text != "" &&
-                                    gamerTagController.text != "") {
-                                  Member member = addMember();
-
-                                  t.Team? team;
-                                  if (isLeader()) {
-                                    team = await bloc.verifTeamName(
-                                        team, teamNameController.text);
-                                    if (team != null) {
-                                      team.teamCode = bloc.getRandomString(5);
-                                      bloc.addTeamInTournament(team);
-                                    }
-                                  } else if (isPlayer()) {
-                                    team = await bloc.verifCodeTeam(
-                                        team, teamNameController.text);
-                                  }
-                                  if (team != null) {
-                                    await addMemberTournament(member, team);
-                                    afterAddMemberTournament();
-                                  }
-                                } else {
-                                  msgSnack =
-                                      "Veuillez renseigner le gamerTag et nom/code de team !";
-                                  errorSign = true;
-                                }
-
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                                context.read<MemberTournamentFirestoreBloc>().add(MemberTournamentFirestoreAdd(teamName: teamNameController.text, gamerTag: gamerTagController.text, roleType: _roleType));
+                                // msgSnack = "Veuillez renseigner le gamerTag et nom/code de team !";
+                                // errorSign = true;
+                                afterAddMemberTournament();
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               }();
                             },
                           ),

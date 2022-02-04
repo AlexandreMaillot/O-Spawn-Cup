@@ -35,7 +35,7 @@ class BlocListCup extends Bloc {
 
     // tournamentList =
     Stream<QuerySnapshot<Object?>> querySnap = tournamentsRef.reference
-        .where("game", isEqualTo: gameName)
+        .where("game", isEqualTo: gameName.state)
         .where("name", isEqualTo: (name == "") ? null : name)
         .where("date",
         isGreaterThanOrEqualTo: (date == "") ? null : int.parse(date))
@@ -58,7 +58,7 @@ class BlocListCup extends Bloc {
 
     Stream<QuerySnapshot<Object?>> querySnap = tournamentsRef.reference
         .orderBy("date", descending: true)
-        .where("game", isEqualTo: gameName)
+        .where("game", isEqualTo: gameName.state)
         .snapshots();
     Stream<List<QueryDocumentSnapshot<Object?>>> listSnap =
         querySnap.map((event) => event.docs);
