@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "538595854832",
+    "project_id": "o-spawn-cup-13738",
+    "storage_bucket": "o-spawn-cup-13738.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538595854832:android:5a12c4e216258a925d7535",
+        "android_client_info": {
+          "package_name": "com.example.o_spawn_cup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538595854832-fartljskknuf028dhcd9hetqralju0u5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.o_spawn_cup",
+            "certificate_hash": "9c3e771d3107b1d2d9557f96c2be6d075bf65d69"
+          }
+        },
+        {
+          "client_id": "538595854832-fhgggrqpb9v9i4ke8n65kk5td3ahvpla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxjblo6_L9QTh2-V21lu0mEp5qgRNOIfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538595854832-fhgggrqpb9v9i4ke8n65kk5td3ahvpla.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

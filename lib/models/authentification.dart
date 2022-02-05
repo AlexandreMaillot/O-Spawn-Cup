@@ -27,7 +27,7 @@ class Authentification{
     }
   }
 
-  void signUpWithGoogle() async{
+  void signUpWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -39,7 +39,10 @@ class Authentification{
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    print('ok');
+
+    // Once signed in, return the UserCredential
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    print("OK");
   }
   void signUpWithFacebook(){
 
