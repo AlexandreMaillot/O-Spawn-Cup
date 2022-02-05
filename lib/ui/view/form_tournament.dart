@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import 'package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart';
 import 'package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart';
+import 'package:o_spawn_cup/cubit/selected_image_predef_cubit.dart';
 import 'package:o_spawn_cup/models/make_it_responsive.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
@@ -37,6 +38,9 @@ class FormTournament extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => WidgetNumberByPlayerBloc(),
+        ),
+        BlocProvider(
+          create: (_) => SelectedImagePredefCubit(),
         ),
       ],
       child: FormTournamentView(),
@@ -187,14 +191,6 @@ class FormTournamentView extends StatelessWidget {
                     },
                   ),
                 ),
-                // gameDropdown,
-                // serverDropdown,
-                // tournamentTypeDropdown,
-                //
-
-                //
-                // CustomTextField(screenSize: screenSize, text: "CASH PRIZE", controller: cashPrizeController),
-                //
                 // Padding(
                 //   padding: const EdgeInsets.only(top: 8.0),
                 //   child: CustomButtonTheme(width: screenSize.width * 0.7,colorButton: colorTheme, colorText: colorBackgroundTheme, screenSize: screenSize, text: "VALIDATION", onPressedMethod: () async {
@@ -233,13 +229,26 @@ class FormTournamentView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextElement(
-              text: "Gain",
+              text: "Identifiants",
               color: colorTheme,
             )
           ],
         ),
         content: Column(
-          children: [Text("5")],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 3,
+                // itemCount: (roundNumberController.text != "") ? int.parse(roundNumberController.text) : 0 ,
+                itemBuilder: (context,index){
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: CustomTextField(screenSize: screenSize, text: "CODE ${index + 1}", controller: pointPerKillController,typeTextField: TextInputType.text,),
+                  );
+                })
+          ],
         ));
   }
 
@@ -287,7 +296,7 @@ class FormTournamentView extends StatelessWidget {
                     color: colorBackgroundTheme,
                   ),
                   decoration: InputDecoration(
-                      labelText: 'CASH PRIZE',
+                      hintText: 'CASH PRIZE',
 
                       fillColor: Colors.white,
                       filled: true,
@@ -392,17 +401,17 @@ class FormTournamentView extends StatelessWidget {
                   if (position == indexSelect) {
                     return Transform.scale(
                       scale: 1,
-                      child: GameCard(position),
+                      child: GameCard(position,form: true,),
                     );
                   } else if (position < indexSelect) {
                     return Transform.scale(
                       scale: max(1 - (indexSelect - position), 0.75),
-                      child: GameCard(position),
+                      child: GameCard(position,form: true,),
                     );
                   } else {
                     return Transform.scale(
                       scale: max(1 - (position - indexSelect), 0.75),
-                      child: GameCard(position),
+                      child: GameCard(position,form: true,),
                     );
                   }
                 }),
@@ -474,7 +483,7 @@ class RowWidgetNumByPlayer extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextElement(text: "NOMBRE DE JOUEURS PAR EQUIPE",color: Colors.white,),
+          child: TextElement(text: "NOMBRE DE JOUEURS PAR EQUIPE",color: Colors.white,textAlign: TextAlign.center,),
         ),
 
         Row(

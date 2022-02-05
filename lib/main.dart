@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:firebase_core/firebase_core.dart";
+import 'package:flutter/services.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 
 
@@ -17,12 +18,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+
   );
-  ok();
-  FirebaseFirestore.instance.settings =
-      const Settings(persistenceEnabled: true);
+  FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
   //await FirebaseAuth.instance.setPersistence(Persistence.NONE);
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp()));
 
 }
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "O-SPAWN-CUP",
+
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: colorTheme),
@@ -43,8 +45,8 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
 
       routes: {
-        // '/': (context) => const LoginRegister(),
-        "/": (context) => BlocRouter().allGames(),
+        '/': (context) => const LoginRegister(),
+        // "/": (context) => BlocRouter().allGames(),
         "/login": (context) => Login(),
         "/register": (context) => Register(),
         "/home": (context) => BlocRouter().allGames(),

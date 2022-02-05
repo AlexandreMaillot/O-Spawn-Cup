@@ -29,10 +29,10 @@ List<WidgetNumPlayerByTeam> listWidgetNumPlayerByTeam = [
 ];
 
 List<TileImagePre> listImagePre = [
-  TileImagePre(image: "assets/images/csgoBackground.png"),
-  TileImagePre(image: "assets/images/forniteBackground.png"),
-  TileImagePre(image: "assets/images/lolBackground.png"),
-  TileImagePre(image: "assets/images/valorantBackground.png"),
-  TileImagePre(image: "assets/images/csgoBackground.png"),
-  TileImagePre(image: "assets/images/csgoBackground.png"),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 0,),
+  TileImagePre(image: "assets/images/forniteBackground.png",index: 1),
+  TileImagePre(image: "assets/images/lolBackground.png",index: 2),
+  TileImagePre(image: "assets/images/valorantBackground.png",index: 3),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 4),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 5),
 ];

@@ -27,7 +27,7 @@ class Authentification{
     }
   }
 
-  void signUpWithGoogle() async {
+  Future<bool> signUpWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -41,12 +41,18 @@ class Authentification{
     );
 
     // Once signed in, return the UserCredential
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    print("OK");
+    UserCredential? userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    if(userCredential != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
+
   void signUpWithFacebook(){
 
   }
+
   void signUpWithMail(String email, String password, String confirmedPassword, String pseudo) async{
     if(pseudo != null && pseudo != ""){
       try {

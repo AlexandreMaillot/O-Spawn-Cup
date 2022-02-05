@@ -105,7 +105,15 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "S'INSCRIRE AVEC GOOGLE", onPressedMethod: () {
-                        auth.signUpWithGoogle();
+                        Future<bool> redirect = auth.signUpWithGoogle();
+                        redirect.then((value) {
+                          if(value == true){
+                            Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                          }else {
+                            print("erreur");
+                          }
+                        });
+
                       }),
                       CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK", onPressedMethod: () => print('test')),
                     ],

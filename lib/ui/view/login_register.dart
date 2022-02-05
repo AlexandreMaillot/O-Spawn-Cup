@@ -30,7 +30,7 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: screenSize.height * 0.024),
-                child: Container(
+                child: SizedBox(
                   width: screenSize.width,
                   height: screenSize.height * 0.14,
                   child: Column(
@@ -46,7 +46,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                 padding: EdgeInsets.only(top: screenSize.height * 0.036, bottom: screenSize.height * 0.014),
                 child: CustomDivider(screenSize: screenSize),
               ),
-              Container(
+              SizedBox(
                 width: screenSize.width,
                 height: screenSize.height*0.125,
                 child: Column(

@@ -328,7 +328,7 @@ class SignCupView extends StatelessWidget {
           image: DecorationImage(
             colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.95), BlendMode.dstATop),
-            //opacity: 0.31,
+            opacity: 0.31,
             image: Image.network(tournament.image!).image,
             fit: BoxFit.cover,
           ),
@@ -358,7 +358,7 @@ class SignCupView extends StatelessWidget {
                   fontWeight: FontWeight.normal),
             ),
             SubtitleElement(
-              text: tournament.game.toString(),
+              text: tournament.game.name,
               color: Colors.white,
             ),
           ],
@@ -374,7 +374,7 @@ class SignCupView extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(13)),
         image: DecorationImage(
-          //opacity: 0.9,
+          opacity: 0.9,
           image: Image.asset("assets/images/forniteBackground.png").image,
           fit: BoxFit.cover,
         ),
@@ -404,11 +404,11 @@ class SignCupView extends StatelessWidget {
         (tournament.listTeam.isNotEmpty)
             ? DataTable(
                 columnSpacing: 50,
-                // border: const TableBorder(
-                //     horizontalInside: BorderSide(
-                //         width: 1,
-                //         color: Color(0xff696969),
-                //         style: BorderStyle.solid)),
+                border: const TableBorder(
+                    horizontalInside: BorderSide(
+                        width: 1,
+                        color: Color(0xff696969),
+                        style: BorderStyle.solid)),
                 headingRowHeight: 30,
                 columns: [
                   DataColumn(

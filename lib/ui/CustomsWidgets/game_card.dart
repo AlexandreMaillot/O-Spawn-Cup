@@ -6,15 +6,15 @@ import '../../constant.dart';
 
 class GameCard extends StatelessWidget {
   final int index;
-
-  const GameCard(this.index, {Key? key}) : super(key: key);
+  bool form;
+  GameCard(this.index, {Key? key,this.form = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 0),
       child: InkWell(
-        onTap: () => Navigator.of(context).push(BlocRouter().cupSelect(listCardGame[index].gameName)),
+        onTap: () => (form == false) ? Navigator.of(context).push(BlocRouter().cupSelect(listCardGame[index].gameName)) : null,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           child: Container(
