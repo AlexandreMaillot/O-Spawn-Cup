@@ -90,10 +90,13 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 CustomButtonTheme(screenSize: screenSize,colorText: colorTextTheme,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: () {
-                  if(!_formKey.currentState!.validate()){
-                    if(auth.signUpWithMail(emailText.text, passwordText.text, passwordverifText.text, pseudoText.text) == true){
-                      Navigator.pushNamed(context, '/home');
-                    }
+                  if(_formKey.currentState!.validate() == true){
+                    Future<bool> redirectToHome = auth.signUpWithMail(emailText.text, passwordText.text, passwordverifText.text, pseudoText.text);
+                    redirectToHome.then((value) {
+                      if(value == true){
+                        Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                      }
+                    });
                   }
                 }),
                 Padding(
@@ -115,7 +118,6 @@ class _RegisterState extends State<Register> {
                             print("erreur");
                           }
                         });
-
                       }),
                       CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK", onPressedMethod: () => print('test')),
                     ],

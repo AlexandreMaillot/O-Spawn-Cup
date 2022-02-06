@@ -11,20 +11,29 @@ class Authentification{
   void signInWithFacebook(){
 
   }
-  void signInWithMail(String email,String password) async{
+
+  Future<bool> signInWithMail(String email,String password) async{
     try {
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password
       );
-      print('redirection vers home');
+      if(userCredential != null){
+        return true;
+      }else{
+        return false;
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
+    } catch (e) {
+      print(e);
+      return false;
     }
+    return false;
   }
 
   Future<bool> signUpWithGoogle() async {
@@ -52,19 +61,24 @@ class Authentification{
   void signUpWithFacebook(){
 
   }
+
   Future<bool> signUpWithMail(String email, String password, String confirmedPassword, String pseudo) async{
-    if(pseudo != null && pseudo != ""){
       try {
         UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
-        Member member = Member(pseudo: pseudo, uid: userCredential.user!.uid);
-        membersRef.add(member);
-        User? user = FirebaseAuth.instance.currentUser;
-
-        if (user!= null && !user.emailVerified) {
-          await user.sendEmailVerification();
+        if(userCredential != null){
+          Member member = Member(pseudo: pseudo, uid: userCredential.user!.uid);
+          membersRef.add(member);
+          User? user = FirebaseAuth.instance.currentUser;
+          if (user!= null) {
+            return true;
+          } else{
+            return false;
+          }
+        } else{
+          return false;
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
@@ -75,12 +89,9 @@ class Authentification{
           print('invalid email.');
         }
       } catch (e) {
+        print(e);
         return false;
       }
-      return true;
-    }else{
-      print('pseudo vide');
       return false;
-    }
   }
 }
