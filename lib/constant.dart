@@ -29,10 +29,31 @@ List<WidgetNumPlayerByTeam> listWidgetNumPlayerByTeam = [
 ];
 
 List<TileImagePre> listImagePre = [
-  TileImagePre(image: "assets/images/csgoBackground.png",index: 0,),
-  TileImagePre(image: "assets/images/forniteBackground.png",index: 1),
-  TileImagePre(image: "assets/images/lolBackground.png",index: 2),
-  TileImagePre(image: "assets/images/valorantBackground.png",index: 3),
-  TileImagePre(image: "assets/images/csgoBackground.png",index: 4),
-  TileImagePre(image: "assets/images/csgoBackground.png",index: 5),
+  TileImagePre(image: "assets/images/forniteBackground.png",index: 0,gameName: GameName.Fornite,),
+  TileImagePre(image: "assets/images/forniteBackground.png",index: 1,gameName: GameName.Fornite,),
+  TileImagePre(image: "assets/images/forniteBackground.png",index: 2,gameName: GameName.Fornite,),
+  TileImagePre(image: "assets/images/forniteBackground.png",index: 3,gameName: GameName.Fornite,),
+  TileImagePre(image: "assets/images/forniteBackground.png",index: 4,gameName: GameName.Fornite,),
+  TileImagePre(image: "assets/images/forniteBackground.png",index: 5,gameName: GameName.Fornite,),
+
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 0,gameName: GameName.CSGO,),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 1,gameName: GameName.CSGO,),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 2,gameName: GameName.CSGO,),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 3,gameName: GameName.CSGO,),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 4,gameName: GameName.CSGO,),
+  TileImagePre(image: "assets/images/csgoBackground.png",index: 5,gameName: GameName.CSGO,),
+
+  TileImagePre(image: "assets/images/lolBackground.png",index: 0,gameName: GameName.LeagueOfLegend,),
+  TileImagePre(image: "assets/images/lolBackground.png",index: 1,gameName: GameName.LeagueOfLegend,),
+  TileImagePre(image: "assets/images/lolBackground.png",index: 2,gameName: GameName.LeagueOfLegend,),
+  TileImagePre(image: "assets/images/lolBackground.png",index: 3,gameName: GameName.LeagueOfLegend,),
+  TileImagePre(image: "assets/images/lolBackground.png",index: 4,gameName: GameName.LeagueOfLegend,),
+  TileImagePre(image: "assets/images/lolBackground.png",index: 5,gameName: GameName.LeagueOfLegend,),
+
+  TileImagePre(image: "assets/images/valorantBackground.png",index: 0,gameName: GameName.Valorant,),
+  TileImagePre(image: "assets/images/valorantBackground.png",index: 1,gameName: GameName.Valorant,),
+  TileImagePre(image: "assets/images/valorantBackground.png",index: 2,gameName: GameName.Valorant,),
+  TileImagePre(image: "assets/images/valorantBackground.png",index: 3,gameName: GameName.Valorant,),
+  TileImagePre(image: "assets/images/valorantBackground.png",index: 4,gameName: GameName.Valorant,),
+  TileImagePre(image: "assets/images/valorantBackground.png",index: 5,gameName: GameName.Valorant,),
 ];

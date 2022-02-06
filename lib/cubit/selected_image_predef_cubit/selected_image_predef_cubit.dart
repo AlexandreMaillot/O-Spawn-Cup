@@ -7,12 +7,11 @@ class SelectedImagePredefCubit extends Cubit<SelectedImagePredefState> {
   SelectedImagePredefCubit() : super(SelectedImagePredefInitial(indexSelected: null));
 
   changedIndexSelect(int? indexSelect){
-    print(indexSelect);
-    print((state as SelectedImagePredefInitial).indexSelected);
-
     if(indexSelect == (state as SelectedImagePredefInitial).indexSelected) {
       indexSelect = null;
     }
     emit(SelectedImagePredefInitial(indexSelected: indexSelect));
   }
+
+
 }
