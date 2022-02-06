@@ -80,10 +80,10 @@ class _RegisterState extends State<Register> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomTextFormField(screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre adresse mail"),
-                          CustomTextFormField(screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
-                          CustomTextFormField(screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
-                          CustomTextFormField(screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre pseudo"),
+                          CustomTextFormField(controller: emailText,screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre adresse mail"),
+                          CustomTextFormField(controller: passwordText,screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
+                          CustomTextFormField(controller: passwordverifText,screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
+                          CustomTextFormField(controller: pseudoText,screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre pseudo"),
                         ],
                       ),
                     ),
@@ -91,7 +91,9 @@ class _RegisterState extends State<Register> {
                 ),
                 CustomButtonTheme(screenSize: screenSize,colorText: colorTextTheme,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: () {
                   if(!_formKey.currentState!.validate()){
-                    auth.signUpWithMail(emailText.text, passwordText.text, passwordverifText.text, pseudoText.text);
+                    if(auth.signUpWithMail(emailText.text, passwordText.text, passwordverifText.text, pseudoText.text) == true){
+                      Navigator.pushNamed(context, '/home');
+                    }
                   }
                 }),
                 Padding(

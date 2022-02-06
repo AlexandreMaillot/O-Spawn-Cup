@@ -52,8 +52,7 @@ class Authentification{
   void signUpWithFacebook(){
 
   }
-
-  void signUpWithMail(String email, String password, String confirmedPassword, String pseudo) async{
+  Future<bool> signUpWithMail(String email, String password, String confirmedPassword, String pseudo) async{
     if(pseudo != null && pseudo != ""){
       try {
         UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -67,8 +66,6 @@ class Authentification{
         if (user!= null && !user.emailVerified) {
           await user.sendEmailVerification();
         }
-        print('redirection vers home');
-
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
@@ -78,10 +75,12 @@ class Authentification{
           print('invalid email.');
         }
       } catch (e) {
-        print(e);
+        return false;
       }
+      return true;
     }else{
       print('pseudo vide');
+      return false;
     }
   }
 }

@@ -9,9 +9,11 @@ class CustomTextFormField extends StatelessWidget{
   Color borderColor;
   String errorMessage;
   bool obscuretext;
+  TextEditingController? controller;
 
   CustomTextFormField({
     Key? key,
+    required this.controller,
     required this.screenSize,
     required this.text,
     this.buttonColor = Colors.white,
@@ -26,6 +28,7 @@ class CustomTextFormField extends StatelessWidget{
         width: screenSize.width * 0.87,
         height: screenSize.height * 0.05,
         child: TextFormField(
+          controller: controller,
           textAlign: TextAlign.center,
           textAlignVertical: TextAlignVertical.bottom,
           showCursor: false,
