@@ -6,7 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import 'package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart';
 import 'package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart';
-import 'package:o_spawn_cup/cubit/selected_image_predef_cubit.dart';
+import 'package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart';
+import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
+import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/models/make_it_responsive.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
@@ -42,6 +44,9 @@ class FormTournament extends StatelessWidget {
         BlocProvider(
           create: (_) => SelectedImagePredefCubit(),
         ),
+        BlocProvider(
+          create: (_) => GenerateCodeCubit(),
+        ),
       ],
       child: FormTournamentView(),
     );
@@ -66,6 +71,7 @@ class FormTournamentView extends StatelessWidget {
   late TournamentTypeDropdown tournamentTypeDropdown;
   late ServerDropdown serverDropdown;
   late GameDropdown gameDropdown;
+  
   FocusNode dayFocus = FocusNode();
   FocusNode monthFocus = FocusNode();
   FocusNode yearsFocus = FocusNode();
@@ -89,6 +95,7 @@ class FormTournamentView extends StatelessWidget {
     pointPerKillController = TextEditingController();
     pointPerRangController = TextEditingController();
     rangStartController = TextEditingController();
+    List<TextEditingController> controllersCodeGenerate = [];
     tournamentTypeDropdown = TournamentTypeDropdown(
       hintText: "TYPE DE TOURNOIS",
       typeFocus: tournamentFocus,
@@ -186,7 +193,7 @@ class FormTournamentView extends StatelessWidget {
                             buildStep2(currentIndex, screenSize),
                             buildStep3(currentIndex, screenSize),
                             buildStep4(currentIndex, screenSize),
-                            buildStep5(currentIndex, screenSize),
+                            buildStep5(currentIndex, screenSize,controllersCodeGenerate),
                           ]);
                     },
                   ),
@@ -221,7 +228,8 @@ class FormTournamentView extends StatelessWidget {
     );
   }
 
-  Step buildStep5(int currentIndex,Size screenSize) {
+  Step buildStep5(int currentIndex,Size screenSize,List<TextEditingController> controllersCodeGenerate) {
+    String beforeCode = DateTime.now().millisecond.toString() + DateTime.now().microsecond.toString();
     return Step(
         state: currentIndex > 4 ? StepState.complete : StepState.disabled,
         isActive: currentIndex >= 4,
@@ -234,22 +242,30 @@ class FormTournamentView extends StatelessWidget {
             )
           ],
         ),
-        content: Column(
+        content: BlocBuilder<GenerateCodeCubit, GenerateCodeState>(
+        builder: (context, state) {
+          return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 3,
-                // itemCount: (roundNumberController.text != "") ? int.parse(roundNumberController.text) : 0 ,
+                // itemCount: 3,
+                itemCount: (roundNumberController.text != "") ? int.parse(roundNumberController.text) : 0 ,
                 itemBuilder: (context,index){
+                  controllersCodeGenerate.add(TextEditingController());
+                  controllersCodeGenerate[index].text = context.read<GenerateCodeCubit>().generateCode(beforeCode, 5);
                   return Padding(
                     padding: const EdgeInsets.only(top: 8.0),
-                    child: CustomTextField(screenSize: screenSize, text: "CODE ${index + 1}", controller: pointPerKillController,typeTextField: TextInputType.text,),
+                    child: CustomTextField(screenSize: screenSize, text: "CODE ${index + 1}", controller: controllersCodeGenerate[index],typeTextField: TextInputType.text,suffixIcon: const Icon(Icons.refresh),onPressIconSuffix: () {
+                      controllersCodeGenerate[index].text = context.read<GenerateCodeCubit>().generateCode(beforeCode, 5);
+                    },),
                   );
                 })
           ],
-        ));
+        );
+  },
+));
   }
 
   Step buildStep4(int currentIndex,Size screenSize) {
@@ -265,7 +281,7 @@ class FormTournamentView extends StatelessWidget {
             )
           ],
         ),
-        content: Container(
+        content: SizedBox(
           height: screenSize.height * 0.7,
           child: Column(
             children: [
@@ -277,19 +293,21 @@ class FormTournamentView extends StatelessWidget {
               TextElement(text: "IMAGES PRE-DEFINIES",color: Colors.white,),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    primary: false,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    crossAxisCount: 3,
-                    children: listImagePre,
-                  ),
-                ),
+                child: BlocBuilder<SelectGameBloc, SelectGameState>(
+                builder: (context, state) {
+                  return GridView.count(
+                  shrinkWrap: true,
+                  primary: false,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  crossAxisCount: 3,
+                  children: context.select((SelectGameBloc bloc) => bloc.filtredImageByGame()),
+                );
+  },
+),
               ),
               Container(
-                padding: EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 15),
                 height: screenSize.height* 0.15,
                 child: TextField(
                   style: TextStyle(
@@ -442,8 +460,8 @@ class WidgetChooseImage extends StatelessWidget {
         color: Colors.white,
         strokeWidth: 0.6,
         strokeCap: StrokeCap.round,
-        radius: Radius.circular(9),
-        padding: EdgeInsets.all(6),
+        radius: const Radius.circular(9),
+        padding: const EdgeInsets.all(6),
         child: Container(
           height: screenSize.height * 0.08,
           width: screenSize.width,

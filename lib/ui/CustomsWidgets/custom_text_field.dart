@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget{
 
@@ -10,6 +11,9 @@ class CustomTextField extends StatelessWidget{
   TextAlign textAlign;
   TextEditingController? controller;
   TextInputType? typeTextField;
+  Function(String)? onChanged;
+  Function()? onPressIconSuffix;
+  Widget? suffixIcon;
   CustomTextField({
     Key? key,
     required this.screenSize,
@@ -19,6 +23,9 @@ class CustomTextField extends StatelessWidget{
     required this.controller,
     this.textAlign = TextAlign.center,
     this.typeTextField,
+    this.onChanged,
+    this.onPressIconSuffix,
+    this.suffixIcon,
   }): super(key: key);
 
   @override
@@ -27,12 +34,16 @@ class CustomTextField extends StatelessWidget{
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.05,
       child: TextField(
+        onChanged: onChanged,
         keyboardType: typeTextField ?? TextInputType.text,
         controller: controller,
         textAlign: textAlign,
         textAlignVertical: TextAlignVertical.bottom,
         showCursor: false,
         decoration: InputDecoration(
+          suffixIcon: (suffixIcon != null) ? IconButton(onPressed: onPressIconSuffix, icon: suffixIcon!,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,) : null,
           filled: true,
           fillColor: Colors.white,
           enabledBorder: OutlineInputBorder(
