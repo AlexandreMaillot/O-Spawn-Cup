@@ -1,0 +1,23 @@
+import "dart:io";
+
+import "package:bloc/bloc.dart";
+import "package:equatable/equatable.dart";
+import "package:image_picker/image_picker.dart";
+
+part "take_image_gallery_state.dart";
+
+class TakeImageGalleryCubit extends Cubit<TakeImageGalleryState> {
+  TakeImageGalleryCubit() : super(TakeImageGalleryInitial());
+
+  takePicture() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? imagePath = await _picker.pickImage(source: ImageSource.gallery, maxHeight: 500, maxWidth: 500);
+    if(imagePath != null) {
+      emit(TakeImageGalleryFinish(File(imagePath.path)));
+    } else {
+      emit(TakeImageGalleryNoData());
+    }
+
+  }
+  clearPicture() => emit(TakeImageGalleryNoData());
+}

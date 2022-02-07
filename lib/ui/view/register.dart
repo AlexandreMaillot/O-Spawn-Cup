@@ -61,7 +61,7 @@ class _RegisterState extends State<Register> {
                           onPressed: (){
                             Navigator.pushNamed(context, '/');
                           },
-                          icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
+                          icon: const Icon(Icons.arrow_back,color: Color(0xff191919)),
                         ),
                       ),
                       Center(

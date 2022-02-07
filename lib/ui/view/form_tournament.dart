@@ -1,23 +1,26 @@
+import "dart:io";
 import "dart:math";
 
-import 'package:dotted_border/dotted_border.dart';
+import "package:dotted_border/dotted_border.dart";
 import "package:flutter/material.dart";
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
-import 'package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart';
-import 'package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart';
-import 'package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart';
-import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
-import 'package:o_spawn_cup/models/game_name.dart';
-import 'package:o_spawn_cup/models/make_it_responsive.dart';
+import "package:flutter_bloc/flutter_bloc.dart";
+import "package:image_picker/image_picker.dart";
+import "package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart";
+import "package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart";
+import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
+import "package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart";
+import "package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
+import 'package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart';
+import "package:o_spawn_cup/models/game_name.dart";
+import "package:o_spawn_cup/models/make_it_responsive.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown_tournament_type.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn_game.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn_server.dart";
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart';
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/game_card.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
@@ -47,6 +50,9 @@ class FormTournament extends StatelessWidget {
         BlocProvider(
           create: (_) => GenerateCodeCubit(),
         ),
+        BlocProvider(
+          create: (_) => TakeImageGalleryCubit(),
+        ),
       ],
       child: FormTournamentView(),
     );
@@ -71,12 +77,12 @@ class FormTournamentView extends StatelessWidget {
   late TournamentTypeDropdown tournamentTypeDropdown;
   late ServerDropdown serverDropdown;
   late GameDropdown gameDropdown;
-  
+  late File imageFile;
   FocusNode dayFocus = FocusNode();
   FocusNode monthFocus = FocusNode();
   FocusNode yearsFocus = FocusNode();
   FocusNode tournamentFocus = FocusNode();
-  @override
+
   @override
   Widget build(BuildContext context) {
     pageController.addListener(() {
@@ -193,7 +199,8 @@ class FormTournamentView extends StatelessWidget {
                             buildStep2(currentIndex, screenSize),
                             buildStep3(currentIndex, screenSize),
                             buildStep4(currentIndex, screenSize),
-                            buildStep5(currentIndex, screenSize,controllersCodeGenerate),
+                            buildStep5(currentIndex, screenSize,
+                                controllersCodeGenerate),
                           ]);
                     },
                   ),
@@ -228,8 +235,10 @@ class FormTournamentView extends StatelessWidget {
     );
   }
 
-  Step buildStep5(int currentIndex,Size screenSize,List<TextEditingController> controllersCodeGenerate) {
-    String beforeCode = DateTime.now().millisecond.toString() + DateTime.now().microsecond.toString();
+  Step buildStep5(int currentIndex, Size screenSize,
+      List<TextEditingController> controllersCodeGenerate) {
+    String beforeCode = DateTime.now().millisecond.toString() +
+        DateTime.now().microsecond.toString();
     return Step(
         state: currentIndex > 4 ? StepState.complete : StepState.disabled,
         isActive: currentIndex >= 4,
@@ -243,32 +252,44 @@ class FormTournamentView extends StatelessWidget {
           ],
         ),
         content: BlocBuilder<GenerateCodeCubit, GenerateCodeState>(
-        builder: (context, state) {
-          return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                // itemCount: 3,
-                itemCount: (roundNumberController.text != "") ? int.parse(roundNumberController.text) : 0 ,
-                itemBuilder: (context,index){
-                  controllersCodeGenerate.add(TextEditingController());
-                  controllersCodeGenerate[index].text = context.read<GenerateCodeCubit>().generateCode(beforeCode, 5);
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: CustomTextField(screenSize: screenSize, text: "CODE ${index + 1}", controller: controllersCodeGenerate[index],typeTextField: TextInputType.text,suffixIcon: const Icon(Icons.refresh),onPressIconSuffix: () {
-                      controllersCodeGenerate[index].text = context.read<GenerateCodeCubit>().generateCode(beforeCode, 5);
-                    },),
-                  );
-                })
-          ],
-        );
-  },
-));
+          builder: (context, state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    // itemCount: (roundNumberController.text != "") ? int.parse(roundNumberController.text) : 0 ,
+                    itemBuilder: (context, index) {
+                      controllersCodeGenerate.add(TextEditingController());
+                      controllersCodeGenerate[index].text = context
+                          .read<GenerateCodeCubit>()
+                          .generateCode(beforeCode, 5);
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: CustomTextField(
+                          screenSize: screenSize,
+                          text: "CODE ${index + 1}",
+                          controller: controllersCodeGenerate[index],
+                          typeTextField: TextInputType.text,
+                          textAlign: TextAlign.center,
+                          suffixIcon: const Icon(Icons.refresh),
+                          onPressIconSuffix: () {
+                            controllersCodeGenerate[index].text = context
+                                .read<GenerateCodeCubit>()
+                                .generateCode(beforeCode, 5);
+                          },
+                        ),
+                      );
+                    })
+              ],
+            );
+          },
+        ));
   }
 
-  Step buildStep4(int currentIndex,Size screenSize) {
+  Step buildStep4(int currentIndex, Size screenSize) {
     return Step(
         state: currentIndex > 3 ? StepState.complete : StepState.disabled,
         isActive: currentIndex >= 3,
@@ -288,38 +309,44 @@ class FormTournamentView extends StatelessWidget {
               const WidgetChooseImage(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextElement(text: "ou",color: Colors.white,),
+                child: TextElement(
+                  text: "ou",
+                  color: Colors.white,
+                ),
               ),
-              TextElement(text: "IMAGES PRE-DEFINIES",color: Colors.white,),
+              TextElement(
+                text: "IMAGES PRE-DEFINIES",
+                color: Colors.white,
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: BlocBuilder<SelectGameBloc, SelectGameState>(
-                builder: (context, state) {
-                  return GridView.count(
-                  shrinkWrap: true,
-                  primary: false,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  crossAxisCount: 3,
-                  children: context.select((SelectGameBloc bloc) => bloc.filtredImageByGame()),
-                );
-  },
-),
+                  builder: (context, state) {
+                    print("rebuild 1");
+                    return GridView.count(
+                      shrinkWrap: true,
+                      primary: false,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      crossAxisCount: 3,
+                      children: context.select(
+                          (SelectGameBloc bloc) => bloc.filtredImageByGame()),
+                    );
+                  },
+                ),
               ),
               Container(
                 padding: const EdgeInsets.only(top: 15),
-                height: screenSize.height* 0.15,
+                height: screenSize.height * 0.15,
                 child: TextField(
                   style: TextStyle(
                     color: colorBackgroundTheme,
                   ),
                   decoration: InputDecoration(
-                      hintText: 'CASH PRIZE',
-
+                      hintText: "CASH PRIZE",
                       fillColor: Colors.white,
                       filled: true,
                       hoverColor: Colors.white,
-
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -327,8 +354,9 @@ class FormTournamentView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15),
                       )),
                   minLines: 5,
-                  maxLines: 5,  // allow user to enter 5 line in textfield
-                  keyboardType: TextInputType.multiline,  // user keyboard will have a button to move cursor to next line
+                  maxLines: 5, // allow user to enter 5 line in textfield
+                  keyboardType: TextInputType
+                      .multiline, // user keyboard will have a button to move cursor to next line
                 ),
               ),
             ],
@@ -336,7 +364,7 @@ class FormTournamentView extends StatelessWidget {
         ));
   }
 
-  Step buildStep3(int currentIndex,Size screenSize) {
+  Step buildStep3(int currentIndex, Size screenSize) {
     return Step(
         state: currentIndex > 2 ? StepState.complete : StepState.disabled,
         isActive: currentIndex >= 2,
@@ -354,15 +382,30 @@ class FormTournamentView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomTextField(screenSize: screenSize, text: "POINT PAR KILL", controller: pointPerKillController,typeTextField: TextInputType.number,),
-              CustomTextField(screenSize: screenSize, text: "POINT PAR RANG", controller: pointPerRangController,typeTextField: TextInputType.number,),
-              CustomTextField(screenSize: screenSize, text: "RANG DEBUT DU DECOMPTE", controller: rangStartController,typeTextField: TextInputType.number,),
+              CustomTextField(
+                screenSize: screenSize,
+                text: "POINT PAR KILL",
+                controller: pointPerKillController,
+                typeTextField: TextInputType.number,
+              ),
+              CustomTextField(
+                screenSize: screenSize,
+                text: "POINT PAR RANG",
+                controller: pointPerRangController,
+                typeTextField: TextInputType.number,
+              ),
+              CustomTextField(
+                screenSize: screenSize,
+                text: "RANG DEBUT DU DECOMPTE",
+                controller: rangStartController,
+                typeTextField: TextInputType.number,
+              ),
             ],
           ),
         ));
   }
 
-  Step buildStep2(int currentIndex,Size screenSize) {
+  Step buildStep2(int currentIndex, Size screenSize) {
     return Step(
         state: currentIndex > 1 ? StepState.complete : StepState.disabled,
         isActive: currentIndex >= 1,
@@ -380,12 +423,32 @@ class FormTournamentView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomTextField(screenSize: screenSize, text: "NOM DU TOURNOIS", controller: cupNameController),
-              CustomTextField(screenSize: screenSize, text: "NOMBRE DE ROUND(S)", controller: roundNumberController,typeTextField: TextInputType.number,),
-              RowTextfieldDate(monthFocus: monthFocus, dayFocus: dayFocus, dayController: dayController, yearsFocus: yearsFocus, monthController: monthController, yearsController: yearsController, screenSize: screenSize,),
-              CustomTextField(screenSize: screenSize, text: "NOMBRE D'EQUIPES", controller: teamNumberController,typeTextField: TextInputType.number,),
+              CustomTextField(
+                  screenSize: screenSize,
+                  text: "NOM DU TOURNOIS",
+                  controller: cupNameController),
+              CustomTextField(
+                screenSize: screenSize,
+                text: "NOMBRE DE ROUND(S)",
+                controller: roundNumberController,
+                typeTextField: TextInputType.number,
+              ),
+              RowTextfieldDate(
+                monthFocus: monthFocus,
+                dayFocus: dayFocus,
+                dayController: dayController,
+                yearsFocus: yearsFocus,
+                monthController: monthController,
+                yearsController: yearsController,
+                screenSize: screenSize,
+              ),
+              CustomTextField(
+                screenSize: screenSize,
+                text: "NOMBRE D'EQUIPES",
+                controller: teamNumberController,
+                typeTextField: TextInputType.number,
+              ),
               const RowWidgetNumByPlayer(),
-
               serverDropdown,
             ],
           ),
@@ -407,7 +470,8 @@ class FormTournamentView extends StatelessWidget {
       ),
       content: BlocBuilder<SelectGameBloc, SelectGameState>(
         builder: (context, state) {
-          final indexSelect = context.select((SelectGameBloc bloc) => bloc.state.index);
+          final indexSelect =
+              context.select((SelectGameBloc bloc) => bloc.state.index);
           return Container(
             color: colorBackgroundTheme,
             height: screenSize.height / 5,
@@ -419,17 +483,26 @@ class FormTournamentView extends StatelessWidget {
                   if (position == indexSelect) {
                     return Transform.scale(
                       scale: 1,
-                      child: GameCard(position,form: true,),
+                      child: GameCard(
+                        position,
+                        form: true,
+                      ),
                     );
                   } else if (position < indexSelect) {
                     return Transform.scale(
                       scale: max(1 - (indexSelect - position), 0.75),
-                      child: GameCard(position,form: true,),
+                      child: GameCard(
+                        position,
+                        form: true,
+                      ),
                     );
                   } else {
                     return Transform.scale(
                       scale: max(1 - (position - indexSelect), 0.75),
-                      child: GameCard(position,form: true,),
+                      child: GameCard(
+                        position,
+                        form: true,
+                      ),
                     );
                   }
                 }),
@@ -440,10 +513,7 @@ class FormTournamentView extends StatelessWidget {
   }
 }
 
-
-
 class WidgetChooseImage extends StatelessWidget {
-
   const WidgetChooseImage({
     Key? key,
   }) : super(key: key);
@@ -451,41 +521,72 @@ class WidgetChooseImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    return InkWell(
-      onTap: () {
-
-      },
-      child: DottedBorder(
-        borderType: BorderType.RRect,
-        color: Colors.white,
-        strokeWidth: 0.6,
-        strokeCap: StrokeCap.round,
-        radius: const Radius.circular(9),
-        padding: const EdgeInsets.all(6),
-        child: Container(
-          height: screenSize.height * 0.08,
-          width: screenSize.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                decoration: BoxDecoration(
+    return BlocBuilder<TakeImageGalleryCubit, TakeImageGalleryState>(
+      builder: (context, state) {
+        final imageTaked = state.imageTaked;
+        if (imageTaked != null) {
+          context.read<SelectedImagePredefCubit>().clearImgSelect();
+        }
+        return InkWell(
+          onTap: () => context.read<TakeImageGalleryCubit>().takePicture(),
+          child: (imageTaked != null)
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9),
+                      image: DecorationImage(
+                        image: Image.file(
+                          imageTaked,
+                        ).image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                )
+              : DottedBorder(
+                  borderType: BorderType.RRect,
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
+                  strokeWidth: 0.6,
+                  strokeCap: StrokeCap.round,
+                  radius: const Radius.circular(9),
+                  padding: const EdgeInsets.all(6),
+                  child: SizedBox(
+                    height: screenSize.height * 0.08,
+                    width: screenSize.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          width: 23,
+                          height: 23,
+                          child: Icon(
+                            Icons.add,
+                            color: colorHintTextTheme,
+                          ),
+                        ),
+                        TextElement(
+                          text: "CHOISIR UNE IMAGE",
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "max 5 mo",
+                          style: TextStyle(
+                            color: colorTheme,
+                            fontFamily: "o_spawn_cup_font",
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-                width: 23,
-                height: 23,
-                child: Icon(Icons.add,color: colorHintTextTheme,),
-              ),
-              TextElement(text: "CHOISIR UNE IMAGE",color: Colors.white,),
-              Text("max 5 mo",style: TextStyle(
-                color: colorTheme,
-                  fontFamily: "o_spawn_cup_font",
-              ),)
-            ],
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -501,9 +602,12 @@ class RowWidgetNumByPlayer extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextElement(text: "NOMBRE DE JOUEURS PAR EQUIPE",color: Colors.white,textAlign: TextAlign.center,),
+          child: TextElement(
+            text: "NOMBRE DE JOUEURS PAR EQUIPE",
+            color: Colors.white,
+            textAlign: TextAlign.center,
+          ),
         ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: listWidgetNumPlayerByTeam,
@@ -512,6 +616,3 @@ class RowWidgetNumByPlayer extends StatelessWidget {
     );
   }
 }
-
-
-

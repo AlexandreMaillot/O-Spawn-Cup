@@ -91,7 +91,7 @@ class _LoginState extends State<Login> {
                       Future<bool> redirectToHome = auth.signInWithMail(emailText.text, passwordText.text);
                       redirectToHome.then((value) {
                         if(value == true){
-                          Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                          Navigator.of(context).pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
                         }
                       });
                     }
@@ -100,13 +100,13 @@ class _LoginState extends State<Login> {
                       padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                       child: CustomDivider(screenSize: screenSize),
                   ),
-                  Container(
+                  SizedBox(
                     width: screenSize.width,
                     height: screenSize.height*0.125,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE", onPressedMethod: () => print('test')),
+                        CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE", onPressedMethod: () => auth.signUpWithGoogle()),
                         CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK", onPressedMethod: () => print('test')),
                       ],
                     ),

@@ -24,7 +24,7 @@ class WidgetNumPlayerByTeam extends StatelessWidget {
         decoration:
       BoxDecoration(
         borderRadius: BorderRadius.circular(7),
-        border: Border.all(color: ((state as WidgetNumberByPlayerInitial).indexSelect  == index) ? colorTheme : Colors.white),
+        border: ((state as WidgetNumberByPlayerInitial).indexSelect  == index) ? Border.all(color: colorTheme ,width: 3,) : Border.all(color: Colors.white ,),
         image: DecorationImage(image: Image.asset(image).image)),
       ),
     );

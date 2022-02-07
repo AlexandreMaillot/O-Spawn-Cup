@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import "package:bloc/bloc.dart";
+import "package:equatable/equatable.dart";
 
-part 'selected_image_predef_state.dart';
+part "selected_image_predef_state.dart";
 
 class SelectedImagePredefCubit extends Cubit<SelectedImagePredefState> {
   SelectedImagePredefCubit() : super(SelectedImagePredefInitial(indexSelected: null));
@@ -12,6 +12,6 @@ class SelectedImagePredefCubit extends Cubit<SelectedImagePredefState> {
     }
     emit(SelectedImagePredefInitial(indexSelected: indexSelect));
   }
-
+  clearImgSelect() => emit(SelectedImagePredefInitial(indexSelected: null));
 
 }

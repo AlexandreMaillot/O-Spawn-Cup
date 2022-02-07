@@ -19,6 +19,9 @@ class SelectGameNoData extends SelectGameState {
 class SelectGameError extends SelectGameState {
   SelectGameError() : super(index: 0);
 }
+class SelectGameImageFiltred extends SelectGameState {
+  SelectGameImageFiltred() : super(index: 0);
+}
 class SelectGameChanged extends SelectGameState {
   SelectGameChanged(double index) : super(index: index);
   @override

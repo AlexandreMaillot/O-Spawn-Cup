@@ -36,6 +36,7 @@ class SelectGameBloc extends Bloc<SelectGameEvent, SelectGameState> {
   }
 
   List<TileImagePre> filtredImageByGame(){
+    print("rebuild");
     return listImagePre.where((element) => element.gameName == listCardGame[state.index.toInt()].gameName).toList();
   }
 }
