@@ -1355,7 +1355,7 @@ abstract class TournamentDocumentReference
     int capacity,
     String cashPrize,
     int roundNumber,
-    String? image,
+    String? imageUrl,
     int killPointTournament,
     List<Team> listTeam,
     List<Object?> props,
@@ -1414,7 +1414,7 @@ class _$TournamentDocumentReference
     Object? capacity = _sentinel,
     Object? cashPrize = _sentinel,
     Object? roundNumber = _sentinel,
-    Object? image = _sentinel,
+    Object? imageUrl = _sentinel,
     Object? killPointTournament = _sentinel,
     Object? listTeam = _sentinel,
     Object? props = _sentinel,
@@ -1426,7 +1426,7 @@ class _$TournamentDocumentReference
       if (capacity != _sentinel) "capacity": capacity as int,
       if (cashPrize != _sentinel) "cashPrize": cashPrize as String,
       if (roundNumber != _sentinel) "roundNumber": roundNumber as int,
-      if (image != _sentinel) "image": image as String?,
+      if (imageUrl != _sentinel) "imageUrl": imageUrl as String?,
       if (killPointTournament != _sentinel)
         "killPointTournament": killPointTournament as int,
       if (listTeam != _sentinel) "listTeam": listTeam as List<Team>,
@@ -1546,7 +1546,7 @@ abstract class TournamentQuery
     List<int>? whereIn,
     List<int>? whereNotIn,
   });
-  TournamentQuery whereImage({
+  TournamentQuery whereImageUrl({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -1661,7 +1661,7 @@ abstract class TournamentQuery
     TournamentDocumentSnapshot? startAfterDocument,
   });
 
-  TournamentQuery orderByImage({
+  TournamentQuery orderByImageUrl({
     bool descending = false,
     String? startAt,
     String? startAfter,
@@ -1939,7 +1939,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     );
   }
 
-  TournamentQuery whereImage({
+  TournamentQuery whereImageUrl({
     String? isEqualTo,
     String? isNotEqualTo,
     String? isLessThan,
@@ -1952,7 +1952,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
   }) {
     return _$TournamentQuery(
       reference.where(
-        'image',
+        'imageUrl',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -2299,7 +2299,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     return _$TournamentQuery(query, _collection);
   }
 
-  TournamentQuery orderByImage({
+  TournamentQuery orderByImageUrl({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -2310,7 +2310,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('image', descending: false);
+    var query = reference.orderBy('imageUrl', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

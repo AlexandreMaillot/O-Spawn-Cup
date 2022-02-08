@@ -36,7 +36,7 @@ class CardCup extends StatelessWidget {
                     decoration: BoxDecoration(
 
                       image: DecorationImage(
-                        image: NetworkImage(tournament.image!,),
+                        image: NetworkImage(tournament.imageUrl!,),
                         fit: BoxFit.cover,
                       ),
                     ),

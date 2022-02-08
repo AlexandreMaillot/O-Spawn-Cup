@@ -25,7 +25,7 @@ class Tournament extends Equatable{
   String cashPrize;
   int roundNumber;
   TournamentState state = TournamentState.inscriptionFermer;
-  String? image;
+  String? imageUrl;
   // List<RangPointTournament> listRangPointTournament;
   int killPointTournament;
   List<Team> listTeam = [];
@@ -39,6 +39,7 @@ class Tournament extends Equatable{
       required this.capacity,
       required this.cashPrize,
       required this.roundNumber,
+      this.imageUrl,
       // required this.listRangPointTournament,
       required this.killPointTournament,}) {
   }
@@ -49,7 +50,7 @@ class Tournament extends Equatable{
   Map<String, Object?> toJson() => _$TournamentToJson(this);
 
   @override
-  List<Object?> get props => [name,date,game,server,tournamentType,capacity,cashPrize,roundNumber,killPointTournament];
+  List<Object?> get props => [name,date,game,server,tournamentType,capacity,cashPrize,roundNumber,killPointTournament,imageUrl];
 }
 
 @Collection<Tournament>("Tournament")

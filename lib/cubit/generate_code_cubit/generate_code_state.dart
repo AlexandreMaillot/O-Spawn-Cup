@@ -8,9 +8,5 @@ abstract class GenerateCodeState extends Equatable {
 
 class GenerateCodeInitial extends GenerateCodeState {}
 
-class GenerateCodeFinish extends GenerateCodeState {
-  String code;
-  GenerateCodeFinish({required this.code});
-  @override
-  List<Object> get props => [];
-}
+class GenerateCodeFinish extends GenerateCodeState {}
+class GenerateCodeNumChanged extends GenerateCodeState {}

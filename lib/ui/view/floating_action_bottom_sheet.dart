@@ -7,12 +7,12 @@ import "package:numberpicker/numberpicker.dart";
 import "package:o_spawn_cup/bloc/bloc_list_cup.dart";
 import "package:o_spawn_cup/bloc/bloc_provider.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
+import 'package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn_tournament_state.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
 import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
-import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown_tournament_type.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 
@@ -36,7 +36,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   late TextEditingController monthController;
   late TextEditingController yearsController;
   late TextEditingController tournamentNameController;
-  late TournamentTypeDropdown tournamentTypeDropdown;
+  late CustomDropdown tournamentTypeDropdown;
   late TournamentStateDropdown tournamentStateDropdown;
   late SharedPreferences filters;
 
@@ -50,7 +50,8 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
     monthController = TextEditingController();
     yearsController = TextEditingController();
     tournamentNameController = TextEditingController();
-    tournamentTypeDropdown = TournamentTypeDropdown(hintText: "TYPE DE TOURNOIS",typeFocus: typeFocus);
+    // tournamentTypeDropdown = TournamentTypeDropdown(hintText: "TYPE DE TOURNOIS",typeFocus: typeFocus);
+    tournamentTypeDropdown = CustomDropdown(hintText: "TYPE DE TOURNOIS",typeFocus: typeFocus,listItem: listTournamentTypeDropdown,);
     tournamentStateDropdown = TournamentStateDropdown(hintText: "ETAT");
     super.initState();
   }

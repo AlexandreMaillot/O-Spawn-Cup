@@ -30,7 +30,8 @@ class TileImagePre extends StatelessWidget {
         context.read<SelectedImagePredefCubit>().changedIndexSelect(index);
         context.read<TakeImageGalleryCubit>().clearPicture();
         },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           border: ((state as SelectedImagePredefInitial).indexSelected == index) ? Border.all(color: colorTheme,width: 3) : null,
           image: DecorationImage(

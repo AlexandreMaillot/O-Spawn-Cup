@@ -329,7 +329,7 @@ class SignCupView extends StatelessWidget {
             colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.95), BlendMode.dstATop),
             opacity: 0.31,
-            image: Image.network(tournament.image!).image,
+            image: Image.network(tournament.imageUrl!).image,
             fit: BoxFit.cover,
           ),
         ),

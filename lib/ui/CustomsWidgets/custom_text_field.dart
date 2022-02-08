@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class CustomTextField extends StatelessWidget{
+typedef MyDialogueCallback = void Function(BuildContext context, String data);
 
+class CustomTextField extends StatelessWidget {
   Size screenSize;
   String text;
   Color buttonColor;
@@ -11,7 +12,7 @@ class CustomTextField extends StatelessWidget{
   TextAlign textAlign;
   TextEditingController? controller;
   TextInputType? typeTextField;
-  Function(String)? onChanged;
+  MyDialogueCallback? onChanged;
   Function()? onPressIconSuffix;
   Widget? suffixIcon;
   CustomTextField({
@@ -22,28 +23,42 @@ class CustomTextField extends StatelessWidget{
     this.borderColor = Colors.white,
     required this.controller,
     this.textAlign = TextAlign.center,
-    this.typeTextField,
+    this.typeTextField = TextInputType.text,
     this.onChanged,
     this.onPressIconSuffix,
     this.suffixIcon,
-  }): super(key: key);
+  }) : super(key: key);
 
-  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.05,
       child: TextField(
-        onChanged: onChanged,
+        inputFormatters: (typeTextField != TextInputType.text)
+            ? <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+              ]
+            : [],
+        onChanged: (value) {
+          if(onChanged != null){
+            onChanged!(context, value);
+          }
+
+        },
         keyboardType: typeTextField ?? TextInputType.text,
         controller: controller,
         textAlign: textAlign,
         textAlignVertical: TextAlignVertical.bottom,
         showCursor: false,
         decoration: InputDecoration(
-          suffixIcon: (suffixIcon != null) ? IconButton(onPressed: onPressIconSuffix, icon: suffixIcon!,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,) : null,
+          suffixIcon: (suffixIcon != null)
+              ? IconButton(
+                  onPressed: onPressIconSuffix,
+                  icon: suffixIcon!,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                )
+              : null,
           filled: true,
           fillColor: Colors.white,
           enabledBorder: OutlineInputBorder(
