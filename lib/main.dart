@@ -11,7 +11,6 @@ import "package:o_spawn_cup/ui/view/login_register.dart";
 import "bloc/bloc_router.dart";
 import "constant.dart";
 import "firebase_options.dart";
-import "models/Team/test.dart";
 import "ui/view/register.dart";
 
 void main() async {

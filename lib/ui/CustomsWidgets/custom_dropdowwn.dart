@@ -4,14 +4,15 @@ import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_background_around_field.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/models/server_type.dart";
-
+typedef onChangeCallback = void Function(BuildContext context, Object? data);
 
 class CustomDropdown extends StatefulWidget {
   String hintText;
   List<DropdownMenuItem<Object>>? listItem;
   FocusNode? typeFocus;
   Object? dropdownValue;
-  CustomDropdown({Key? key, required this.hintText,required this.listItem,this.typeFocus}) : super(key: key);
+  onChangeCallback? onChanged;
+  CustomDropdown({Key? key, required this.hintText,required this.listItem,this.typeFocus,this.onChanged}) : super(key: key);
 
   @override
   _CustomDropdownState createState() => _CustomDropdownState();
@@ -49,14 +50,18 @@ class _CustomDropdownState extends State<CustomDropdown> {
                   icon: const Icon(Icons.clear,),
                   padding: const EdgeInsets.only(bottom: 0),
                   onPressed: () => setState(() {
+
                     widget.dropdownValue = null;
+                    widget.onChanged!(context,null);
                       })),
           elevation: 16,
           style: TextStyle(color: colorBackgroundTheme),
           underline: const SizedBox(),
           onChanged: (newValue) {
             setState(() {
+
               widget.dropdownValue = newValue!;
+              widget.onChanged!(context,newValue);
             });
           },
           items: widget.listItem,

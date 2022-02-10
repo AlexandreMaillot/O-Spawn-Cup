@@ -74,7 +74,7 @@ class _RegisterState extends State<Register> {
                   key: _formKey,
                   child: Padding(
                     padding: EdgeInsets.only(top: screenSize.height * 0.022, bottom: screenSize.height * 0.044),
-                    child: Container(
+                    child: SizedBox(
                       width: screenSize.width,
                       height: screenSize.height * 0.27,
                       child: Column(

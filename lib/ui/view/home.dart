@@ -2,7 +2,6 @@ import "dart:math";
 
 import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
-import "package:o_spawn_cup/bloc/bloc_list_game.dart";
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/card_game.dart";

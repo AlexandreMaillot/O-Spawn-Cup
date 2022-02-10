@@ -2,9 +2,11 @@ import "dart:io";
 import "dart:math";
 
 import "package:dotted_border/dotted_border.dart";
+import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
+import 'package:o_spawn_cup/bloc/form_tournament_bloc/form_tournament_bloc.dart';
 import "package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart";
 import "package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart";
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
@@ -15,6 +17,8 @@ import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import "package:o_spawn_cup/models/game_name.dart";
 import "package:o_spawn_cup/models/make_it_responsive.dart";
 import 'package:o_spawn_cup/models/server_type.dart';
+import 'package:o_spawn_cup/models/validator/server_type.dart'
+    as serverTypeValidator;
 import 'package:o_spawn_cup/service/firebase_handler.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
@@ -54,6 +58,9 @@ class FormTournament extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => TakeImageGalleryCubit(),
+        ),
+        BlocProvider(
+          create: (_) => FormTournamentBloc(),
         ),
       ],
       child: FormTournamentView(),
@@ -161,25 +168,54 @@ class FormTournamentView extends StatelessWidget {
                                     colorText: colorBackgroundTheme,
                                     width: screenSize.width / 3,
                                     onPressedMethod: () {
-                                      if (currentIndex < context.read<StepByStepWidgetBloc>().indexMax) {
+                                      if (currentIndex <
+                                          context
+                                              .read<StepByStepWidgetBloc>()
+                                              .indexMax) {
                                         controls.onStepContinue!();
                                       } else {
-                                        int indexGameSelect = context.read<SelectGameBloc>().state.index.toInt();
+                                        int indexGameSelect = context
+                                            .read<SelectGameBloc>()
+                                            .state
+                                            .index
+                                            .toInt();
                                         FirebaseHandler().addTournamentFirebase(
-                                            cupNameController.text,
-                                            int.parse(yearsController.text + monthController.text + dayController.text),
-                                            listCardGame[indexGameSelect].gameName,
-                                            serverDropdown.dropdownValue as ServerType,
-                                            listTournamentType[context.read<WidgetNumberByPlayerBloc>().indexSelected!],
-                                            int.parse(teamNumberController.text),
-                                            cashPrizeController.text,
-                                            int.parse(roundNumberController.text),
-                                            int.parse(pointPerKillController.text),
-                                          (context.read<TakeImageGalleryCubit>().state.imageTaked != null)
-                                              ? context.read<TakeImageGalleryCubit>().state.imageTaked!
-                                              : File(listImagePre[(context.read<SelectedImagePredefCubit>().state as SelectedImagePredefInitial).indexSelected!].image) ,
+                                          cupNameController.text,
+                                          int.parse(yearsController.text +
+                                              monthController.text +
+                                              dayController.text),
+                                          listCardGame[indexGameSelect]
+                                              .gameName,
+                                          serverDropdown.dropdownValue
+                                              as ServerType,
+                                          listTournamentType[context
+                                              .read<WidgetNumberByPlayerBloc>()
+                                              .indexSelected!],
+                                          int.parse(teamNumberController.text),
+                                          cashPrizeController.text,
+                                          int.parse(roundNumberController.text),
+                                          int.parse(
+                                              pointPerKillController.text),
+                                          (context
+                                                      .read<
+                                                          TakeImageGalleryCubit>()
+                                                      .state
+                                                      .imageTaked !=
+                                                  null)
+                                              ? context
+                                                  .read<TakeImageGalleryCubit>()
+                                                  .state
+                                                  .imageTaked!
+                                              : File(listImagePre[(context
+                                                              .read<
+                                                                  SelectedImagePredefCubit>()
+                                                              .state
+                                                          as SelectedImagePredefInitial)
+                                                      .indexSelected!]
+                                                  .image),
                                         );
-                                        Navigator.of(context).pushNamed("/home");
+                                        Navigator.of(context)
+                                            .pushNamed("/home");
                                       }
                                     },
                                   ),
@@ -316,7 +352,7 @@ class FormTournamentView extends StatelessWidget {
                       crossAxisSpacing: 10,
                       crossAxisCount: 3,
                       children: context.select(
-                          (SelectGameBloc bloc) => bloc.filtredImageByGame()),
+                          (SelectGameBloc bloc) => bloc.filteredImageByGame()),
                     );
                   },
                 ),
@@ -409,22 +445,43 @@ class FormTournamentView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomTextField(
-                  screenSize: screenSize,
-                  text: "NOM DU TOURNOIS",
-                  controller: cupNameController),
-              CustomTextField(
-                screenSize: screenSize,
-                text: "NOMBRE DE ROUND(S)",
-                controller: roundNumberController,
-                typeTextField: TextInputType.number,
-                onChanged: (context, value) {
-                  if (value != "") {
-                    int? numberRound = int.parse(value);
-                    context
-                        .read<GenerateCodeCubit>()
-                        .numRoundChange(numberRound);
-                  }
+              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+                builder: (context, state) {
+                  return CustomTextField(
+                    screenSize: screenSize,
+                    text: "NOM DU TOURNOIS",
+                    controller: cupNameController,
+                    onChanged: (context, value) => context
+                        .read<FormTournamentBloc>()
+                        .add(FormTournamentNameCupChanged(value)),
+                    errorText: state.nameCup.invalid
+                        ? "Le nom du tournois doit être renseigné !"
+                        : null,
+                  );
+                },
+              ),
+              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+                builder: (context, state) {
+                  return CustomTextField(
+                    screenSize: screenSize,
+                    text: "NOMBRE DE ROUND(S)",
+                    controller: roundNumberController,
+                    typeTextField: TextInputType.number,
+                    errorText: state.numberRound.invalid
+                        ? "Le nombre de round doit être supérieur à zéro !"
+                        : null,
+                    onChanged: (context, value) {
+                      context
+                          .read<FormTournamentBloc>()
+                          .add(FormTournamentNumberRoundChanged(value));
+                      if (value != "") {
+                        int? numberRound = int.parse(value);
+                        context
+                            .read<GenerateCodeCubit>()
+                            .numRoundChange(numberRound);
+                      }
+                    },
+                  );
                 },
               ),
               RowTextfieldDate(
@@ -436,14 +493,53 @@ class FormTournamentView extends StatelessWidget {
                 yearsController: yearsController,
                 screenSize: screenSize,
               ),
-              CustomTextField(
-                screenSize: screenSize,
-                text: "NOMBRE D'EQUIPES",
-                controller: teamNumberController,
-                typeTextField: TextInputType.number,
+              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+                builder: (context, state) {
+                  return CustomTextField(
+                    screenSize: screenSize,
+                    text: "NOMBRE D'EQUIPES",
+                    controller: teamNumberController,
+                    onChanged: (context, value) => context
+                        .read<FormTournamentBloc>()
+                        .add(FormTournamentPlayerByTeamChanged(value)),
+                    typeTextField: TextInputType.number,
+                    errorText: state.playerByTeam.invalid
+                        ? null
+                        : "Le nombre d'équipe doit être supérieur à 2 !",
+                  );
+                },
               ),
               const RowWidgetNumByPlayer(),
-              serverDropdown,
+              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+                  builder: (context, state) {
+                serverDropdown.onChanged = (context, data) {
+                  context
+                      .read<FormTournamentBloc>()
+                      .add(FormTournamentServerTypeChanged(data.toString()));
+                };
+                return Column(
+                  children: [
+                    serverDropdown,
+                    state.serverType.valid
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 6.0, left: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "Un type de serveur doit être sélectionné !",
+                                  style: TextStyle(
+                                    color: Color(0xffd22f2f),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                  ],
+                );
+              }),
             ],
           ),
         ));

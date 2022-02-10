@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-typedef MyDialogueCallback = void Function(BuildContext context, String data);
+typedef onChangeCallback = void Function(BuildContext context, String data);
 
 class CustomTextField extends StatelessWidget {
   Size screenSize;
@@ -12,9 +12,10 @@ class CustomTextField extends StatelessWidget {
   TextAlign textAlign;
   TextEditingController? controller;
   TextInputType? typeTextField;
-  MyDialogueCallback? onChanged;
+  onChangeCallback? onChanged;
   Function()? onPressIconSuffix;
   Widget? suffixIcon;
+  String? errorText;
   CustomTextField({
     Key? key,
     required this.screenSize,
@@ -27,12 +28,13 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.onPressIconSuffix,
     this.suffixIcon,
+    this.errorText,
   }) : super(key: key);
 
   Widget build(BuildContext context) {
     return SizedBox(
       width: screenSize.width * 0.87,
-      height: screenSize.height * 0.05,
+      height: errorText != null ? screenSize.height * 0.08 : screenSize.height * 0.05,
       child: TextField(
         inputFormatters: (typeTextField != TextInputType.text)
             ? <TextInputFormatter>[
@@ -51,6 +53,7 @@ class CustomTextField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.bottom,
         showCursor: false,
         decoration: InputDecoration(
+          errorText: errorText,
           suffixIcon: (suffixIcon != null)
               ? IconButton(
                   onPressed: onPressIconSuffix,
@@ -67,6 +70,14 @@ class CustomTextField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: buttonColor),
+            borderRadius: BorderRadius.circular(31),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: buttonColor),
+            borderRadius: BorderRadius.circular(31),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.circular(31),
           ),
           hintText: text,
