@@ -1,17 +1,17 @@
 import "package:formz/formz.dart";
 
-enum PlayerByTeamValidationError { empty , zero}
+enum PlayerByTeamValidationError { inferior , zero}
 
-class PlayerByTeam extends FormzInput<String, PlayerByTeamValidationError> {
-  const PlayerByTeam.pure() : super.pure("");
-  const PlayerByTeam.dirty([String value = ""]) : super.dirty(value);
+class PlayerByTeam extends FormzInput<int?, PlayerByTeamValidationError> {
+  const PlayerByTeam.pure() : super.pure(null);
+  const PlayerByTeam.dirty([int? value = null]) : super.dirty(value);
 
   @override
-  PlayerByTeamValidationError? validator(String? value) {
-    if(value?.isEmpty == true){
-      return PlayerByTeamValidationError.empty;
-    } else if(value == "0") {
+  PlayerByTeamValidationError? validator(int? value) {
+    if(value == null || value == 0){
       return PlayerByTeamValidationError.zero;
+    } else if(value <= 1) {
+      return PlayerByTeamValidationError.inferior;
     }
     else {
       return null;

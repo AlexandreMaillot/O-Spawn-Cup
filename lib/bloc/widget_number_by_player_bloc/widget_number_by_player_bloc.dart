@@ -10,6 +10,7 @@ class WidgetNumberByPlayerBloc extends Bloc<WidgetNumberByPlayerEvent, WidgetNum
   int? indexSelected;
   WidgetNumberByPlayerBloc() : super(WidgetNumberByPlayerInitial(null)) {
     on<WidgetNumberByPlayerChanging>(_changeIndexSelect);
+    on<WidgetNumberByPlayerAnimating>(_animatedOn);
   }
 
   FutureOr<void> _changeIndexSelect(WidgetNumberByPlayerChanging event, Emitter<WidgetNumberByPlayerState> emit) {
@@ -18,6 +19,14 @@ class WidgetNumberByPlayerBloc extends Bloc<WidgetNumberByPlayerEvent, WidgetNum
       index = null;
     }
     indexSelected = index;
+    emit(WidgetNumberByPlayerInitial(indexSelected));
+  }
+
+
+  Future<FutureOr<void>> _animatedOn(WidgetNumberByPlayerAnimating event, Emitter<WidgetNumberByPlayerState> emit) async {
+    emit(WidgetNumberByPlayerAnimate(indexSelected));
+    await Future.delayed(const Duration(milliseconds: 500), () {
+    });
     emit(WidgetNumberByPlayerInitial(indexSelected));
   }
 }

@@ -12,3 +12,6 @@ class WidgetNumberByPlayerChanging extends WidgetNumberByPlayerEvent {
   @override
   List<Object?> get props => [indexSelect];
 }
+class WidgetNumberByPlayerAnimating extends WidgetNumberByPlayerEvent {
+
+}

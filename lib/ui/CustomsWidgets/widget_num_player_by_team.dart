@@ -1,3 +1,4 @@
+import 'package:animated_widgets/animated_widgets.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
@@ -24,14 +25,20 @@ class WidgetNumPlayerByTeam extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () => context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerChanging(indexSelect: index)),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 55,height: 55,
-        decoration:
-      BoxDecoration(
-        borderRadius: BorderRadius.circular(7),
-        border: ((state as WidgetNumberByPlayerInitial).indexSelect  == index) ? Border.all(color: colorTheme ,width: 3,) : Border.all(color: Colors.white ,),
-        image: DecorationImage(image: Image.asset(image).image)),
+      child: ShakeAnimatedWidget(
+        enabled: (state.runtimeType == WidgetNumberByPlayerAnimate) ? true : false,
+        duration: const Duration(milliseconds: 300),
+        shakeAngle: Rotation.deg(z: 5),
+        curve: Curves.linear,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: 55,height: 55,
+          decoration:
+        BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: (state.runtimeType == WidgetNumberByPlayerAnimate) ? Border.all(color: const Color(0xffd22f2f) ,width: 3,) : ((state).indexSelect  == index) ? Border.all(color: colorTheme ,width: 3,) : Border.all(color: Colors.white ,),
+          image: DecorationImage(image: Image.asset(image).image)),
+        ),
       ),
     );
   },

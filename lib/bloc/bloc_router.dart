@@ -24,5 +24,5 @@ class BlocRouter {
   // fbloc.MultiBlocProvider mb() => fbloc.MultiBlocProvider(providers: [
   //   fbloc.BlocProvider<BlocFormCup>(create: (context) => BlocFormCup(),),
   // ], child: FormTournament());
-  // BlocProvider sport(Sport sport) => BlocProvider<BlocLeague>(form_tournament_bloc: BlocLeague(sport.name), child: SportScreen(sport: sport));
+  // BlocProvider sport(Sport sport) => BlocProvider<BlocLeague>(form_tournament_step_2_bloc: BlocLeague(sport.name), child: SportScreen(sport: sport));
 }

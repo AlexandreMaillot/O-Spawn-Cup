@@ -1,17 +1,19 @@
 import "package:formz/formz.dart";
 
-enum DayValidationError { empty , zero}
+enum DayValidationError { empty , zero, superior}
 
-class Day extends FormzInput<String, DayValidationError> {
-  const Day.pure() : super.pure("");
-  const Day.dirty([String value = ""]) : super.dirty(value);
+class Day extends FormzInput<int?, DayValidationError> {
+  const Day.pure() : super.pure(null);
+  const Day.dirty([int? value = null]) : super.dirty(value);
 
   @override
-  DayValidationError? validator(String? value) {
-    if(value?.isEmpty == true){
+  DayValidationError? validator(int? value) {
+    if(value == null){
       return DayValidationError.empty;
-    } else if(value == "0") {
+    } else if(value == 0) {
       return DayValidationError.zero;
+    } else if(value > 31) {
+      return DayValidationError.superior;
     }
     else {
       return null;

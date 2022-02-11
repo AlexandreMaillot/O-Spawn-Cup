@@ -5,8 +5,6 @@ import "package:dotted_border/dotted_border.dart";
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:image_picker/image_picker.dart";
-import 'package:o_spawn_cup/bloc/form_tournament_bloc/form_tournament_bloc.dart';
 import "package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart";
 import "package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart";
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
@@ -30,6 +28,8 @@ import "package:o_spawn_cup/ui/CustomsWidgets/game_card.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
 import "package:o_spawn_cup/constant.dart";
+
+import '../../bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart';
 
 class FormTournament extends StatelessWidget {
   FormTournament({
@@ -60,7 +60,7 @@ class FormTournament extends StatelessWidget {
           create: (_) => TakeImageGalleryCubit(),
         ),
         BlocProvider(
-          create: (_) => FormTournamentBloc(),
+          create: (_) => FormTournamentStep2Bloc(),
         ),
       ],
       child: FormTournamentView(),
@@ -94,7 +94,6 @@ class FormTournamentView extends StatelessWidget {
   FocusNode monthFocus = FocusNode();
   FocusNode yearsFocus = FocusNode();
   FocusNode tournamentFocus = FocusNode();
-
   @override
   Widget build(BuildContext context) {
     pageController.addListener(() {
@@ -276,7 +275,6 @@ class FormTournamentView extends StatelessWidget {
           ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              // itemCount: 3,
               itemCount: (roundNumberController.text != "")
                   ? int.parse(roundNumberController.text)
                   : 0,
@@ -441,18 +439,20 @@ class FormTournamentView extends StatelessWidget {
           ],
         ),
         content: SizedBox(
-          height: screenSize.height * 0.43,
+          // height: screenSize.height * 0.48,
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+              BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                 builder: (context, state) {
                   return CustomTextField(
+                    paddingBottom: 10,
                     screenSize: screenSize,
                     text: "NOM DU TOURNOIS",
                     controller: cupNameController,
                     onChanged: (context, value) => context
-                        .read<FormTournamentBloc>()
+                        .read<FormTournamentStep2Bloc>()
                         .add(FormTournamentNameCupChanged(value)),
                     errorText: state.nameCup.invalid
                         ? "Le nom du tournois doit être renseigné !"
@@ -460,9 +460,10 @@ class FormTournamentView extends StatelessWidget {
                   );
                 },
               ),
-              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+              BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                 builder: (context, state) {
                   return CustomTextField(
+                    paddingBottom: 10,
                     screenSize: screenSize,
                     text: "NOMBRE DE ROUND(S)",
                     controller: roundNumberController,
@@ -472,8 +473,8 @@ class FormTournamentView extends StatelessWidget {
                         : null,
                     onChanged: (context, value) {
                       context
-                          .read<FormTournamentBloc>()
-                          .add(FormTournamentNumberRoundChanged(value));
+                          .read<FormTournamentStep2Bloc>()
+                          .add(FormTournamentNumberRoundChanged(int.tryParse(value)));
                       if (value != "") {
                         int? numberRound = int.parse(value);
                         context
@@ -484,60 +485,72 @@ class FormTournamentView extends StatelessWidget {
                   );
                 },
               ),
-              RowTextfieldDate(
-                monthFocus: monthFocus,
-                dayFocus: dayFocus,
-                dayController: dayController,
-                yearsFocus: yearsFocus,
-                monthController: monthController,
-                yearsController: yearsController,
-                screenSize: screenSize,
+              BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
+              builder: (context, state) {
+                return RowTextfieldDate(
+                  paddingBottom: 10,
+                  monthFocus: monthFocus,
+                  dayFocus: dayFocus,
+                  dayController: dayController,
+                  yearsFocus: yearsFocus,
+                  monthController: monthController,
+                  yearsController: yearsController,
+                  onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDayChanged(int.tryParse(value))),
+                  screenSize: screenSize,
+                );
+                },
               ),
-              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+              BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                 builder: (context, state) {
                   return CustomTextField(
                     screenSize: screenSize,
                     text: "NOMBRE D'EQUIPES",
                     controller: teamNumberController,
                     onChanged: (context, value) => context
-                        .read<FormTournamentBloc>()
-                        .add(FormTournamentPlayerByTeamChanged(value)),
+                        .read<FormTournamentStep2Bloc>()
+                        .add(FormTournamentNumberTeamChanged(int.tryParse(value))),
                     typeTextField: TextInputType.number,
-                    errorText: state.playerByTeam.invalid
-                        ? null
-                        : "Le nombre d'équipe doit être supérieur à 2 !",
+                    errorText: state.numberTeam.invalid
+                        ? "Le nombre d'équipe doit être supérieur à 2 !"
+                        : null,
                   );
                 },
               ),
-              const RowWidgetNumByPlayer(),
-              BlocBuilder<FormTournamentBloc, FormTournamentState>(
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: RowWidgetNumByPlayer(),
+              ),
+              BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                   builder: (context, state) {
                 serverDropdown.onChanged = (context, data) {
                   context
-                      .read<FormTournamentBloc>()
+                      .read<FormTournamentStep2Bloc>()
                       .add(FormTournamentServerTypeChanged(data.toString()));
                 };
-                return Column(
-                  children: [
-                    serverDropdown,
-                    state.serverType.valid
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 6.0, left: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Un type de serveur doit être sélectionné !",
-                                  style: TextStyle(
-                                    color: Color(0xffd22f2f),
-                                    fontSize: 12,
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Column(
+                    children: [
+                      serverDropdown,
+                      state.serverType.valid
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 6.0, left: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    "Un type de serveur doit être sélectionné !",
+                                    style: TextStyle(
+                                      color: Color(0xffd22f2f),
+                                      fontSize: 12,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Container(),
-                  ],
+                                ],
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
                 );
               }),
             ],

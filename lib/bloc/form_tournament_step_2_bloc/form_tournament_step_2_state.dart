@@ -1,6 +1,6 @@
-part of "form_tournament_bloc.dart";
+part of "form_tournament_step_2_bloc.dart";
 
-class FormTournamentState extends Equatable {
+class FormTournamentStep2State extends Equatable {
 
   final FormzStatus status;
   final NameCup nameCup;
@@ -10,8 +10,9 @@ class FormTournamentState extends Equatable {
   final Years years;
   final PlayerByTeam playerByTeam;
   final ServerType serverType;
+  final NumberTeam numberTeam;
 
-  const FormTournamentState({
+  const FormTournamentStep2State({
     this.status = FormzStatus.pure,
     this.nameCup = const NameCup.pure(),
     this.numberRound = const NumberRound.pure(),
@@ -20,11 +21,12 @@ class FormTournamentState extends Equatable {
     this.years = const Years.pure(),
     this.playerByTeam = const PlayerByTeam.pure(),
     this.serverType = const ServerType.pure(),
+    this.numberTeam = const NumberTeam.pure(),
   });
 
 
 
-  FormTournamentState copyWith({
+  FormTournamentStep2State copyWith({
     FormzStatus? status,
     NameCup? nameCup,
     NumberRound? numberRound,
@@ -33,8 +35,9 @@ class FormTournamentState extends Equatable {
     Years? years,
     PlayerByTeam? playerByTeam,
     ServerType? serverType,
+    NumberTeam? numberTeam,
   }) {
-    return FormTournamentState(
+    return FormTournamentStep2State(
       status: status ?? this.status,
       nameCup: nameCup ?? this.nameCup,
       numberRound: numberRound ?? this.numberRound,
@@ -43,10 +46,11 @@ class FormTournamentState extends Equatable {
       years: years ?? this.years,
       playerByTeam: playerByTeam ?? this.playerByTeam,
       serverType: serverType ?? this.serverType,
+      numberTeam: numberTeam ?? this.numberTeam,
     );
   }
   @override
-  List<Object> get props => [status,nameCup,numberRound,day,month,years,playerByTeam,serverType];
+  List<Object> get props => [status,nameCup,numberRound,day,month,years,playerByTeam,serverType,numberTeam];
 }
 
 

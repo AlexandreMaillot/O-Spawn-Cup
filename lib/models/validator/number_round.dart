@@ -1,18 +1,17 @@
 import "package:formz/formz.dart";
 
-enum NumberRoundValidationError { empty , zero}
+enum NumberRoundValidationError { inferior , zero}
 
-class NumberRound extends FormzInput<String, NumberRoundValidationError> {
-  const NumberRound.pure() : super.pure("");
-  const NumberRound.dirty([String value = ""]) : super.dirty(value);
+class NumberRound extends FormzInput<int?, NumberRoundValidationError> {
+  const NumberRound.pure() : super.pure(null);
+  const NumberRound.dirty([int? value]) : super.dirty(value);
 
   @override
-  NumberRoundValidationError? validator(String? value) {
-    print(value);
-    if(value?.isEmpty == true){
-      return NumberRoundValidationError.empty;
-    } else if(value == "0") {
+  NumberRoundValidationError? validator(int? value) {
+    if(value == 0 || value == null){
       return NumberRoundValidationError.zero;
+    } else if(value < 4 ) {
+      return NumberRoundValidationError.inferior;
     }
     else {
       return null;

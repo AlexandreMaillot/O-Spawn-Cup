@@ -8,14 +8,14 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
 
   ////Bloc en question
   final T bloc;
-  //Child va s'occuper ce form_tournament_bloc
+  //Child va s'occuper ce form_tournament_step_2_bloc
   final Widget child;
   //Constructeur
   BlocProvider({required this.bloc,required this.child});
 
   //Valeur type
   static Type _providerType<T>() => T;
-  //Configurer le form_tournament_bloc
+  //Configurer le form_tournament_step_2_bloc
 
   static T of<T extends Bloc>(BuildContext context) {
     final type = _providerType<BlocProvider<T>>();

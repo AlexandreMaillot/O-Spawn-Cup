@@ -10,3 +10,6 @@ abstract class WidgetNumberByPlayerState extends Equatable {
 class WidgetNumberByPlayerInitial extends WidgetNumberByPlayerState {
   WidgetNumberByPlayerInitial(int? index) : super(indexSelect: index);
 }
+class WidgetNumberByPlayerAnimate extends WidgetNumberByPlayerState {
+  WidgetNumberByPlayerAnimate(int? index) : super(indexSelect: index);
+}
