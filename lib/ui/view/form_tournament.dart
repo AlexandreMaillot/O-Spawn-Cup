@@ -346,6 +346,8 @@ class FormTournamentView extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: CustomTextField(
+                        textInputAction: TextInputAction.next,
+                        // paddingBottom: 10,
                         screenSize: screenSize,
                         text: "CODE ${index + 1}",
                         controller:
@@ -484,6 +486,7 @@ class FormTournamentView extends StatelessWidget {
               BlocBuilder<FormTournamentStep3Bloc, FormTournamentStep3State>(
               builder: (context, state) {
                 return CustomTextField(
+                  textInputAction: TextInputAction.next,
                 screenSize: screenSize,
                 text: "POINT PAR KILL",
                   paddingBottom: 10,
@@ -499,6 +502,7 @@ class FormTournamentView extends StatelessWidget {
               BlocBuilder<FormTournamentStep3Bloc, FormTournamentStep3State>(
               builder: (context, state) {
                 return CustomTextField(
+                  textInputAction: TextInputAction.next,
                 screenSize: screenSize,
                   paddingBottom: 10,
                 text: "POINT PAR RANG",
@@ -553,6 +557,7 @@ class FormTournamentView extends StatelessWidget {
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                 builder: (context, state) {
                   return CustomTextField(
+                    textInputAction: TextInputAction.next,
                     paddingBottom: 10,
                     screenSize: screenSize,
                     text: "NOM DU TOURNOIS",
@@ -570,6 +575,7 @@ class FormTournamentView extends StatelessWidget {
                 builder: (context, state) {
                   return CustomTextField(
                     paddingBottom: 10,
+                    textInputAction: TextInputAction.next,
                     screenSize: screenSize,
                     text: "NOMBRE DE ROUND(S)",
                     controller: roundNumberController,
@@ -612,6 +618,7 @@ class FormTournamentView extends StatelessWidget {
                 builder: (context, state) {
                   return CustomTextField(
                     screenSize: screenSize,
+                    textInputAction: TextInputAction.next,
                     text: "NOMBRE D'EQUIPES",
                     controller: teamNumberController,
                     onChanged: (context, value) => context

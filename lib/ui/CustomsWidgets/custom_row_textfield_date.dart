@@ -113,6 +113,7 @@ class RowTextfieldDate extends StatelessWidget {
                       onChangedYears!(context, int.tryParse(value));
                     },
                     focusNode: yearsFocus,
+                    textInputAction: TextInputAction.next,
                     controller: yearsController,
                     maxLength: 4,
                     keyboardType: TextInputType.number,

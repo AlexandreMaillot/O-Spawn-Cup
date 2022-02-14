@@ -306,7 +306,7 @@ class SignCupView extends StatelessWidget {
     return Hero(
       tag: "tagcard_cup_${tournament.documentId}",
       child: Container(
-        width: screenSize.width,
+        // width: screenSize.width,
         height: screenSize.height * 0.25,
         // color: Colors.orange,
         decoration: BoxDecoration(
@@ -339,13 +339,20 @@ class SignCupView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: SvgPicture.asset(
-                    "assets/images/icon_edit.svg",
-                    height: 30,
-                    width: 37,
+                Container(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: IconButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      icon: SvgPicture.asset(
+                        "assets/images/icon_edit.svg",
+                        // height: 30,
+                        // width: 37,
+                      ),
+                      onPressed: () => print("modif"),
+                    ),
                   ),
-                  onPressed: () => print("modif"),
                 ),
               ],
             ),

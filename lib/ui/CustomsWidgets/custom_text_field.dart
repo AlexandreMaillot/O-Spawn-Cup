@@ -17,6 +17,7 @@ class CustomTextField extends StatelessWidget {
   Widget? suffixIcon;
   String? errorText;
   double paddingBottom;
+  TextInputAction? textInputAction;
   CustomTextField({
     Key? key,
     required this.screenSize,
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
     this.onPressIconSuffix,
     this.suffixIcon,
     this.errorText,
+    this.textInputAction,
     this.paddingBottom = 0,
   }) : super(key: key);
 
@@ -40,6 +42,7 @@ class CustomTextField extends StatelessWidget {
         width: screenSize.width * 0.87,
         height: errorText != null ? screenSize.height * 0.08 : screenSize.height * 0.05,
         child: TextField(
+          textInputAction: textInputAction,
           inputFormatters: (typeTextField != TextInputType.text)
               ? <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),

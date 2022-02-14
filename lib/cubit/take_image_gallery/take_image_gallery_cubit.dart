@@ -11,7 +11,7 @@ class TakeImageGalleryCubit extends Cubit<TakeImageGalleryState> {
 
   takePicture() async {
     final ImagePicker _picker = ImagePicker();
-    final XFile? imagePath = await _picker.pickImage(source: ImageSource.gallery, maxHeight: 500, maxWidth: 500);
+    final XFile? imagePath = await _picker.pickImage(source: ImageSource.gallery, maxHeight: 500, maxWidth: 500,imageQuality: 20);
     if(imagePath != null) {
       emit(TakeImageGalleryFinish(File(imagePath.path)));
     } else {

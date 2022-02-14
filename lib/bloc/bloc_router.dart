@@ -1,7 +1,5 @@
 
 import "package:flutter/material.dart";
-import "package:flutter_bloc/flutter_bloc.dart" as fbloc;
-import "package:o_spawn_cup/bloc/bloc_list_cup.dart";
 import "package:o_spawn_cup/bloc/bloc_list_game.dart";
 import "package:o_spawn_cup/bloc/bloc_provider.dart";
 
