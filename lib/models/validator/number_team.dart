@@ -8,7 +8,6 @@ class NumberTeam extends FormzInput<int?, NumberTeamValidationError> {
 
   @override
   NumberTeamValidationError? validator(int? value) {
-
     if(value == 0 || value == null){
       return NumberTeamValidationError.zero;
     } else if(value < 2) {

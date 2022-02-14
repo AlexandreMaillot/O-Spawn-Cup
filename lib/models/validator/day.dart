@@ -4,7 +4,7 @@ enum DayValidationError { empty , zero, superior}
 
 class Day extends FormzInput<int?, DayValidationError> {
   const Day.pure() : super.pure(null);
-  const Day.dirty([int? value = null]) : super.dirty(value);
+  const Day.dirty([int? value]) : super.dirty(value);
 
   @override
   DayValidationError? validator(int? value) {

@@ -1,6 +1,7 @@
 import 'package:animated_widgets/animated_widgets.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:o_spawn_cup/bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart';
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
 import "package:o_spawn_cup/constant.dart";
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
@@ -24,7 +25,15 @@ class WidgetNumPlayerByTeam extends StatelessWidget {
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: () => context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerChanging(indexSelect: index)),
+      onTap: () {
+
+        context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerChanging(indexSelect: index));
+        int? indexModif = index;
+        if(context.read<WidgetNumberByPlayerBloc>().indexSelected == index){
+          indexModif = null;
+        }
+        context.read<FormTournamentStep2Bloc>().add(FormTournamentPlayerByTeamChanged(indexModif));
+      },
       child: ShakeAnimatedWidget(
         enabled: (state.runtimeType == WidgetNumberByPlayerAnimate) ? true : false,
         duration: const Duration(milliseconds: 300),

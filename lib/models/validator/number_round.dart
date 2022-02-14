@@ -10,8 +10,6 @@ class NumberRound extends FormzInput<int?, NumberRoundValidationError> {
   NumberRoundValidationError? validator(int? value) {
     if(value == 0 || value == null){
       return NumberRoundValidationError.zero;
-    } else if(value < 4 ) {
-      return NumberRoundValidationError.inferior;
     }
     else {
       return null;

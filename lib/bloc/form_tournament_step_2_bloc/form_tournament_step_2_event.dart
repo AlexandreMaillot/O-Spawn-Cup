@@ -41,18 +41,18 @@ class FormTournamentDayChanged extends FormTournamentEventStep2 {
 class FormTournamentMonthChanged extends FormTournamentEventStep2 {
   const FormTournamentMonthChanged(this.month);
 
-  final String month;
+  final int? month;
 
   @override
-  List<Object> get props => [month];
+  List<int?> get props => [month];
 }
 class FormTournamentYearsChanged extends FormTournamentEventStep2 {
   const FormTournamentYearsChanged(this.years);
 
-  final String years;
+  final int? years;
 
   @override
-  List<Object> get props => [years];
+  List<int?> get props => [years];
 }
 class FormTournamentPlayerByTeamChanged extends FormTournamentEventStep2 {
   const FormTournamentPlayerByTeamChanged(this.playerByTeam);
@@ -71,18 +71,7 @@ class FormTournamentServerTypeChanged extends FormTournamentEventStep2 {
   List<String?> get props => [serverType];
 }
 
-class FormTournamentSubmitted1 extends FormTournamentEventStep2 {
-  const FormTournamentSubmitted1();
-}
 class FormTournamentSubmitted2 extends FormTournamentEventStep2 {
   const FormTournamentSubmitted2();
 }
-class FormTournamentSubmitted3 extends FormTournamentEventStep2 {
-  const FormTournamentSubmitted3();
-}
-class FormTournamentSubmitted4 extends FormTournamentEventStep2 {
-  const FormTournamentSubmitted4();
-}
-class FormTournamentSubmitted5 extends FormTournamentEventStep2 {
-  const FormTournamentSubmitted5();
-}
+

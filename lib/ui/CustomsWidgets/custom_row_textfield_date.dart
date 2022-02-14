@@ -7,7 +7,7 @@ import '../../bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart'
 
 
 
-typedef onChangeCallback = void Function(BuildContext context, String data);
+typedef onChangeCallback = void Function(BuildContext context, int? data);
 
 class RowTextfieldDate extends StatelessWidget {
   RowTextfieldDate({
@@ -60,7 +60,7 @@ class RowTextfieldDate extends StatelessWidget {
                       if (value.length == 2) {
                         FocusScope.of(context).requestFocus(monthFocus);
                       }
-                      onChangedDay!(context, value);
+                      onChangedDay!(context, int.tryParse(value));
                     },
                     focusNode: dayFocus,
                     controller: dayController,
@@ -86,7 +86,7 @@ class RowTextfieldDate extends StatelessWidget {
                       if (value.length == 2) {
                         FocusScope.of(context).requestFocus(yearsFocus);
                       }
-                      onChangedMonth!(context, value);
+                      onChangedMonth!(context, int.tryParse(value));
                     },
                     focusNode: monthFocus,
                     controller: monthController,
@@ -110,7 +110,7 @@ class RowTextfieldDate extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     onChanged: (value) {
-                      onChangedYears!(context, value);
+                      onChangedYears!(context, int.tryParse(value));
                     },
                     focusNode: yearsFocus,
                     controller: yearsController,

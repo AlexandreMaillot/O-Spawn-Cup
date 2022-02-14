@@ -1,10 +1,10 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import "package:bloc/bloc.dart";
+import "package:equatable/equatable.dart";
 
-part 'widget_number_by_player_event.dart';
-part 'widget_number_by_player_state.dart';
+part "widget_number_by_player_event.dart";
+part "widget_number_by_player_state.dart";
 
 class WidgetNumberByPlayerBloc extends Bloc<WidgetNumberByPlayerEvent, WidgetNumberByPlayerState> {
   int? indexSelected;

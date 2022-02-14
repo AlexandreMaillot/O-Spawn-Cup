@@ -27,7 +27,6 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
     on<FormTournamentPlayerByTeamChanged>(_onPlayerByTeamChanged);
     on<FormTournamentServerTypeChanged>(_onServerTypeChanged);
     on<FormTournamentNumberTeamChanged>(_onNumberTeamChanged);
-    // on<FormTournamentSubmitted1>(_onSubmittedStep1);
     on<FormTournamentSubmitted2>(_onSubmittedStep2);
   }
 
@@ -83,10 +82,10 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
   }
 
   FutureOr<void> _onPlayerByTeamChanged(FormTournamentPlayerByTeamChanged event, Emitter<FormTournamentStep2State> emit) {
-    final playerByTeam = PlayerByTeam.dirty(event.playerByTeam);
+    var playerByTeam = PlayerByTeam.dirty(event.playerByTeam);
     emit(state.copyWith(
       playerByTeam: playerByTeam,
-      status: Formz.validate([state.numberRound,state.day,state.month,state.years,playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+      status: Formz.validate([playerByTeam,state.day,state.month,state.years,playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
     ));
   }
 
@@ -101,6 +100,7 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
   FutureOr<void> _onSubmittedStep2(FormTournamentSubmitted2 event, Emitter<FormTournamentStep2State> emit) async {
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
+
       try {
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {

@@ -8,6 +8,10 @@ class ServerType extends FormzInput<String?, ServerTypeValidationError> {
 
   @override
   ServerTypeValidationError? validator(String? value) {
-    return value == "null" ? null : ServerTypeValidationError.empty;
+    if(value != "null" && value != null && value != ""){
+      return null;
+    } else {
+      return ServerTypeValidationError.empty;
+    }
   }
 }

@@ -7,7 +7,7 @@ import "package:numberpicker/numberpicker.dart";
 import "package:o_spawn_cup/bloc/bloc_list_cup.dart";
 import "package:o_spawn_cup/bloc/bloc_provider.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn.dart';
+import 'package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn_tournament_state.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";

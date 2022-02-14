@@ -5,6 +5,7 @@ import "package:dotted_border/dotted_border.dart";
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:formz/formz.dart';
 import "package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart";
 import "package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart";
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
@@ -21,7 +22,7 @@ import 'package:o_spawn_cup/service/firebase_handler.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
-import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/game_card.dart";
@@ -167,11 +168,42 @@ class FormTournamentView extends StatelessWidget {
                                     colorText: colorBackgroundTheme,
                                     width: screenSize.width / 3,
                                     onPressedMethod: () {
-                                      if (currentIndex <
-                                          context
-                                              .read<StepByStepWidgetBloc>()
-                                              .indexMax) {
-                                        controls.onStepContinue!();
+                                      if (currentIndex < context.read<StepByStepWidgetBloc>().indexMax) {
+                                        if(currentIndex == 0) {
+                                          controls.onStepContinue!();
+                                        }
+                                        if(currentIndex == 1) {
+
+                                          // print("playerby: ${context.read<FormTournamentStep2Bloc>().state.playerByTeam.valid}");
+                                          // print("name: ${context.read<FormTournamentStep2Bloc>().state.nameCup.valid}");
+                                          // print("years: ${context.read<FormTournamentStep2Bloc>().state.years.valid}");
+                                          // print("day: ${context.read<FormTournamentStep2Bloc>().state.day.valid}");
+                                          // print("month: ${context.read<FormTournamentStep2Bloc>().state.month.valid}");
+                                          // print("numberteam: ${context.read<FormTournamentStep2Bloc>().state.numberTeam.valid}");
+                                          // print("server: ${context.read<FormTournamentStep2Bloc>().state.serverType.valid}");
+
+                                          if(context.read<FormTournamentStep2Bloc>().state.status.isValidated){
+                                            controls.onStepContinue!();
+                                          } else {
+
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentNameCupChanged(cupNameController.text));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberRoundChanged(int.tryParse(roundNumberController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentDayChanged(int.tryParse(dayController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthChanged(int.tryParse(monthController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsChanged(int.tryParse(yearsController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberTeamChanged(int.tryParse(teamNumberController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentServerTypeChanged(serverDropdown.dropdownValue.toString()));
+                                            if(context.read<WidgetNumberByPlayerBloc>().indexSelected == null){
+                                              context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerAnimating());
+                                            }
+                                            context.read<FormTournamentStep2Bloc>().add(const FormTournamentSubmitted2());
+                                            // context.read<FormTournamentStep2Bloc>().add(FormTournamentNameCupChanged(cupNameController.text));
+                                            // context.read<FormTournamentStep2Bloc>().add(FormTournamentNameCupChanged(cupNameController.text));
+                                          }
+                                        }
+
+
+
                                       } else {
                                         int indexGameSelect = context
                                             .read<SelectGameBloc>()
@@ -495,7 +527,9 @@ class FormTournamentView extends StatelessWidget {
                   yearsFocus: yearsFocus,
                   monthController: monthController,
                   yearsController: yearsController,
-                  onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDayChanged(int.tryParse(value))),
+                  onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDayChanged(value)),
+                  onChangedMonth: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthChanged(value)),
+                  onChangedYears: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsChanged(value)),
                   screenSize: screenSize,
                 );
                 },
@@ -516,9 +550,13 @@ class FormTournamentView extends StatelessWidget {
                   );
                 },
               ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10.0),
-                child: RowWidgetNumByPlayer(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
+              builder: (context, state) {
+                return RowWidgetNumByPlayer();
+              },
+),
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                   builder: (context, state) {
@@ -532,7 +570,7 @@ class FormTournamentView extends StatelessWidget {
                   child: Column(
                     children: [
                       serverDropdown,
-                      state.serverType.valid
+                      state.serverType.invalid
                           ? Padding(
                               padding: const EdgeInsets.only(top: 6.0, left: 8),
                               child: Row(
