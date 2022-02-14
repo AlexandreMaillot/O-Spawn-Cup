@@ -10,4 +10,11 @@ class SelectedImagePredefInitial extends SelectedImagePredefState {
   SelectedImagePredefInitial({required this.indexSelected});
   @override
   List<int?> get props => [indexSelected];
+
+
+}
+class SelectedImagePredefAnimated extends SelectedImagePredefState {
+  @override
+  List<int?> get props => [];
+
 }

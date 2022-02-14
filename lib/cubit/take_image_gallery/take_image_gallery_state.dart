@@ -15,6 +15,9 @@ class TakeImageGalleryNoData extends TakeImageGalleryState {
   TakeImageGalleryNoData() : super(imageTaked: null);
 
 }
+class TakeImageAnimated extends TakeImageGalleryState {
+  TakeImageAnimated() : super(imageTaked: null);
+}
 class TakeImageGalleryFinish extends TakeImageGalleryState {
   TakeImageGalleryFinish(File? file) : super(imageTaked: file);
   @override

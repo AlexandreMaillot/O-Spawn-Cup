@@ -20,4 +20,10 @@ class TakeImageGalleryCubit extends Cubit<TakeImageGalleryState> {
 
   }
   clearPicture() => emit(TakeImageGalleryNoData());
+  takeImageAnimation() async {
+    emit(TakeImageAnimated());
+    await Future.delayed(const Duration(milliseconds: 500), () {
+    });
+    emit(TakeImageGalleryInitial());
+  }
 }

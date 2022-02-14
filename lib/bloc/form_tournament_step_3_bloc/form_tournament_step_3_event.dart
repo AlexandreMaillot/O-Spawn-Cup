@@ -6,13 +6,29 @@ abstract class FormTournamentEventStep3 extends Equatable {
   List<Object?> get props => [];
 }
 
-class FormTournamentNameCupChanged extends FormTournamentEventStep3 {
-  const FormTournamentNameCupChanged(this.nameCup);
+class FormTournamentPointPerKillChanged extends FormTournamentEventStep3 {
+  const FormTournamentPointPerKillChanged(this.pointPerKill);
 
-  final String nameCup;
+  final int? pointPerKill;
 
   @override
-  List<Object> get props => [nameCup];
+  List<int?> get props => [pointPerKill];
+}
+class FormTournamentPointPerRangChanged extends FormTournamentEventStep3 {
+  const FormTournamentPointPerRangChanged(this.pointPerRang);
+
+  final int? pointPerRang;
+
+  @override
+  List<int?> get props => [pointPerRang];
+}
+class FormTournamentStartRangChanged extends FormTournamentEventStep3 {
+  const FormTournamentStartRangChanged(this.startRang);
+
+  final int? startRang;
+
+  @override
+  List<int?> get props => [startRang];
 }
 
 class FormTournamentSubmitted3 extends FormTournamentEventStep3 {

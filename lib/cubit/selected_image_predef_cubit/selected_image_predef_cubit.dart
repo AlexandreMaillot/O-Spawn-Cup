@@ -14,4 +14,11 @@ class SelectedImagePredefCubit extends Cubit<SelectedImagePredefState> {
   }
   clearImgSelect() => emit(SelectedImagePredefInitial(indexSelected: null));
 
+
+  selectImagePreDefAnimation() async {
+    emit(SelectedImagePredefAnimated());
+    await Future.delayed(const Duration(milliseconds: 500), () {
+    });
+    emit(SelectedImagePredefInitial(indexSelected: null));
+  }
 }
