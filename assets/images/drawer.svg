@@ -1,7 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="37" height="30" viewBox="0 0 37 30">
-  <g id="drawer" transform="translate(585 -1019)">
-    <rect id="Rectangle_7" data-name="Rectangle 7" width="37" height="8" rx="4" transform="translate(-585 1019)" fill="#191919"/>
-    <rect id="Rectangle_9" data-name="Rectangle 9" width="37" height="8" rx="4" transform="translate(-585 1041)" fill="#191919"/>
-    <rect id="Rectangle_8" data-name="Rectangle 8" width="27" height="8" rx="4" transform="translate(-585 1030)" fill="#191919"/>
-  </g>
+<svg id="drawer" xmlns="http://www.w3.org/2000/svg" width="37" height="29" viewBox="0 0 37 29">
+  <rect id="Rectangle_7" data-name="Rectangle 7" width="37" height="8" rx="4" fill="#191919"/>
+  <rect id="Rectangle_9" data-name="Rectangle 9" width="37" height="7" rx="3.5" transform="translate(0 22)" fill="#191919"/>
+  <rect id="Rectangle_8" data-name="Rectangle 8" width="27" height="8" rx="4" transform="translate(10 11)" fill="#191919"/>
 </svg>

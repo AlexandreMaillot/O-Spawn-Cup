@@ -10,6 +10,7 @@ import "package:mailer/mailer.dart";
 import "package:mailer/smtp_server.dart";
 import "package:mailer/smtp_server/gmail.dart";
 import 'package:o_spawn_cup/bloc/member_tournament_firestore_bloc/member_tournament_firestore_bloc.dart';
+import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
@@ -33,16 +34,22 @@ class SignCup extends StatelessWidget {
   SignCup({Key? key,required this.tournament}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => MemberTournamentFirestoreBloc(tournament: tournament),
+    return MultiBlocProvider(providers: [
+        BlocProvider(
+          create: (_) => MemberTournamentFirestoreBloc(tournament: tournament),
+        ),
+      BlocProvider(
+        create: (_) => RowMemberLeaderCubit(),
+      ),
+    ],
       child: SignCupView(tournament: tournament,),
     );
   }
 }
 class SignCupView extends StatelessWidget {
   SignCupView({Key? key, required this.tournament}) : super(key: key);
-  late TextEditingController gamerTagController;
-  late TextEditingController teamNameController;
+  TextEditingController gamerTagController = TextEditingController();
+  TextEditingController teamNameController = TextEditingController();
   late Tournament tournament;
   late String years;
   late String month;
@@ -51,12 +58,10 @@ class SignCupView extends StatelessWidget {
   String msgSnack = "Inscription validée !";
   bool errorSign = false;
   String teamNameTextFieldHint = "Nom d'équipe";
-  RoleType _roleType = RoleType.leader;
 
   @override
   Widget build(BuildContext context) {
-    gamerTagController = TextEditingController();
-    teamNameController = TextEditingController();
+
     years = tournament.date.toString().substring(0, 4);
     month = tournament.date.toString().substring(4, 6);
     day = tournament.date.toString().substring(6, 8);
@@ -91,21 +96,16 @@ class SignCupView extends StatelessWidget {
                   rowInformationTournament(
                       leftText: "Type de tournois:",
                       rightText: tournament.tournamentType.name),
-                  rowInformationTournament(
-                      leftText: "Nombre d'équipe:",
-                      rightText: tournament.capacity.toString()),
-                  rowInformationTournament(
+                  BlocBuilder<MemberTournamentFirestoreBloc, MemberTournamentFirestoreState>(
+                  builder: (context, state) {
+                    return rowInformationTournament(
                       leftText: "Place restantes:",
-                      rightText:
-                          (tournament.capacity - tournament.listTeam.length)
-                              .toString()),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: buildContainerMap(screenSize),
+                      rightText: (tournament.capacity - tournament.listTeam.length).toString() + "/" + tournament.capacity.toString());
+                    },
                   ),
-                  Container(
+                  (tournament.capacity - tournament.listTeam.length == 0) ? Container() : Container(
                     padding: const EdgeInsets.only(top: 20),
-                    height: screenSize.height * 0.35,
+                    height: screenSize.height * 0.38,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -123,7 +123,17 @@ class SignCupView extends StatelessWidget {
                             buttonColor: Colors.white,
                             borderColor: Colors.white,
                             controller: gamerTagController),
-                        Container(
+                        Text(
+                          "*Votre pseudo in game",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: colorTheme,
+                              fontSize: 7,
+                              fontFamily: "o_spawn_cup_font",
+                              fontWeight: FontWeight.normal),
+                        ),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 100),
                           width: screenSize.width * 0.87,
                           height: screenSize.height * 0.06,
                           decoration: BoxDecoration(
@@ -134,9 +144,11 @@ class SignCupView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Expanded(
-                                child: Container(
+                                child: BlocBuilder<RowMemberLeaderCubit, RowMemberLeaderState>(
+                                builder: (context, state) {
+                                  return Container(
                                   decoration: BoxDecoration(
-                                    color: (isLeader())
+                                    color: (isLeader(context))
                                         ? colorTheme
                                         : Colors.white,
                                     borderRadius: const BorderRadius.only(
@@ -150,12 +162,14 @@ class SignCupView extends StatelessWidget {
                                             Colors.transparent),
                                       ),
                                       onPressed: () {
-                                        _roleType = RoleType.leader;
+                                        context.read<RowMemberLeaderCubit>().changedRoleType(RoleType.leader);
                                       },
                                       child: TextElement(
                                         text: "Chef d'équipe",
                                       )),
-                                ),
+                                );
+                                },
+                              ),
                               ),
                               const VerticalDivider(
                                 color: Color(0xff696969),
@@ -164,9 +178,12 @@ class SignCupView extends StatelessWidget {
                                 // endIndent: 1,
                               ),
                               Expanded(
-                                child: Container(
+                                child: BlocBuilder<RowMemberLeaderCubit, RowMemberLeaderState>(
+                                builder: (context, state) {
+                                  return AnimatedContainer(
+                                    duration: const Duration(milliseconds: 200),
                                   decoration: BoxDecoration(
-                                    color: (isPlayer())
+                                    color: (isPlayer(context))
                                         ? colorTheme
                                         : Colors.white,
                                     borderRadius: const BorderRadius.only(
@@ -180,40 +197,59 @@ class SignCupView extends StatelessWidget {
                                             Colors.transparent),
                                       ),
                                       onPressed: () {
-                                        _roleType = RoleType.player;
+                                        context.read<RowMemberLeaderCubit>().changedRoleType(RoleType.player);
                                       },
                                       child: TextElement(
                                         text: "Membre d'équipe",
                                       )),
-                                ),
+                                );
+                                },
+                              ),
                               ),
                             ],
                           ),
                         ),
-                        CustomTextField(
+                        BlocBuilder<RowMemberLeaderCubit, RowMemberLeaderState>(
+                        builder: (context, state) {
+                          return CustomTextField(
                             screenSize: screenSize,
                             text:
-                                (isPlayer()) ? "Code d'équipe" : "Nom d'équipe",
+                                (isPlayer(context)) ? "Code d'équipe" : "Nom d'équipe",
                             buttonColor: Colors.white,
                             borderColor: Colors.white,
-                            controller: teamNameController),
+                            controller: teamNameController);
+                          },
+                        ),
+                        isPlayer(context) ? Text(
+                          "*Entrez le code d'équipe reçu par mail si vous êtes membre de l'équipe.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: colorTheme,
+                              fontSize: 7,
+                              fontFamily: "o_spawn_cup_font",
+                              fontWeight: FontWeight.normal),
+                        ) : Container(),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: CustomButtonTheme(
+                          child: BlocBuilder<RowMemberLeaderCubit, RowMemberLeaderState>(
+                          builder: (context, state) {
+                            return CustomButtonTheme(
                             colorButton: colorTheme,
                             colorText: colorBackgroundTheme,
                             screenSize: screenSize,
                             text: "Confirmation",
                             onPressedMethod: () async {
                               await () async {
-                                context.read<MemberTournamentFirestoreBloc>().add(MemberTournamentFirestoreAdd(teamName: teamNameController.text, gamerTag: gamerTagController.text, roleType: _roleType));
+                                context.read<MemberTournamentFirestoreBloc>().add(MemberTournamentFirestoreAdd(teamName: teamNameController.text, gamerTag: gamerTagController.text, roleType: state.roleType));
                                 // msgSnack = "Veuillez renseigner le gamerTag et nom/code de team !";
                                 // errorSign = true;
                                 afterAddMemberTournament();
                                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               }();
                             },
-                          ),
+                          );
+                          },
+                        ),
                         )
                       ],
                     ),
@@ -223,7 +259,11 @@ class SignCupView extends StatelessWidget {
                     thickness: 1,
                     height: 50,
                   ),
-                  buildListTeam(),
+                  BlocBuilder<MemberTournamentFirestoreBloc, MemberTournamentFirestoreState>(
+                  builder: (context, state) {
+                    return buildListTeam();
+                  },
+                  ),
                 ],
               ),
             )
@@ -233,46 +273,11 @@ class SignCupView extends StatelessWidget {
     );
   }
 
-  Future<void> sendEmailMessage() async {
-    SmtpServer smtpServer = paramEmail();
-    Message message = createMessage();
+  bool isLeader(BuildContext context) => context.read<RowMemberLeaderCubit>().state.roleType == RoleType.leader;
 
-    await showReport(message, smtpServer);
-  }
+  bool isPlayer(BuildContext context) => context.read<RowMemberLeaderCubit>().state.roleType == RoleType.player;
 
-  SmtpServer paramEmail() {
-    String username = "tamoro974@gmail.com";
-    String token = "fftvuferdeyhpqqh";
-    // String password = 'AIzaSyC67O8S6jcsHAnV0ursdHN2gTcjeaj76wA';
-    // String password = 'fgmpfizenmfzmdlb';
 
-    final smtpServer = gmail(username, token);
-    return smtpServer;
-  }
-
-  Message createMessage() {
-    final message = Message()
-      ..from = Address("contact@o-spawn.re", "O-Spawn")
-      ..recipients.add("alexandre.maillot97@gmail.com")
-      ..ccRecipients.addAll(["destCc1@example.com", "destCc2@example.com"])
-      ..bccRecipients.add(Address("bccAddress@example.com"))
-      ..subject = "Test Dart Mailer library :: 😀 :: ${DateTime.now()}"
-      ..text = "This is the plain text.\nThis is line 2 of the text part."
-      ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
-    return message;
-  }
-
-  Future<void> showReport(Message message, SmtpServer smtpServer) async {
-    try {
-      final sendReport = await send(message, smtpServer);
-      print("Message sent: " + sendReport.toString());
-    } on MailerException catch (e) {
-      print("$e Message not sent.");
-      for (var p in e.problems) {
-        print("Problem: ${p.code}: ${p.msg}");
-      }
-    }
-  }
 
   Member addMember() {
     var rng = Random();
@@ -281,12 +286,12 @@ class SignCupView extends StatelessWidget {
     return member;
   }
 
-  Future<void> addMemberTournament(Member member, t.Team team) async {
+  Future<void> addMemberTournament(Member member, t.Team team,RoleType roleType) async {
     Mt.MemberTournament memberTournament = Mt.MemberTournament(
         member: member,
         tournament: tournament,
         gamerTag: gamerTagController.text,
-        role: _roleType,
+        role: roleType,
         team: team);
     Mt.memberTournamentsRef.add(memberTournament);
   }
@@ -298,9 +303,6 @@ class SignCupView extends StatelessWidget {
     gamerTagController.text = "";
   }
 
-  bool isPlayer() => _roleType == RoleType.player;
-
-  bool isLeader() => _roleType == RoleType.leader;
 
   Hero buildContainerHeader(Size screenSize, Tournament tournament) {
     return Hero(
@@ -334,12 +336,39 @@ class SignCupView extends StatelessWidget {
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Container(height: screenSize.height * 0.05,),
+            Text(
+              tournament.name,
+              style: TextStyle(
+                  color: colorTheme,
+                  fontSize: 35,
+                  fontFamily: "o_spawn_cup_font",
+                  fontWeight: FontWeight.normal),
+            ),
+            SubtitleElement(
+              text: tournament.game.name,
+              color: Colors.white,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              // mainAxisAlignment: MainAxisAlignment.,
               children: [
-                Container(
+                Expanded(flex: 1,child: Container(color: Colors.green,)),
+                Expanded(
+                  flex: 5,
+                  child: Text(
+                    "Serveur: ${tournament.server.name}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: colorTheme,
+                        fontSize: 12,
+                        fontFamily: "o_spawn_cup_font",
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
                   child: Material(
                     color: Colors.transparent,
                     child: IconButton(
@@ -355,18 +384,6 @@ class SignCupView extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            Text(
-              tournament.name,
-              style: TextStyle(
-                  color: colorTheme,
-                  fontSize: 35,
-                  fontFamily: "o_spawn_cup_font",
-                  fontWeight: FontWeight.normal),
-            ),
-            SubtitleElement(
-              text: tournament.game.name,
-              color: Colors.white,
             ),
           ],
         ),

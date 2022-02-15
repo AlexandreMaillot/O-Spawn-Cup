@@ -39,8 +39,8 @@ class HomeView extends StatelessWidget {
       context.read<SelectGameBloc>().add(SelectGameChange(indexSelect: pageController.page!));
     });
     return Scaffold(
-      drawer: CustomDrawer(screenSize: screenSize),
-      appBar: CustomAppBar(title: "JEUX"),
+      endDrawer: CustomDrawer(screenSize: screenSize),
+      appBar: CustomAppBar(title: "JEUX",backArrow: false),
       body: BlocBuilder<SelectGameBloc, SelectGameState>(
         builder: (context, state) {
           final index = context.select((SelectGameBloc bloc) => bloc.state.index);

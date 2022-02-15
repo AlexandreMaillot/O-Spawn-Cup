@@ -22,6 +22,7 @@ class RowTextfieldDate extends StatelessWidget {
     this.onChangedDay,
     this.onChangedMonth,
     this.onChangedYears,
+    this.dateValide = false,
     this.paddingBottom = 0,
   }) : super(key: key);
 
@@ -35,6 +36,7 @@ class RowTextfieldDate extends StatelessWidget {
   final FocusNode yearsFocus;
   final TextEditingController monthController;
   final TextEditingController yearsController;
+  bool dateValide;
   double paddingBottom;
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class RowTextfieldDate extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(31),
-              border: context.read<FormTournamentStep2Bloc>().state.day.invalid ? Border.all(color: const Color(0xffd22f2f)) : null,
+              border: (dateValide == false) ? Border.all(color: const Color(0xffd22f2f)) : null,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -129,9 +131,10 @@ class RowTextfieldDate extends StatelessWidget {
               ],
             ),
           ),
-          context.read<FormTournamentStep2Bloc>().state.day.invalid
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 6.0, left: 8),
+          (dateValide == false)
+              ? Container(
+                  // width: screenSize.width * 0.87,
+                  padding: const EdgeInsets.only(top: 6.0, left: 30,),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const [

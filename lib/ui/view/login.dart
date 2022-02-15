@@ -4,7 +4,7 @@ import 'package:o_spawn_cup/ui/CustomsWidgets/custom_divider.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
-import 'package:o_spawn_cup/models/authentification.dart';
+import 'package:o_spawn_cup/service/authentification.dart';
 
 import '../CustomsWidgets/custom_text_form_field.dart';
 import 'login_register.dart';

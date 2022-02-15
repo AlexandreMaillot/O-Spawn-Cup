@@ -38,14 +38,13 @@ class ListCupView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
-      drawer: CustomDrawer(screenSize: screenSize),
+      endDrawer: CustomDrawer(screenSize: screenSize),
       appBar: CustomAppBar(title: "TOURNOIS",),
       bottomNavigationBar: _buildBottomAppBar(context),
       body: Container(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 18),
         child: BlocBuilder<TournamentBloc, TournamentState>(
           builder: (context, state) {
-            print(state.runtimeType);
             if (state.runtimeType == TournamentError) {
               return NoData(string: "Impossible de charger les tournois !");
             }
@@ -61,12 +60,16 @@ class ListCupView extends StatelessWidget {
                 children: [
                   const RowTournamentState(),
                   Flexible(
-                    child: GridView.count(
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      crossAxisCount: 2,
-                      children: (state as TournamentLoaded).tournaments.map((e) => CardCup(tournament: e)).toList(),
-                      //
+                    child: GridView.builder(
+                      itemCount: state.tournaments.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CardCup(tournament: state.tournaments[index]) ;
+                      },
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        crossAxisCount: 2,
+                      ),
                     ),
                   )
                 ],

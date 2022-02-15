@@ -83,13 +83,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
       tournamentStateDropdown.dropdownValue = tournamentState;
     }
   }
-  // @override
-  // void dispose() {
-  //   dayController.dispose();
-  //   monthController.dispose();
-  //   yearsController.dispose();
-  //   super.dispose();
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,13 +114,14 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                 padding: MediaQuery.of(context).viewInsets,
                 color: colorBackgroundTheme,
                 child: Container(
+
                   decoration: BoxDecoration(
                       color: colorTheme,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       )),
-                  padding: const EdgeInsets.only(top: 25, bottom: 10),
+                  padding: const EdgeInsets.only(top: 25, bottom: 10,),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,7 +149,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                     ],
                   ),
                   height: screenSize.height * 0.4,
-                  width: screenSize.width,
+                  // width: screenSize.width,
                 ),
               ),
               ArrowButton(screenSize: screenSize),

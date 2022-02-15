@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/models/authentification.dart';
+import 'package:o_spawn_cup/service/authentification.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_connect_with.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_divider.dart';

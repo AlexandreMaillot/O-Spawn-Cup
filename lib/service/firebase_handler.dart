@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
+import 'package:o_spawn_cup/models/Member/member.dart';
+import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
@@ -15,7 +18,7 @@ class FirebaseHandler {
     return urlString;
   }
 
-  addTournamentFirebase(String name, int date, GameName game, ServerType server, TournamentType tournamentType, int capacity, String cashPrize, int roundNumber, int killPointTournament, File file) async {
+  Future<Tournament> addTournamentFirebase(String name, int date, GameName game, ServerType server, TournamentType tournamentType, int capacity, String cashPrize, int roundNumber, int killPointTournament, File file) async {
     final ref = firebase_storage.FirebaseStorage.instance
         .ref()
         .child("tournaments")
@@ -33,6 +36,13 @@ class FirebaseHandler {
         killPointTournament: killPointTournament,
         imageUrl: urlString);
     tournamentsRef.add(tournament);
-
+    return tournament;
   }
+
+  Member addMemberFirebase(String pseudo,String uid){
+    Member member = Member(pseudo: pseudo, uid: uid);
+    membersRef.doc(uid).set(member);
+    return member;
+  }
+
 }

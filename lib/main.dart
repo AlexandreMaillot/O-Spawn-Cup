@@ -1,8 +1,10 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/services.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:o_spawn_cup/ui/view/home.dart';
 
 
 import "package:o_spawn_cup/ui/view/login.dart";
@@ -44,13 +46,17 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
 
       routes: {
-        '/': (context) => const LoginRegister(),
-        // "/": (context) => BlocRouter().allGames(),
+        '/': (context) =>
+          StreamBuilder(
+            stream: FirebaseAuth.instance.userChanges(),
+            builder: (context, snapshot) {
+              return (snapshot.hasData) ? LoginRegister(): const LoginRegister();
+            },
+          )
+        ,
         "/login": (context) => Login(),
         "/register": (context) => Register(),
         "/home": (context) => BlocRouter().allGames(),
-        // "/create_tournament": (context) => BlocRouter().cupForm(),
-        // '/list_cup': (context) => ListCup(gameName: ),
       },
     );
   }

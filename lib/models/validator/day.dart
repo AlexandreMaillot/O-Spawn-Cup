@@ -1,6 +1,6 @@
 import "package:formz/formz.dart";
 
-enum DayValidationError { empty , zero, superior}
+enum DayValidationError { empty , zero, superior, length}
 
 class Day extends FormzInput<int?, DayValidationError> {
   const Day.pure() : super.pure(null);
@@ -14,6 +14,10 @@ class Day extends FormzInput<int?, DayValidationError> {
       return DayValidationError.zero;
     } else if(value > 31) {
       return DayValidationError.superior;
+    } else if(value < 10) {
+     if(value.toString().length != 2) {
+       return DayValidationError.length;
+     }
     }
     else {
       return null;

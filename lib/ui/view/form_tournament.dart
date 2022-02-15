@@ -611,6 +611,7 @@ class FormTournamentView extends StatelessWidget {
                   onChangedMonth: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthChanged(value)),
                   onChangedYears: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsChanged(value)),
                   screenSize: screenSize,
+                  dateValide:  context.read<FormTournamentStep2Bloc>().state.day.invalid ||  context.read<FormTournamentStep2Bloc>().state.month.invalid ||  context.read<FormTournamentStep2Bloc>().state.years.invalid,
                 );
                 },
               ),

@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:o_spawn_cup/constant.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:o_spawn_cup/constant.dart";
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   String title;
+  bool backArrow;
   CustomAppBar({
     Key? key,
     required this.title,
+    this.backArrow = true,
   }) : super(key: key);
 
   @override
@@ -15,8 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       color: colorBackgroundTheme,
 
       child: AppBar(
-
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
@@ -24,25 +25,30 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         leading: Builder(
           builder: (BuildContext context) {
-            return IconButton(
+            return (backArrow) ? IconButton(
               icon: SvgPicture.asset(
-                "assets/images/drawer.svg",
+                "assets/images/backArrow.svg",
                 height: 30,
                 width: 37,
               ),
-              onPressed: () => Scaffold.of(context).openDrawer(),
+              onPressed: () => Navigator.of(context).maybePop(),
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
+            ) : Container();
           },
         ),
         actions: [
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/images/settingIcon.svg",
-              height: 38,
-              width: 38,
-            ),
-            onPressed: () => Navigator.pop(context),
+          Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: SvgPicture.asset(
+                  "assets/images/drawer.svg",
+                  height: 30,
+                  width: 37,
+                ),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
           ),
         ],
         title: Text(
@@ -50,9 +56,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           style: TextStyle(
             color: colorTheme,
             shadows: [
-              Shadow(color: Color(0xff000000).withOpacity(0.39),blurRadius: 15,offset: Offset(0, 3)),
+              Shadow(color: const Color(0xff000000).withOpacity(0.39),blurRadius: 15,offset: const Offset(0, 3)),
             ],
-            fontFamily: 'o_spawn_cup_font',
+            fontFamily: "o_spawn_cup_font",
             fontSize: 29,
             fontWeight: FontWeight.normal,
           ),
