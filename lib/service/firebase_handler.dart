@@ -87,8 +87,13 @@ class FirebaseHandler {
     if (await verifMemberAlreadySign(tournament)) {
       List<Team> listTeam = await getTeamsInTournament(tournament);
       Team? team = findTeamWithCode(listTeam, teamCode);
+
       if (team != null) {
-        addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.player);
+        if(await verifCapacityTeam(tournament,team)) {
+          addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.player);
+        } else {
+          print("capacité atteint");
+        }
       } else {
         print("code erronée");
       }
@@ -145,6 +150,16 @@ class FirebaseHandler {
     } else {
       return false;
     }
+  }
+  Future<bool> verifCapacityTeam(Tournament tournament,Team team) async {
+    var listMember = [];
+    listMember = await tournamentsRef.doc(tournament.documentId).teams.doc(team.documentId).membersTournament.get().then((value) => value.docs.map((e) => e.data).toList());
+    if(listMember.length <= tournament.tournamentType.capacityTeam){
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   Future<List<Team>> getTeamsInTournament(Tournament tournament) async {
@@ -218,33 +233,4 @@ class FirebaseHandler {
     }
   }
 
-  // Future<FutureOr<void>> _addMemberTournament(MemberTournamentFirestoreAdd event, Emitter<MemberTournamentFirestoreState> emit) async {
-  //
-  //   if (event.teamName != "" && event.gamerTag != "") {
-  //     Member? member = await Authentification().selectMemberConnected();
-  //     if(member != null) {
-  //       Team? team;
-  //       if (isLeader(event.roleType)) {
-  //         team = await verifTeamName(team, event.teamName);
-  //         if (team != null) {
-  //           team.teamCode = getRandomString(5);
-  //           addTeamInTournament(team);
-  //         }
-  //       } else if (isPlayer(event.roleType)) {
-  //         team = await verifCodeTeam(team, event.teamName);
-  //       }
-  //       if (team != null) {
-  //         await addMemberTournamentInFirebase(member, team, event.gamerTag, event.roleType);
-  //         // afterAddMemberTournament();
-  //       }
-  //     } else {
-  //       print("Membre non connecter !");
-  //     }
-  //
-  //   } else {
-  //     emit(MemberTournamentFirestoreError(msg: "Veuillez renseigner le gamerTag et nom/code de team !"));
-  //     // msgSnack = "Veuillez renseigner le gamerTag et nom/code de team !";
-  //     // errorSign = true;
-  //   }
-  // }
 }

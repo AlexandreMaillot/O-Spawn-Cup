@@ -12,6 +12,7 @@ import "package:mailer/smtp_server.dart";
 import "package:mailer/smtp_server/gmail.dart";
 import 'package:o_spawn_cup/bloc/member_tournament_firestore_bloc/member_tournament_firestore_bloc.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
+import 'package:o_spawn_cup/cubit/row_team_datatable/row_team_data_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 import 'package:o_spawn_cup/service/firebase_handler.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
@@ -48,6 +49,9 @@ class SignCup extends StatelessWidget {
       ),
       BlocProvider(
         create: (_) => TeamFirestoreCubit(),
+      ),
+      BlocProvider(
+        create: (_) => RowTeamDataCubit(),
       ),
     ],
       child: SignCupView(tournament: tournament,),
@@ -443,42 +447,188 @@ class SignCupView extends StatelessWidget {
           ),
         ),
         (state.listTeam.isNotEmpty)
-            ? DataTable(
-                columnSpacing: 50,
-                border: const TableBorder(
-                    horizontalInside: BorderSide(
-                        width: 1,
-                        color: Color(0xff696969),
-                        style: BorderStyle.solid)),
-                headingRowHeight: 30,
-                columns: [
-                  DataColumn(
-                      tooltip: "Nom des équipes",
-                      label: TextElement(
-                        text: "Equipes",
+            ? Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                    Expanded(
+                      flex: 3,
+                      child: TextElement(
+                        text: "Nom des équipes",
                         color: Colors.white,
-                        textAlign: TextAlign.start,
-                      )),
-                  DataColumn(
-                      tooltip: "Place des l'équipes",
-                      label: TextElement(
-                        text: "Rang",
-                        color: Colors.white,
-                      )),
-                  DataColumn(
-                      tooltip: "Kill/Mort/Assistance",
-                      label: TextElement(
-                        text: "KDA",
-                        color: Colors.white,
-                      )),
-                  DataColumn(
-                      tooltip: "Ratio entre les kill,mort et assist",
-                      label: TextElement(
-                        text: "Ratio",
-                        color: Colors.white,
-                      )),
-                ],
-                rows: _createRows(state.listTeam))
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                Expanded(
+                  flex: 1,
+                  child: TextElement(
+                    text: "Rang",
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: TextElement(
+                    text: "KDA",
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: TextElement(
+                    text: "Ratio",
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: BlocBuilder<TeamFirestoreCubit,TeamFirestoreState>(
+                  builder: (context, state) {
+                    print(state.listTeam.length);
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.listTeam.length,
+                        itemBuilder: (context, index) {
+                          return BlocBuilder<RowTeamDataCubit, RowTeamDataState>(
+                          builder: (context, stateRow) {
+                            // late final AnimationController _controller = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat();
+
+                            return Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  context.read<RowTeamDataCubit>()
+                                      .changeRowSelect(index, tournament,
+                                    state.listTeam[index],);
+                                },
+
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+
+                                    Expanded(
+                                      flex: 3,
+                                      child: Row(
+                                        children: [
+                                          AnimatedContainer(
+                                            duration: const Duration(seconds: 2),
+                                            child: Transform.rotate(
+                                              angle: (stateRow.indexSelect == index) ? 0: 180 * pi / 180,
+                                              child: IconButton(splashColor: Colors.transparent,highlightColor: Colors.transparent,onPressed: () {},
+                                                  icon: SvgPicture.asset(
+                                                    "assets/images/downArrow.svg",
+                                                    height: 10,
+                                                    width: 15,
+                                                    color: (stateRow.indexSelect == index) ? colorTheme :Colors.white,
+                                                  )
+                                              ),
+                                            ),
+                                          ),
+                                          TextElement(
+                                            text: "Equipe ${index + 1}: ${state.listTeam[index].name}",
+                                            color: (stateRow.indexSelect == index) ? colorTheme :Colors.white,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: TextElement(
+                                        text: "0",
+                                        color: (stateRow.indexSelect == index) ? colorTheme :Colors.white,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: TextElement(
+                                        text: "0",
+                                        color: (stateRow.indexSelect == index) ? colorTheme :Colors.white,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: TextElement(
+                                        text: "0",
+                                        color: (stateRow.indexSelect == index) ? colorTheme :Colors.white,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                              ),
+                              const Divider(color: Colors.grey),
+                              (stateRow.indexSelect == index)
+                              ? ListView.builder(
+                                itemCount: (stateRow as RowTeamDataSelected).listMemberTournament.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, indexRow) {
+                                  return AnimatedContainer(
+                                    duration: const Duration(milliseconds: 100),
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+
+                                        Expanded(
+                                          flex: 3,
+                                          child: TextElement(
+                                            text: (stateRow as RowTeamDataSelected).listMemberTournament[indexRow].gamerTag,
+                                            color: Colors.white,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: TextElement(
+                                            text: "0",
+                                            color: Colors.white,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: TextElement(
+                                            text: "0",
+                                            color: Colors.white,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: TextElement(
+                                            text: "0",
+                                            color: Colors.white,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        const Divider(color: Colors.grey),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ) : Container(),
+                            ],
+                          );
+                          },
+                          );
+                        },
+                    );
+                  },
+              ),
+            ),
+          ],
+        )
             : Padding(
                 padding: const EdgeInsets.all(10),
                 child: Center(
@@ -493,32 +643,6 @@ class SignCupView extends StatelessWidget {
 );
   }
 
-  _createRows(List<t.Team>? listTeam) {
-    List<DataRow> listdata = [];
-    if (listTeam!.isNotEmpty) {
-      for (var element in listTeam) {
-        listdata.add(DataRow(cells: [
-          DataCell(TextElement(
-            text: element.name,
-            color: colorTheme,
-          )),
-          const DataCell(Text(
-            "0",
-            style: TextStyle(color: Colors.white),
-          )),
-          const DataCell(Text(
-            "0",
-            style: TextStyle(color: Colors.white),
-          )),
-          const DataCell(Text(
-            "0",
-            style: TextStyle(color: Colors.white),
-          ))
-        ]));
-      }
-      return listdata;
-    }
-  }
 }
 
 class rowInformationTournament extends StatelessWidget {
@@ -554,14 +678,39 @@ class rowInformationTournament extends StatelessWidget {
   }
 
 }
-
-// Tournament t = querySnapshot.snapshot.data()!;
-// t.listTeam = [
-//   Team(name: "name1"),
-//   Team(name: "name2"),
-//   Team(name: "name3"),
-//   Team(name: "name4"),
-//   Team(name: "name5"),
-// ];
-//  print(t.listTeam!.map((e) => e.toJson()));
-// tournamentsRef.doc(querySnapshot.snapshot.id).set(t);
+// DataTable(
+// columnSpacing: 50,
+// border: const TableBorder(
+// horizontalInside: BorderSide(
+// width: 1,
+// color: Color(0xff696969),
+// style: BorderStyle.solid)),
+// headingRowHeight: 30,
+// columns: [
+// DataColumn(
+// tooltip: "Nom des équipes",
+// label: TextElement(
+// text: "Equipes",
+// color: Colors.white,
+// textAlign: TextAlign.start,
+// )),
+// DataColumn(
+// tooltip: "Place des l'équipes",
+// label: TextElement(
+// text: "Rang",
+// color: Colors.white,
+// )),
+// DataColumn(
+// tooltip: "Kill/Mort/Assistance",
+// label: TextElement(
+// text: "KDA",
+// color: Colors.white,
+// )),
+// DataColumn(
+// tooltip: "Ratio entre les kill,mort et assist",
+// label: TextElement(
+// text: "Ratio",
+// color: Colors.white,
+// )),
+// ],
+// rows: _createRows(state.listTeam))
