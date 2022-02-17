@@ -9,29 +9,18 @@ import 'package:o_spawn_cup/models/role_type.dart';
 
 import '../Member/member.dart';
 part 'member_tournament.g.dart';
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class MemberTournament {
-  Member member;
-  Tournament tournament;
+  @JsonKey(ignore: true)
+  String? documentId;
   String gamerTag;
   RoleType role;
-  Team team;
-  List<RoundClassementMember> listRoundClassementMember = [];
 
-  MemberTournament({required this.member,required this.tournament,required this.gamerTag,required this.role,required this.team});
+  MemberTournament({required this.gamerTag,required this.role});
   factory MemberTournament.fromJson(Map<String, dynamic> json) => _$MemberTournamentFromJson(json);
   Map<String, dynamic> toJson() => _$MemberTournamentToJson(this);
-  Map<String, dynamic> _$MemberTournamentToJson(MemberTournament instance) =>
-      <String, dynamic>{
-        'member': instance.member.toJson(),
-        'tournament': instance.tournament.toJson(),
-        'gamerTag': instance.gamerTag,
-        'role': _$RoleTypeEnumMap[instance.role],
-        'team': instance.team.toJson(),
-        'listRoundClassementMember': instance.listRoundClassementMember,
-      };
+
 }
 @Collection<MemberTournament>('MemberTournaments')
-@Collection<Team>('MemberTournaments/*/Teams')
-@Collection<Tournament>('MemberTournaments/*/Tournaments')
+@Collection<Member>('MemberTournaments/*/members')
 final memberTournamentsRef = MemberTournamentCollectionReference();

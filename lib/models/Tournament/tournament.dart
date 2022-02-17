@@ -9,6 +9,7 @@ import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/models/TournamentType/tournament_type.dart";
 import "package:o_spawn_cup/models/server_type.dart";
 
+import '../Member/member.dart';
 import "../game_name.dart";
 part "tournament.g.dart";
 
@@ -28,8 +29,7 @@ class Tournament extends Equatable{
   String? imageUrl;
   // List<RangPointTournament> listRangPointTournament;
   int killPointTournament;
-  List<Team> listTeam = [];
-
+  @JsonKey(ignore: true)
   Tournament(
       {required this.name,
       required this.date,
@@ -49,10 +49,13 @@ class Tournament extends Equatable{
 
   Map<String, Object?> toJson() => _$TournamentToJson(this);
 
+
   @override
   List<Object?> get props => [name,date,game,server,tournamentType,capacity,cashPrize,roundNumber,killPointTournament,imageUrl];
 }
 
 @Collection<Tournament>("Tournament")
-@Collection<Team>("Tournament/*/listTeam")
+@Collection<Team>("Tournament/*/teams")
+@Collection<MemberTournament>("Tournament/*/teams/*/membersTournament",name: "membersTournament")
+@Collection<Member>("Tournament/*/teams/*/membersTournament/*/member",name: "members")
 final tournamentsRef = TournamentCollectionReference();

@@ -12,6 +12,7 @@ class TextElement extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenSize screenSize = MakeItResponsive().getScreenSize(context);
     return Text(
+
       text,
       textAlign: textAlign,
       style: TextStyle(

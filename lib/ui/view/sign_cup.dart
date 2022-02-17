@@ -2,6 +2,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:cloud_firestore_odm/cloud_firestore_odm.dart";
 import "package:dotted_border/dotted_border.dart";
 import "package:dotted_line/dotted_line.dart";
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +12,8 @@ import "package:mailer/smtp_server.dart";
 import "package:mailer/smtp_server/gmail.dart";
 import 'package:o_spawn_cup/bloc/member_tournament_firestore_bloc/member_tournament_firestore_bloc.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
+import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
+import 'package:o_spawn_cup/service/firebase_handler.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
@@ -28,6 +31,8 @@ import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/models/role_type.dart";
 
+import '../../models/Team/team.dart';
+
 
 class SignCup extends StatelessWidget {
   Tournament tournament;
@@ -41,11 +46,15 @@ class SignCup extends StatelessWidget {
       BlocProvider(
         create: (_) => RowMemberLeaderCubit(),
       ),
+      BlocProvider(
+        create: (_) => TeamFirestoreCubit(),
+      ),
     ],
       child: SignCupView(tournament: tournament,),
     );
   }
 }
+
 class SignCupView extends StatelessWidget {
   SignCupView({Key? key, required this.tournament}) : super(key: key);
   TextEditingController gamerTagController = TextEditingController();
@@ -55,13 +64,18 @@ class SignCupView extends StatelessWidget {
   late String month;
   late String day;
   late String date;
+  List<Team> teams = [];
   String msgSnack = "Inscription validée !";
   bool errorSign = false;
   String teamNameTextFieldHint = "Nom d'équipe";
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
-
+    context.read<TeamFirestoreCubit>().getTeamsTournament(tournament);
     years = tournament.date.toString().substring(0, 4);
     month = tournament.date.toString().substring(4, 6);
     day = tournament.date.toString().substring(6, 8);
@@ -73,6 +87,9 @@ class SignCupView extends StatelessWidget {
       duration: const Duration(seconds: 3),
       backgroundColor: (errorSign == false) ? Colors.green : Colors.red,
     );
+
+
+
 
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
@@ -96,14 +113,15 @@ class SignCupView extends StatelessWidget {
                   rowInformationTournament(
                       leftText: "Type de tournois:",
                       rightText: tournament.tournamentType.name),
-                  BlocBuilder<MemberTournamentFirestoreBloc, MemberTournamentFirestoreState>(
+                  BlocBuilder<TeamFirestoreCubit, TeamFirestoreState>(
+                    buildWhen: (previous, current) => current.runtimeType == TeamFirestoreLoaded,
                   builder: (context, state) {
                     return rowInformationTournament(
                       leftText: "Place restantes:",
-                      rightText: (tournament.capacity - tournament.listTeam.length).toString() + "/" + tournament.capacity.toString());
+                      rightText: (tournament.capacity - state.listTeam.length).toString() + "/" + tournament.capacity.toString());
                     },
                   ),
-                  (tournament.capacity - tournament.listTeam.length == 0) ? Container() : Container(
+                  (tournament.capacity - teams.length == 0) ? Container() : Container(
                     padding: const EdgeInsets.only(top: 20),
                     height: screenSize.height * 0.38,
                     child: Column(
@@ -240,9 +258,13 @@ class SignCupView extends StatelessWidget {
                             text: "Confirmation",
                             onPressedMethod: () async {
                               await () async {
-                                context.read<MemberTournamentFirestoreBloc>().add(MemberTournamentFirestoreAdd(teamName: teamNameController.text, gamerTag: gamerTagController.text, roleType: state.roleType));
-                                // msgSnack = "Veuillez renseigner le gamerTag et nom/code de team !";
-                                // errorSign = true;
+                                if(isPlayer(context)){
+                                  FirebaseHandler().addMemberWithCodeTeam(tournament, teamNameController.text, gamerTagController.text);
+                                }
+                                if(isLeader(context)){
+                                  FirebaseHandler().addTeamInTournament(tournament, Team(name: teamNameController.text), gamerTagController.text);
+                                }
+
                                 afterAddMemberTournament();
                                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               }();
@@ -271,6 +293,7 @@ class SignCupView extends StatelessWidget {
         ),
       ),
     );
+
   }
 
   bool isLeader(BuildContext context) => context.read<RowMemberLeaderCubit>().state.roleType == RoleType.leader;
@@ -286,15 +309,7 @@ class SignCupView extends StatelessWidget {
     return member;
   }
 
-  Future<void> addMemberTournament(Member member, t.Team team,RoleType roleType) async {
-    Mt.MemberTournament memberTournament = Mt.MemberTournament(
-        member: member,
-        tournament: tournament,
-        gamerTag: gamerTagController.text,
-        role: roleType,
-        team: team);
-    Mt.memberTournamentsRef.add(memberTournament);
-  }
+
 
   void afterAddMemberTournament() {
     msgSnack = "Inscription validée !";
@@ -415,7 +430,9 @@ class SignCupView extends StatelessWidget {
     );
   }
 
-  Column buildListTeam() {
+  BlocBuilder buildListTeam() {
+    return BlocBuilder<TeamFirestoreCubit, TeamFirestoreState>(
+    builder: (context, state) {
     return Column(
       children: [
         Container(
@@ -425,7 +442,7 @@ class SignCupView extends StatelessWidget {
             color: colorTheme,
           ),
         ),
-        (tournament.listTeam.isNotEmpty)
+        (state.listTeam.isNotEmpty)
             ? DataTable(
                 columnSpacing: 50,
                 border: const TableBorder(
@@ -461,7 +478,7 @@ class SignCupView extends StatelessWidget {
                         color: Colors.white,
                       )),
                 ],
-                rows: _createRows(tournament.listTeam))
+                rows: _createRows(state.listTeam))
             : Padding(
                 padding: const EdgeInsets.all(10),
                 child: Center(
@@ -472,6 +489,8 @@ class SignCupView extends StatelessWidget {
               ),
       ],
     );
+  },
+);
   }
 
   _createRows(List<t.Team>? listTeam) {
@@ -533,6 +552,7 @@ class rowInformationTournament extends StatelessWidget {
       ),
     );
   }
+
 }
 
 // Tournament t = querySnapshot.snapshot.data()!;

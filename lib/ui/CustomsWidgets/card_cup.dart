@@ -48,6 +48,15 @@ class CardCup extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8.0,top: 8),
                           child: TextElement(text: tournament.date.toString().substring(6, 8) + "/" + tournament.date.toString().substring(4, 6) + "/" + tournament.date.toString().substring(0, 4),color: Colors.white,),
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: Row(
+                        //     children: [
+                        //       SvgPicture.asset("assets/images/tournament_type_icon.svg"),
+                        //       TextElement(text: tournament.name,color: Colors.white,),
+                        //     ],
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(

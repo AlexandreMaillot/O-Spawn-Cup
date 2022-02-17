@@ -106,7 +106,7 @@ abstract class TournamentDocumentReference
     return _$TournamentCollectionReference(reference.firestore);
   }
 
-  late final TeamCollectionReference listTeam = _$TeamCollectionReference(
+  late final TeamCollectionReference teams = _$TeamCollectionReference(
     reference,
   );
 
@@ -128,7 +128,6 @@ abstract class TournamentDocumentReference
     int roundNumber,
     String? imageUrl,
     int killPointTournament,
-    List<Team> listTeam,
     List<Object?> props,
   });
 
@@ -148,7 +147,7 @@ class _$TournamentDocumentReference
     return _$TournamentCollectionReference(reference.firestore);
   }
 
-  late final TeamCollectionReference listTeam = _$TeamCollectionReference(
+  late final TeamCollectionReference teams = _$TeamCollectionReference(
     reference,
   );
 
@@ -186,7 +185,6 @@ class _$TournamentDocumentReference
     Object? roundNumber = _sentinel,
     Object? imageUrl = _sentinel,
     Object? killPointTournament = _sentinel,
-    Object? listTeam = _sentinel,
     Object? props = _sentinel,
   }) async {
     final json = {
@@ -199,7 +197,6 @@ class _$TournamentDocumentReference
       if (imageUrl != _sentinel) "imageUrl": imageUrl as String?,
       if (killPointTournament != _sentinel)
         "killPointTournament": killPointTournament as int,
-      if (listTeam != _sentinel) "listTeam": listTeam as List<Team>,
       if (props != _sentinel) "props": props as List<Object?>,
     };
 
@@ -338,16 +335,6 @@ abstract class TournamentQuery
     List<int>? whereIn,
     List<int>? whereNotIn,
   });
-  TournamentQuery whereListTeam({
-    List<Team>? isEqualTo,
-    List<Team>? isNotEqualTo,
-    List<Team>? isLessThan,
-    List<Team>? isLessThanOrEqualTo,
-    List<Team>? isGreaterThan,
-    List<Team>? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<Team>? arrayContainsAny,
-  });
   TournamentQuery whereProps({
     List<Object?>? isEqualTo,
     List<Object?>? isNotEqualTo,
@@ -449,18 +436,6 @@ abstract class TournamentQuery
     int startAfter,
     int endAt,
     int endBefore,
-    TournamentDocumentSnapshot? startAtDocument,
-    TournamentDocumentSnapshot? endAtDocument,
-    TournamentDocumentSnapshot? endBeforeDocument,
-    TournamentDocumentSnapshot? startAfterDocument,
-  });
-
-  TournamentQuery orderByListTeam({
-    bool descending = false,
-    List<Team> startAt,
-    List<Team> startAfter,
-    List<Team> endAt,
-    List<Team> endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -760,32 +735,6 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
         isNull: isNull,
         whereIn: whereIn,
         whereNotIn: whereNotIn,
-      ),
-      _collection,
-    );
-  }
-
-  TournamentQuery whereListTeam({
-    List<Team>? isEqualTo,
-    List<Team>? isNotEqualTo,
-    List<Team>? isLessThan,
-    List<Team>? isLessThanOrEqualTo,
-    List<Team>? isGreaterThan,
-    List<Team>? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<Team>? arrayContainsAny,
-  }) {
-    return _$TournamentQuery(
-      reference.where(
-        'listTeam',
-        isEqualTo: isEqualTo,
-        isNotEqualTo: isNotEqualTo,
-        isLessThan: isLessThan,
-        isLessThanOrEqualTo: isLessThanOrEqualTo,
-        isGreaterThan: isGreaterThan,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isNull: isNull,
-        arrayContainsAny: arrayContainsAny,
       ),
       _collection,
     );
@@ -1153,48 +1102,6 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     return _$TournamentQuery(query, _collection);
   }
 
-  TournamentQuery orderByListTeam({
-    bool descending = false,
-    Object? startAt = _sentinel,
-    Object? startAfter = _sentinel,
-    Object? endAt = _sentinel,
-    Object? endBefore = _sentinel,
-    TournamentDocumentSnapshot? startAtDocument,
-    TournamentDocumentSnapshot? endAtDocument,
-    TournamentDocumentSnapshot? endBeforeDocument,
-    TournamentDocumentSnapshot? startAfterDocument,
-  }) {
-    var query = reference.orderBy('listTeam', descending: false);
-
-    if (startAtDocument != null) {
-      query = query.startAtDocument(startAtDocument.snapshot);
-    }
-    if (startAfterDocument != null) {
-      query = query.startAfterDocument(startAfterDocument.snapshot);
-    }
-    if (endAtDocument != null) {
-      query = query.endAtDocument(endAtDocument.snapshot);
-    }
-    if (endBeforeDocument != null) {
-      query = query.endBeforeDocument(endBeforeDocument.snapshot);
-    }
-
-    if (startAt != _sentinel) {
-      query = query.startAt([startAt]);
-    }
-    if (startAfter != _sentinel) {
-      query = query.startAfter([startAfter]);
-    }
-    if (endAt != _sentinel) {
-      query = query.endAt([endAt]);
-    }
-    if (endBefore != _sentinel) {
-      query = query.endBefore([endBefore]);
-    }
-
-    return _$TournamentQuery(query, _collection);
-  }
-
   TournamentQuery orderByProps({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -1322,7 +1229,7 @@ class _$TeamCollectionReference extends _$TeamQuery
   ) {
     return _$TeamCollectionReference._(
       TournamentDocumentReference(parent),
-      parent.collection('listTeam').withConverter(
+      parent.collection('teams').withConverter(
             fromFirestore: TeamCollectionReference.fromFirestore,
             toFirestore: TeamCollectionReference.toFirestore,
           ),
@@ -1383,6 +1290,11 @@ abstract class TeamDocumentReference
     );
   }
 
+  late final MemberTournamentCollectionReference membersTournament =
+      _$MemberTournamentCollectionReference(
+    reference,
+  );
+
   @override
   Stream<TeamDocumentSnapshot> snapshots();
 
@@ -1393,9 +1305,9 @@ abstract class TeamDocumentReference
   Future<void> delete();
 
   Future<void> update({
+    String? documentId,
     String name,
-    List<MemberTournament> listMemberTournament,
-    String? teamCode,
+    String teamCode,
     bool isDisqualified,
   });
 
@@ -1419,6 +1331,11 @@ class _$TeamDocumentReference
       ),
     );
   }
+
+  late final MemberTournamentCollectionReference membersTournament =
+      _$MemberTournamentCollectionReference(
+    reference,
+  );
 
   @override
   Stream<TeamDocumentSnapshot> snapshots() {
@@ -1446,16 +1363,15 @@ class _$TeamDocumentReference
   }
 
   Future<void> update({
+    Object? documentId = _sentinel,
     Object? name = _sentinel,
-    Object? listMemberTournament = _sentinel,
     Object? teamCode = _sentinel,
     Object? isDisqualified = _sentinel,
   }) async {
     final json = {
+      if (documentId != _sentinel) "documentId": documentId as String?,
       if (name != _sentinel) "name": name as String,
-      if (listMemberTournament != _sentinel)
-        "listMemberTournament": listMemberTournament as List<MemberTournament>,
-      if (teamCode != _sentinel) "teamCode": teamCode as String?,
+      if (teamCode != _sentinel) "teamCode": teamCode as String,
       if (isDisqualified != _sentinel) "isDisqualified": isDisqualified as bool,
     };
 
@@ -1505,6 +1421,17 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
   @override
   TeamQuery limitToLast(int limit);
 
+  TeamQuery whereDocumentId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
   TeamQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -1516,16 +1443,6 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
-  TeamQuery whereListMemberTournament({
-    List<MemberTournament>? isEqualTo,
-    List<MemberTournament>? isNotEqualTo,
-    List<MemberTournament>? isLessThan,
-    List<MemberTournament>? isLessThanOrEqualTo,
-    List<MemberTournament>? isGreaterThan,
-    List<MemberTournament>? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<MemberTournament>? arrayContainsAny,
-  });
   TeamQuery whereTeamCode({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -1534,8 +1451,8 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   });
   TeamQuery whereIsDisqualified({
     bool? isEqualTo,
@@ -1547,6 +1464,18 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     bool? isNull,
     List<bool>? whereIn,
     List<bool>? whereNotIn,
+  });
+
+  TeamQuery orderByDocumentId({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
   });
 
   TeamQuery orderByName({
@@ -1561,24 +1490,12 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     TeamDocumentSnapshot? startAfterDocument,
   });
 
-  TeamQuery orderByListMemberTournament({
-    bool descending = false,
-    List<MemberTournament> startAt,
-    List<MemberTournament> startAfter,
-    List<MemberTournament> endAt,
-    List<MemberTournament> endBefore,
-    TeamDocumentSnapshot? startAtDocument,
-    TeamDocumentSnapshot? endAtDocument,
-    TeamDocumentSnapshot? endBeforeDocument,
-    TeamDocumentSnapshot? startAfterDocument,
-  });
-
   TeamQuery orderByTeamCode({
     bool descending = false,
-    String? startAt,
-    String? startAfter,
-    String? endAt,
-    String? endBefore,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
     TeamDocumentSnapshot? startAtDocument,
     TeamDocumentSnapshot? endAtDocument,
     TeamDocumentSnapshot? endBeforeDocument,
@@ -1659,6 +1576,34 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     );
   }
 
+  TeamQuery whereDocumentId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$TeamQuery(
+      reference.where(
+        'documentId',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   TeamQuery whereName({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -1687,32 +1632,6 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     );
   }
 
-  TeamQuery whereListMemberTournament({
-    List<MemberTournament>? isEqualTo,
-    List<MemberTournament>? isNotEqualTo,
-    List<MemberTournament>? isLessThan,
-    List<MemberTournament>? isLessThanOrEqualTo,
-    List<MemberTournament>? isGreaterThan,
-    List<MemberTournament>? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<MemberTournament>? arrayContainsAny,
-  }) {
-    return _$TeamQuery(
-      reference.where(
-        'listMemberTournament',
-        isEqualTo: isEqualTo,
-        isNotEqualTo: isNotEqualTo,
-        isLessThan: isLessThan,
-        isLessThanOrEqualTo: isLessThanOrEqualTo,
-        isGreaterThan: isGreaterThan,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isNull: isNull,
-        arrayContainsAny: arrayContainsAny,
-      ),
-      _collection,
-    );
-  }
-
   TeamQuery whereTeamCode({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -1721,8 +1640,8 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String?>? whereIn,
-    List<String?>? whereNotIn,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   }) {
     return _$TeamQuery(
       reference.where(
@@ -1769,7 +1688,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     );
   }
 
-  TeamQuery orderByName({
+  TeamQuery orderByDocumentId({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -1780,7 +1699,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('name', descending: false);
+    var query = reference.orderBy('documentId', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1811,7 +1730,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     return _$TeamQuery(query, _collection);
   }
 
-  TeamQuery orderByListMemberTournament({
+  TeamQuery orderByName({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -1822,7 +1741,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('listMemberTournament', descending: false);
+    var query = reference.orderBy('name', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1981,6 +1900,947 @@ class TeamQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
   final Team data;
 }
 
+/// A collection reference object can be used for adding documents,
+/// getting document references, and querying for documents
+/// (using the methods inherited from Query).
+abstract class MemberTournamentCollectionReference
+    implements
+        MemberTournamentQuery,
+        FirestoreCollectionReference<MemberTournamentQuerySnapshot> {
+  factory MemberTournamentCollectionReference(
+    DocumentReference<Team> parent,
+  ) = _$MemberTournamentCollectionReference;
+
+  static MemberTournament fromFirestore(
+    DocumentSnapshot<Map<String, Object?>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    return MemberTournament.fromJson(snapshot.data()!);
+  }
+
+  static Map<String, Object?> toFirestore(
+    MemberTournament value,
+    SetOptions? options,
+  ) {
+    return value.toJson();
+  }
+
+  /// A reference to the containing [TeamDocumentReference] if this is a subcollection.
+  TeamDocumentReference get parent;
+
+  @override
+  MemberTournamentDocumentReference doc([String? id]);
+
+  /// Add a new document to this collection with the specified data,
+  /// assigning it a document ID automatically.
+  Future<MemberTournamentDocumentReference> add(MemberTournament value);
+}
+
+class _$MemberTournamentCollectionReference extends _$MemberTournamentQuery
+    implements MemberTournamentCollectionReference {
+  factory _$MemberTournamentCollectionReference(
+    DocumentReference<Team> parent,
+  ) {
+    return _$MemberTournamentCollectionReference._(
+      TeamDocumentReference(parent),
+      parent.collection('membersTournament').withConverter(
+            fromFirestore: MemberTournamentCollectionReference.fromFirestore,
+            toFirestore: MemberTournamentCollectionReference.toFirestore,
+          ),
+    );
+  }
+
+  _$MemberTournamentCollectionReference._(
+    this.parent,
+    CollectionReference<MemberTournament> reference,
+  ) : super(reference, reference);
+
+  @override
+  final TeamDocumentReference parent;
+
+  String get path => reference.path;
+
+  @override
+  CollectionReference<MemberTournament> get reference =>
+      super.reference as CollectionReference<MemberTournament>;
+
+  @override
+  MemberTournamentDocumentReference doc([String? id]) {
+    return MemberTournamentDocumentReference(
+      reference.doc(id),
+    );
+  }
+
+  @override
+  Future<MemberTournamentDocumentReference> add(MemberTournament value) {
+    return reference
+        .add(value)
+        .then((ref) => MemberTournamentDocumentReference(ref));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$MemberTournamentCollectionReference &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+abstract class MemberTournamentDocumentReference
+    extends FirestoreDocumentReference<MemberTournamentDocumentSnapshot> {
+  factory MemberTournamentDocumentReference(
+          DocumentReference<MemberTournament> reference) =
+      _$MemberTournamentDocumentReference;
+
+  DocumentReference<MemberTournament> get reference;
+
+  /// A reference to the [MemberTournamentCollectionReference] containing this document.
+  MemberTournamentCollectionReference get parent {
+    return _$MemberTournamentCollectionReference(
+      reference.parent.parent!.withConverter<Team>(
+        fromFirestore: TeamCollectionReference.fromFirestore,
+        toFirestore: TeamCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  late final MemberCollectionReference members = _$MemberCollectionReference(
+    reference,
+  );
+
+  @override
+  Stream<MemberTournamentDocumentSnapshot> snapshots();
+
+  @override
+  Future<MemberTournamentDocumentSnapshot> get([GetOptions? options]);
+
+  @override
+  Future<void> delete();
+
+  Future<void> update({
+    String gamerTag,
+  });
+
+  Future<void> set(MemberTournament value);
+}
+
+class _$MemberTournamentDocumentReference
+    extends FirestoreDocumentReference<MemberTournamentDocumentSnapshot>
+    implements MemberTournamentDocumentReference {
+  _$MemberTournamentDocumentReference(this.reference);
+
+  @override
+  final DocumentReference<MemberTournament> reference;
+
+  /// A reference to the [MemberTournamentCollectionReference] containing this document.
+  MemberTournamentCollectionReference get parent {
+    return _$MemberTournamentCollectionReference(
+      reference.parent.parent!.withConverter<Team>(
+        fromFirestore: TeamCollectionReference.fromFirestore,
+        toFirestore: TeamCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  late final MemberCollectionReference members = _$MemberCollectionReference(
+    reference,
+  );
+
+  @override
+  Stream<MemberTournamentDocumentSnapshot> snapshots() {
+    return reference.snapshots().map((snapshot) {
+      return MemberTournamentDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<MemberTournamentDocumentSnapshot> get([GetOptions? options]) {
+    return reference.get(options).then((snapshot) {
+      return MemberTournamentDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<void> delete() {
+    return reference.delete();
+  }
+
+  Future<void> update({
+    Object? gamerTag = _sentinel,
+  }) async {
+    final json = {
+      if (gamerTag != _sentinel) "gamerTag": gamerTag as String,
+    };
+
+    return reference.update(json);
+  }
+
+  Future<void> set(MemberTournament value) {
+    return reference.set(value);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MemberTournamentDocumentReference &&
+        other.runtimeType == runtimeType &&
+        other.parent == parent &&
+        other.id == id;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, parent, id);
+}
+
+class MemberTournamentDocumentSnapshot extends FirestoreDocumentSnapshot {
+  MemberTournamentDocumentSnapshot._(
+    this.snapshot,
+    this.data,
+  );
+
+  @override
+  final DocumentSnapshot<MemberTournament> snapshot;
+
+  @override
+  MemberTournamentDocumentReference get reference {
+    return MemberTournamentDocumentReference(
+      snapshot.reference,
+    );
+  }
+
+  @override
+  final MemberTournament? data;
+}
+
+abstract class MemberTournamentQuery
+    implements QueryReference<MemberTournamentQuerySnapshot> {
+  @override
+  MemberTournamentQuery limit(int limit);
+
+  @override
+  MemberTournamentQuery limitToLast(int limit);
+
+  MemberTournamentQuery whereGamerTag({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
+
+  MemberTournamentQuery orderByGamerTag({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    MemberTournamentDocumentSnapshot? startAtDocument,
+    MemberTournamentDocumentSnapshot? endAtDocument,
+    MemberTournamentDocumentSnapshot? endBeforeDocument,
+    MemberTournamentDocumentSnapshot? startAfterDocument,
+  });
+}
+
+class _$MemberTournamentQuery
+    extends QueryReference<MemberTournamentQuerySnapshot>
+    implements MemberTournamentQuery {
+  _$MemberTournamentQuery(
+    this.reference,
+    this._collection,
+  );
+
+  final CollectionReference<Object?> _collection;
+
+  @override
+  final Query<MemberTournament> reference;
+
+  MemberTournamentQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<MemberTournament> snapshot,
+  ) {
+    final docs = snapshot.docs.map((e) {
+      return MemberTournamentQueryDocumentSnapshot._(e, e.data());
+    }).toList();
+
+    final docChanges = snapshot.docChanges.map((change) {
+      return FirestoreDocumentChange<MemberTournamentDocumentSnapshot>(
+        type: change.type,
+        oldIndex: change.oldIndex,
+        newIndex: change.newIndex,
+        doc: MemberTournamentDocumentSnapshot._(change.doc, change.doc.data()),
+      );
+    }).toList();
+
+    return MemberTournamentQuerySnapshot._(
+      snapshot,
+      docs,
+      docChanges,
+    );
+  }
+
+  @override
+  Stream<MemberTournamentQuerySnapshot> snapshots([SnapshotOptions? options]) {
+    return reference.snapshots().map(_decodeSnapshot);
+  }
+
+  @override
+  Future<MemberTournamentQuerySnapshot> get([GetOptions? options]) {
+    return reference.get(options).then(_decodeSnapshot);
+  }
+
+  @override
+  MemberTournamentQuery limit(int limit) {
+    return _$MemberTournamentQuery(
+      reference.limit(limit),
+      _collection,
+    );
+  }
+
+  @override
+  MemberTournamentQuery limitToLast(int limit) {
+    return _$MemberTournamentQuery(
+      reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  MemberTournamentQuery whereGamerTag({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$MemberTournamentQuery(
+      reference.where(
+        'gamerTag',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  MemberTournamentQuery orderByGamerTag({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MemberTournamentDocumentSnapshot? startAtDocument,
+    MemberTournamentDocumentSnapshot? endAtDocument,
+    MemberTournamentDocumentSnapshot? endBeforeDocument,
+    MemberTournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('gamerTag', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MemberTournamentQuery(query, _collection);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$MemberTournamentQuery &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+class MemberTournamentQuerySnapshot
+    extends FirestoreQuerySnapshot<MemberTournamentQueryDocumentSnapshot> {
+  MemberTournamentQuerySnapshot._(
+    this.snapshot,
+    this.docs,
+    this.docChanges,
+  );
+
+  final QuerySnapshot<MemberTournament> snapshot;
+
+  @override
+  final List<MemberTournamentQueryDocumentSnapshot> docs;
+
+  @override
+  final List<FirestoreDocumentChange<MemberTournamentDocumentSnapshot>>
+      docChanges;
+}
+
+class MemberTournamentQueryDocumentSnapshot
+    extends FirestoreQueryDocumentSnapshot
+    implements MemberTournamentDocumentSnapshot {
+  MemberTournamentQueryDocumentSnapshot._(this.snapshot, this.data);
+
+  @override
+  final QueryDocumentSnapshot<MemberTournament> snapshot;
+
+  @override
+  MemberTournamentDocumentReference get reference {
+    return MemberTournamentDocumentReference(snapshot.reference);
+  }
+
+  @override
+  final MemberTournament data;
+}
+
+/// A collection reference object can be used for adding documents,
+/// getting document references, and querying for documents
+/// (using the methods inherited from Query).
+abstract class MemberCollectionReference
+    implements MemberQuery, FirestoreCollectionReference<MemberQuerySnapshot> {
+  factory MemberCollectionReference(
+    DocumentReference<MemberTournament> parent,
+  ) = _$MemberCollectionReference;
+
+  static Member fromFirestore(
+    DocumentSnapshot<Map<String, Object?>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    return Member.fromJson(snapshot.data()!);
+  }
+
+  static Map<String, Object?> toFirestore(
+    Member value,
+    SetOptions? options,
+  ) {
+    return value.toJson();
+  }
+
+  /// A reference to the containing [MemberTournamentDocumentReference] if this is a subcollection.
+  MemberTournamentDocumentReference get parent;
+
+  @override
+  MemberDocumentReference doc([String? id]);
+
+  /// Add a new document to this collection with the specified data,
+  /// assigning it a document ID automatically.
+  Future<MemberDocumentReference> add(Member value);
+}
+
+class _$MemberCollectionReference extends _$MemberQuery
+    implements MemberCollectionReference {
+  factory _$MemberCollectionReference(
+    DocumentReference<MemberTournament> parent,
+  ) {
+    return _$MemberCollectionReference._(
+      MemberTournamentDocumentReference(parent),
+      parent.collection('member').withConverter(
+            fromFirestore: MemberCollectionReference.fromFirestore,
+            toFirestore: MemberCollectionReference.toFirestore,
+          ),
+    );
+  }
+
+  _$MemberCollectionReference._(
+    this.parent,
+    CollectionReference<Member> reference,
+  ) : super(reference, reference);
+
+  @override
+  final MemberTournamentDocumentReference parent;
+
+  String get path => reference.path;
+
+  @override
+  CollectionReference<Member> get reference =>
+      super.reference as CollectionReference<Member>;
+
+  @override
+  MemberDocumentReference doc([String? id]) {
+    return MemberDocumentReference(
+      reference.doc(id),
+    );
+  }
+
+  @override
+  Future<MemberDocumentReference> add(Member value) {
+    return reference.add(value).then((ref) => MemberDocumentReference(ref));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$MemberCollectionReference &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+abstract class MemberDocumentReference
+    extends FirestoreDocumentReference<MemberDocumentSnapshot> {
+  factory MemberDocumentReference(DocumentReference<Member> reference) =
+      _$MemberDocumentReference;
+
+  DocumentReference<Member> get reference;
+
+  /// A reference to the [MemberCollectionReference] containing this document.
+  MemberCollectionReference get parent {
+    return _$MemberCollectionReference(
+      reference.parent.parent!.withConverter<MemberTournament>(
+        fromFirestore: MemberTournamentCollectionReference.fromFirestore,
+        toFirestore: MemberTournamentCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  @override
+  Stream<MemberDocumentSnapshot> snapshots();
+
+  @override
+  Future<MemberDocumentSnapshot> get([GetOptions? options]);
+
+  @override
+  Future<void> delete();
+
+  Future<void> update({
+    String pseudo,
+    String uid,
+  });
+
+  Future<void> set(Member value);
+}
+
+class _$MemberDocumentReference
+    extends FirestoreDocumentReference<MemberDocumentSnapshot>
+    implements MemberDocumentReference {
+  _$MemberDocumentReference(this.reference);
+
+  @override
+  final DocumentReference<Member> reference;
+
+  /// A reference to the [MemberCollectionReference] containing this document.
+  MemberCollectionReference get parent {
+    return _$MemberCollectionReference(
+      reference.parent.parent!.withConverter<MemberTournament>(
+        fromFirestore: MemberTournamentCollectionReference.fromFirestore,
+        toFirestore: MemberTournamentCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  @override
+  Stream<MemberDocumentSnapshot> snapshots() {
+    return reference.snapshots().map((snapshot) {
+      return MemberDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<MemberDocumentSnapshot> get([GetOptions? options]) {
+    return reference.get(options).then((snapshot) {
+      return MemberDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<void> delete() {
+    return reference.delete();
+  }
+
+  Future<void> update({
+    Object? pseudo = _sentinel,
+    Object? uid = _sentinel,
+  }) async {
+    final json = {
+      if (pseudo != _sentinel) "pseudo": pseudo as String,
+      if (uid != _sentinel) "uid": uid as String,
+    };
+
+    return reference.update(json);
+  }
+
+  Future<void> set(Member value) {
+    return reference.set(value);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MemberDocumentReference &&
+        other.runtimeType == runtimeType &&
+        other.parent == parent &&
+        other.id == id;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, parent, id);
+}
+
+class MemberDocumentSnapshot extends FirestoreDocumentSnapshot {
+  MemberDocumentSnapshot._(
+    this.snapshot,
+    this.data,
+  );
+
+  @override
+  final DocumentSnapshot<Member> snapshot;
+
+  @override
+  MemberDocumentReference get reference {
+    return MemberDocumentReference(
+      snapshot.reference,
+    );
+  }
+
+  @override
+  final Member? data;
+}
+
+abstract class MemberQuery implements QueryReference<MemberQuerySnapshot> {
+  @override
+  MemberQuery limit(int limit);
+
+  @override
+  MemberQuery limitToLast(int limit);
+
+  MemberQuery wherePseudo({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
+  MemberQuery whereUid({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
+
+  MemberQuery orderByPseudo({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  });
+
+  MemberQuery orderByUid({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  });
+}
+
+class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
+    implements MemberQuery {
+  _$MemberQuery(
+    this.reference,
+    this._collection,
+  );
+
+  final CollectionReference<Object?> _collection;
+
+  @override
+  final Query<Member> reference;
+
+  MemberQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<Member> snapshot,
+  ) {
+    final docs = snapshot.docs.map((e) {
+      return MemberQueryDocumentSnapshot._(e, e.data());
+    }).toList();
+
+    final docChanges = snapshot.docChanges.map((change) {
+      return FirestoreDocumentChange<MemberDocumentSnapshot>(
+        type: change.type,
+        oldIndex: change.oldIndex,
+        newIndex: change.newIndex,
+        doc: MemberDocumentSnapshot._(change.doc, change.doc.data()),
+      );
+    }).toList();
+
+    return MemberQuerySnapshot._(
+      snapshot,
+      docs,
+      docChanges,
+    );
+  }
+
+  @override
+  Stream<MemberQuerySnapshot> snapshots([SnapshotOptions? options]) {
+    return reference.snapshots().map(_decodeSnapshot);
+  }
+
+  @override
+  Future<MemberQuerySnapshot> get([GetOptions? options]) {
+    return reference.get(options).then(_decodeSnapshot);
+  }
+
+  @override
+  MemberQuery limit(int limit) {
+    return _$MemberQuery(
+      reference.limit(limit),
+      _collection,
+    );
+  }
+
+  @override
+  MemberQuery limitToLast(int limit) {
+    return _$MemberQuery(
+      reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  MemberQuery wherePseudo({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$MemberQuery(
+      reference.where(
+        'pseudo',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  MemberQuery whereUid({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$MemberQuery(
+      reference.where(
+        'uid',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  MemberQuery orderByPseudo({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('pseudo', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MemberQuery(query, _collection);
+  }
+
+  MemberQuery orderByUid({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('uid', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MemberQuery(query, _collection);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$MemberQuery &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+class MemberQuerySnapshot
+    extends FirestoreQuerySnapshot<MemberQueryDocumentSnapshot> {
+  MemberQuerySnapshot._(
+    this.snapshot,
+    this.docs,
+    this.docChanges,
+  );
+
+  final QuerySnapshot<Member> snapshot;
+
+  @override
+  final List<MemberQueryDocumentSnapshot> docs;
+
+  @override
+  final List<FirestoreDocumentChange<MemberDocumentSnapshot>> docChanges;
+}
+
+class MemberQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
+    implements MemberDocumentSnapshot {
+  MemberQueryDocumentSnapshot._(this.snapshot, this.data);
+
+  @override
+  final QueryDocumentSnapshot<Member> snapshot;
+
+  @override
+  MemberDocumentReference get reference {
+    return MemberDocumentReference(snapshot.reference);
+  }
+
+  @override
+  final Member data;
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -1997,11 +2857,7 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
       roundNumber: json['roundNumber'] as int,
       imageUrl: json['imageUrl'] as String?,
       killPointTournament: json['killPointTournament'] as int,
-    )
-      ..state = $enumDecode(_$TournamentStateEnumMap, json['state'])
-      ..listTeam = (json['listTeam'] as List<dynamic>)
-          .map((e) => Team.fromJson(e as Map<String, dynamic>))
-          .toList();
+    )..state = $enumDecode(_$TournamentStateEnumMap, json['state']);
 
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
     <String, dynamic>{
@@ -2016,7 +2872,6 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'state': _$TournamentStateEnumMap[instance.state],
       'imageUrl': instance.imageUrl,
       'killPointTournament': instance.killPointTournament,
-      'listTeam': instance.listTeam.map((e) => e.toJson()).toList(),
     };
 
 const _$GameNameEnumMap = {
