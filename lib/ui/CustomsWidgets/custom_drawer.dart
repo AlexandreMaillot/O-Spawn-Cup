@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:o_spawn_cup/bloc/bloc_router.dart';
 import 'package:o_spawn_cup/constant.dart';
+import 'package:o_spawn_cup/service/authentification.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -103,7 +104,7 @@ class CustomDrawer extends StatelessWidget {
 
                           ],
                         ),
-                        onPressed: () {},
+                        onPressed: () => Authentification().signOut(),
                       ),
                     )
                   ],

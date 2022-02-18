@@ -7,6 +7,10 @@ import '../models/Member/member.dart';
 class Authentification {
   Authentification();
 
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
   void signInWithFacebook() {}
 
   Future<bool> signInWithMail(String email, String password) async {

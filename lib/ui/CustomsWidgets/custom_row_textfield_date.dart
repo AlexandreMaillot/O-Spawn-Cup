@@ -22,7 +22,7 @@ class RowTextfieldDate extends StatelessWidget {
     this.onChangedDay,
     this.onChangedMonth,
     this.onChangedYears,
-    this.dateValide = false,
+    this.dateValide,
     this.paddingBottom = 0,
   }) : super(key: key);
 
@@ -36,7 +36,7 @@ class RowTextfieldDate extends StatelessWidget {
   final FocusNode yearsFocus;
   final TextEditingController monthController;
   final TextEditingController yearsController;
-  bool dateValide;
+  bool? dateValide;
   double paddingBottom;
   @override
   Widget build(BuildContext context) {

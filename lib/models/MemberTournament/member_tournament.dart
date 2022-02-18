@@ -15,8 +15,9 @@ class MemberTournament {
   String? documentId;
   String gamerTag;
   RoleType role;
+  Member member;
 
-  MemberTournament({required this.gamerTag,required this.role});
+  MemberTournament({required this.gamerTag,required this.role,required this.member});
   factory MemberTournament.fromJson(Map<String, dynamic> json) => _$MemberTournamentFromJson(json);
   Map<String, dynamic> toJson() => _$MemberTournamentToJson(this);
 

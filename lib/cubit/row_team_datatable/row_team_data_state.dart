@@ -10,11 +10,19 @@ abstract class RowTeamDataState extends Equatable {
 class RowTeamDataInitial extends RowTeamDataState {
   RowTeamDataInitial(int? indexSelect) : super(null);
 }
+class RowTeamDataLoading extends RowTeamDataState {
+  RowTeamDataLoading(int? indexSelect) : super(null);
+}
 class RowTeamDataSelected extends RowTeamDataState {
-  List<MemberTournament> listMemberTournament = [];
-  List<Member?> listMember = [];
 
-  RowTeamDataSelected(int? indexSelect,this.listMemberTournament,this.listMember) : super(indexSelect);
+
+  RowTeamDataSelected(int? indexSelect) : super(indexSelect);
   @override
   List<int?> get props => [indexSelect];
+}
+class RowTeamDataDisqualified extends RowTeamDataState {
+  RowTeamDataDisqualified(int? indexSelect) : super(indexSelect);
+}
+class RowTeamDataAddedMember extends RowTeamDataState {
+  RowTeamDataAddedMember(int? indexSelect) : super(indexSelect);
 }

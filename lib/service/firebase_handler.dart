@@ -6,6 +6,7 @@ import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
 import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
+import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/models/server_type.dart';
@@ -65,7 +66,7 @@ class FirebaseHandler {
     return member;
   }
 
-  addTeamInTournament(Tournament tournament, Team team, String gamerTag) async {
+  Future<Team?> addTeamInTournament(Tournament tournament, Team team, String gamerTag) async {
     if (await verifMemberAlreadySign(tournament)) {
       List<Team> listTeamTournament = await getTeamsInTournament(tournament);
       if (verifTeamName(listTeamTournament, team.name)) {
@@ -75,8 +76,10 @@ class FirebaseHandler {
             await tournamentsRef.doc(tournament.documentId).teams.add(team);
         team.documentId = teamDoc.id;
         addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.leader);
+        return team;
       } else {
         print("Le team existe déjà");
+        return null;
       }
     }
   }
@@ -107,6 +110,7 @@ class FirebaseHandler {
       MemberTournament memberTournament = MemberTournament(
         gamerTag: gamerTag,
         role: roleType,
+        member: member,
       );
       var memberTournamentDoc = await tournamentsRef
           .doc(tournament.documentId)
@@ -114,20 +118,19 @@ class FirebaseHandler {
           .doc(team.documentId)
           .membersTournament
           .add(memberTournament);
-      tournamentsRef
-          .doc(tournament.documentId)
-          .teams
-          .doc(team.documentId)
-          .membersTournament
-          .doc(memberTournamentDoc.id)
-          .members
-          .doc(member.uid)
-          .set(member);
     } else {
       print("Erreur membre");
     }
   }
 
+  Future<bool> verifStateCup(int teamNumberValidate,Tournament tournament) async {
+    if(tournament.capacity - teamNumberValidate == 0){
+      tournament.state = TournamentState.inscriptionFermer;
+      return await tournamentsRef.doc(tournament.documentId).set(tournament).then((value) => true).catchError((onError) => false);
+    } else {
+      return false;
+    }
+  }
   Future<bool> verifMemberAlreadySign(Tournament tournament) async {
     Member? member = await Authentification().selectMemberConnected();
     if (member != null) {
@@ -137,12 +140,9 @@ class FirebaseHandler {
         var listMemberTournament =
             await element.reference.membersTournament.get();
         for (var element in listMemberTournament.docs) {
-          var listMember = await element.reference.members.get();
-          for (var element in listMember.docs) {
-            if (element.data.uid == member.uid) {
-              print("Membre connecter deja inscrit");
-              return false;
-            }
+          if (element.data.member.uid == member.uid) {
+            print("Membre connecter deja inscrit");
+            return false;
           }
         }
       }
@@ -223,6 +223,25 @@ class FirebaseHandler {
     }
   }
 
+
+  Future<bool> disqualificationMember(Tournament tournament,Team team,MemberTournament memberTournament) async {
+      return await tournamentsRef.doc(tournament.documentId).teams.doc(team.documentId).membersTournament.doc(memberTournament.documentId).delete()
+          .then((value) {
+            return true;
+          })
+          .catchError((error) => false);
+
+  }
+  Future<bool> verifTeamEmpty(Tournament tournament,Team team,) async {
+    return await tournamentsRef.doc(tournament.documentId).teams.doc(team.documentId).membersTournament.get().then((value) {
+      if(value.docs.isEmpty){
+        tournamentsRef.doc(tournament.documentId).teams.doc(team.documentId).delete().then((value) => true).catchError((error) => false);
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
   bool verifTeamName(List<Team> teams, String name) {
     List<Team> teamWithCode =
         teams.where((element) => element.name == name).toList();

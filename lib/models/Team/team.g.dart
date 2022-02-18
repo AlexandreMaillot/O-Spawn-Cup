@@ -826,6 +826,7 @@ abstract class MemberTournamentDocumentReference
   Future<void> delete();
 
   Future<void> update({
+    String? documentId,
     String gamerTag,
   });
 
@@ -876,9 +877,11 @@ class _$MemberTournamentDocumentReference
   }
 
   Future<void> update({
+    Object? documentId = _sentinel,
     Object? gamerTag = _sentinel,
   }) async {
     final json = {
+      if (documentId != _sentinel) "documentId": documentId as String?,
       if (gamerTag != _sentinel) "gamerTag": gamerTag as String,
     };
 
@@ -929,6 +932,17 @@ abstract class MemberTournamentQuery
   @override
   MemberTournamentQuery limitToLast(int limit);
 
+  MemberTournamentQuery whereDocumentId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
   MemberTournamentQuery whereGamerTag({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -939,6 +953,18 @@ abstract class MemberTournamentQuery
     bool? isNull,
     List<String>? whereIn,
     List<String>? whereNotIn,
+  });
+
+  MemberTournamentQuery orderByDocumentId({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    MemberTournamentDocumentSnapshot? startAtDocument,
+    MemberTournamentDocumentSnapshot? endAtDocument,
+    MemberTournamentDocumentSnapshot? endBeforeDocument,
+    MemberTournamentDocumentSnapshot? startAfterDocument,
   });
 
   MemberTournamentQuery orderByGamerTag({
@@ -1016,6 +1042,34 @@ class _$MemberTournamentQuery
     );
   }
 
+  MemberTournamentQuery whereDocumentId({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$MemberTournamentQuery(
+      reference.where(
+        'documentId',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   MemberTournamentQuery whereGamerTag({
     String? isEqualTo,
     String? isNotEqualTo,
@@ -1042,6 +1096,48 @@ class _$MemberTournamentQuery
       ),
       _collection,
     );
+  }
+
+  MemberTournamentQuery orderByDocumentId({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MemberTournamentDocumentSnapshot? startAtDocument,
+    MemberTournamentDocumentSnapshot? endAtDocument,
+    MemberTournamentDocumentSnapshot? endBeforeDocument,
+    MemberTournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('documentId', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MemberTournamentQuery(query, _collection);
   }
 
   MemberTournamentQuery orderByGamerTag({

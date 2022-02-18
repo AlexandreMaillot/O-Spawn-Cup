@@ -11,20 +11,9 @@ part 'row_team_data_state.dart';
 
 class RowTeamDataCubit extends Cubit<RowTeamDataState> {
 
+
   RowTeamDataCubit() : super(RowTeamDataInitial(null));
 
-  changeRowSelect(int indexSelect,Tournament tournament,Team team) async {
-    if(indexSelect != state.indexSelect){
-      var membersTournament = await FirebaseHandler().getMemberTournamentInTournament(tournament, team);
-      List<Member?> members = [];
-      for(var element in membersTournament) {
-        members.add(await FirebaseHandler().getMemberInTournament(tournament, team, element));
-      }
 
-      emit(RowTeamDataSelected(indexSelect,membersTournament,members));
-    } else {
-      emit(RowTeamDataSelected(null, [],[]));
-    }
 
-  }
 }

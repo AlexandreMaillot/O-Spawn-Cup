@@ -42,7 +42,7 @@ class CustomTextField extends StatelessWidget {
         width: screenSize.width * 0.87,
         height: errorText != null ? screenSize.height * 0.08 : screenSize.height * 0.05,
         child: TextField(
-          textInputAction: textInputAction,
+          textInputAction: (textInputAction != null)? textInputAction : TextInputAction.next,
           inputFormatters: (typeTextField != TextInputType.text)
               ? <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
