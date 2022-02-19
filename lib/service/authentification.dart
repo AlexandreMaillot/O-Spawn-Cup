@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:o_spawn_cup/models/admin.dart';
 import 'package:o_spawn_cup/service/firebase_handler.dart';
 
 import '../models/Member/member.dart';
@@ -59,12 +60,14 @@ class Authentification {
       return false;
     }
   }
-  Future<Member?> selectMemberConnected() async {
+  Stream<MemberDocumentSnapshot> selectMemberConnected() {
     User? user = FirebaseAuth.instance.currentUser;
-    return await membersRef.doc(user!.uid).get().then((value) {
-      return value.data;
-    });
+    return membersRef.doc(user!.uid).snapshots();
   }
+
+  // Future<bool> memberIsAdmin() async {
+  //   return await adminsRef.doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) => value).catchError((onError) => false);
+  // }
   void signUpWithFacebook() {}
 
   Future<bool> signUpWithMail(String email, String password,

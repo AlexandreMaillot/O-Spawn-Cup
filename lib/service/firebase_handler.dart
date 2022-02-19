@@ -16,7 +16,15 @@ import 'dart:developer' as dev;
 import '../models/MemberTournament/member_tournament.dart';
 import '../models/role_type.dart';
 
+enum FirebaseStatusEvent { teamExist, teamFull,changeRowSuccess, disqualifiedSuccess,disqualifiedFail, codeNotFound, memberNotConnect, cupFull, cupStateChangeSuccess, cupStateChangeFail, memberAlreadySign,memberSignSuccess, teamNotEmpty}
 class FirebaseHandler {
+  Member? member;
+  FirebaseHandler(){
+    Authentification().selectMemberConnected().listen((event) {
+      member = event.data;
+    });
+  }
+
   static final storageRef = firebase_storage.FirebaseStorage.instance.ref();
 
   Future<String> addImageToStorage(
@@ -66,7 +74,7 @@ class FirebaseHandler {
     return member;
   }
 
-  Future<Team?> addTeamInTournament(Tournament tournament, Team team, String gamerTag) async {
+  Future<List> addTeamInTournament(Tournament tournament, Team team, String gamerTag) async {
     if (await verifMemberAlreadySign(tournament)) {
       List<Team> listTeamTournament = await getTeamsInTournament(tournament);
       if (verifTeamName(listTeamTournament, team.name)) {
@@ -75,42 +83,56 @@ class FirebaseHandler {
         var teamDoc =
             await tournamentsRef.doc(tournament.documentId).teams.add(team);
         team.documentId = teamDoc.id;
-        addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.leader);
-        return team;
+        if(await addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.leader) == true){
+          return [FirebaseStatusEvent.memberSignSuccess,team];
+        } else {
+          return [FirebaseStatusEvent.memberNotConnect,null];
+        }
+
       } else {
         print("Le team existe déjà");
-        return null;
+        return [FirebaseStatusEvent.teamExist,null];
       }
+    }else {
+      return [FirebaseStatusEvent.memberAlreadySign,null];
     }
   }
   // Team? team = findTeamWithCode(listTeams, teamCode);
 
-  addMemberWithCodeTeam(
+  Future<FirebaseStatusEvent> addMemberWithCodeTeam(
       Tournament tournament, String teamCode, String gamerTag) async {
-    if (await verifMemberAlreadySign(tournament)) {
+    if (await verifMemberAlreadySign(tournament) == true) {
       List<Team> listTeam = await getTeamsInTournament(tournament);
       Team? team = findTeamWithCode(listTeam, teamCode);
 
       if (team != null) {
         if(await verifCapacityTeam(tournament,team)) {
-          addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.player);
+          if(await addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.player)) {
+            return FirebaseStatusEvent.memberSignSuccess;
+          } else {
+            return FirebaseStatusEvent.memberNotConnect;
+          }
         } else {
           print("capacité atteint");
+          return FirebaseStatusEvent.teamFull;
         }
       } else {
         print("code erronée");
+        return FirebaseStatusEvent.codeNotFound;
       }
+    } else {
+      return FirebaseStatusEvent.memberAlreadySign;
     }
   }
 
-  addMemberTournamentInTeam(Tournament tournament, Team team, String gamerTag,
+  Future<bool> addMemberTournamentInTeam(Tournament tournament, Team team, String gamerTag,
       RoleType roleType) async {
-    Member? member = await Authentification().selectMemberConnected();
+
     if (member != null) {
       MemberTournament memberTournament = MemberTournament(
         gamerTag: gamerTag,
         role: roleType,
-        member: member,
+        member: member!,
       );
       var memberTournamentDoc = await tournamentsRef
           .doc(tournament.documentId)
@@ -118,8 +140,10 @@ class FirebaseHandler {
           .doc(team.documentId)
           .membersTournament
           .add(memberTournament);
+      return true;
     } else {
-      print("Erreur membre");
+      print("Membre not connect");
+      return false;
     }
   }
 
@@ -132,24 +156,19 @@ class FirebaseHandler {
     }
   }
   Future<bool> verifMemberAlreadySign(Tournament tournament) async {
-    Member? member = await Authentification().selectMemberConnected();
-    if (member != null) {
       var listTeam =
           await tournamentsRef.doc(tournament.documentId).teams.get();
       for (var element in listTeam.docs) {
         var listMemberTournament =
             await element.reference.membersTournament.get();
         for (var element in listMemberTournament.docs) {
-          if (element.data.member.uid == member.uid) {
+          if (element.data.member.uid == member!.uid) {
             print("Membre connecter deja inscrit");
             return false;
           }
         }
       }
       return true;
-    } else {
-      return false;
-    }
   }
   Future<bool> verifCapacityTeam(Tournament tournament,Team team) async {
     var listMember = [];
@@ -224,12 +243,12 @@ class FirebaseHandler {
   }
 
 
-  Future<bool> disqualificationMember(Tournament tournament,Team team,MemberTournament memberTournament) async {
+  Future<FirebaseStatusEvent> disqualificationMember(Tournament tournament,Team team,MemberTournament memberTournament) async {
       return await tournamentsRef.doc(tournament.documentId).teams.doc(team.documentId).membersTournament.doc(memberTournament.documentId).delete()
           .then((value) {
-            return true;
+            return FirebaseStatusEvent.disqualifiedSuccess;
           })
-          .catchError((error) => false);
+          .catchError((error) => FirebaseStatusEvent.disqualifiedFail);
 
   }
   Future<bool> verifTeamEmpty(Tournament tournament,Team team,) async {

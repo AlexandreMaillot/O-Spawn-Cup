@@ -21,17 +21,16 @@ class TeamFirestoreCubit extends Cubit<TeamFirestoreState> {
   TeamFirestoreCubit() : super(TeamFirestoreInitial());
 
   disqualificationMember(int index,Tournament tournament,Team team,MemberTournament memberTournament) async {
-    bool memberDisqualified = await FirebaseHandler().disqualificationMember(tournament, team, memberTournament);
-    if(memberDisqualified){
+    FirebaseStatusEvent memberDisqualified = await FirebaseHandler().disqualificationMember(tournament, team, memberTournament);
+    if(memberDisqualified == FirebaseStatusEvent.disqualifiedSuccess){
       listMemberTournament.removeAt(index);
     }
-
-    emit(TeamFirestoreSelected(indexSelect: indexSelect));
+    emit(TeamFirestoreSelected(indexSelect: indexSelect,status: memberDisqualified));
   }
 
-  addMemberInTeam(Tournament tournament,String teamName,String gamerTag){
-    FirebaseHandler().addMemberWithCodeTeam(tournament, teamName, gamerTag);
-    emit(TeamFirestoreSelected(indexSelect: null));
+  addMemberInTeam(Tournament tournament,String teamName,String gamerTag) async {
+    FirebaseStatusEvent firebaseEvent = await FirebaseHandler().addMemberWithCodeTeam(tournament, teamName, gamerTag);
+    emit(TeamFirestoreSelected(indexSelect: null,status: firebaseEvent));
   }
 
   changeRowSelect(int index,Tournament tournament,) async {
@@ -45,7 +44,7 @@ class TeamFirestoreCubit extends Cubit<TeamFirestoreState> {
           listMember.add(await FirebaseHandler().getMemberInTournament(tournament, listTeam[index], element));
         }
     }
-    emit(TeamFirestoreSelected(indexSelect: indexSelect));
+    emit(TeamFirestoreSelected(indexSelect: indexSelect,status: FirebaseStatusEvent.changeRowSuccess ));
   }
   getTeamsTournament(Tournament tournament) async {
     emit(TeamFirestoreLoading());
@@ -54,23 +53,30 @@ class TeamFirestoreCubit extends Cubit<TeamFirestoreState> {
     emit(TeamFirestoreLoaded(listTeam: listTeam,));
   }
   addNewTeam(Tournament tournament,String teamName,String gamerTag) async {
+
     emit(TeamFirestoreLoading());
-    Team? team = await FirebaseHandler().addTeamInTournament(tournament, Team(name: teamName), gamerTag);
-    await FirebaseHandler().verifStateCup(teamNumber, tournament);
-    if(team != null) {
-      listTeam.add(team);
-      teamNumber = listTeam.length;
+    List listReturn = await FirebaseHandler().addTeamInTournament(tournament, Team(name: teamName), gamerTag);
+
+    if(listReturn[1] != null){
+      await FirebaseHandler().verifStateCup(teamNumber, tournament);
+      listTeam.add(listReturn[1]);
     }
-    emit(TeamFirestoreLoaded(listTeam: listTeam,));
+
+    teamNumber = listTeam.length;
+    emit(TeamFirestoreLoaded(listTeam: listTeam,status: listReturn[0]));
   }
   disqualifiedTeam(int index,Tournament tournament) async {
+    FirebaseStatusEvent event;
     emit(TeamFirestoreRemoved());
     bool teamRemoved = await FirebaseHandler().verifTeamEmpty(tournament, listTeam[index]);
     if(teamRemoved){
       listTeam.removeAt(index);
       teamNumber = listTeam.length;
+      event = FirebaseStatusEvent.disqualifiedSuccess;
+    } else {
+      event = FirebaseStatusEvent.teamNotEmpty;
     }
     indexSelect = index;
-    emit(TeamFirestoreLoaded(listTeam: listTeam,));
+    emit(TeamFirestoreLoaded(listTeam: listTeam,status: event));
   }
 }

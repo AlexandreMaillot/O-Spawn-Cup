@@ -12,6 +12,7 @@ import "package:mailer/mailer.dart";
 import "package:mailer/smtp_server.dart";
 import "package:mailer/smtp_server/gmail.dart";
 import 'package:o_spawn_cup/bloc/member_tournament_firestore_bloc/member_tournament_firestore_bloc.dart';
+import 'package:o_spawn_cup/bloc/sign_cup_bloc/sign_cup_bloc.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
 import 'package:o_spawn_cup/cubit/row_team_datatable/row_team_data_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
@@ -33,6 +34,7 @@ import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/models/role_type.dart";
 
+import '../../cubit/member_bloc/member_cubit.dart';
 import '../../models/Team/team.dart';
 
 class SignCup extends StatelessWidget {
@@ -53,6 +55,12 @@ class SignCup extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => RowTeamDataCubit(),
+        ),
+        BlocProvider(
+          create: (_) => MemberCubit(),
+        ),
+        BlocProvider(
+          create: (_) => SignCupBloc(),
         ),
       ],
       child: SignCupView(
@@ -79,17 +87,13 @@ class SignCupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<TeamFirestoreCubit>().getTeamsTournament(tournament);
+
     years = tournament.date.toString().substring(0, 4);
     month = tournament.date.toString().substring(4, 6);
     day = tournament.date.toString().substring(6, 8);
     date = day + "/" + month + "/" + years;
     Size screenSize = MediaQuery.of(context).size;
 
-    var snackBar = SnackBar(
-      content: Text(msgSnack),
-      duration: const Duration(seconds: 3),
-      backgroundColor: (errorSign == false) ? Colors.green : Colors.red,
-    );
 
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
@@ -133,9 +137,10 @@ class SignCupView extends StatelessWidget {
                       ? Container()
                       : Container(
                           padding: const EdgeInsets.only(top: 20),
-                          height: screenSize.height * 0.38,
+                          // height: screenSize.height * 0.38,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
                             children: [
                               const Divider(
                                 color: Colors.white,
@@ -145,12 +150,19 @@ class SignCupView extends StatelessWidget {
                                 text: "Inscription au tournois",
                                 color: colorTheme,
                               ),
-                              CustomTextField(
+                              BlocBuilder<SignCupBloc, SignCupState>(
+                              builder: (context, state) {
+                                return CustomTextField(
+                                    paddingBottom: 10,
+                                onChanged: (context, value) => context.read<SignCupBloc>().add(SignCupGamerTagChanged(gamerTagController.text)),
+                                  errorText: state.gamerTag.invalid ? "Gamertag invalide" : null,
                                   screenSize: screenSize,
                                   text: "GamerTag",
                                   buttonColor: Colors.white,
                                   borderColor: Colors.white,
-                                  controller: gamerTagController),
+                                  controller: gamerTagController);
+                                },
+                              ),
                               Text(
                                 "*Votre pseudo in game",
                                 textAlign: TextAlign.center,
@@ -164,6 +176,7 @@ class SignCupView extends StatelessWidget {
                                 duration: const Duration(milliseconds: 100),
                                 width: screenSize.width * 0.87,
                                 height: screenSize.height * 0.06,
+                                margin: EdgeInsets.only(bottom: 10,top: 5),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(31),
@@ -177,6 +190,7 @@ class SignCupView extends StatelessWidget {
                                           RowMemberLeaderState>(
                                         builder: (context, state) {
                                           return Container(
+
                                             decoration: BoxDecoration(
                                               color: (isLeader(context))
                                                   ? colorTheme
@@ -257,10 +271,15 @@ class SignCupView extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              BlocBuilder<RowMemberLeaderCubit,
+                              BlocBuilder<SignCupBloc, SignCupState>(
+                              builder: (context, stateSignBloc) {
+                                return BlocBuilder<RowMemberLeaderCubit,
                                   RowMemberLeaderState>(
                                 builder: (context, state) {
                                   return CustomTextField(
+                                    paddingBottom: 10,
+                                    onChanged: (context,value) => context.read<SignCupBloc>().add(SignCupTeamCodeChanged(teamNameController.text)),
+                                      errorText: stateSignBloc.teamCode.invalid ? "Code team invalide" : null,
                                       textInputAction: TextInputAction.done,
                                       screenSize: screenSize,
                                       text: (isPlayer(context))
@@ -269,6 +288,8 @@ class SignCupView extends StatelessWidget {
                                       buttonColor: Colors.white,
                                       borderColor: Colors.white,
                                       controller: teamNameController);
+                                },
+                              );
                                 },
                               ),
                               isPlayer(context)
@@ -284,6 +305,61 @@ class SignCupView extends StatelessWidget {
                                   : Container(),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20),
+                                child: BlocListener<TeamFirestoreCubit, TeamFirestoreState>(
+                                listener: (context, state) {
+                                  if(state is TeamFirestoreSelected || state is TeamFirestoreLoaded) {
+                                    var msg = "";
+                                    var stateTeam;
+                                    if(state is TeamFirestoreSelected){
+                                      stateTeam = (state).status;
+                                    }
+                                    if(state is TeamFirestoreLoaded){
+                                      stateTeam = (state).status;
+                                    }
+                                    switch(stateTeam){
+
+                                      case FirebaseStatusEvent.teamExist:
+                                        msg = "La team existe déjà !";
+                                        errorSign = true;
+                                        break;
+                                      case FirebaseStatusEvent.teamFull:
+                                        msg = "La team est compléte !";
+                                        errorSign = false;
+                                        break;
+
+                                      case FirebaseStatusEvent.codeNotFound:
+                                        msg = "Le code team n'est pas connu !";
+                                        errorSign = true;
+                                        break;
+                                      case FirebaseStatusEvent.memberNotConnect:
+                                        msg = "Vous n'êtes pas connecter !";
+                                        errorSign = true;
+                                        break;
+                                      case FirebaseStatusEvent.cupFull:
+                                        msg = "Le tournois est complet !";
+                                        errorSign = false;
+                                        break;
+
+                                      case FirebaseStatusEvent.memberAlreadySign:
+                                        msg = "Vous êtes déjà inscrit !";
+                                        errorSign = true;
+                                        break;
+                                      case FirebaseStatusEvent.memberSignSuccess:
+                                        msg = "Enregistrement réussi !";
+                                        errorSign = false;
+                                        break;
+                                    }
+                                    if(msg != "") {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(msg),
+                                        duration: const Duration(seconds: 3),
+                                        backgroundColor: (errorSign == false) ? Colors.green : Colors.red,
+                                      ));
+                                    }
+
+                                  }
+                                },
                                 child: BlocBuilder<RowMemberLeaderCubit,
                                     RowMemberLeaderState>(
                                   builder: (context, state) {
@@ -312,12 +388,12 @@ class SignCupView extends StatelessWidget {
                                           }
 
                                           afterAddMemberTournament();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(snackBar);
+
                                         }();
                                       },
                                     );
                                   },
+                                ),
                                 ),
                               )
                             ],
@@ -432,22 +508,27 @@ class SignCupView extends StatelessWidget {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                Expanded(
+                BlocBuilder<MemberCubit, MemberState>(
+                builder: (context, state) {
+                  print((state as MemberInitial).member);
+                  return Expanded(
                   flex: 1,
                   child: Material(
                     color: Colors.transparent,
-                    child: IconButton(
+                    child:  IconButton(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      icon: SvgPicture.asset(
+                      icon: ((state as MemberInitial).member?.isAdmin == true) ? SvgPicture.asset(
                         "assets/images/icon_edit.svg",
                         // height: 30,
                         // width: 37,
-                      ),
+                      ) : Container(),
                       onPressed: () => print("modif"),
                     ),
                   ),
-                ),
+                );
+  },
+),
               ],
             ),
           ],
@@ -609,6 +690,8 @@ class SignCupView extends StatelessWidget {
                                             shrinkWrap: true,
                                             itemBuilder: (context,
                                                 indexMemberTournament) {
+
+
                                               return AnimatedContainer(
                                                 duration: const Duration(
                                                     milliseconds: 100),
@@ -616,22 +699,14 @@ class SignCupView extends StatelessWidget {
                                                     top: 10),
                                                 child: Column(
                                                   children: [
-                                                    Row(
+                                                    BlocBuilder<MemberCubit, MemberState>(
+                                                    builder: (context, state) {
+                                                      return Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        (context
-                                                                    .read<
-                                                            TeamFirestoreCubit>()
-                                                                    .listMemberTournament[
-                                                                        indexMemberTournament]
-                                                                    .member
-                                                                    .uid ==
-                                                                FirebaseAuth
-                                                                    .instance
-                                                                    .currentUser!
-                                                                    .uid)
+                                                        (context.read<TeamFirestoreCubit>().listMemberTournament[indexMemberTournament].member.uid == FirebaseAuth.instance.currentUser!.uid || (state as MemberInitial).member?.isAdmin  == true )
                                                             ? SizedBox(
                                                                 height: 20,
                                                                 // color: Colors.green,
@@ -717,6 +792,8 @@ class SignCupView extends StatelessWidget {
                                                           ),
                                                         ),
                                                       ],
+                                                    );
+                                                      },
                                                     ),
                                                     const Padding(
                                                       padding: EdgeInsets.only(top: 10.0),
@@ -834,39 +911,3 @@ class rowInformationTournament extends StatelessWidget {
     );
   }
 }
-// DataTable(
-// columnSpacing: 50,
-// border: const TableBorder(
-// horizontalInside: BorderSide(
-// width: 1,
-// color: Color(0xff696969),
-// style: BorderStyle.solid)),
-// headingRowHeight: 30,
-// columns: [
-// DataColumn(
-// tooltip: "Nom des équipes",
-// label: TextElement(
-// text: "Equipes",
-// color: Colors.white,
-// textAlign: TextAlign.start,
-// )),
-// DataColumn(
-// tooltip: "Place des l'équipes",
-// label: TextElement(
-// text: "Rang",
-// color: Colors.white,
-// )),
-// DataColumn(
-// tooltip: "Kill/Mort/Assistance",
-// label: TextElement(
-// text: "KDA",
-// color: Colors.white,
-// )),
-// DataColumn(
-// tooltip: "Ratio entre les kill,mort et assist",
-// label: TextElement(
-// text: "Ratio",
-// color: Colors.white,
-// )),
-// ],
-// rows: _createRows(state.listTeam))

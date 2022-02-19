@@ -639,6 +639,7 @@ abstract class MemberDocumentReference
   Future<void> update({
     String pseudo,
     String uid,
+    bool isAdmin,
   });
 
   Future<void> set(Member value);
@@ -690,10 +691,12 @@ class _$MemberDocumentReference
   Future<void> update({
     Object? pseudo = _sentinel,
     Object? uid = _sentinel,
+    Object? isAdmin = _sentinel,
   }) async {
     final json = {
       if (pseudo != _sentinel) "pseudo": pseudo as String,
       if (uid != _sentinel) "uid": uid as String,
+      if (isAdmin != _sentinel) "isAdmin": isAdmin as bool,
     };
 
     return reference.update(json);
@@ -764,6 +767,17 @@ abstract class MemberQuery implements QueryReference<MemberQuerySnapshot> {
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
+  MemberQuery whereIsAdmin({
+    bool? isEqualTo,
+    bool? isNotEqualTo,
+    bool? isLessThan,
+    bool? isLessThanOrEqualTo,
+    bool? isGreaterThan,
+    bool? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<bool>? whereIn,
+    List<bool>? whereNotIn,
+  });
 
   MemberQuery orderByPseudo({
     bool descending = false,
@@ -783,6 +797,18 @@ abstract class MemberQuery implements QueryReference<MemberQuerySnapshot> {
     String startAfter,
     String endAt,
     String endBefore,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  });
+
+  MemberQuery orderByIsAdmin({
+    bool descending = false,
+    bool startAt,
+    bool startAfter,
+    bool endAt,
+    bool endBefore,
     MemberDocumentSnapshot? startAtDocument,
     MemberDocumentSnapshot? endAtDocument,
     MemberDocumentSnapshot? endBeforeDocument,
@@ -907,6 +933,34 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     );
   }
 
+  MemberQuery whereIsAdmin({
+    bool? isEqualTo,
+    bool? isNotEqualTo,
+    bool? isLessThan,
+    bool? isLessThanOrEqualTo,
+    bool? isGreaterThan,
+    bool? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<bool>? whereIn,
+    List<bool>? whereNotIn,
+  }) {
+    return _$MemberQuery(
+      reference.where(
+        'isAdmin',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   MemberQuery orderByPseudo({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -961,6 +1015,48 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('uid', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MemberQuery(query, _collection);
+  }
+
+  MemberQuery orderByIsAdmin({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('isAdmin', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

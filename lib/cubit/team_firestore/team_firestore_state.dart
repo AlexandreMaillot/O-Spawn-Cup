@@ -1,5 +1,6 @@
 part of 'team_firestore_cubit.dart';
 
+
 abstract class TeamFirestoreState extends Equatable {
 
   TeamFirestoreState();
@@ -10,13 +11,13 @@ class TeamFirestoreInitial extends TeamFirestoreState {
   TeamFirestoreInitial() : super();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 class TeamFirestoreSelected extends TeamFirestoreState {
+  FirebaseStatusEvent status;
   int? indexSelect;
-  TeamFirestoreSelected({required this.indexSelect});
+  TeamFirestoreSelected({required this.indexSelect,required this.status});
   @override
   List<int?> get props => [indexSelect];
 }
@@ -24,23 +25,20 @@ class TeamFirestoreLoading extends TeamFirestoreState {
   TeamFirestoreLoading() : super();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
 }
 class TeamFirestoreLoaded extends TeamFirestoreState {
   List<Team> listTeam = [];
-
-  TeamFirestoreLoaded({required this.listTeam,}) : super();
+  FirebaseStatusEvent? status;
+  TeamFirestoreLoaded({required this.listTeam,this.status}) : super();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 class TeamFirestoreRemoved extends TeamFirestoreState {
   TeamFirestoreRemoved() : super();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }

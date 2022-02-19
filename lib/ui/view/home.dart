@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/card_game.dart";
+import 'package:o_spawn_cup/service/firebase_handler.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/game_card.dart";
@@ -25,6 +26,7 @@ class Home extends StatelessWidget {
 }
 
 class HomeView extends StatelessWidget {
+
   PageController pageController =
       PageController(viewportFraction: 0.3, initialPage: 1);
 
@@ -33,7 +35,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-
     pageController.addListener(() {
 
       context.read<SelectGameBloc>().add(SelectGameChange(indexSelect: pageController.page!));

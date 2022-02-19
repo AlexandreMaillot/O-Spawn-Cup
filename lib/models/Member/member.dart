@@ -8,8 +8,10 @@ part 'member.g.dart';
 class Member {
   String pseudo;
   String uid;
-
-  Member({required this.pseudo,required this.uid});
+  bool isAdmin;
+  Member({required this.pseudo,required this.uid,this.isAdmin = false}){
+    // isAdmin =
+  }
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
   Map<String, dynamic> toJson() => _$MemberToJson(this);
 }
