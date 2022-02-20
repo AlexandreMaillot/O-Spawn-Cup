@@ -54,7 +54,12 @@ class Authentification {
     UserCredential? userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
     if (userCredential != null) {
-      FirebaseHandler().addMemberFirebase("", userCredential.user!.uid);
+      if(userCredential.additionalUserInfo?.isNewUser == true){
+        FirebaseHandler().addMemberFirebase("", userCredential.user!.uid);
+      } else {
+
+      }
+
       return true;
     } else {
       return false;

@@ -110,6 +110,10 @@ abstract class TournamentDocumentReference
     reference,
   );
 
+  late final RoundCollectionReference rounds = _$RoundCollectionReference(
+    reference,
+  );
+
   @override
   Stream<TournamentDocumentSnapshot> snapshots();
 
@@ -128,7 +132,6 @@ abstract class TournamentDocumentReference
     int roundNumber,
     String? imageUrl,
     int killPointTournament,
-    List<Object?> props,
   });
 
   Future<void> set(Tournament value);
@@ -148,6 +151,10 @@ class _$TournamentDocumentReference
   }
 
   late final TeamCollectionReference teams = _$TeamCollectionReference(
+    reference,
+  );
+
+  late final RoundCollectionReference rounds = _$RoundCollectionReference(
     reference,
   );
 
@@ -185,7 +192,6 @@ class _$TournamentDocumentReference
     Object? roundNumber = _sentinel,
     Object? imageUrl = _sentinel,
     Object? killPointTournament = _sentinel,
-    Object? props = _sentinel,
   }) async {
     final json = {
       if (documentId != _sentinel) "documentId": documentId as String?,
@@ -197,7 +203,6 @@ class _$TournamentDocumentReference
       if (imageUrl != _sentinel) "imageUrl": imageUrl as String?,
       if (killPointTournament != _sentinel)
         "killPointTournament": killPointTournament as int,
-      if (props != _sentinel) "props": props as List<Object?>,
     };
 
     return reference.update(json);
@@ -335,16 +340,6 @@ abstract class TournamentQuery
     List<int>? whereIn,
     List<int>? whereNotIn,
   });
-  TournamentQuery whereProps({
-    List<Object?>? isEqualTo,
-    List<Object?>? isNotEqualTo,
-    List<Object?>? isLessThan,
-    List<Object?>? isLessThanOrEqualTo,
-    List<Object?>? isGreaterThan,
-    List<Object?>? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<Object?>? arrayContainsAny,
-  });
 
   TournamentQuery orderByDocumentId({
     bool descending = false,
@@ -436,18 +431,6 @@ abstract class TournamentQuery
     int startAfter,
     int endAt,
     int endBefore,
-    TournamentDocumentSnapshot? startAtDocument,
-    TournamentDocumentSnapshot? endAtDocument,
-    TournamentDocumentSnapshot? endBeforeDocument,
-    TournamentDocumentSnapshot? startAfterDocument,
-  });
-
-  TournamentQuery orderByProps({
-    bool descending = false,
-    List<Object?> startAt,
-    List<Object?> startAfter,
-    List<Object?> endAt,
-    List<Object?> endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -735,32 +718,6 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
         isNull: isNull,
         whereIn: whereIn,
         whereNotIn: whereNotIn,
-      ),
-      _collection,
-    );
-  }
-
-  TournamentQuery whereProps({
-    List<Object?>? isEqualTo,
-    List<Object?>? isNotEqualTo,
-    List<Object?>? isLessThan,
-    List<Object?>? isLessThanOrEqualTo,
-    List<Object?>? isGreaterThan,
-    List<Object?>? isGreaterThanOrEqualTo,
-    bool? isNull,
-    List<Object?>? arrayContainsAny,
-  }) {
-    return _$TournamentQuery(
-      reference.where(
-        'props',
-        isEqualTo: isEqualTo,
-        isNotEqualTo: isNotEqualTo,
-        isLessThan: isLessThan,
-        isLessThanOrEqualTo: isLessThanOrEqualTo,
-        isGreaterThan: isGreaterThan,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isNull: isNull,
-        arrayContainsAny: arrayContainsAny,
       ),
       _collection,
     );
@@ -1072,48 +1029,6 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('killPointTournament', descending: false);
-
-    if (startAtDocument != null) {
-      query = query.startAtDocument(startAtDocument.snapshot);
-    }
-    if (startAfterDocument != null) {
-      query = query.startAfterDocument(startAfterDocument.snapshot);
-    }
-    if (endAtDocument != null) {
-      query = query.endAtDocument(endAtDocument.snapshot);
-    }
-    if (endBeforeDocument != null) {
-      query = query.endBeforeDocument(endBeforeDocument.snapshot);
-    }
-
-    if (startAt != _sentinel) {
-      query = query.startAt([startAt]);
-    }
-    if (startAfter != _sentinel) {
-      query = query.startAfter([startAfter]);
-    }
-    if (endAt != _sentinel) {
-      query = query.endAt([endAt]);
-    }
-    if (endBefore != _sentinel) {
-      query = query.endBefore([endBefore]);
-    }
-
-    return _$TournamentQuery(query, _collection);
-  }
-
-  TournamentQuery orderByProps({
-    bool descending = false,
-    Object? startAt = _sentinel,
-    Object? startAfter = _sentinel,
-    Object? endAt = _sentinel,
-    Object? endBefore = _sentinel,
-    TournamentDocumentSnapshot? startAtDocument,
-    TournamentDocumentSnapshot? endAtDocument,
-    TournamentDocumentSnapshot? endBeforeDocument,
-    TournamentDocumentSnapshot? startAfterDocument,
-  }) {
-    var query = reference.orderBy('props', descending: false);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1898,6 +1813,420 @@ class TeamQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 
   @override
   final Team data;
+}
+
+/// A collection reference object can be used for adding documents,
+/// getting document references, and querying for documents
+/// (using the methods inherited from Query).
+abstract class RoundCollectionReference
+    implements RoundQuery, FirestoreCollectionReference<RoundQuerySnapshot> {
+  factory RoundCollectionReference(
+    DocumentReference<Tournament> parent,
+  ) = _$RoundCollectionReference;
+
+  static Round fromFirestore(
+    DocumentSnapshot<Map<String, Object?>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    return Round.fromJson(snapshot.data()!);
+  }
+
+  static Map<String, Object?> toFirestore(
+    Round value,
+    SetOptions? options,
+  ) {
+    return value.toJson();
+  }
+
+  /// A reference to the containing [TournamentDocumentReference] if this is a subcollection.
+  TournamentDocumentReference get parent;
+
+  @override
+  RoundDocumentReference doc([String? id]);
+
+  /// Add a new document to this collection with the specified data,
+  /// assigning it a document ID automatically.
+  Future<RoundDocumentReference> add(Round value);
+}
+
+class _$RoundCollectionReference extends _$RoundQuery
+    implements RoundCollectionReference {
+  factory _$RoundCollectionReference(
+    DocumentReference<Tournament> parent,
+  ) {
+    return _$RoundCollectionReference._(
+      TournamentDocumentReference(parent),
+      parent.collection('rounds').withConverter(
+            fromFirestore: RoundCollectionReference.fromFirestore,
+            toFirestore: RoundCollectionReference.toFirestore,
+          ),
+    );
+  }
+
+  _$RoundCollectionReference._(
+    this.parent,
+    CollectionReference<Round> reference,
+  ) : super(reference, reference);
+
+  @override
+  final TournamentDocumentReference parent;
+
+  String get path => reference.path;
+
+  @override
+  CollectionReference<Round> get reference =>
+      super.reference as CollectionReference<Round>;
+
+  @override
+  RoundDocumentReference doc([String? id]) {
+    return RoundDocumentReference(
+      reference.doc(id),
+    );
+  }
+
+  @override
+  Future<RoundDocumentReference> add(Round value) {
+    return reference.add(value).then((ref) => RoundDocumentReference(ref));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$RoundCollectionReference &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+abstract class RoundDocumentReference
+    extends FirestoreDocumentReference<RoundDocumentSnapshot> {
+  factory RoundDocumentReference(DocumentReference<Round> reference) =
+      _$RoundDocumentReference;
+
+  DocumentReference<Round> get reference;
+
+  /// A reference to the [RoundCollectionReference] containing this document.
+  RoundCollectionReference get parent {
+    return _$RoundCollectionReference(
+      reference.parent.parent!.withConverter<Tournament>(
+        fromFirestore: TournamentCollectionReference.fromFirestore,
+        toFirestore: TournamentCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  @override
+  Stream<RoundDocumentSnapshot> snapshots();
+
+  @override
+  Future<RoundDocumentSnapshot> get([GetOptions? options]);
+
+  @override
+  Future<void> delete();
+
+  Future<void> update({
+    int roundNumber,
+  });
+
+  Future<void> set(Round value);
+}
+
+class _$RoundDocumentReference
+    extends FirestoreDocumentReference<RoundDocumentSnapshot>
+    implements RoundDocumentReference {
+  _$RoundDocumentReference(this.reference);
+
+  @override
+  final DocumentReference<Round> reference;
+
+  /// A reference to the [RoundCollectionReference] containing this document.
+  RoundCollectionReference get parent {
+    return _$RoundCollectionReference(
+      reference.parent.parent!.withConverter<Tournament>(
+        fromFirestore: TournamentCollectionReference.fromFirestore,
+        toFirestore: TournamentCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  @override
+  Stream<RoundDocumentSnapshot> snapshots() {
+    return reference.snapshots().map((snapshot) {
+      return RoundDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<RoundDocumentSnapshot> get([GetOptions? options]) {
+    return reference.get(options).then((snapshot) {
+      return RoundDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<void> delete() {
+    return reference.delete();
+  }
+
+  Future<void> update({
+    Object? roundNumber = _sentinel,
+  }) async {
+    final json = {
+      if (roundNumber != _sentinel) "roundNumber": roundNumber as int,
+    };
+
+    return reference.update(json);
+  }
+
+  Future<void> set(Round value) {
+    return reference.set(value);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RoundDocumentReference &&
+        other.runtimeType == runtimeType &&
+        other.parent == parent &&
+        other.id == id;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, parent, id);
+}
+
+class RoundDocumentSnapshot extends FirestoreDocumentSnapshot {
+  RoundDocumentSnapshot._(
+    this.snapshot,
+    this.data,
+  );
+
+  @override
+  final DocumentSnapshot<Round> snapshot;
+
+  @override
+  RoundDocumentReference get reference {
+    return RoundDocumentReference(
+      snapshot.reference,
+    );
+  }
+
+  @override
+  final Round? data;
+}
+
+abstract class RoundQuery implements QueryReference<RoundQuerySnapshot> {
+  @override
+  RoundQuery limit(int limit);
+
+  @override
+  RoundQuery limitToLast(int limit);
+
+  RoundQuery whereRoundNumber({
+    int? isEqualTo,
+    int? isNotEqualTo,
+    int? isLessThan,
+    int? isLessThanOrEqualTo,
+    int? isGreaterThan,
+    int? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<int>? whereIn,
+    List<int>? whereNotIn,
+  });
+
+  RoundQuery orderByRoundNumber({
+    bool descending = false,
+    int startAt,
+    int startAfter,
+    int endAt,
+    int endBefore,
+    RoundDocumentSnapshot? startAtDocument,
+    RoundDocumentSnapshot? endAtDocument,
+    RoundDocumentSnapshot? endBeforeDocument,
+    RoundDocumentSnapshot? startAfterDocument,
+  });
+}
+
+class _$RoundQuery extends QueryReference<RoundQuerySnapshot>
+    implements RoundQuery {
+  _$RoundQuery(
+    this.reference,
+    this._collection,
+  );
+
+  final CollectionReference<Object?> _collection;
+
+  @override
+  final Query<Round> reference;
+
+  RoundQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<Round> snapshot,
+  ) {
+    final docs = snapshot.docs.map((e) {
+      return RoundQueryDocumentSnapshot._(e, e.data());
+    }).toList();
+
+    final docChanges = snapshot.docChanges.map((change) {
+      return FirestoreDocumentChange<RoundDocumentSnapshot>(
+        type: change.type,
+        oldIndex: change.oldIndex,
+        newIndex: change.newIndex,
+        doc: RoundDocumentSnapshot._(change.doc, change.doc.data()),
+      );
+    }).toList();
+
+    return RoundQuerySnapshot._(
+      snapshot,
+      docs,
+      docChanges,
+    );
+  }
+
+  @override
+  Stream<RoundQuerySnapshot> snapshots([SnapshotOptions? options]) {
+    return reference.snapshots().map(_decodeSnapshot);
+  }
+
+  @override
+  Future<RoundQuerySnapshot> get([GetOptions? options]) {
+    return reference.get(options).then(_decodeSnapshot);
+  }
+
+  @override
+  RoundQuery limit(int limit) {
+    return _$RoundQuery(
+      reference.limit(limit),
+      _collection,
+    );
+  }
+
+  @override
+  RoundQuery limitToLast(int limit) {
+    return _$RoundQuery(
+      reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  RoundQuery whereRoundNumber({
+    int? isEqualTo,
+    int? isNotEqualTo,
+    int? isLessThan,
+    int? isLessThanOrEqualTo,
+    int? isGreaterThan,
+    int? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<int>? whereIn,
+    List<int>? whereNotIn,
+  }) {
+    return _$RoundQuery(
+      reference.where(
+        'roundNumber',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  RoundQuery orderByRoundNumber({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    RoundDocumentSnapshot? startAtDocument,
+    RoundDocumentSnapshot? endAtDocument,
+    RoundDocumentSnapshot? endBeforeDocument,
+    RoundDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('roundNumber', descending: false);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$RoundQuery(query, _collection);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$RoundQuery &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+class RoundQuerySnapshot
+    extends FirestoreQuerySnapshot<RoundQueryDocumentSnapshot> {
+  RoundQuerySnapshot._(
+    this.snapshot,
+    this.docs,
+    this.docChanges,
+  );
+
+  final QuerySnapshot<Round> snapshot;
+
+  @override
+  final List<RoundQueryDocumentSnapshot> docs;
+
+  @override
+  final List<FirestoreDocumentChange<RoundDocumentSnapshot>> docChanges;
+}
+
+class RoundQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
+    implements RoundDocumentSnapshot {
+  RoundQueryDocumentSnapshot._(this.snapshot, this.data);
+
+  @override
+  final QueryDocumentSnapshot<Round> snapshot;
+
+  @override
+  RoundDocumentReference get reference {
+    return RoundDocumentReference(snapshot.reference);
+  }
+
+  @override
+  final Round data;
 }
 
 /// A collection reference object can be used for adding documents,

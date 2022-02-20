@@ -1,20 +1,13 @@
 import "dart:async";
-import "dart:math";
-
 import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import "package:o_spawn_cup/models/Member/member.dart";
-import "package:o_spawn_cup/models/MemberTournament/member_tournament.dart"
-    as mt;
 import "package:o_spawn_cup/models/Team/team.dart";
 import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/models/role_type.dart";
-import 'package:o_spawn_cup/service/firebase_handler.dart';
-
-import '../../service/authentification.dart';
 
 part 'member_tournament_firestore_event.dart';
 part 'member_tournament_firestore_state.dart';

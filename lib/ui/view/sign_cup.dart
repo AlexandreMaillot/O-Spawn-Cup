@@ -8,13 +8,15 @@ import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import "package:flutter_switch/flutter_switch.dart";
+import 'package:formz/formz.dart';
 import "package:mailer/mailer.dart";
 import "package:mailer/smtp_server.dart";
 import "package:mailer/smtp_server/gmail.dart";
 import 'package:o_spawn_cup/bloc/member_tournament_firestore_bloc/member_tournament_firestore_bloc.dart';
 import 'package:o_spawn_cup/bloc/sign_cup_bloc/sign_cup_bloc.dart';
+import 'package:o_spawn_cup/cubit/round_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
-import 'package:o_spawn_cup/cubit/row_team_datatable/row_team_data_cubit.dart';
+import 'package:o_spawn_cup/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 import 'package:o_spawn_cup/service/firebase_handler.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
@@ -54,13 +56,16 @@ class SignCup extends StatelessWidget {
           create: (_) => TeamFirestoreCubit(),
         ),
         BlocProvider(
-          create: (_) => RowTeamDataCubit(),
-        ),
-        BlocProvider(
           create: (_) => MemberCubit(),
         ),
         BlocProvider(
           create: (_) => SignCupBloc(),
+        ),
+        BlocProvider(
+          create: (_) => ShowStatCubit(),
+        ),
+        BlocProvider(
+          create: (_) => RoundStatCubit(roundMax: tournament.roundNumber),
         ),
       ],
       child: SignCupView(
@@ -94,10 +99,9 @@ class SignCupView extends StatelessWidget {
     date = day + "/" + month + "/" + years;
     Size screenSize = MediaQuery.of(context).size;
 
-
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
-      drawer: CustomDrawer(screenSize: screenSize),
+      endDrawer: CustomDrawer(screenSize: screenSize),
       appBar: CustomAppBar(
         title: "INSCRIPTION",
       ),
@@ -151,16 +155,21 @@ class SignCupView extends StatelessWidget {
                                 color: colorTheme,
                               ),
                               BlocBuilder<SignCupBloc, SignCupState>(
-                              builder: (context, state) {
-                                return CustomTextField(
-                                    paddingBottom: 10,
-                                onChanged: (context, value) => context.read<SignCupBloc>().add(SignCupGamerTagChanged(gamerTagController.text)),
-                                  errorText: state.gamerTag.invalid ? "Gamertag invalide" : null,
-                                  screenSize: screenSize,
-                                  text: "GamerTag",
-                                  buttonColor: Colors.white,
-                                  borderColor: Colors.white,
-                                  controller: gamerTagController);
+                                builder: (context, state) {
+                                  return CustomTextField(
+                                      paddingBottom: 10,
+                                      onChanged: (context, value) => context
+                                          .read<SignCupBloc>()
+                                          .add(SignCupGamerTagChanged(
+                                              gamerTagController.text)),
+                                      errorText: state.gamerTag.invalid
+                                          ? "Gamertag invalide"
+                                          : null,
+                                      screenSize: screenSize,
+                                      text: "GamerTag",
+                                      buttonColor: Colors.white,
+                                      borderColor: Colors.white,
+                                      controller: gamerTagController);
                                 },
                               ),
                               Text(
@@ -176,7 +185,8 @@ class SignCupView extends StatelessWidget {
                                 duration: const Duration(milliseconds: 100),
                                 width: screenSize.width * 0.87,
                                 height: screenSize.height * 0.06,
-                                margin: EdgeInsets.only(bottom: 10,top: 5),
+                                margin:
+                                    const EdgeInsets.only(bottom: 10, top: 5),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(31),
@@ -190,7 +200,6 @@ class SignCupView extends StatelessWidget {
                                           RowMemberLeaderState>(
                                         builder: (context, state) {
                                           return Container(
-
                                             decoration: BoxDecoration(
                                               color: (isLeader(context))
                                                   ? colorTheme
@@ -272,24 +281,30 @@ class SignCupView extends StatelessWidget {
                                 ),
                               ),
                               BlocBuilder<SignCupBloc, SignCupState>(
-                              builder: (context, stateSignBloc) {
-                                return BlocBuilder<RowMemberLeaderCubit,
-                                  RowMemberLeaderState>(
-                                builder: (context, state) {
-                                  return CustomTextField(
-                                    paddingBottom: 10,
-                                    onChanged: (context,value) => context.read<SignCupBloc>().add(SignCupTeamCodeChanged(teamNameController.text)),
-                                      errorText: stateSignBloc.teamCode.invalid ? "Code team invalide" : null,
-                                      textInputAction: TextInputAction.done,
-                                      screenSize: screenSize,
-                                      text: (isPlayer(context))
-                                          ? "Code d'équipe"
-                                          : "Nom d'équipe",
-                                      buttonColor: Colors.white,
-                                      borderColor: Colors.white,
-                                      controller: teamNameController);
-                                },
-                              );
+                                builder: (context, stateSignBloc) {
+                                  return BlocBuilder<RowMemberLeaderCubit,
+                                      RowMemberLeaderState>(
+                                    builder: (context, state) {
+                                      return CustomTextField(
+                                          paddingBottom: 10,
+                                          onChanged: (context, value) => context
+                                              .read<SignCupBloc>()
+                                              .add(SignCupTeamCodeChanged(
+                                                  teamNameController.text)),
+                                          errorText:
+                                              stateSignBloc.teamCode.invalid
+                                                  ? "Code team invalide"
+                                                  : null,
+                                          textInputAction: TextInputAction.done,
+                                          screenSize: screenSize,
+                                          text: (isPlayer(context))
+                                              ? "Code d'équipe"
+                                              : "Nom d'équipe",
+                                          buttonColor: Colors.white,
+                                          borderColor: Colors.white,
+                                          controller: teamNameController);
+                                    },
+                                  );
                                 },
                               ),
                               isPlayer(context)
@@ -305,96 +320,112 @@ class SignCupView extends StatelessWidget {
                                   : Container(),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20),
-                                child: BlocListener<TeamFirestoreCubit, TeamFirestoreState>(
-                                listener: (context, state) {
-                                  if(state is TeamFirestoreSelected || state is TeamFirestoreLoaded) {
-                                    var msg = "";
-                                    var stateTeam;
-                                    if(state is TeamFirestoreSelected){
-                                      stateTeam = (state).status;
-                                    }
-                                    if(state is TeamFirestoreLoaded){
-                                      stateTeam = (state).status;
-                                    }
-                                    switch(stateTeam){
+                                child: BlocListener<TeamFirestoreCubit,
+                                        TeamFirestoreState>(
+                                    listener: (context, state) {
+                                      if (state is TeamFirestoreSelected ||
+                                          state is TeamFirestoreLoaded) {
+                                        var msg = "";
+                                        var stateTeam;
+                                        if (state is TeamFirestoreSelected) {
+                                          stateTeam = (state).status;
+                                        }
+                                        if (state is TeamFirestoreLoaded) {
+                                          stateTeam = (state).status;
+                                        }
+                                        switch (stateTeam) {
+                                          case FirebaseStatusEvent.teamExist:
+                                            msg = "La team existe déjà !";
+                                            errorSign = true;
+                                            break;
+                                          case FirebaseStatusEvent.teamFull:
+                                            msg = "La team est compléte !";
+                                            errorSign = false;
+                                            break;
 
-                                      case FirebaseStatusEvent.teamExist:
-                                        msg = "La team existe déjà !";
-                                        errorSign = true;
-                                        break;
-                                      case FirebaseStatusEvent.teamFull:
-                                        msg = "La team est compléte !";
-                                        errorSign = false;
-                                        break;
+                                          case FirebaseStatusEvent.codeNotFound:
+                                            msg =
+                                                "Le code team n'est pas connu !";
+                                            errorSign = true;
+                                            break;
+                                          case FirebaseStatusEvent
+                                              .memberNotConnect:
+                                            msg = "Vous n'êtes pas connecter !";
+                                            errorSign = true;
+                                            break;
+                                          case FirebaseStatusEvent.cupFull:
+                                            msg = "Le tournois est complet !";
+                                            errorSign = false;
+                                            break;
 
-                                      case FirebaseStatusEvent.codeNotFound:
-                                        msg = "Le code team n'est pas connu !";
-                                        errorSign = true;
-                                        break;
-                                      case FirebaseStatusEvent.memberNotConnect:
-                                        msg = "Vous n'êtes pas connecter !";
-                                        errorSign = true;
-                                        break;
-                                      case FirebaseStatusEvent.cupFull:
-                                        msg = "Le tournois est complet !";
-                                        errorSign = false;
-                                        break;
-
-                                      case FirebaseStatusEvent.memberAlreadySign:
-                                        msg = "Vous êtes déjà inscrit !";
-                                        errorSign = true;
-                                        break;
-                                      case FirebaseStatusEvent.memberSignSuccess:
-                                        msg = "Enregistrement réussi !";
-                                        errorSign = false;
-                                        break;
-                                    }
-                                    if(msg != "") {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(msg),
-                                        duration: const Duration(seconds: 3),
-                                        backgroundColor: (errorSign == false) ? Colors.green : Colors.red,
-                                      ));
-                                    }
-
-                                  }
-                                },
-                                child: BlocBuilder<RowMemberLeaderCubit,
-                                    RowMemberLeaderState>(
-                                  builder: (context, state) {
-                                    return CustomButtonTheme(
+                                          case FirebaseStatusEvent
+                                              .memberAlreadySign:
+                                            msg = "Vous êtes déjà inscrit !";
+                                            errorSign = true;
+                                            break;
+                                          case FirebaseStatusEvent
+                                              .memberSignSuccess:
+                                            msg = "Enregistrement réussi !";
+                                            errorSign = false;
+                                            break;
+                                        }
+                                        if (msg != "") {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(msg),
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            backgroundColor:
+                                                (errorSign == false)
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                          ));
+                                        }
+                                      }
+                                    },
+                                    child: CustomButtonTheme(
                                       colorButton: colorTheme,
                                       colorText: colorBackgroundTheme,
                                       screenSize: screenSize,
                                       text: "Confirmation",
                                       onPressedMethod: () async {
                                         await () async {
-                                          if (isPlayer(context)) {
+                                          context.read<SignCupBloc>().add(
+                                              SignCupGamerTagChanged(
+                                                  gamerTagController.text));
+                                          context.read<SignCupBloc>().add(
+                                              SignCupTeamCodeChanged(
+                                                  teamNameController.text));
+                                          if (context
+                                              .read<SignCupBloc>()
+                                              .state
+                                              .status
+                                              .isValidated) {
+                                            if (isPlayer(context)) {
+                                              context
+                                                  .read<TeamFirestoreCubit>()
+                                                  .addMemberInTeam(
+                                                      tournament,
+                                                      teamNameController.text,
+                                                      gamerTagController.text);
+                                            }
+                                            if (isLeader(context)) {
+                                              context
+                                                  .read<TeamFirestoreCubit>()
+                                                  .addNewTeam(
+                                                      tournament,
+                                                      teamNameController.text,
+                                                      gamerTagController.text);
+                                            }
                                             context
-                                                .read<TeamFirestoreCubit>()
-                                                .addMemberInTeam(
-                                                    tournament,
-                                                    teamNameController.text,
-                                                    gamerTagController.text);
-                                          }
-                                          if (isLeader(context)) {
-                                            context
-                                                .read<TeamFirestoreCubit>()
-                                                .addNewTeam(
-                                                    tournament,
-                                                    teamNameController.text,
-                                                    gamerTagController.text);
-                                          }
+                                                .read<SignCupBloc>()
+                                                .add(const SignCupSubmitted());
+                                          } else {}
 
                                           afterAddMemberTournament();
-
                                         }();
                                       },
-                                    );
-                                  },
-                                ),
-                                ),
+                                    )),
                               )
                             ],
                           ),
@@ -509,26 +540,29 @@ class SignCupView extends StatelessWidget {
                   ),
                 ),
                 BlocBuilder<MemberCubit, MemberState>(
-                builder: (context, state) {
-                  print((state as MemberInitial).member);
-                  return Expanded(
-                  flex: 1,
-                  child: Material(
-                    color: Colors.transparent,
-                    child:  IconButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      icon: ((state as MemberInitial).member?.isAdmin == true) ? SvgPicture.asset(
-                        "assets/images/icon_edit.svg",
-                        // height: 30,
-                        // width: 37,
-                      ) : Container(),
-                      onPressed: () => print("modif"),
-                    ),
-                  ),
-                );
-  },
-),
+                  builder: (context, state) {
+                    print((state as MemberInitial).member);
+                    return Expanded(
+                      flex: 1,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: IconButton(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          icon:
+                              ((state as MemberInitial).member?.isAdmin == true)
+                                  ? SvgPicture.asset(
+                                      "assets/images/icon_edit.svg",
+                                      // height: 30,
+                                      // width: 37,
+                                    )
+                                  : Container(),
+                          onPressed: () => print("modif"),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ],
@@ -573,259 +607,372 @@ class SignCupView extends StatelessWidget {
                 color: colorTheme,
               ),
             ),
-            (context.read<TeamFirestoreCubit>().listTeam.isNotEmpty)
-                ? Column(
-                    children: [
-                      const columnTable(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: context
-                              .read<TeamFirestoreCubit>()
-                              .listTeam
-                              .length,
-                          itemBuilder: (context, indexTeams) {
-                                // late final AnimationController _controller = AnimationController(vsync: this, duration: Duration(seconds: 2))..repeat();
-
-                                return Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        // context.read<TeamFirestoreCubit>().teamSelect(indexTeams);
-                                        context.read<TeamFirestoreCubit>().changeRowSelect(indexTeams,tournament,);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            flex: 3,
-                                            child: Row(
-                                              children: [
-                                                AnimatedContainer(
-                                                  duration: const Duration(
-                                                      seconds: 2),
-                                                  child: Transform.rotate(
-                                                    angle:
-                                                        (context.read<TeamFirestoreCubit>().indexSelect ==
-                                                                indexTeams)
-                                                            ? 0
-                                                            : 180 * pi / 180,
-                                                    child: IconButton(
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        highlightColor:
-                                                            Colors.transparent,
-                                                        onPressed: () {},
-                                                        icon: SvgPicture.asset(
-                                                          "assets/images/downArrow.svg",
-                                                          height: 10,
-                                                          width: 15,
-                                                          color: (context.read<TeamFirestoreCubit>().indexSelect ==
-                                                                  indexTeams)
-                                                              ? colorTheme
-                                                              : Colors.white,
-                                                        )),
-                                                  ),
+            BlocBuilder<ShowStatCubit, ShowStatState>(
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                        child: SubtitleElement(
+                          text: "Global",
+                          color:
+                              (state.globalStat) ? colorOrange : Colors.white,
+                        ),
+                        onPressed: () =>
+                            context.read<ShowStatCubit>().changeStatShow(true)),
+                    TextButton(
+                        child: SubtitleElement(
+                            text: "Détaillé",
+                            color: (!state.globalStat)
+                                ? colorOrange
+                                : Colors.white),
+                        onPressed: () => context
+                            .read<ShowStatCubit>()
+                            .changeStatShow(false)),
+                  ],
+                );
+              },
+            ),
+            BlocBuilder<ShowStatCubit, ShowStatState>(
+              builder: (context, state) {
+                return (state.globalStat)
+                    ? (context.read<TeamFirestoreCubit>().listTeam.isNotEmpty)
+                        ? Column(
+                          children: [
+                            const columnTable(),
+                            tableTeamStat(tournament: tournament),
+                          ],
+                        )
+                        : Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child: TextElement(
+                              text: "Il n'y a encore aucune équipe inscrite",
+                              color: Colors.white,
+                            )),
+                          )
+                    : Column(
+                        children: [
+                          const columnTable(),
+                          BlocBuilder<RoundStatCubit, RoundStatState>(
+                            builder: (context, stateRound) {
+                              return DefaultTabController(
+                                length: tournament.roundNumber,
+                                child: Builder(
+                                  builder: (BuildContext context) {
+                                    final TabController controller =
+                                        DefaultTabController.of(context)!;
+                                    controller.animateTo(stateRound.roundShow);
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              IconButton(
+                                                onPressed: () => context
+                                                    .read<RoundStatCubit>()
+                                                    .changeTabContinue(),
+                                                icon: const Icon(
+                                                  Icons.chevron_left,
+                                                  color: Colors.white,
+                                                  size: 36,
                                                 ),
-                                                TextElement(
-                                                  text:
-                                                      "${indexTeams + 1}. ${context.read<TeamFirestoreCubit>().listTeam[indexTeams].name}",
-                                                  color:
-                                                      (context.read<TeamFirestoreCubit>().indexSelect ==
-                                                              indexTeams)
-                                                          ? colorTheme
-                                                          : Colors.white,
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                              TextElement(
+                                                text:
+                                                    "Round ${stateRound.roundShow + 1}",
+                                                color: colorTheme,
+                                              ),
+                                              IconButton(
+                                                  onPressed: () => context
+                                                      .read<RoundStatCubit>()
+                                                      .changeTabCancel(),
+                                                  icon: const Icon(
+                                                    Icons.chevron_right,
+                                                    color: Colors.white,
+                                                    size: 36,
+                                                  ))
+                                            ],
                                           ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: TextElement(
-                                              text: "0",
-                                              color: (context.read<TeamFirestoreCubit>().indexSelect ==
-                                                      indexTeams)
-                                                  ? colorTheme
-                                                  : Colors.white,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: TextElement(
-                                              text: "0",
-                                              color: (context.read<TeamFirestoreCubit>().indexSelect ==
-                                                      indexTeams)
-                                                  ? colorTheme
-                                                  : Colors.white,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: TextElement(
-                                              text: "0",
-                                              color: (context.read<TeamFirestoreCubit>().indexSelect ==
-                                                      indexTeams)
-                                                  ? colorTheme
-                                                  : Colors.white,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
+                                          tableTeamStat(tournament: tournament),
+                                          const TabPageSelector(
+                                              selectedColor: Color(0xffFFD739)),
                                         ],
                                       ),
-                                      highlightColor: Colors.transparent,
-                                      splashColor: Colors.transparent,
-                                    ),
-                                    const Divider(color: Colors.grey),
-                                    (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
-                                        ? ListView.builder(
-                                            itemCount: context
-                                                .read<TeamFirestoreCubit>()
-                                                .listMemberTournament
-                                                .length,
-                                            shrinkWrap: true,
-                                            itemBuilder: (context,
-                                                indexMemberTournament) {
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+}
 
+class tableTeamStat extends StatelessWidget {
+  const tableTeamStat({
+    Key? key,
+    required this.tournament,
+  }) : super(key: key);
 
-                                              return AnimatedContainer(
-                                                duration: const Duration(
-                                                    milliseconds: 100),
-                                                padding: const EdgeInsets.only(
-                                                    top: 10),
-                                                child: Column(
-                                                  children: [
-                                                    BlocBuilder<MemberCubit, MemberState>(
-                                                    builder: (context, state) {
-                                                      return Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        (context.read<TeamFirestoreCubit>().listMemberTournament[indexMemberTournament].member.uid == FirebaseAuth.instance.currentUser!.uid || (state as MemberInitial).member?.isAdmin  == true )
-                                                            ? SizedBox(
-                                                                height: 20,
-                                                                // color: Colors.green,
-                                                                child: IconButton(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(0.0),
-                                                                  onPressed: () {
-                                                                    context.read<TeamFirestoreCubit>().disqualificationMember(
-                                                                        indexMemberTournament,
-                                                                        tournament,
-                                                                        context
-                                                                                .read<
-                                                                                    TeamFirestoreCubit>()
-                                                                                .listTeam[
-                                                                            indexTeams],
-                                                                        context
-                                                                            .read<
-                                                                            TeamFirestoreCubit>()
-                                                                            .listMemberTournament[indexMemberTournament]);
-                                                                    context
-                                                                        .read<
-                                                                            TeamFirestoreCubit>()
-                                                                        .disqualifiedTeam(
-                                                                          indexTeams,
-                                                                          tournament,
-                                                                        );
-                                                                  },
-                                                                  icon: const Icon(
-                                                                    Icons
-                                                                        .close_outlined,
-                                                                    color:
-                                                                        Colors.red,
-                                                                  ),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                ),
-                                                              )
-                                                            : const SizedBox(
-                                                          height: 20,
-                                                          width: 40,
-                                                        ),
-                                                        Expanded(
-                                                          flex: 3,
-                                                          child: TextElement(
-                                                            text: context
-                                                                .read<
-                                                                TeamFirestoreCubit>()
-                                                                .listMemberTournament[
-                                                                    indexMemberTournament]
-                                                                .gamerTag,
-                                                            color: Colors.white,
-                                                            textAlign:
-                                                                TextAlign.center,
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: TextElement(
-                                                            text: "0",
-                                                            color: Colors.white,
-                                                            textAlign:
-                                                                TextAlign.center,
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: TextElement(
-                                                            text: "0",
-                                                            color: Colors.white,
-                                                            textAlign:
-                                                                TextAlign.center,
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: TextElement(
-                                                            text: "0",
-                                                            color: Colors.white,
-                                                            textAlign:
-                                                                TextAlign.center,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                      },
-                                                    ),
-                                                    const Padding(
-                                                      padding: EdgeInsets.only(top: 10.0),
-                                                      child: DottedLine(
+  final Tournament tournament;
 
-                                                        dashColor: Colors.grey,
-                                                        lineThickness: 0.2,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        : Container(),
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: context.read<TeamFirestoreCubit>().listTeam.length,
+        itemBuilder: (context, indexTeams) {
+          return Column(
+            children: [
+              rowStatTeam(tournament: tournament, indexTeams: indexTeams),
+              const Divider(color: Colors.grey),
+              (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
+                  ? listMemberInTeam(
+                      tournament: tournament,
+                      indexTeams: indexTeams,
+                    )
+                  : Container(),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
 
-                                  ],
-                                );
-                          },
+class rowStatTeam extends StatelessWidget {
+  const rowStatTeam({
+    Key? key,
+    required this.tournament,
+    required this.indexTeams,
+  }) : super(key: key);
+
+  final Tournament tournament;
+  final int indexTeams;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => context.read<TeamFirestoreCubit>().changeRowSelect(
+            indexTeams,
+            tournament,
+          ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(seconds: 2),
+                  child: Transform.rotate(
+                    angle: (context.read<TeamFirestoreCubit>().indexSelect ==
+                            indexTeams)
+                        ? 0
+                        : 180 * pi / 180,
+                    child: IconButton(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onPressed: () {},
+                        icon: SvgPicture.asset(
+                          "assets/images/downArrow.svg",
+                          height: 10,
+                          width: 15,
+                          color:
+                              (context.read<TeamFirestoreCubit>().indexSelect ==
+                                      indexTeams)
+                                  ? colorTheme
+                                  : Colors.white,
+                        )),
+                  ),
+                ),
+                TextElement(
+                  text:
+                      "${indexTeams + 1}. ${context.read<TeamFirestoreCubit>().listTeam[indexTeams].name}",
+                  color: (context.read<TeamFirestoreCubit>().indexSelect ==
+                          indexTeams)
+                      ? colorTheme
+                      : Colors.white,
+                  textAlign: TextAlign.start,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: TextElement(
+              text: "0",
+              color:
+                  (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
+                      ? colorTheme
+                      : Colors.white,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: TextElement(
+              text: "0",
+              color:
+                  (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
+                      ? colorTheme
+                      : Colors.white,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: TextElement(
+              text: "0",
+              color:
+                  (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
+                      ? colorTheme
+                      : Colors.white,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+    );
+  }
+}
+
+class listMemberInTeam extends StatelessWidget {
+  const listMemberInTeam({
+    Key? key,
+    required this.tournament,
+    required this.indexTeams,
+  }) : super(key: key);
+
+  final Tournament tournament;
+  final int indexTeams;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: context.read<TeamFirestoreCubit>().listMemberTournament.length,
+      shrinkWrap: true,
+      itemBuilder: (context, indexMemberTournament) {
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          padding: const EdgeInsets.only(top: 10),
+          child: Column(
+            children: [
+              BlocBuilder<MemberCubit, MemberState>(
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      (context
+                                      .read<TeamFirestoreCubit>()
+                                      .listMemberTournament[
+                                          indexMemberTournament]
+                                      .member
+                                      .uid ==
+                                  FirebaseAuth.instance.currentUser!.uid ||
+                              (state as MemberInitial).member?.isAdmin == true)
+                          ? SizedBox(
+                              height: 20,
+                              // color: Colors.green,
+                              child: IconButton(
+                                padding: const EdgeInsets.all(0.0),
+                                onPressed: () {
+                                  context
+                                      .read<TeamFirestoreCubit>()
+                                      .disqualificationMember(
+                                          indexMemberTournament,
+                                          tournament,
+                                          context
+                                              .read<TeamFirestoreCubit>()
+                                              .listTeam[indexTeams],
+                                          context
+                                                  .read<TeamFirestoreCubit>()
+                                                  .listMemberTournament[
+                                              indexMemberTournament]);
+                                  context
+                                      .read<TeamFirestoreCubit>()
+                                      .disqualifiedTeam(
+                                        indexTeams,
+                                        tournament,
+                                      );
+                                },
+                                icon: const Icon(
+                                  Icons.close_outlined,
+                                  color: Colors.red,
+                                ),
+                                alignment: Alignment.center,
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 20,
+                              width: 40,
+                            ),
+                      Expanded(
+                        flex: 3,
+                        child: TextElement(
+                          text: context
+                              .read<TeamFirestoreCubit>()
+                              .listMemberTournament[indexMemberTournament]
+                              .gamerTag,
+                          color: Colors.white,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: TextElement(
+                          text: "0",
+                          color: Colors.white,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: TextElement(
+                          text: "0",
+                          color: Colors.white,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: TextElement(
+                          text: "0",
+                          color: Colors.white,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Center(
-                        child: TextElement(
-                      text: "Il n'y a encore aucune équipe inscrite",
-                      color: Colors.white,
-                    )),
-                  ),
-          ],
+                  );
+                },
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: DottedLine(
+                  dashColor: Colors.grey,
+                  lineThickness: 0.2,
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

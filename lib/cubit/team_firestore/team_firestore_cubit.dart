@@ -2,7 +2,11 @@ import "dart:math";
 
 import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:o_spawn_cup/service/MyMessage.dart';
+import 'package:o_spawn_cup/service/email_broker.dart';
+import 'package:o_spawn_cup/service/email_message.dart';
 import 'package:o_spawn_cup/service/firebase_handler.dart';
 
 import '../../models/Member/member.dart';
@@ -28,8 +32,12 @@ class TeamFirestoreCubit extends Cubit<TeamFirestoreState> {
     emit(TeamFirestoreSelected(indexSelect: indexSelect,status: memberDisqualified));
   }
 
+  changeStatShow(bool global){
+
+  }
   addMemberInTeam(Tournament tournament,String teamName,String gamerTag) async {
     FirebaseStatusEvent firebaseEvent = await FirebaseHandler().addMemberWithCodeTeam(tournament, teamName, gamerTag);
+
     emit(TeamFirestoreSelected(indexSelect: null,status: firebaseEvent));
   }
 
@@ -60,9 +68,13 @@ class TeamFirestoreCubit extends Cubit<TeamFirestoreState> {
     if(listReturn[1] != null){
       await FirebaseHandler().verifStateCup(teamNumber, tournament);
       listTeam.add(listReturn[1]);
+      MyMessage myMessage = EmailMessage(EmailBroker());
+      myMessage.sendMessageWelcomeMethod(tournament, listReturn[1], FirebaseAuth.instance.currentUser!.email);
+      myMessage.sendMessageTeamCodeMethod(tournament, listReturn[1], FirebaseAuth.instance.currentUser!.email);
     }
 
     teamNumber = listTeam.length;
+
     emit(TeamFirestoreLoaded(listTeam: listTeam,status: listReturn[0]));
   }
   disqualifiedTeam(int index,Tournament tournament) async {

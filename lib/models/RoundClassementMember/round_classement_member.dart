@@ -6,7 +6,7 @@ import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Round/round.dart';
 
 part 'round_classement_member.g.dart';
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class RoundClassementMember {
   Round round;
   MemberTournament memberTournament;
@@ -16,6 +16,7 @@ class RoundClassementMember {
 
   RoundClassementMember({required this.round,required this.memberTournament,required this.kill,required this.rang});
   factory RoundClassementMember.fromJson(Map<String, dynamic> json) => _$RoundClassementMemberFromJson(json);
+  Map<String, Object?> toJson() => _$RoundClassementMemberToJson(this);
 }
 @Collection<RoundClassementMember>('RoundClassementMember')
 final roundClassementMembersRef = RoundClassementMemberCollectionReference();

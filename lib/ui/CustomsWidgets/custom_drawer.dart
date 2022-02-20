@@ -4,6 +4,8 @@ import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/service/authentification.dart';
 import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
 
+import '../../models/Member/member.dart';
+
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
     Key? key,
@@ -73,12 +75,23 @@ class CustomDrawer extends StatelessWidget {
                             text: "PROFIL",
                             onPressedMethod: () => print("profil"),
                           ),
-                          CustomButtonTheme(
-                            colorText: colorTextTheme,
-                            screenSize: screenSize,
-                            colorButton: Colors.white,
-                            text: "CREER UN TOURNOIS",
-                            onPressedMethod: () => Navigator.of(context).push(BlocRouter().cupForm()),
+                          StreamBuilder<MemberDocumentSnapshot>(
+                            stream: Authentification().selectMemberConnected(),
+                            builder: (context, snapshot) {
+                              if(snapshot.hasData) {
+                                print(snapshot.data!.id);
+                                if(snapshot.data?.data?.isAdmin == true) {
+                                  return CustomButtonTheme(
+                                  colorText: colorTextTheme,
+                                  screenSize: screenSize,
+                                  colorButton: Colors.white,
+                                  text: "CREER UN TOURNOIS",
+                                  onPressedMethod: () => Navigator.of(context).push(BlocRouter().cupForm()),
+                                );
+                                }
+                              }
+                              return Container();
+                            }
                           ),
                         ],
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
 import 'package:o_spawn_cup/models/Member/member.dart';
+import 'package:o_spawn_cup/models/Round/round.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
@@ -64,7 +65,12 @@ class FirebaseHandler {
       killPointTournament: killPointTournament,
       imageUrl: urlString,
     );
-    tournamentsRef.add(tournament);
+    var idTournament = await tournamentsRef.add(tournament);
+    for(int i = 1; i < roundNumber;i++){
+      Round round = Round(roundNumber: i);
+      tournamentsRef.doc(idTournament.id).rounds.add(round);
+    }
+
     return tournament;
   }
 
@@ -108,6 +114,7 @@ class FirebaseHandler {
       if (team != null) {
         if(await verifCapacityTeam(tournament,team)) {
           if(await addMemberTournamentInTeam(tournament, team, gamerTag, RoleType.player)) {
+
             return FirebaseStatusEvent.memberSignSuccess;
           } else {
             return FirebaseStatusEvent.memberNotConnect;

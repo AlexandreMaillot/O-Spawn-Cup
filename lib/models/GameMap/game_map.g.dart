@@ -37,7 +37,7 @@ abstract class GameMapCollectionReference
     GameMap value,
     SetOptions? options,
   ) {
-    return _$GameMapToJson(value);
+    return value.toJson();
   }
 
   @override

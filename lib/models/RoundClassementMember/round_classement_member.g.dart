@@ -37,7 +37,7 @@ abstract class RoundClassementMemberCollectionReference
     RoundClassementMember value,
     SetOptions? options,
   ) {
-    return _$RoundClassementMemberToJson(value);
+    return value.toJson();
   }
 
   @override
@@ -636,8 +636,8 @@ RoundClassementMember _$RoundClassementMemberFromJson(
 Map<String, dynamic> _$RoundClassementMemberToJson(
         RoundClassementMember instance) =>
     <String, dynamic>{
-      'round': instance.round,
-      'memberTournament': instance.memberTournament,
+      'round': instance.round.toJson(),
+      'memberTournament': instance.memberTournament.toJson(),
       'kill': instance.kill,
       'rang': instance.rang,
       'screenshot': instance.screenshot,

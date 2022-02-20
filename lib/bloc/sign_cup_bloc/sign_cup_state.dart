@@ -1,4 +1,4 @@
-part of 'sign_cup_bloc.dart';
+part of "sign_cup_bloc.dart";
 
 class SignCupState extends Equatable {
   final FormzStatus status;

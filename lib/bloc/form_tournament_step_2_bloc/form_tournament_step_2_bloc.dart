@@ -1,18 +1,18 @@
 
-import 'dart:async';
+import "dart:async";
 
 import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
-import 'package:formz/formz.dart';
-import 'package:o_spawn_cup/models/validator/name_cup.dart';
-import 'package:o_spawn_cup/models/validator/number_round.dart';
-import 'package:o_spawn_cup/models/validator/player_by_team.dart';
-import 'package:o_spawn_cup/models/validator/server_type.dart';
+import "package:formz/formz.dart";
+import "package:o_spawn_cup/models/validator/name_cup.dart";
+import "package:o_spawn_cup/models/validator/number_round.dart";
+import "package:o_spawn_cup/models/validator/player_by_team.dart";
+import "package:o_spawn_cup/models/validator/server_type.dart";
 
-import '../../models/validator/day.dart';
-import '../../models/validator/month.dart';
-import '../../models/validator/number_team.dart';
-import '../../models/validator/years.dart';
+import "../../models/validator/day.dart";
+import "../../models/validator/month.dart";
+import "../../models/validator/number_team.dart";
+import "../../models/validator/years.dart";
 
 part "form_tournament_step_2_event.dart";
 part "form_tournament_step_2_state.dart";
@@ -98,6 +98,7 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
   }
 
   FutureOr<void> _onSubmittedStep2(FormTournamentSubmitted2 event, Emitter<FormTournamentStep2State> emit) async {
+
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
 

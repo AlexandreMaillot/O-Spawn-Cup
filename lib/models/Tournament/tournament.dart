@@ -10,11 +10,12 @@ import "package:o_spawn_cup/models/TournamentType/tournament_type.dart";
 import "package:o_spawn_cup/models/server_type.dart";
 
 import '../Member/member.dart';
+import '../Round/round.dart';
 import "../game_name.dart";
 part "tournament.g.dart";
 
 @JsonSerializable(explicitToJson: true)
-class Tournament extends Equatable{
+class Tournament {
   @JsonKey(ignore: true)
   String? documentId;
   String name;
@@ -27,7 +28,6 @@ class Tournament extends Equatable{
   int roundNumber;
   TournamentState state = TournamentState.inscriptionFermer;
   String? imageUrl;
-  // List<RangPointTournament> listRangPointTournament;
   int killPointTournament;
   @JsonKey(ignore: true)
   Tournament(
@@ -49,13 +49,11 @@ class Tournament extends Equatable{
 
   Map<String, Object?> toJson() => _$TournamentToJson(this);
 
-
-  @override
-  List<Object?> get props => [name,date,game,server,tournamentType,capacity,cashPrize,roundNumber,killPointTournament,imageUrl];
 }
 
 @Collection<Tournament>("Tournament")
 @Collection<Team>("Tournament/*/teams")
+@Collection<Round>("Tournament/*/rounds")
 @Collection<MemberTournament>("Tournament/*/teams/*/membersTournament",name: "membersTournament")
 @Collection<Member>("Tournament/*/teams/*/membersTournament/*/member",name: "members")
 final tournamentsRef = TournamentCollectionReference();

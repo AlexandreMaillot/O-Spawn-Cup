@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../game_name.dart';
 part 'game_map.g.dart';
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class GameMap {
   GameName gameName;
   String name;
@@ -13,6 +13,7 @@ class GameMap {
 
   GameMap({required this.gameName,required this.name});
   factory GameMap.fromJson(Map<String, dynamic> json) => _$GameMapFromJson(json);
+  Map<String, Object?> toJson() => _$GameMapToJson(this);
 }
 @Collection<GameMap>('GameMaps')
 final gameMapsRef = GameMapCollectionReference();

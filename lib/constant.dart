@@ -10,6 +10,7 @@ Color colorTheme = const Color(0xffFFD739);
 Color colorBackgroundTheme = const Color(0xff191919);
 Color colorTextTheme = const Color(0xff201607);
 Color colorHintTextTheme = const Color(0xff707070);
+Color colorOrange = const Color(0xffDE7137);
 Color colorOpen = const Color(0xff28F202);
 Color colorInProgress = const Color(0xff006FFF);
 Color colorClose = const Color(0xffFF0000);
