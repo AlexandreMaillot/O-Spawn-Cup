@@ -14,11 +14,12 @@ class Month extends FormzInput<int?, MonthValidationError> {
       return MonthValidationError.zero;
     } else if(value > 12) {
       return MonthValidationError.superior;
-    } else if(value < 10) {
-      if(value.toString().length != 2) {
-        return MonthValidationError.length;
-      }
     }
+    // else if(value < 10) {
+    //   if(value.toString().length != 2) {
+    //     return MonthValidationError.length;
+    //   }
+    // }
     else {
       return null;
     }

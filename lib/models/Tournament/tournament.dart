@@ -19,7 +19,9 @@ class Tournament {
   @JsonKey(ignore: true)
   String? documentId;
   String name;
-  int date;
+
+  DateTime? dateDebutTournois;
+  DateTime? dateDebutInscription;
   GameName game;
   ServerType server;
   TournamentType tournamentType;
@@ -29,16 +31,16 @@ class Tournament {
   TournamentState state = TournamentState.inscriptionFermer;
   String? imageUrl;
   int killPointTournament;
-  @JsonKey(ignore: true)
   Tournament(
       {required this.name,
-      required this.date,
+      required this.dateDebutTournois,
       required this.game,
       required this.server,
       required this.tournamentType,
       required this.capacity,
       required this.cashPrize,
       required this.roundNumber,
+      required this.dateDebutInscription,
       this.imageUrl,
       // required this.listRangPointTournament,
       required this.killPointTournament,}) {
@@ -48,7 +50,6 @@ class Tournament {
       _$TournamentFromJson(json);
 
   Map<String, Object?> toJson() => _$TournamentToJson(this);
-
 }
 
 @Collection<Tournament>("Tournament")

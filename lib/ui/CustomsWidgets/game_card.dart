@@ -14,7 +14,11 @@ class GameCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 0),
       child: InkWell(
-        onTap: () => (form == false) ? Navigator.of(context).push(BlocRouter().cupSelect(listCardGame[index].gameName)) : null,
+        onTap: () {
+          (form == false)
+              ? Navigator.of(context).push(BlocRouter().cupSelect(listCardGame[index].gameName))
+              : null;
+        },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           child: Container(

@@ -79,7 +79,6 @@ class CustomDrawer extends StatelessWidget {
                             stream: Authentification().selectMemberConnected(),
                             builder: (context, snapshot) {
                               if(snapshot.hasData) {
-                                print(snapshot.data!.id);
                                 if(snapshot.data?.data?.isAdmin == true) {
                                   return CustomButtonTheme(
                                   colorText: colorTextTheme,

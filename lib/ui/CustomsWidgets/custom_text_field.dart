@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 typedef onChangeCallback = void Function(BuildContext context, String data);
 
@@ -17,6 +17,8 @@ class CustomTextField extends StatelessWidget {
   Widget? suffixIcon;
   String? errorText;
   double paddingBottom;
+  double paddingTop;
+  double widthTextfield;
   TextInputAction? textInputAction;
   CustomTextField({
     Key? key,
@@ -32,18 +34,21 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.errorText,
     this.textInputAction,
+    this.widthTextfield = 0,
     this.paddingBottom = 0,
+    this.paddingTop = 0,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: paddingBottom),
+      padding: EdgeInsets.only(bottom: paddingBottom,top: paddingTop),
       child: SizedBox(
-        width: screenSize.width * 0.87,
+        width: (widthTextfield == 0) ? screenSize.width * 0.87 : widthTextfield,
         height: errorText != null ? screenSize.height * 0.08 : screenSize.height * 0.05,
         child: TextField(
           textInputAction: (textInputAction != null)? textInputAction : TextInputAction.next,
-          inputFormatters: (typeTextField != TextInputType.text)
+          inputFormatters: (typeTextField != TextInputType.text && typeTextField != TextInputType.datetime)
               ? <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
                 ]
@@ -84,13 +89,13 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(31),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: const BorderSide(color: Colors.red),
               borderRadius: BorderRadius.circular(31),
             ),
             hintText: text,
             hintStyle: TextStyle(
               color: const Color(0xff707070).withOpacity(0.43),
-              fontFamily: 'o_spawn_cup_font',
+              fontFamily: "o_spawn_cup_font",
               fontSize: 14,
             ),
           ),

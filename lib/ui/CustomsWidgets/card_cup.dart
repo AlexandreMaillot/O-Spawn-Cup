@@ -8,6 +8,8 @@ import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/ui/view/sign_cup.dart";
 
+import '../../service/utils.dart';
+
 
 
 class CardCup extends StatelessWidget {
@@ -21,7 +23,7 @@ class CardCup extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return InkWell(
-      onTap: () => Navigator.of(context).push(BlocRouter().cupDetail(tournament)),
+      onTap: () =>  Navigator.of(context).push(BlocRouter().cupDetail(tournament)),
           child: Container(
               decoration: BoxDecoration(
                   borderRadius:
@@ -46,17 +48,8 @@ class CardCup extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0,top: 8),
-                          child: TextElement(text: tournament.date.toString().substring(6, 8) + "/" + tournament.date.toString().substring(4, 6) + "/" + tournament.date.toString().substring(0, 4),color: Colors.white,),
+                          child: TextElement(text: Utils().formatDate(tournament.dateDebutTournois),color: Colors.white,),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8.0),
-                        //   child: Row(
-                        //     children: [
-                        //       SvgPicture.asset("assets/images/tournament_type_icon.svg"),
-                        //       TextElement(text: tournament.name,color: Colors.white,),
-                        //     ],
-                        //   ),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(

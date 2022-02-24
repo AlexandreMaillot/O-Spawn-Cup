@@ -1,13 +1,14 @@
+import "dart:convert";
+
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dotted_line/dotted_line.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
-import "package:numberpicker/numberpicker.dart";
-import "package:o_spawn_cup/bloc/bloc_list_cup.dart";
-import "package:o_spawn_cup/bloc/bloc_provider.dart";
+import "package:o_spawn_cup/bloc/list_tournament_bloc/list_tournament_bloc.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown.dart';
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdowwn_tournament_state.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
@@ -15,80 +16,51 @@ import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
+import "../../models/TournamentType/tournament_type.dart";
 
 
-class FloatingActionBottomSheet extends StatefulWidget {
+
+class FloatingActionBottomSheet extends StatelessWidget {
   bool bottomSheetIsShow = false;
-  Function onPress;
-  FloatingActionBottomSheet({
-    Key? key,
-    required this.onPress,
-  }) : super(key: key);
-
-  @override
-  State<FloatingActionBottomSheet> createState() =>
-      _FloatingActionBottomSheetState();
-}
-
-class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   late Future<dynamic> bottomSheetController;
-  late TextEditingController dayController;
-  late TextEditingController monthController;
-  late TextEditingController yearsController;
-  late TextEditingController tournamentNameController;
-  late CustomDropdown tournamentTypeDropdown;
-  late TournamentStateDropdown tournamentStateDropdown;
+  late TextEditingController dayController = TextEditingController();
+  late TextEditingController monthController = TextEditingController();
+  late TextEditingController yearsController = TextEditingController();
+  late TextEditingController tournamentNameController = TextEditingController();
+  late CustomDropdown tournamentTypeDropdown = CustomDropdown(hintText: "TYPE DE TOURNOIS",typeFocus: typeFocus,listItem: listTournamentTypeDropdown,onChanged: (context,value)=> print(""),);
+  late CustomDropdown tournamentStateDropdown = CustomDropdown(hintText: "ETAT",listItem: listTournamentStateDropdown,onChanged: (context,value)=> print(""));
   late SharedPreferences filters;
 
   FocusNode dayFocus = FocusNode();
   FocusNode monthFocus = FocusNode();
   FocusNode yearsFocus = FocusNode();
   FocusNode typeFocus = FocusNode();
-  @override
-  initState() {
-    dayController = TextEditingController();
-    monthController = TextEditingController();
-    yearsController = TextEditingController();
-    tournamentNameController = TextEditingController();
-    // tournamentTypeDropdown = TournamentTypeDropdown(hintText: "TYPE DE TOURNOIS",typeFocus: typeFocus);
-    tournamentTypeDropdown = CustomDropdown(hintText: "TYPE DE TOURNOIS",typeFocus: typeFocus,listItem: listTournamentTypeDropdown,);
-    tournamentStateDropdown = TournamentStateDropdown(hintText: "ETAT");
-    super.initState();
-  }
 
-  Future<void> initFilter() async {
-    filters = await SharedPreferences.getInstance();
-    String day = filters.get("day").toString();
-    if (day != "null") {
-      dayController.text = day;
-    }
-    String month = filters.get("month").toString();
-    if (month != "null") {
-      monthController.text = month;
-    }
-    String? years = filters.get("years").toString();
-    if (years != "null") {
-      yearsController.text = years;
-    }
-    String? tournamentName = filters.get("tournamentName").toString();
-    if (tournamentName != "null") {
-      tournamentNameController.text = tournamentName;
-    }
-    String? tournamentType = filters.getString("tournamentType");
-    if (tournamentType != "null") {
-      tournamentTypeDropdown.dropdownValue = tournamentType;
-    }
-    String? tournamentState = filters.getString("tournamentState");
-    if (tournamentState != "null") {
-      tournamentStateDropdown.dropdownValue = tournamentState;
-    }
-  }
+
+  // Future<void> initFilter() async {
+  //   filters = await SharedPreferences.getInstance();
+  //   String day = filters.get("day").toString();
+  //   if (day != "null") {
+  //     dayController.text = day;
+  //   }
+  //   String month = filters.get("month").toString();
+  //   if (month != "null") {
+  //     monthController.text = month;
+  //   }
+  //   String? years = filters.get("years").toString();
+  //   if (years != "null") {
+  //     yearsController.text = years;
+  //   }
+  //   String? tournamentName = filters.get("tournamentName").toString();
+  //   if (tournamentName != "null") {
+  //     tournamentNameController.text = tournamentName;
+  //   }
+  // }
 
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    DateTime selectedDate = DateTime.now();
 
     return FloatingActionButton(
       heroTag: "filterMenu",
@@ -100,12 +72,7 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
         width: 30,
       ),
       onPressed: () {
-        setState(() {
-          widget.bottomSheetIsShow = true;
-        });
-
         bottomSheetController = showModalBottomSheet(
-
           isScrollControlled: true,
           context: context,
           builder: (context) => Stack(
@@ -126,7 +93,18 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RowTextfieldDate(screenSize: screenSize, monthFocus: monthFocus, dayFocus: dayFocus, dayController: dayController, yearsFocus: yearsFocus, monthController: monthController, yearsController: yearsController),
+                      RowTextfieldDate(
+                          screenSize: screenSize,
+                          monthFocus: monthFocus,
+                          dayFocus: dayFocus,
+                          dayController: dayController,
+                          yearsFocus: yearsFocus,
+                          monthController: monthController,
+                          yearsController: yearsController,
+                          onChangedDay: (context,value) => print(""),
+                          onChangedMonth: (context,value) => print(""),
+                          onChangedYears: (context,value) => print(""),
+                      ),
                       tournamentTypeDropdown,
                       CustomTextField(
                           controller: tournamentNameController,
@@ -140,11 +118,10 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
                         screenSize: screenSize,
                         onPressedMethod: () async {
 
-                          await saveFilter();
-                          widget.onPress();
-                          Navigator.pop(context,tournamentNameController.text);
+                          context.read<ListTournamentBloc>().add(TournamentFilter(day: dayController.text, month: monthController.text, year: yearsController.text, tournamentType: tournamentTypeDropdown.dropdownValue as TournamentType?, tournamentState: tournamentStateDropdown.dropdownValue as TournamentState?, name: tournamentNameController.text));
+                          Navigator.pop(context);
                         }, text: "RECHERCHER", colorText: colorTheme, colorButton: colorBackgroundTheme,
-                        
+
                       ),
                     ],
                   ),
@@ -156,30 +133,8 @@ class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
             ],
           ),
         );
-
-        initFilter();
       },
     );
-  }
-
-  saveFilter() async {
-    filters = await SharedPreferences.getInstance();
-    filters.setString("day", dayController.text);
-    filters.setString("month", monthController.text);
-    filters.setString("years", yearsController.text);
-    filters.setString("tournamentName", tournamentNameController.text);
-
-    if (tournamentTypeDropdown.dropdownValue != "null") {
-      filters.setString(
-          "tournamentType", tournamentTypeDropdown.dropdownValue.toString());
-    }
-
-    if (tournamentStateDropdown.dropdownValue != "null") {
-      filters.setString(
-          "tournamentState", tournamentStateDropdown.dropdownValue.toString());
-    }
-    // print(tournamentTypeDropdown.dropdownValue.toString());
-    // print(tournamentStateDropdown.dropdownValue.toString());
   }
 }
 

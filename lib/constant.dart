@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/models/card_game.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
@@ -182,6 +183,12 @@ List<TileImagePre> listImagePre = [
 
 List<DropdownMenuItem<TournamentType>>? listTournamentTypeDropdown = listTournamentType.map((value) {
   return DropdownMenuItem<TournamentType>(
+    value: value,
+    child: Text(value.name),
+  );
+}).toList();
+List<DropdownMenuItem<TournamentState>>? listTournamentStateDropdown = TournamentState.values.map((value) {
+  return DropdownMenuItem<TournamentState>(
     value: value,
     child: Text(value.name),
   );

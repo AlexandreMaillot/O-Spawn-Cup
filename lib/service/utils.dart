@@ -1,6 +1,6 @@
 
 import 'dart:math';
-
+import 'package:intl/intl.dart';
 class Utils {
   int? numRound = 0;
 
@@ -9,5 +9,16 @@ class Utils {
     final Random _rnd = Random();
     String code = beforeCode + String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
     return code;
+  }
+
+  String formatDate(DateTime? date) {
+    final f = DateFormat("dd/MM/yyyy hh:mm");
+
+    if(date != null) {
+      return DateFormat("dd/MM/yyyy").add_Hm().format(date);
+    } else {
+      return "";
+    }
+
   }
 }

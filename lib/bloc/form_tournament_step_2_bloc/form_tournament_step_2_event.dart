@@ -30,29 +30,61 @@ class FormTournamentNumberTeamChanged extends FormTournamentEventStep2 {
   @override
   List<int?> get props => [numberTeam];
 }
-class FormTournamentDayChanged extends FormTournamentEventStep2 {
-  const FormTournamentDayChanged(this.day);
+class FormTournamentDaySignChanged extends FormTournamentEventStep2 {
+  const FormTournamentDaySignChanged(this.daySign);
 
-  final int? day;
+  final int? daySign;
 
   @override
-  List<int?> get props => [day];
+  List<int?> get props => [daySign];
 }
-class FormTournamentMonthChanged extends FormTournamentEventStep2 {
-  const FormTournamentMonthChanged(this.month);
+class FormTournamentMonthSignChanged extends FormTournamentEventStep2 {
+  const FormTournamentMonthSignChanged(this.monthSign);
 
-  final int? month;
+  final int? monthSign;
 
   @override
-  List<int?> get props => [month];
+  List<int?> get props => [monthSign];
 }
-class FormTournamentYearsChanged extends FormTournamentEventStep2 {
-  const FormTournamentYearsChanged(this.years);
+class FormTournamentYearsSignChanged extends FormTournamentEventStep2 {
+  const FormTournamentYearsSignChanged(this.yearsSign);
 
-  final int? years;
+  final int? yearsSign;
 
   @override
-  List<int?> get props => [years];
+  List<int?> get props => [yearsSign];
+}
+class FormTournamentDayStartChanged extends FormTournamentEventStep2 {
+  const FormTournamentDayStartChanged(this.dayStart);
+
+  final int? dayStart;
+
+  @override
+  List<int?> get props => [dayStart];
+}
+class FormTournamentMonthStartChanged extends FormTournamentEventStep2 {
+  const FormTournamentMonthStartChanged(this.monthStart);
+
+  final int? monthStart;
+
+  @override
+  List<int?> get props => [monthStart];
+}
+class FormTournamentYearsStartChanged extends FormTournamentEventStep2 {
+  const FormTournamentYearsStartChanged(this.yearsStart);
+
+  final int? yearsStart;
+
+  @override
+  List<int?> get props => [yearsStart];
+}
+class FormTournamentHoursStartChanged extends FormTournamentEventStep2 {
+  const FormTournamentHoursStartChanged(this.hoursStart);
+
+  final String hoursStart;
+
+  @override
+  List<String> get props => [hoursStart];
 }
 class FormTournamentPlayerByTeamChanged extends FormTournamentEventStep2 {
   const FormTournamentPlayerByTeamChanged(this.playerByTeam);

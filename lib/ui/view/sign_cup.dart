@@ -19,6 +19,7 @@ import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart
 import 'package:o_spawn_cup/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 import 'package:o_spawn_cup/service/firebase_handler.dart';
+import 'package:o_spawn_cup/service/utils.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
@@ -55,9 +56,7 @@ class SignCup extends StatelessWidget {
         BlocProvider(
           create: (_) => TeamFirestoreCubit(),
         ),
-        BlocProvider(
-          create: (_) => MemberCubit(),
-        ),
+
         BlocProvider(
           create: (_) => SignCupBloc(),
         ),
@@ -66,6 +65,9 @@ class SignCup extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => RoundStatCubit(roundMax: tournament.roundNumber),
+        ),
+        BlocProvider(
+          create: (_) => MemberCubit(),
         ),
       ],
       child: SignCupView(
@@ -80,10 +82,6 @@ class SignCupView extends StatelessWidget {
   TextEditingController gamerTagController = TextEditingController();
   TextEditingController teamNameController = TextEditingController();
   late Tournament tournament;
-  late String years;
-  late String month;
-  late String day;
-  late String date;
   List<Team> teams = [];
   String msgSnack = "Inscription validée !";
   bool errorSign = false;
@@ -93,10 +91,6 @@ class SignCupView extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<TeamFirestoreCubit>().getTeamsTournament(tournament);
 
-    years = tournament.date.toString().substring(0, 4);
-    month = tournament.date.toString().substring(4, 6);
-    day = tournament.date.toString().substring(6, 8);
-    date = day + "/" + month + "/" + years;
     Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -114,7 +108,8 @@ class SignCupView extends StatelessWidget {
                   top: 25, right: 15, left: 15, bottom: 15),
               child: Column(
                 children: [
-                  rowInformationTournament(leftText: "Date:", rightText: date),
+                  rowInformationTournament(leftText: "Date inscription:", rightText: Utils().formatDate(tournament.dateDebutInscription)),
+                  rowInformationTournament(leftText: "Date du tournois:", rightText: Utils().formatDate(tournament.dateDebutTournois)),
                   rowInformationTournament(
                       leftText: "Nombre de rounds:",
                       rightText: tournament.roundNumber.toString()),
@@ -470,7 +465,9 @@ class SignCupView extends StatelessWidget {
     gamerTagController.text = "";
   }
 
-  Hero buildContainerHeader(Size screenSize, Tournament tournament) {
+  buildContainerHeader(Size screenSize, Tournament tournament) {
+    return BlocBuilder<MemberCubit, MemberState>(
+  builder: (context, stateMember) {
     return Hero(
       tag: "tagcard_cup_${tournament.documentId}",
       child: Container(
@@ -505,7 +502,7 @@ class SignCupView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              height: screenSize.height * 0.05,
+              height: screenSize.height * 0.03,
             ),
             Text(
               tournament.name,
@@ -539,10 +536,7 @@ class SignCupView extends StatelessWidget {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                BlocBuilder<MemberCubit, MemberState>(
-                  builder: (context, state) {
-                    print((state as MemberInitial).member);
-                    return Expanded(
+                Expanded(
                       flex: 1,
                       child: Material(
                         color: Colors.transparent,
@@ -550,7 +544,7 @@ class SignCupView extends StatelessWidget {
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           icon:
-                              ((state as MemberInitial).member?.isAdmin == true)
+                              ((stateMember as MemberInitial).member?.isAdmin == true)
                                   ? SvgPicture.asset(
                                       "assets/images/icon_edit.svg",
                                       // height: 30,
@@ -560,15 +554,15 @@ class SignCupView extends StatelessWidget {
                           onPressed: () => print("modif"),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
               ],
             ),
           ],
         ),
       ),
     );
+  },
+);
   }
 
   Container buildContainerMap(Size screenSize) {

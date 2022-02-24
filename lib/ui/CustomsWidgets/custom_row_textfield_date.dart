@@ -1,9 +1,7 @@
-import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:o_spawn_cup/constant.dart';
+import "package:dotted_line/dotted_line.dart";
+import "package:flutter/material.dart";
+import "package:o_spawn_cup/constant.dart";
 
-import '../../bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart';
 
 
 
@@ -24,6 +22,7 @@ class RowTextfieldDate extends StatelessWidget {
     this.onChangedYears,
     this.dateValide,
     this.paddingBottom = 0,
+    this.paddingTop = 0,
   }) : super(key: key);
 
   final Size screenSize;
@@ -38,10 +37,11 @@ class RowTextfieldDate extends StatelessWidget {
   final TextEditingController yearsController;
   bool? dateValide;
   double paddingBottom;
+  double paddingTop;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: paddingBottom),
+      padding: EdgeInsets.only(bottom: paddingBottom,top: paddingTop),
       child: Column(
         children: [
           Container(

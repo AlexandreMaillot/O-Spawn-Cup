@@ -10,6 +10,7 @@ import "package:o_spawn_cup/models/validator/player_by_team.dart";
 import "package:o_spawn_cup/models/validator/server_type.dart";
 
 import "../../models/validator/day.dart";
+import '../../models/validator/hours.dart';
 import "../../models/validator/month.dart";
 import "../../models/validator/number_team.dart";
 import "../../models/validator/years.dart";
@@ -21,9 +22,13 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
   FormTournamentStep2Bloc() : super(FormTournamentStep2State()) {
     on<FormTournamentNameCupChanged>(_onNameCupChanged);
     on<FormTournamentNumberRoundChanged>(_onNumberRoundChanged);
-    on<FormTournamentDayChanged>(_onDayChanged);
-    on<FormTournamentMonthChanged>(_onMonthChanged);
-    on<FormTournamentYearsChanged>(_onYearsChanged);
+    on<FormTournamentDaySignChanged>(_onDaySignChanged);
+    on<FormTournamentMonthSignChanged>(_onMonthSignChanged);
+    on<FormTournamentYearsSignChanged>(_onYearsSignChanged);
+    on<FormTournamentDayStartChanged>(_onDayStartChanged);
+    on<FormTournamentMonthStartChanged>(_onMonthStartChanged);
+    on<FormTournamentYearsStartChanged>(_onYearsStartChanged);
+    on<FormTournamentHoursStartChanged>(_onHoursStartChanged);
     on<FormTournamentPlayerByTeamChanged>(_onPlayerByTeamChanged);
     on<FormTournamentServerTypeChanged>(_onServerTypeChanged);
     on<FormTournamentNumberTeamChanged>(_onNumberTeamChanged);
@@ -36,7 +41,7 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
     final nameCup = NameCup.dirty(event.nameCup);
     emit(state.copyWith(
       nameCup: nameCup,
-      status: Formz.validate([state.numberRound,state.day,state.month,state.years,state.playerByTeam,state.serverType, nameCup,state.numberTeam]),
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,state.yearsSign,state.playerByTeam,state.serverType, nameCup,state.numberTeam]),
     ));
   }
 
@@ -45,7 +50,7 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
       final numberRound = NumberRound.dirty(event.numberRound);
       emit(state.copyWith(
         numberRound: numberRound,
-        status: Formz.validate([numberRound,state.day,state.month,state.years,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+        status: Formz.validate([numberRound,state.daySign,state.monthSign,state.yearsSign,state.dayStart,state.monthStart,state.yearsStart,state.hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam,]),
       ));
 
   }
@@ -53,39 +58,68 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
     final numberTeam = NumberTeam.dirty(event.numberTeam);
     emit(state.copyWith(
       numberTeam: numberTeam,
-      status: Formz.validate([state.numberRound,state.day,state.month,state.years,state.playerByTeam,state.serverType, state.nameCup,numberTeam]),
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,state.yearsSign,state.playerByTeam,state.serverType, state.nameCup,numberTeam]),
     ));
   }
 
-  FutureOr<void> _onDayChanged(FormTournamentDayChanged event, Emitter<FormTournamentStep2State> emit) {
-    final day = Day.dirty(event.day);
+  FutureOr<void> _onDaySignChanged(FormTournamentDaySignChanged event, Emitter<FormTournamentStep2State> emit) {
+    final daySign = Day.dirty(event.daySign);
     emit(state.copyWith(
-      day: day,
-      status: Formz.validate([state.numberRound,day,state.month,state.years,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+      daySign: daySign,
+      status: Formz.validate([state.numberRound,daySign,state.monthSign,state.yearsSign,state.dayStart,state.monthStart,state.yearsStart,state.hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
     ));
   }
 
-  FutureOr<void> _onMonthChanged(FormTournamentMonthChanged event, Emitter<FormTournamentStep2State> emit) {
-    final month = Month.dirty(event.month);
+  FutureOr<void> _onMonthSignChanged(FormTournamentMonthSignChanged event, Emitter<FormTournamentStep2State> emit) {
+    final monthSign = Month.dirty(event.monthSign);
     emit(state.copyWith(
-      month: month,
-      status: Formz.validate([state.numberRound,state.day,month,state.years,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+      monthSign: monthSign,
+      status: Formz.validate([state.numberRound,state.daySign,monthSign,state.yearsSign,state.dayStart,state.monthStart,state.yearsStart,state.hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
     ));
   }
 
-  FutureOr<void> _onYearsChanged(FormTournamentYearsChanged event, Emitter<FormTournamentStep2State> emit) {
-    final years = Years.dirty(event.years);
+  FutureOr<void> _onYearsSignChanged(FormTournamentYearsSignChanged event, Emitter<FormTournamentStep2State> emit) {
+    final yearsSign = Years.dirty(event.yearsSign);
     emit(state.copyWith(
-      years: years,
-      status: Formz.validate([state.numberRound,state.day,state.month,years,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+      yearsSign: yearsSign,
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,yearsSign,state.dayStart,state.monthStart,state.yearsStart,state.hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+    ));
+  }
+  FutureOr<void> _onDayStartChanged(FormTournamentDayStartChanged event, Emitter<FormTournamentStep2State> emit) {
+    final dayStart = Day.dirty(event.dayStart);
+    emit(state.copyWith(
+      dayStart: dayStart,
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,state.yearsSign,dayStart,state.monthStart,state.yearsStart,state.hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
     ));
   }
 
+  FutureOr<void> _onMonthStartChanged(FormTournamentMonthStartChanged event, Emitter<FormTournamentStep2State> emit) {
+    final monthStart = Month.dirty(event.monthStart);
+    emit(state.copyWith(
+      monthStart: monthStart,
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,state.yearsSign,state.dayStart,monthStart,state.yearsStart,state.hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+    ));
+  }
+
+  FutureOr<void> _onYearsStartChanged(FormTournamentYearsStartChanged event, Emitter<FormTournamentStep2State> emit) {
+    final yearsStart = Years.dirty(event.yearsStart);
+    emit(state.copyWith(
+      yearsStart: yearsStart,
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,state.yearsSign,state.dayStart,state.monthStart,yearsStart,state.hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+    ));
+  }
+  FutureOr<void> _onHoursStartChanged(FormTournamentHoursStartChanged event, Emitter<FormTournamentStep2State> emit) {
+    final hoursStart = Hours.dirty(event.hoursStart);
+    emit(state.copyWith(
+      hoursStart: hoursStart,
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,state.yearsSign,state.dayStart,state.monthStart,state.yearsStart,hoursStart,state.playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+    ));
+  }
   FutureOr<void> _onPlayerByTeamChanged(FormTournamentPlayerByTeamChanged event, Emitter<FormTournamentStep2State> emit) {
     var playerByTeam = PlayerByTeam.dirty(event.playerByTeam);
     emit(state.copyWith(
       playerByTeam: playerByTeam,
-      status: Formz.validate([playerByTeam,state.day,state.month,state.years,playerByTeam,state.serverType, state.nameCup,state.numberTeam]),
+      status: Formz.validate([playerByTeam,state.daySign,state.monthSign,state.yearsSign,playerByTeam,state.dayStart,state.monthStart,state.yearsStart,state.hoursStart,state.serverType, state.nameCup,state.numberTeam]),
     ));
   }
 
@@ -93,7 +127,7 @@ class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournam
     final serverType = ServerType.dirty(event.serverType);
     emit(state.copyWith(
       serverType: serverType,
-      status: Formz.validate([state.numberRound,state.day,state.month,state.years,state.playerByTeam,serverType, state.nameCup,state.numberTeam]),
+      status: Formz.validate([state.numberRound,state.daySign,state.monthSign,state.yearsSign,state.dayStart,state.monthStart,state.yearsStart,state.hoursStart,state.playerByTeam,serverType, state.nameCup,state.numberTeam]),
     ));
   }
 

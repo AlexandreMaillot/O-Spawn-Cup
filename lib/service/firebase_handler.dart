@@ -1,21 +1,21 @@
-import 'dart:io';
-import 'dart:math';
+import "dart:io";
+import "dart:math";
 
-import 'package:firebase_auth/firebase_auth.dart';
+import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
-import 'package:o_spawn_cup/models/Member/member.dart';
-import 'package:o_spawn_cup/models/Round/round.dart';
-import 'package:o_spawn_cup/models/Team/team.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
-import 'package:o_spawn_cup/models/game_name.dart';
-import 'package:o_spawn_cup/models/server_type.dart';
-import 'package:o_spawn_cup/service/authentification.dart';
-import 'package:o_spawn_cup/service/generate_code.dart';
-import 'dart:developer' as dev;
-import '../models/MemberTournament/member_tournament.dart';
-import '../models/role_type.dart';
+import "package:o_spawn_cup/models/Member/member.dart";
+import "package:o_spawn_cup/models/Round/round.dart";
+import "package:o_spawn_cup/models/Team/team.dart";
+import "package:o_spawn_cup/models/Tournament/tournament.dart";
+import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
+import "package:o_spawn_cup/models/TournamentType/tournament_type.dart";
+import "package:o_spawn_cup/models/game_name.dart";
+import "package:o_spawn_cup/models/server_type.dart";
+import "package:o_spawn_cup/service/authentification.dart";
+import "package:o_spawn_cup/service/utils.dart";
+import "dart:developer" as dev;
+import "../models/MemberTournament/member_tournament.dart";
+import "../models/role_type.dart";
 
 enum FirebaseStatusEvent { teamExist, teamFull,changeRowSuccess, disqualifiedSuccess,disqualifiedFail, codeNotFound, memberNotConnect, cupFull, cupStateChangeSuccess, cupStateChangeFail, memberAlreadySign,memberSignSuccess, teamNotEmpty}
 class FirebaseHandler {
@@ -39,7 +39,8 @@ class FirebaseHandler {
 
   Future<Tournament> addTournamentFirebase(
       String name,
-      int date,
+      DateTime dateDebutTournois,
+      DateTime dateDebutInscription,
       GameName game,
       ServerType server,
       TournamentType tournamentType,
@@ -55,7 +56,8 @@ class FirebaseHandler {
     final urlString = await addImageToStorage(ref, file);
     Tournament tournament = Tournament(
       name: name,
-      date: date,
+      dateDebutTournois: dateDebutTournois,
+      dateDebutInscription: dateDebutInscription,
       game: game,
       server: server,
       tournamentType: tournamentType,

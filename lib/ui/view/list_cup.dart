@@ -1,7 +1,7 @@
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import 'package:o_spawn_cup/bloc/list_tournament_bloc/tournament_bloc.dart';
+import 'package:o_spawn_cup/bloc/list_tournament_bloc/list_tournament_bloc.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/no_data.dart";
@@ -10,28 +10,17 @@ import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/card_cup.dart";
 import "package:o_spawn_cup/models/game_name.dart";
 import "package:shimmer/shimmer.dart";
+import '../../cubit/member_bloc/member_cubit.dart';
 import "floating_action_bottom_sheet.dart";
+
 
 class ListCup extends StatelessWidget {
   GameName gameName;
-  ListCup({Key? key,required this.gameName}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TournamentBloc(gn: gameName)..add(TournamentInitialisation()),
-      child: ListCupView(gameName: gameName,),
-    );
-  }
-}
-class ListCupView extends StatelessWidget {
-
-  ListCupView({required GameName gameName});
-
+  ListCup({required this.gameName});
 
   @override
   Widget build(BuildContext context) {
-
-    GlobalKey<State<FloatingActionBottomSheet>> keyFloating = GlobalKey<State<FloatingActionBottomSheet>>();
+    context.read<ListTournamentBloc>().add(TournamentInitialisation(gameName: gameName));
     Size screenSize = MediaQuery
         .of(context)
         .size;
@@ -43,7 +32,7 @@ class ListCupView extends StatelessWidget {
       bottomNavigationBar: _buildBottomAppBar(context),
       body: Container(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 18),
-        child: BlocBuilder<TournamentBloc, TournamentState>(
+        child: BlocBuilder<ListTournamentBloc, ListTournamentState>(
           builder: (context, state) {
             if (state.runtimeType == TournamentError) {
               return NoData(string: "Impossible de charger les tournois !");
@@ -78,10 +67,7 @@ class ListCupView extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionBottomSheet(
-        key: keyFloating,
-        onPress: () => context.read<TournamentBloc>().add(TournamentLoad()),
-      ),
+      floatingActionButton: FloatingActionBottomSheet(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

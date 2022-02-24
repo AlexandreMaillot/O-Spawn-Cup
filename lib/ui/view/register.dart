@@ -103,7 +103,7 @@ class _RegisterState extends State<Register> {
                   padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                   child: CustomDivider(screenSize: screenSize),
                 ),
-                Container(
+                SizedBox(
                   width: screenSize.width,
                   height: screenSize.height*0.125,
                   child: Column(

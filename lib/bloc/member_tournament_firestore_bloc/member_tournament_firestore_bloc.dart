@@ -53,16 +53,16 @@ class MemberTournamentFirestoreBloc extends Bloc<MemberTournamentFirestoreEvent,
     if (typeMsg == TypeMsg.welcomeMsg) {
       subject = "Inscription validée";
       txt =
-          "Salut, tu es bien inscrit sur pour le tournois qui aura lieu le ${tournament.date}";
+          "Salut, tu es bien inscrit sur pour le tournois qui aura lieu le ${tournament.dateDebutTournois}";
       txtHtml =
-          "<p>Salut, tu es bien inscrit sur pour le tournois qui aura lieu le <b>${tournament.date}</b></p>";
+          "<p>Salut, tu es bien inscrit sur pour le tournois qui aura lieu le <b>${tournament.dateDebutTournois}</b></p>";
     }
     if (typeMsg == TypeMsg.leaderMsg) {
       subject = "Code chef d'équipe";
       txt =
-          "Voici le code pour le tournois qui aura lieu le ${tournament.date}";
+          "Voici le code pour le tournois qui aura lieu le ${tournament.dateDebutTournois}";
       txtHtml =
-          "<p>Voici le code pour le tournois qui aura lieu le ${tournament.date} \n <b>${team.teamCode}</b></p>";
+          "<p>Voici le code pour le tournois qui aura lieu le ${tournament.dateDebutTournois} \n <b>${team.teamCode}</b></p>";
     }
 
     final message = Message()

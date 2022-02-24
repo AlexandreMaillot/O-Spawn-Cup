@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_connect_with.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_divider.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
-import 'package:o_spawn_cup/service/authentification.dart';
+import "package:flutter/material.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_connect_with.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_divider.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
+import "package:o_spawn_cup/service/authentification.dart";
 
-import '../CustomsWidgets/custom_text_form_field.dart';
-import 'login_register.dart';
+import "../CustomsWidgets/custom_text_form_field.dart";
+import "login_register.dart";
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -58,9 +58,9 @@ class _LoginState extends State<Login> {
                           padding: EdgeInsets.only(top: screenSize.height * 0.014),
                           child: IconButton(
                             onPressed: (){
-                              Navigator.pushNamed(context, '/');
+                              Navigator.pushNamed(context, "/");
                             },
-                            icon: Icon(Icons.arrow_back,color: Color(0xff191919)),
+                            icon: const Icon(Icons.arrow_back,color: Color(0xff191919)),
                           ),
                         ),
                         Center(
@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                     key: _formKey,
                     child: Padding(
                       padding: EdgeInsets.only(top: screenSize.height * 0.031,bottom: screenSize.height * 0.044),
-                      child: Container(
+                      child: SizedBox(
                         width: screenSize.width,
                         height: screenSize.height * 0.13,
                         child: Column(
@@ -107,7 +107,7 @@ class _LoginState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE", onPressedMethod: () => auth.signUpWithGoogle()),
-                        CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK", onPressedMethod: () => print('test')),
+                        CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK", onPressedMethod: () => print("test")),
                       ],
                     ),
                   ),

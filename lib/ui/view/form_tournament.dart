@@ -1,27 +1,27 @@
 import "dart:io";
 import "dart:math";
 
-import 'package:animated_widgets/animated_widgets.dart';
+import "package:animated_widgets/animated_widgets.dart";
 import "package:dotted_border/dotted_border.dart";
-import 'package:flutter/cupertino.dart';
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import 'package:formz/formz.dart';
-import 'package:o_spawn_cup/bloc/form_tournament_step_3_bloc/form_tournament_step_3_bloc.dart';
+import "package:formz/formz.dart";
+import "package:o_spawn_cup/bloc/form_tournament_step_3_bloc/form_tournament_step_3_bloc.dart";
 import "package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart";
 import "package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart";
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
 import "package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart";
 import "package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
-import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
+import "package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
 import "package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart";
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
+import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/models/game_name.dart";
 import "package:o_spawn_cup/models/make_it_responsive.dart";
-import 'package:o_spawn_cup/models/server_type.dart';
-import 'package:o_spawn_cup/models/validator/server_type.dart'
+import "package:o_spawn_cup/models/server_type.dart";
+import "package:o_spawn_cup/models/validator/server_type.dart"
     as serverTypeValidator;
-import 'package:o_spawn_cup/service/firebase_handler.dart';
+import "package:o_spawn_cup/service/firebase_handler.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
@@ -33,9 +33,9 @@ import "package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
 import "package:o_spawn_cup/constant.dart";
 
-import '../../bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart';
-import '../../bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart';
-import '../../cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
+import "../../bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart";
+import "../../bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart";
+import "../../cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
 
 class FormTournament extends StatelessWidget {
   FormTournament({
@@ -85,9 +85,13 @@ class FormTournamentView extends StatelessWidget {
       PageController(viewportFraction: 0.5, initialPage: 1);
 
   FormTournamentView({Key? key}) : super(key: key);
-  TextEditingController dayController = TextEditingController();
-  TextEditingController monthController = TextEditingController();
-  TextEditingController yearsController = TextEditingController();
+  TextEditingController daySignController = TextEditingController();
+  TextEditingController monthSignController = TextEditingController();
+  TextEditingController yearsSignController = TextEditingController();
+  TextEditingController dayStartController = TextEditingController();
+  TextEditingController monthStartController = TextEditingController();
+  TextEditingController yearsStartController = TextEditingController();
+  TextEditingController hoursStartController = TextEditingController();
   TextEditingController cupNameController = TextEditingController();
   TextEditingController cashPrizeController = TextEditingController();
   TextEditingController teamNumberController = TextEditingController();
@@ -105,6 +109,9 @@ class FormTournamentView extends StatelessWidget {
   FocusNode dayFocus = FocusNode();
   FocusNode monthFocus = FocusNode();
   FocusNode yearsFocus = FocusNode();
+  FocusNode dayStartFocus = FocusNode();
+  FocusNode monthStartFocus = FocusNode();
+  FocusNode yearsStartFocus = FocusNode();
   FocusNode tournamentFocus = FocusNode();
   @override
   Widget build(BuildContext context) {
@@ -199,9 +206,14 @@ class FormTournamentView extends StatelessWidget {
 
                                             context.read<FormTournamentStep2Bloc>().add(FormTournamentNameCupChanged(cupNameController.text));
                                             context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberRoundChanged(int.tryParse(roundNumberController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentDayChanged(int.tryParse(dayController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthChanged(int.tryParse(monthController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsChanged(int.tryParse(yearsController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentDaySignChanged(int.tryParse(daySignController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthSignChanged(int.tryParse(monthSignController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsSignChanged(int.tryParse(yearsSignController.text)));
+
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentDayStartChanged(int.tryParse(dayStartController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthStartChanged(int.tryParse(monthStartController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsStartChanged(int.tryParse(yearsStartController.text)));
+                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentHoursStartChanged(hoursStartController.text));
                                             context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberTeamChanged(int.tryParse(teamNumberController.text)));
                                             context.read<FormTournamentStep2Bloc>().add(FormTournamentServerTypeChanged(serverDropdown.dropdownValue.toString()));
                                             if(context.read<WidgetNumberByPlayerBloc>().indexSelected == null){
@@ -245,11 +257,11 @@ class FormTournamentView extends StatelessWidget {
                                             .state
                                             .index
                                             .toInt();
+
                                         FirebaseHandler().addTournamentFirebase(
                                           cupNameController.text,
-                                          int.parse(yearsController.text +
-                                              monthController.text +
-                                              dayController.text),
+                                          DateTime(int.parse(yearsSignController.text),int.parse(monthSignController.text),int.parse(daySignController.text),),
+                                          DateTime(int.parse(yearsStartController.text),int.parse(monthStartController.text),int.parse(dayStartController.text),int.parse(hoursStartController.text.substring(0,2)),int.parse(hoursStartController.text.substring(3,5))),
                                           listCardGame[indexGameSelect]
                                               .gameName,
                                           serverDropdown.dropdownValue
@@ -597,22 +609,91 @@ class FormTournamentView extends StatelessWidget {
                   );
                 },
               ),
+              Text(
+                "Date début des inscriptions",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: colorTheme,
+                    fontSize: 10,
+                    fontFamily: "o_spawn_cup_font",
+                    fontWeight: FontWeight.normal),
+              ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
               builder: (context, state) {
                 return RowTextfieldDate(
                   paddingBottom: 10,
+                  paddingTop: 5,
                   monthFocus: monthFocus,
                   dayFocus: dayFocus,
-                  dayController: dayController,
+                  dayController: daySignController,
                   yearsFocus: yearsFocus,
-                  monthController: monthController,
-                  yearsController: yearsController,
-                  onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDayChanged(value)),
-                  onChangedMonth: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthChanged(value)),
-                  onChangedYears: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsChanged(value)),
+                  monthController: monthSignController,
+                  yearsController: yearsSignController,
+                  onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDaySignChanged(value)),
+                  onChangedMonth: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthSignChanged(value)),
+                  onChangedYears: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsSignChanged(value)),
                   screenSize: screenSize,
-                  dateValide:  context.read<FormTournamentStep2Bloc>().state.day.invalid ||  context.read<FormTournamentStep2Bloc>().state.month.invalid ||  context.read<FormTournamentStep2Bloc>().state.years.invalid,
+                  dateValide:  context.read<FormTournamentStep2Bloc>().state.daySign.valid && context.read<FormTournamentStep2Bloc>().state.monthSign.valid &&  context.read<FormTournamentStep2Bloc>().state.yearsSign.valid,
                 );
+                },
+              ),
+              Text(
+                "Date début du tournois",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: colorTheme,
+                    fontSize: 10,
+                    fontFamily: "o_spawn_cup_font",
+                    fontWeight: FontWeight.normal),
+              ),
+              BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
+                builder: (context, state) {
+                  return RowTextfieldDate(
+                    paddingBottom: 10,
+                    paddingTop: 5,
+                    monthFocus: monthStartFocus,
+                    dayFocus: dayStartFocus,
+                    dayController: dayStartController,
+                    yearsFocus: yearsStartFocus,
+                    monthController: monthStartController,
+                    yearsController: yearsStartController,
+                    onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDayStartChanged(value)),
+                    onChangedMonth: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthStartChanged(value)),
+                    onChangedYears: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsStartChanged(value)),
+                    screenSize: screenSize,
+                    dateValide:  context.read<FormTournamentStep2Bloc>().state.daySign.valid && context.read<FormTournamentStep2Bloc>().state.monthSign.valid && context.read<FormTournamentStep2Bloc>().state.yearsSign.valid,
+                  );
+                },
+              ),
+              Text(
+                "Heure début du tournois",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: colorTheme,
+                    fontSize: 10,
+                    fontFamily: "o_spawn_cup_font",
+                    fontWeight: FontWeight.normal),
+              ),
+              BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
+                builder: (context, state) {
+                  return CustomTextField(
+                    screenSize: screenSize,
+                    paddingBottom: 10,
+                    paddingTop: 5,
+                    textInputAction: TextInputAction.next,
+                    textAlign: TextAlign.left,
+                    widthTextfield: screenSize.width * 0.4,
+                    text: "Heure",
+                    suffixIcon: const Icon(Icons.access_time_outlined),
+                    controller: hoursStartController,
+                    onChanged: (context, value) => context
+                        .read<FormTournamentStep2Bloc>()
+                        .add(FormTournamentHoursStartChanged(value)),
+                    typeTextField: TextInputType.datetime,
+                    errorText: state.hoursStart.invalid
+                        ? "L'heure n'est pas valide !"
+                        : null,
+                  );
                 },
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
