@@ -3,6 +3,7 @@ import "dart:math";
 
 import "package:animated_widgets/animated_widgets.dart";
 import "package:dotted_border/dotted_border.dart";
+import "package:dotted_line/dotted_line.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -12,6 +13,7 @@ import "package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart";
 import "package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart";
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
 import "package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart";
+import "package:o_spawn_cup/cubit/list_cash_prizes_cubit.dart";
 import "package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
 import "package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
 import "package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart";
@@ -21,7 +23,9 @@ import "package:o_spawn_cup/models/make_it_responsive.dart";
 import "package:o_spawn_cup/models/server_type.dart";
 import "package:o_spawn_cup/models/validator/server_type.dart"
     as serverTypeValidator;
+import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
 import "package:o_spawn_cup/service/firebase_handler.dart";
+import 'package:o_spawn_cup/service/utils.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
@@ -51,7 +55,7 @@ class FormTournament extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) =>
-              StepByStepWidgetBloc(initialIndex: 0, initialIndexMax: 4),
+              StepByStepWidgetBloc(initialIndex: 3, initialIndexMax: 5),
         ),
         BlocProvider(
           create: (_) => WidgetNumberByPlayerBloc(),
@@ -73,6 +77,9 @@ class FormTournament extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => FormTournamentStep4Bloc(),
+        ),
+        BlocProvider(
+          create: (_) => ListCashPrizesCubit(listCashPrizes: []),
         ),
       ],
       child: FormTournamentView(),
@@ -178,14 +185,14 @@ class FormTournamentView extends StatelessWidget {
                                       },
                                     ),
                                   CustomButtonTheme(
-                                    text: (currentIndex < 4)
+                                    text: (currentIndex < 5)
                                         ? "VALIDER"
                                         : "TERMINER",
                                     screenSize: screenSize,
                                     colorButton: colorTheme,
                                     colorText: colorBackgroundTheme,
                                     width: screenSize.width / 3,
-                                    onPressedMethod: () {
+                                    onPressedMethod: () async {
                                       if (currentIndex < context.read<StepByStepWidgetBloc>().indexMax) {
                                         if(currentIndex == 0) {
                                           controls.onStepContinue!();
@@ -249,9 +256,12 @@ class FormTournamentView extends StatelessWidget {
                                             context.read<FormTournamentStep4Bloc>().add(const FormTournamentSubmitted4());
                                           }
                                         }
+                                        if(currentIndex == 4) {
+                                          controls.onStepContinue!();
+                                        }
 
+                                      }  else {
 
-                                      } else {
                                         int indexGameSelect = context
                                             .read<SelectGameBloc>()
                                             .state
@@ -265,27 +275,27 @@ class FormTournamentView extends StatelessWidget {
                                           listCardGame[indexGameSelect]
                                               .gameName,
                                           serverDropdown.dropdownValue
-                                              as ServerType,
+                                          as ServerType,
                                           listTournamentType[context
                                               .read<WidgetNumberByPlayerBloc>()
                                               .indexSelected!],
                                           int.parse(teamNumberController.text),
-                                          cashPrizeController.text,
+                                          context.read<ListCashPrizesCubit>().list,
                                           int.parse(roundNumberController.text),
                                           int.parse(
                                               pointPerKillController.text),
                                           (context.read<TakeImageGalleryCubit>().state.imageTaked !=null)
                                               ? context
-                                                  .read<TakeImageGalleryCubit>()
-                                                  .state
-                                                  .imageTaked!
+                                              .read<TakeImageGalleryCubit>()
+                                              .state
+                                              .imageTaked!
                                               : File(listImagePre[(context
-                                                              .read<
-                                                                  SelectedImagePredefCubit>()
-                                                              .state
-                                                          as SelectedImagePredefInitial)
-                                                      .indexSelected!]
-                                                  .image),
+                                              .read<
+                                              SelectedImagePredefCubit>()
+                                              .state
+                                          as SelectedImagePredefInitial)
+                                              .indexSelected!]
+                                              .image),
                                         );
                                         Navigator.of(context)
                                             .pushNamed("/home");
@@ -313,7 +323,8 @@ class FormTournamentView extends StatelessWidget {
                             buildStep2(currentIndex, screenSize),
                             buildStep3(currentIndex, screenSize),
                             buildStep4(currentIndex, screenSize,context),
-                            buildStep5(currentIndex, screenSize,
+                            buildStep5(currentIndex, screenSize),
+                            buildStep6(currentIndex, screenSize,
                                 controllersCodeGenerate),
                           ]);
                     },
@@ -327,13 +338,14 @@ class FormTournamentView extends StatelessWidget {
     );
   }
 
-  Step buildStep5(int currentIndex, Size screenSize,
+
+  Step buildStep6(int currentIndex, Size screenSize,
       List<TextEditingController> controllersCodeGenerate) {
     String beforeCode = DateTime.now().millisecond.toString() +
         DateTime.now().microsecond.toString();
     return Step(
-      state: currentIndex > 4 ? StepState.complete : StepState.disabled,
-      isActive: currentIndex >= 4,
+      state: currentIndex > 5 ? StepState.complete : StepState.disabled,
+      isActive: currentIndex >= 5,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -385,7 +397,97 @@ class FormTournamentView extends StatelessWidget {
       ),
     );
   }
+  Step buildStep5(int currentIndex, Size screenSize) {
 
+    return Step(
+      state: currentIndex > 4 ? StepState.complete : StepState.disabled,
+      isActive: currentIndex >= 4,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          TextElement(
+            text: "Cash prizes",
+            color: colorTheme,
+          )
+        ],
+      ),
+      content: BlocBuilder<ListCashPrizesCubit, ListCashPrizesState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            (context.read<ListCashPrizesCubit>().list.isEmpty)
+                ? TextElement(text: "Il n'y a aucun cash prizes !",color: Colors.white,)
+                : ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              primary: false,
+              itemCount: context.read<ListCashPrizesCubit>().list.length,
+              itemBuilder: (context, index) {
+
+
+                return Row(
+                  // crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+
+                    TextElement(text: (index + 1).toString()+ " ",color: Colors.white,),
+                    const Expanded(
+                      child: DottedLine(
+                        dashColor: Colors.white,
+                        lineThickness: 0.3,
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () => _displayTextInputDialog(context,index),
+                        child: TextElement(text: context.read<ListCashPrizesCubit>().list[index].toString() ,color: Colors.white)),
+                    IconButton(onPressed: () => context.read<ListCashPrizesCubit>().deleteCashPrizes(index),icon: const Icon(Icons.delete_forever,color: Colors.red,)),
+                  ],
+                );
+
+              },
+            ),
+            TextButton.icon(onPressed: () => _displayTextInputDialog(context,null), icon: const Icon(Icons.add_circle,color: Colors.white), label: TextElement(text: "Ajouter un lot",color: colorTheme,))
+          ],
+        );
+      },
+    ),
+    );
+  }
+  Future<void> _displayTextInputDialog(BuildContext contextLocal,int? index) async {
+    TextEditingController _textFieldController = TextEditingController();
+    return showDialog(
+        context: contextLocal,
+        builder: (context) {
+          _textFieldController.text = (index != null) ? contextLocal.read<ListCashPrizesCubit>().list[index] : "";
+          return AlertDialog(
+            title: TextElement(text: "Ajouter un cash prize"),
+            content: TextField(
+              controller: _textFieldController,
+              decoration: const InputDecoration(hintText: "Pull o-spawn,discord nitro,Skin fornite..."),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: TextElement(text: "Annuler"),
+                onPressed: () {
+                    Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: TextElement(text: "Valider",color: colorOrange,),
+                onPressed: () {
+                  if(index != null){
+                    contextLocal.read<ListCashPrizesCubit>().modifCashPrize(index,_textFieldController.text);
+                  } else {
+                    contextLocal.read<ListCashPrizesCubit>().addCashPrize(_textFieldController.text);
+                  }
+
+                    Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
   Step buildStep4(int currentIndex, Size screenSize,BuildContext context) {
     return Step(
         state: currentIndex > 3 ? StepState.complete : StepState.disabled,
@@ -419,6 +521,7 @@ class FormTournamentView extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: BlocBuilder<SelectGameBloc, SelectGameState>(
                   builder: (context, state) {
+                    //
                     return GridView.count(
                       shrinkWrap: true,
                       primary: false,
@@ -827,6 +930,7 @@ class WidgetChooseImage extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     return BlocBuilder<TakeImageGalleryCubit, TakeImageGalleryState>(
       builder: (context, state) {
+       print(context.read<TakeImageGalleryCubit>().state.imageTaked);
         final imageTaked = state.imageTaked;
         if (imageTaked != null) {
           context.read<SelectedImagePredefCubit>().clearImgSelect();
@@ -891,7 +995,7 @@ class WidgetChooseImage extends StatelessWidget {
                           Text(
                             "max 5 mo",
                             style: TextStyle(
-                              color: colorTheme,
+                              color: colorOrange,
                               fontFamily: "o_spawn_cup_font",
                             ),
                           )

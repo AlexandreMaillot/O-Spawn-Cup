@@ -26,11 +26,14 @@ class Tournament {
   ServerType server;
   TournamentType tournamentType;
   int capacity;
-  String cashPrize;
+  @JsonKey(fromJson: _fromJson)
+  List<String>? cashPrize;
   int roundNumber;
   TournamentState state = TournamentState.inscriptionFermer;
   String? imageUrl;
   int killPointTournament;
+
+
   Tournament(
       {required this.name,
       required this.dateDebutTournois,
@@ -38,10 +41,10 @@ class Tournament {
       required this.server,
       required this.tournamentType,
       required this.capacity,
-      required this.cashPrize,
       required this.roundNumber,
       required this.dateDebutInscription,
       this.imageUrl,
+      this.cashPrize = const<String>[],
       // required this.listRangPointTournament,
       required this.killPointTournament,}) {
   }
@@ -50,6 +53,27 @@ class Tournament {
       _$TournamentFromJson(json);
 
   Map<String, Object?> toJson() => _$TournamentToJson(this);
+
+  DocumentReference firestoreDocRefFromJson(dynamic value) {
+    if (value is String) {
+      return FirebaseFirestore.instance.doc(value);
+    } else {
+      return FirebaseFirestore.instance.doc(value.path);
+    }
+  }
+
+  static List<String> _fromJson(Iterable<dynamic> value) => List<String>.from(value);
+
+  dynamic firestoreListDocRefToJson(dynamic value) => value;
+
+  List<DocumentReference> firestoreListDocRefFromJson(List value) {
+    final List<DocumentReference> list = [];
+    for (var element in value) {
+      list.add(firestoreDocRefFromJson(element));
+    }
+    return list;
+  }
+
 }
 
 @Collection<Tournament>("Tournament")

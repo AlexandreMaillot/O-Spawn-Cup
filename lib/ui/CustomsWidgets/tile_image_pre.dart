@@ -33,7 +33,8 @@ class TileImagePre extends StatelessWidget {
       highlightColor: Colors.transparent,
       onTap: ()  {
         var indexSelect = index;
-
+        print(index);
+        print(gameName);
         context.read<SelectedImagePredefCubit>().changedIndexSelect(index);
         context.read<TakeImageGalleryCubit>().clearPicture();
         if(indexSelect == (state as SelectedImagePredefInitial).indexSelected) {

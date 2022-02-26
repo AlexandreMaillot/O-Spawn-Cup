@@ -127,7 +127,7 @@ abstract class TournamentDocumentReference
     String? documentId,
     String name,
     int capacity,
-    String cashPrize,
+    List<String>? cashPrize,
     int roundNumber,
     String? imageUrl,
     int killPointTournament,
@@ -195,7 +195,7 @@ class _$TournamentDocumentReference
       if (documentId != _sentinel) "documentId": documentId as String?,
       if (name != _sentinel) "name": name as String,
       if (capacity != _sentinel) "capacity": capacity as int,
-      if (cashPrize != _sentinel) "cashPrize": cashPrize as String,
+      if (cashPrize != _sentinel) "cashPrize": cashPrize as List<String>?,
       if (roundNumber != _sentinel) "roundNumber": roundNumber as int,
       if (imageUrl != _sentinel) "imageUrl": imageUrl as String?,
       if (killPointTournament != _sentinel)
@@ -283,15 +283,14 @@ abstract class TournamentQuery
     List<int>? whereNotIn,
   });
   TournamentQuery whereCashPrize({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
+    List<String>? isEqualTo,
+    List<String>? isNotEqualTo,
+    List<String>? isLessThan,
+    List<String>? isLessThanOrEqualTo,
+    List<String>? isGreaterThan,
+    List<String>? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String>? arrayContainsAny,
   });
   TournamentQuery whereRoundNumber({
     int? isEqualTo,
@@ -365,10 +364,10 @@ abstract class TournamentQuery
 
   TournamentQuery orderByCashPrize({
     bool descending = false,
-    String startAt,
-    String startAfter,
-    String endAt,
-    String endBefore,
+    List<String>? startAt,
+    List<String>? startAfter,
+    List<String>? endAt,
+    List<String>? endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -558,15 +557,14 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
   }
 
   TournamentQuery whereCashPrize({
-    String? isEqualTo,
-    String? isNotEqualTo,
-    String? isLessThan,
-    String? isLessThanOrEqualTo,
-    String? isGreaterThan,
-    String? isGreaterThanOrEqualTo,
+    List<String>? isEqualTo,
+    List<String>? isNotEqualTo,
+    List<String>? isLessThan,
+    List<String>? isLessThanOrEqualTo,
+    List<String>? isGreaterThan,
+    List<String>? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String>? arrayContainsAny,
   }) {
     return _$TournamentQuery(
       reference.where(
@@ -578,8 +576,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
         isGreaterThan: isGreaterThan,
         isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
         isNull: isNull,
-        whereIn: whereIn,
-        whereNotIn: whereNotIn,
+        arrayContainsAny: arrayContainsAny,
       ),
       _collection,
     );
@@ -3280,12 +3277,14 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
       tournamentType: TournamentType.fromJson(
           json['tournamentType'] as Map<String, dynamic>),
       capacity: json['capacity'] as int,
-      cashPrize: json['cashPrize'] as String,
       roundNumber: json['roundNumber'] as int,
       dateDebutInscription: json['dateDebutInscription'] == null
           ? null
           : DateTime.parse(json['dateDebutInscription'] as String),
       imageUrl: json['imageUrl'] as String?,
+      cashPrize: json['cashPrize'] == null
+          ? const <String>[]
+          : Tournament._fromJson(json['cashPrize'] as List),
       killPointTournament: json['killPointTournament'] as int,
     )..state = $enumDecode(_$TournamentStateEnumMap, json['state']);
 

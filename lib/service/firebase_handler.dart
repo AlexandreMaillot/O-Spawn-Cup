@@ -13,6 +13,7 @@ import "package:o_spawn_cup/models/game_name.dart";
 import "package:o_spawn_cup/models/server_type.dart";
 import "package:o_spawn_cup/service/authentification.dart";
 import "package:o_spawn_cup/service/utils.dart";
+import "package:flutter/services.dart" show rootBundle;
 import "dart:developer" as dev;
 import "../models/MemberTournament/member_tournament.dart";
 import "../models/role_type.dart";
@@ -30,7 +31,11 @@ class FirebaseHandler {
 
   Future<String> addImageToStorage(
       firebase_storage.Reference ref, File file) async {
-    firebase_storage.UploadTask task = ref.putFile(file);
+    print(file);
+    final byteData = await rootBundle.load(file.path);
+
+    firebase_storage.UploadTask task = ref.putData(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    print(task);
     firebase_storage.TaskSnapshot snapshot =
         await task.whenComplete(() => null);
     String urlString = await snapshot.ref.getDownloadURL();
@@ -45,7 +50,7 @@ class FirebaseHandler {
       ServerType server,
       TournamentType tournamentType,
       int capacity,
-      String cashPrize,
+      List<String> cashPrize,
       int roundNumber,
       int killPointTournament,
       File file) async {

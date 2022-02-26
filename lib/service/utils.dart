@@ -1,6 +1,13 @@
 
-import 'dart:math';
-import 'package:intl/intl.dart';
+import "dart:math";
+import 'package:flutter/cupertino.dart';
+import "package:intl/intl.dart";
+import "dart:async";
+import "dart:io";
+import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
+import "package:flutter/services.dart" show rootBundle;
+import "package:path_provider/path_provider.dart";
+
 class Utils {
   int? numRound = 0;
 
@@ -20,5 +27,23 @@ class Utils {
       return "";
     }
 
+  }
+
+  Future<File> getImageFileFromAssetssss(String path) async {
+    final byteData = await rootBundle.load('$path');
+
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    return file;
+  }
+
+  getImageFileFromAssets(String path) async {
+    // File f = await getImageFileFromAssetssss('assets/images/logo.svg');
+    final byteData = await rootBundle.load(path);
+    print(path);
+    await firebase_storage.FirebaseStorage.instance
+          .ref('uploads/file-to-upload.png')
+          .putData(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
   }
 }
