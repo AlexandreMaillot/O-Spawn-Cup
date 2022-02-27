@@ -85,7 +85,7 @@ class CustomDrawer extends StatelessWidget {
                                   screenSize: screenSize,
                                   colorButton: Colors.white,
                                   text: "CREER UN TOURNOIS",
-                                  onPressedMethod: () => Navigator.of(context).push(BlocRouter().cupForm()),
+                                  onPressedMethod: () => Navigator.of(context).push(BlocRouter().cupForm(null)),
                                 );
                                 }
                               }

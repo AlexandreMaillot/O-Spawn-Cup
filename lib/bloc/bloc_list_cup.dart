@@ -4,6 +4,7 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:o_spawn_cup/bloc/bloc.dart";
 import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/models/game_name.dart";
+import 'package:o_spawn_cup/service/firebase_handler.dart';
 import "package:shared_preferences/shared_preferences.dart";
 
 class BlocListCup extends Bloc {
@@ -17,6 +18,7 @@ class BlocListCup extends Bloc {
   Sink<List<Tournament>> get sink => _streamController.sink;
 
   loadCup() {
+    print("ok");
     String? name = filters.getString("tournamentName");
     String? state = filters.getString("tournamentState");
 
@@ -46,16 +48,23 @@ class BlocListCup extends Bloc {
     Stream<List<QueryDocumentSnapshot<Object?>>> listSnap = querySnap.map((event) => event.docs);
     listSnap.forEach((element) {
       tournamentList = element.map((e) => e.data()).cast<Tournament>().toList();
+      changeStateTournament(tournamentList);
       sink.add(tournamentList);
     });
     // tournamentsRef.get()snapshots()
 
 
   }
-
+  changeStateTournament(List<Tournament> listTournament){
+    print(1);
+    print(2);
+    for (var element in listTournament) {
+      FirebaseHandler().checkTournamentState(element);
+    }
+  }
   BlocListCup({required this.gameName,}) {
     clearPref();
-
+    print("ossk");
     Stream<QuerySnapshot<Object?>> querySnap = tournamentsRef.reference
         .orderBy("date", descending: true)
         .where("game", isEqualTo: gameName.state)
@@ -67,6 +76,8 @@ class BlocListCup extends Bloc {
       element.asMap().forEach((key, value) {
         tournamentList[key].documentId = value.id;
       });
+
+      changeStateTournament(tournamentList);
       sink.add(tournamentList);
 
     });

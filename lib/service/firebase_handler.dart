@@ -30,22 +30,49 @@ class FirebaseHandler {
   static final storageRef = firebase_storage.FirebaseStorage.instance.ref();
 
   Future<String> addImageToStorage(
-      firebase_storage.Reference ref, File file) async {
-    print(file);
-    final byteData = await rootBundle.load(file.path);
-
-    firebase_storage.UploadTask task = ref.putData(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-    print(task);
+      firebase_storage.Reference ref, File file,bool takeByCamera) async {
+    firebase_storage.UploadTask task;
+    if(takeByCamera){
+      task = ref.putFile(file);
+    } else {
+      final byteData = await rootBundle.load(file.path);
+      task = ref.putData(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    }
     firebase_storage.TaskSnapshot snapshot =
         await task.whenComplete(() => null);
     String urlString = await snapshot.ref.getDownloadURL();
     return urlString;
   }
 
+  checkTournamentState(Tournament tournament){
+
+    DateTime dateTimeNow = DateTime.now();
+    if(tournament.state == TournamentState.inscriptionFermer) {
+
+      if(tournament.dateDebutInscription!.isBefore(dateTimeNow)){
+        tournament.state = TournamentState.incriptionOuverte;
+        modifTournament(tournament);
+      }
+    }
+    if(tournament.state == TournamentState.incriptionOuverte || tournament.state == TournamentState.inscriptionFermer) {
+      if(tournament.dateDebutTournois!.isBefore(dateTimeNow)){
+        tournament.state = TournamentState.enCours;
+        modifTournament(tournament);
+      }
+    }
+
+  }
+  cupClose(Tournament tournament){
+    tournament.state = TournamentState.terminer;
+    modifTournament(tournament);
+  }
+  modifTournament(Tournament tournament){
+    tournamentsRef.doc(tournament.documentId).set(tournament);
+  }
   Future<Tournament> addTournamentFirebase(
       String name,
-      DateTime dateDebutTournois,
       DateTime dateDebutInscription,
+      DateTime dateDebutTournois,
       GameName game,
       ServerType server,
       TournamentType tournamentType,
@@ -53,12 +80,13 @@ class FirebaseHandler {
       List<String> cashPrize,
       int roundNumber,
       int killPointTournament,
-      File file) async {
-    final ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child("tournaments")
-        .child(DateTime.now().millisecondsSinceEpoch.toInt().toString());
-    final urlString = await addImageToStorage(ref, file);
+      int pointPerRangTournament,
+      int rangStartTournament,
+      File file,
+      bool takeByCamera,
+      ) async {
+    final ref = getRefFirestorage();
+    final urlString = await addImageToStorage(ref, file,takeByCamera);
     Tournament tournament = Tournament(
       name: name,
       dateDebutTournois: dateDebutTournois,
@@ -70,6 +98,8 @@ class FirebaseHandler {
       cashPrize: cashPrize,
       roundNumber: roundNumber,
       killPointTournament: killPointTournament,
+      pointPerRangTournament: pointPerRangTournament,
+      rangStartTournament: rangStartTournament,
       imageUrl: urlString,
     );
     var idTournament = await tournamentsRef.add(tournament);
@@ -79,6 +109,13 @@ class FirebaseHandler {
     }
 
     return tournament;
+  }
+
+  firebase_storage.Reference getRefFirestorage() {
+    return firebase_storage.FirebaseStorage.instance
+      .ref()
+      .child("tournaments")
+      .child(DateTime.now().millisecondsSinceEpoch.toInt().toString());
   }
 
   Member addMemberFirebase(String pseudo, String uid) {
@@ -163,7 +200,7 @@ class FirebaseHandler {
 
   Future<bool> verifStateCup(int teamNumberValidate,Tournament tournament) async {
     if(tournament.capacity - teamNumberValidate == 0){
-      tournament.state = TournamentState.inscriptionFermer;
+      tournament.state = TournamentState.complet;
       return await tournamentsRef.doc(tournament.documentId).set(tournament).then((value) => true).catchError((onError) => false);
     } else {
       return false;
@@ -184,6 +221,7 @@ class FirebaseHandler {
       }
       return true;
   }
+
   Future<bool> verifCapacityTeam(Tournament tournament,Team team) async {
     var listMember = [];
     listMember = await tournamentsRef.doc(tournament.documentId).teams.doc(team.documentId).membersTournament.get().then((value) => value.docs.map((e) => e.data).toList());

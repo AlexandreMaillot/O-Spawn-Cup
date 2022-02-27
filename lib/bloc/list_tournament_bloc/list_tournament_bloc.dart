@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/Tournament/tournament_state.dart';
 import '../../models/TournamentType/tournament_type.dart';
+import '../../service/firebase_handler.dart';
 
 part 'list_tournament_event.dart';
 part 'list_tournament_state.dart';
@@ -59,12 +60,15 @@ class ListTournamentBloc extends Bloc<ListTournamentEvent, ListTournamentState> 
         _listTournament = event.docs.map((e) => e.data()).cast<Tournament>().toList();
         event.docs.asMap().forEach((key, value) {
           _listTournament[key].documentId = value.id;
+          changeStateTournament(_listTournament[key]);
         });
         emit(TournamentLoaded(tournaments: _listTournament,));
       },
     );
   }
-
+  changeStateTournament(Tournament tournament){
+      FirebaseHandler().checkTournamentState(tournament);
+  }
   Future<FutureOr<void>> _initListTournament(TournamentInitialisation event, Emitter<ListTournamentState> emit) async {
     gameName = event.gameName;
     emit(TournamentLoading());
@@ -77,7 +81,9 @@ class ListTournamentBloc extends Bloc<ListTournamentEvent, ListTournamentState> 
         _listTournament = event.docs.map((e) => e.data()).cast<Tournament>().toList();
         event.docs.asMap().forEach((key, value) {
           _listTournament[key].documentId = value.id;
+          changeStateTournament(_listTournament[key]);
         });
+
         emit(TournamentLoaded(tournaments: _listTournament));
       },
     );

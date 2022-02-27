@@ -3,8 +3,11 @@ import "dart:async";
 import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
 import "package:formz/formz.dart";
+import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
+import 'package:o_spawn_cup/service/firebase_handler.dart';
 
 import '../../cubit/team_firestore/team_firestore_cubit.dart';
+import '../../models/Tournament/tournament.dart';
 import "../../models/validator/gamerTag.dart";
 import "../../models/validator/team_code.dart";
 
@@ -34,10 +37,6 @@ class SignCupBloc extends Bloc<SignCupEvent, SignCupState> {
   }
 
   FutureOr<void> _onSubmitted(event, Emitter<SignCupState> emit) {
-    print(state.gamerTag.value);
-    print(state.gamerTag.valid);
-    print(state.teamCode.valid);
-
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
 
@@ -48,4 +47,6 @@ class SignCupBloc extends Bloc<SignCupEvent, SignCupState> {
       }
     }
   }
+
+
 }

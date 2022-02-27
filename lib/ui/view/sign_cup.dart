@@ -37,6 +37,8 @@ import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/models/role_type.dart";
 
+import '../../bloc/bloc_router.dart';
+import '../../cubit/header_sign_cup_cubit.dart';
 import '../../cubit/member_bloc/member_cubit.dart';
 import '../../models/Team/team.dart';
 
@@ -68,6 +70,9 @@ class SignCup extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => MemberCubit(),
+        ),
+        BlocProvider(
+          create: (_) => HeaderSignCupCubit(),
         ),
       ],
       child: SignCupView(
@@ -116,6 +121,16 @@ class SignCupView extends StatelessWidget {
                   rowInformationTournament(
                       leftText: "Type de tournois:",
                       rightText: tournament.tournamentType.name),
+                  BlocBuilder<HeaderSignCupCubit, HeaderSignCupState>(
+                    builder: (context, state) {
+                    return (tournament.state == TournamentState.inscriptionFermer ||
+                        tournament.state == TournamentState.annuler ||
+                        tournament.state == TournamentState.complet ||
+                        tournament.state == TournamentState.terminer)
+                        ? rowInformationTournament(leftText: "Etat:", rightText: tournament.state.state)
+                        : Container();
+                  },),
+
                   BlocBuilder<TeamFirestoreCubit, TeamFirestoreState>(
                     buildWhen: (previous, current) =>
                         current.runtimeType == TeamFirestoreLoaded,
@@ -132,7 +147,7 @@ class SignCupView extends StatelessWidget {
                               tournament.capacity.toString());
                     },
                   ),
-                  (tournament.capacity - teams.length == 0)
+                  (tournament.capacity - teams.length == 0 || tournament.state != TournamentState.incriptionOuverte)
                       ? Container()
                       : Container(
                           padding: const EdgeInsets.only(top: 20),
@@ -468,6 +483,8 @@ class SignCupView extends StatelessWidget {
   buildContainerHeader(Size screenSize, Tournament tournament) {
     return BlocBuilder<MemberCubit, MemberState>(
   builder: (context, stateMember) {
+    return BlocBuilder<HeaderSignCupCubit, HeaderSignCupState>(
+  builder: (context, stateHeader) {
     return Hero(
       tag: "tagcard_cup_${tournament.documentId}",
       child: Container(
@@ -521,8 +538,17 @@ class SignCupView extends StatelessWidget {
               children: [
                 Expanded(
                     flex: 1,
-                    child: Container(
-                      color: Colors.green,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        icon:
+                        ((stateMember as MemberInitial).member?.isAdmin == true)
+                            ? const Icon(Icons.close_outlined,color: Colors.white,)
+                            : Container(),
+                        onPressed: () => context.read<HeaderSignCupCubit>().closeCup(tournament),
+                      ),
                     )),
                 Expanded(
                   flex: 5,
@@ -551,7 +577,7 @@ class SignCupView extends StatelessWidget {
                                       // width: 37,
                                     )
                                   : Container(),
-                          onPressed: () => print("modif"),
+                          onPressed: () => Navigator.of(context).push(BlocRouter().cupForm(tournament)),
                         ),
                       ),
                     ),
@@ -561,6 +587,8 @@ class SignCupView extends StatelessWidget {
         ),
       ),
     );
+  },
+);
   },
 );
   }

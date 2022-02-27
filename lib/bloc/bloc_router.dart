@@ -16,7 +16,7 @@ class BlocRouter {
 
   MaterialPageRoute cupSelect(GameName gameName) => MaterialPageRoute(builder: (context) => ListCup(gameName: gameName),);
   MaterialPageRoute cupDetail(Tournament tournament) => MaterialPageRoute(builder: (context) => SignCup(tournament: tournament,),);
-  MaterialPageRoute cupForm() => MaterialPageRoute(builder: (context) => FormTournament(),);
+  MaterialPageRoute cupForm(Tournament? tournament) => MaterialPageRoute(builder: (context) => FormTournament(tournament: tournament),);
   //
   BlocProvider allGames() => BlocProvider<BlocListGame>(bloc: BlocListGame(), child: Home());
   // fbloc.MultiBlocProvider mb() => fbloc.MultiBlocProvider(providers: [

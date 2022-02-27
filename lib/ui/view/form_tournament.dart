@@ -42,8 +42,10 @@ import "../../bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart"
 import "../../cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
 
 class FormTournament extends StatelessWidget {
+  Tournament? tournament;
   FormTournament({
     Key? key,
+    required this.tournament
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class FormTournament extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) =>
-              StepByStepWidgetBloc(initialIndex: 3, initialIndexMax: 5),
+              StepByStepWidgetBloc(initialIndex: 0, initialIndexMax: 5),
         ),
         BlocProvider(
           create: (_) => WidgetNumberByPlayerBloc(),
@@ -82,16 +84,17 @@ class FormTournament extends StatelessWidget {
           create: (_) => ListCashPrizesCubit(listCashPrizes: []),
         ),
       ],
-      child: FormTournamentView(),
+      child: FormTournamentView(tournament: tournament),
     );
   }
 }
 
 class FormTournamentView extends StatelessWidget {
+  Tournament? tournament;
   PageController pageController =
       PageController(viewportFraction: 0.5, initialPage: 1);
 
-  FormTournamentView({Key? key}) : super(key: key);
+  FormTournamentView({Key? key,required this.tournament}) : super(key: key);
   TextEditingController daySignController = TextEditingController();
   TextEditingController monthSignController = TextEditingController();
   TextEditingController yearsSignController = TextEditingController();
@@ -127,7 +130,7 @@ class FormTournamentView extends StatelessWidget {
           .read<SelectGameBloc>()
           .add(SelectGameChange(indexSelect: pageController.page!));
     });
-
+    modifCup(tournament,context);
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
@@ -282,8 +285,9 @@ class FormTournamentView extends StatelessWidget {
                                           int.parse(teamNumberController.text),
                                           context.read<ListCashPrizesCubit>().list,
                                           int.parse(roundNumberController.text),
-                                          int.parse(
-                                              pointPerKillController.text),
+                                          int.parse(pointPerKillController.text),
+                                          int.parse(pointPerRangController.text),
+                                          int.parse(rangStartController.text),
                                           (context.read<TakeImageGalleryCubit>().state.imageTaked !=null)
                                               ? context
                                               .read<TakeImageGalleryCubit>()
@@ -295,7 +299,9 @@ class FormTournamentView extends StatelessWidget {
                                               .state
                                           as SelectedImagePredefInitial)
                                               .indexSelected!]
-                                              .image),
+                                              .image,
+                                              ),
+                                          (context.read<TakeImageGalleryCubit>().state.imageTaked != null) ? false : true,
                                         );
                                         Navigator.of(context)
                                             .pushNamed("/home");
@@ -917,6 +923,26 @@ class FormTournamentView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void modifCup(Tournament? tournament,BuildContext context) {
+    if(tournament != null){
+      daySignController.text = tournament.dateDebutInscription!.day.toString();
+      monthSignController.text = tournament.dateDebutInscription!.month.toString();
+      yearsSignController.text = tournament.dateDebutInscription!.year.toString();
+      dayStartController.text = tournament.dateDebutTournois!.day.toString();
+      monthStartController.text = tournament.dateDebutTournois!.month.toString();
+      yearsStartController.text = tournament.dateDebutTournois!.year.toString();
+      hoursStartController.text = tournament.dateDebutTournois!.hour.toString() + ":" + tournament.dateDebutTournois!.minute.toString();
+      cupNameController.text = tournament.name;
+      // cashPrizeController = TextEditingController();
+      teamNumberController.text = tournament.capacity.toString();
+      roundNumberController.text = tournament.roundNumber.toString();
+      context.read<GenerateCodeCubit>().numRoundChange(tournament.roundNumber);
+      pointPerKillController.text = tournament.killPointTournament.toString();
+      pointPerRangController.text = tournament.pointPerRangTournament.toString();
+      rangStartController.text = tournament.rangStartTournament.toString();
+    }
   }
 }
 

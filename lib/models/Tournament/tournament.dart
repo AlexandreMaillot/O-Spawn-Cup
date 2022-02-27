@@ -32,6 +32,8 @@ class Tournament {
   TournamentState state = TournamentState.inscriptionFermer;
   String? imageUrl;
   int killPointTournament;
+  int? pointPerRangTournament;
+  int? rangStartTournament;
 
 
   Tournament(
@@ -46,7 +48,10 @@ class Tournament {
       this.imageUrl,
       this.cashPrize = const<String>[],
       // required this.listRangPointTournament,
-      required this.killPointTournament,}) {
+      required this.killPointTournament,
+      required this.pointPerRangTournament,
+      required this.rangStartTournament,
+      }) {
   }
 
   factory Tournament.fromJson(Map<String, Object?> json) =>
@@ -54,25 +59,8 @@ class Tournament {
 
   Map<String, Object?> toJson() => _$TournamentToJson(this);
 
-  DocumentReference firestoreDocRefFromJson(dynamic value) {
-    if (value is String) {
-      return FirebaseFirestore.instance.doc(value);
-    } else {
-      return FirebaseFirestore.instance.doc(value.path);
-    }
-  }
-
   static List<String> _fromJson(Iterable<dynamic> value) => List<String>.from(value);
 
-  dynamic firestoreListDocRefToJson(dynamic value) => value;
-
-  List<DocumentReference> firestoreListDocRefFromJson(List value) {
-    final List<DocumentReference> list = [];
-    for (var element in value) {
-      list.add(firestoreDocRefFromJson(element));
-    }
-    return list;
-  }
 
 }
 
