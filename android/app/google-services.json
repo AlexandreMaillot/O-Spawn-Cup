@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "538595854832-gkin6bt1qqc4jl33ueot4nm8dgs1d1hq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.o_spawn_cup",
+            "certificate_hash": "c22e243ecaf1b564f7272fb34bdeedadda57ca88"
+          }
+        },
+        {
           "client_id": "538595854832-fhgggrqpb9v9i4ke8n65kk5td3ahvpla.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -37,6 +45,13 @@
             {
               "client_id": "538595854832-fhgggrqpb9v9i4ke8n65kk5td3ahvpla.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "538595854832-siimqnget0gtb6gc7c7e41qkpbv39435.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oSpawnCup"
+              }
             }
           ]
         }

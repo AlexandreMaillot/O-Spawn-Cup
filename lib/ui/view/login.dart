@@ -36,86 +36,84 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     Authentification auth = Authentification();
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: colorBackgroundTheme,
-          body: GestureDetector(
-            onTap: () {
-              hideKeyBoard();
-            },
-            child: SingleChildScrollView(
-            child:  Column(
-                children: [
-                  Container(
-                    color: colorTheme,
-                    width: screenSize.width,
-                    height: screenSize.height * 0.46,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: screenSize.height * 0.014),
-                          child: IconButton(
-                            onPressed: (){
-                              Navigator.pushNamed(context, "/");
-                            },
-                            icon: const Icon(Icons.arrow_back,color: Color(0xff191919)),
-                          ),
+    return Scaffold(
+        backgroundColor: colorBackgroundTheme,
+        body: GestureDetector(
+          onTap: () {
+            hideKeyBoard();
+          },
+          child: SingleChildScrollView(
+          child:  Column(
+              children: [
+                Container(
+                  color: colorTheme,
+                  width: screenSize.width,
+                  height: screenSize.height * 0.46,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: screenSize.height * 0.05),
+                        child: IconButton(
+                          onPressed: (){
+                            Navigator.pushNamed(context, "/");
+                          },
+                          icon: const Icon(Icons.arrow_back,color: Color(0xff191919)),
                         ),
-                        Center(
-                              child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Center(
+                            child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                      ),
+                    ],
                   ),
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: screenSize.height * 0.031,bottom: screenSize.height * 0.044),
-                      child: SizedBox(
-                        width: screenSize.width,
-                        height: screenSize.height * 0.13,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomTextFormField(controller: emailText,screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre adresse mail"),
-                            CustomTextFormField(controller: passwordText,screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
-                          ],
-                        ),
+                ),
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: screenSize.height * 0.031,bottom: screenSize.height * 0.044),
+                    child: SizedBox(
+                      width: screenSize.width,
+                      height: screenSize.height * 0.13,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomTextFormField(controller: emailText,screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre adresse mail"),
+                          CustomTextFormField(controller: passwordText,screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
+                        ],
                       ),
                     ),
                   ),
-                  CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,colorText: colorTextTheme,text: "CONNEXION",onPressedMethod: () {
-                    if(_formKey.currentState!.validate() == true){
-                      Future<bool> redirectToHome = auth.signInWithMail(emailText.text, passwordText.text);
-                      redirectToHome.then((value) {
-                        if(value == true){
-                          Navigator.of(context).pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
-                        }
-                      });
-                    }
-                  }),
-                  Padding(
-                      padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
-                      child: CustomDivider(screenSize: screenSize),
+                ),
+                CustomButtonTheme(screenSize: screenSize,colorButton: colorTheme,colorText: colorTextTheme,text: "CONNEXION",onPressedMethod: () {
+                  if(_formKey.currentState!.validate() == true){
+                    Future<bool> redirectToHome = auth.signInWithMail(emailText.text, passwordText.text);
+                    redirectToHome.then((value) {
+                      if(value == true){
+                        Navigator.of(context).pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
+                      }
+                    });
+                  }
+                }),
+                Padding(
+                    padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
+                    child: CustomDivider(screenSize: screenSize),
+                ),
+                SizedBox(
+                  width: screenSize.width,
+                  height: screenSize.height*0.125,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE", onPressedMethod: () => auth.signUpWithGoogle()),
+                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK", onPressedMethod: () => print("test")),
+                    ],
                   ),
-                  SizedBox(
-                    width: screenSize.width,
-                    height: screenSize.height*0.125,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE", onPressedMethod: () => auth.signUpWithGoogle()),
-                        CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK", onPressedMethod: () => print("test")),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 }
 
