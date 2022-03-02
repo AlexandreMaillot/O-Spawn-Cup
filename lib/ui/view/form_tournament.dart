@@ -270,7 +270,6 @@ class FormTournamentView extends StatelessWidget {
                                             .state
                                             .index
                                             .toInt();
-
                                         FirebaseHandler().addTournamentFirebase(
                                           cupNameController.text,
                                           DateTime(int.parse(yearsSignController.text),int.parse(monthSignController.text),int.parse(daySignController.text),),
@@ -301,7 +300,7 @@ class FormTournamentView extends StatelessWidget {
                                               .indexSelected!]
                                               .image,
                                               ),
-                                          (context.read<TakeImageGalleryCubit>().state.imageTaked != null) ? false : true,
+                                          (context.read<TakeImageGalleryCubit>().state.imageTaked == null) ? false : true,
                                         );
                                         Navigator.of(context)
                                             .pushNamed("/home");
@@ -507,82 +506,38 @@ class FormTournamentView extends StatelessWidget {
             )
           ],
         ),
-        content: SizedBox(
-          height: screenSize.height * 0.65,
-          child: Column(
-            children: [
-              const WidgetChooseImage(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextElement(
-                  text: "ou",
-                  color: Colors.white,
-                ),
-              ),
-              TextElement(
-                text: "IMAGES PRE-DEFINIES",
+        content: Column(
+          children: [
+            const WidgetChooseImage(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextElement(
+                text: "ou",
                 color: Colors.white,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: BlocBuilder<SelectGameBloc, SelectGameState>(
-                  builder: (context, state) {
-                    //
-                    return GridView.count(
-                      shrinkWrap: true,
-                      primary: false,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      crossAxisCount: 3,
-                      children: context.select(
-                          (SelectGameBloc bloc) => bloc.filteredImageByGame()),
-                    );
-                  },
-                ),
+            ),
+            TextElement(
+              text: "IMAGES PRE-DEFINIES",
+              color: Colors.white,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: BlocBuilder<SelectGameBloc, SelectGameState>(
+                builder: (context, state) {
+                  //
+                  return GridView.count(
+                    shrinkWrap: true,
+                    primary: false,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    crossAxisCount: 3,
+                    children: context.select(
+                        (SelectGameBloc bloc) => bloc.filteredImageByGame()),
+                  );
+                },
               ),
-              BlocBuilder<FormTournamentStep4Bloc, FormTournamentStep4State>(
-              builder: (context, state) {
-                return Container(
-                padding: const EdgeInsets.only(top: 15),
-                height: screenSize.height * 0.15,
-                child: TextField(
-                  onChanged: (value) => context.read<FormTournamentStep4Bloc>().add(FormTournamentCashPrizeChanged(cashPrizeController.text)),
-                  controller: cashPrizeController,
-                  style: TextStyle(
-                    color: colorBackgroundTheme,
-                  ),
-                  decoration: InputDecoration(
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    errorText: state.cashPrize.invalid
-                        ? "Le cashprize doit être renseigné !"
-                        : null,
-                      hintText: "CASH PRIZE",
-                      fillColor: Colors.white,
-                      filled: true,
-                      hoverColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      )),
-
-                  minLines: 5,
-                  maxLines: 5, // allow user to enter 5 line in textfield
-                  keyboardType: TextInputType.multiline,
-                ),
-              );
-  },
-),
-            ],
-          ),
+            ),
+          ],
         ));
   }
 
@@ -698,7 +653,7 @@ class FormTournamentView extends StatelessWidget {
                     paddingBottom: 10,
                     textInputAction: TextInputAction.next,
                     screenSize: screenSize,
-                    text: "NOMBRE DE ROUND(S)",
+                    text: "NOMBRE DE GAME(S)",
                     controller: roundNumberController,
                     typeTextField: TextInputType.number,
                     errorText: state.numberRound.invalid
