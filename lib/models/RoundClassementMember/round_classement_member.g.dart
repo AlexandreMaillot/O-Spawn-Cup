@@ -458,7 +458,7 @@ class _$RoundClassementMemberQuery
     RoundClassementMemberDocumentSnapshot? endBeforeDocument,
     RoundClassementMemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('kill', descending: false);
+    var query = reference.orderBy('kill', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -500,7 +500,7 @@ class _$RoundClassementMemberQuery
     RoundClassementMemberDocumentSnapshot? endBeforeDocument,
     RoundClassementMemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('rang', descending: false);
+    var query = reference.orderBy('rang', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -542,7 +542,7 @@ class _$RoundClassementMemberQuery
     RoundClassementMemberDocumentSnapshot? endBeforeDocument,
     RoundClassementMemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('screenshot', descending: false);
+    var query = reference.orderBy('screenshot', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

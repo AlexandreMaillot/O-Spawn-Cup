@@ -11,7 +11,7 @@ import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import "package:o_spawn_cup/models/TournamentType/tournament_type.dart";
 import "package:o_spawn_cup/models/game_name.dart";
 import "package:o_spawn_cup/models/server_type.dart";
-import "package:o_spawn_cup/service/authentification.dart";
+import 'package:o_spawn_cup/service/authentification.dart';
 import "package:o_spawn_cup/service/utils.dart";
 import "package:flutter/services.dart" show rootBundle;
 import "dart:developer" as dev;
@@ -85,7 +85,8 @@ class FirebaseHandler {
       File file,
       bool takeByCamera,
       ) async {
-    final ref = getRefFirestorage();
+    final imageName = DateTime.now().millisecondsSinceEpoch.toInt().toString();
+    final ref = getRefFirestorage(imageName);
     final urlString = await addImageToStorage(ref, file,takeByCamera);
     Tournament tournament = Tournament(
       name: name,
@@ -101,6 +102,7 @@ class FirebaseHandler {
       pointPerRangTournament: pointPerRangTournament,
       rangStartTournament: rangStartTournament,
       imageUrl: urlString,
+      imageName: imageName,
     );
     var idTournament = await tournamentsRef.add(tournament);
     for(int i = 1; i < roundNumber;i++){
@@ -111,11 +113,11 @@ class FirebaseHandler {
     return tournament;
   }
 
-  firebase_storage.Reference getRefFirestorage() {
+  firebase_storage.Reference getRefFirestorage(String imgName) {
     return firebase_storage.FirebaseStorage.instance
       .ref()
       .child("tournaments")
-      .child(DateTime.now().millisecondsSinceEpoch.toInt().toString());
+      .child(imgName);
   }
 
   Member addMemberFirebase(String pseudo, String uid) {

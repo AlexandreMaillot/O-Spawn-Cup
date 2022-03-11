@@ -25,7 +25,7 @@ import "package:o_spawn_cup/models/validator/server_type.dart"
     as serverTypeValidator;
 import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
 import "package:o_spawn_cup/service/firebase_handler.dart";
-import 'package:o_spawn_cup/service/utils.dart';
+import "package:o_spawn_cup/service/utils.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_app_bar.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_drawer.dart";
@@ -91,8 +91,7 @@ class FormTournament extends StatelessWidget {
 
 class FormTournamentView extends StatelessWidget {
   Tournament? tournament;
-  PageController pageController =
-      PageController(viewportFraction: 0.5, initialPage: 1);
+  PageController pageController = PageController(viewportFraction: 0.5, initialPage: 1,keepPage: false);
 
   FormTournamentView({Key? key,required this.tournament}) : super(key: key);
   TextEditingController daySignController = TextEditingController();
@@ -204,9 +203,9 @@ class FormTournamentView extends StatelessWidget {
 
                                           // print("playerby: ${context.read<FormTournamentStep2Bloc>().state.playerByTeam.valid}");
                                           // print("name: ${context.read<FormTournamentStep2Bloc>().state.nameCup.valid}");
-                                          // print("years: ${context.read<FormTournamentStep2Bloc>().state.years.valid}");
-                                          // print("day: ${context.read<FormTournamentStep2Bloc>().state.day.valid}");
-                                          // print("month: ${context.read<FormTournamentStep2Bloc>().state.month.valid}");
+                                          // print("years: ${context.read<FormTournamentStep2Bloc>().state.yearsSign.valid}");
+                                          // print("day: ${context.read<FormTournamentStep2Bloc>().state.daySign.valid}");
+                                          // print("month: ${context.read<FormTournamentStep2Bloc>().state.monthSign.valid}");
                                           // print("numberteam: ${context.read<FormTournamentStep2Bloc>().state.numberTeam.valid}");
                                           // print("server: ${context.read<FormTournamentStep2Bloc>().state.serverType.valid}");
 
@@ -214,22 +213,7 @@ class FormTournamentView extends StatelessWidget {
                                             controls.onStepContinue!();
                                           } else {
 
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentNameCupChanged(cupNameController.text));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberRoundChanged(int.tryParse(roundNumberController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentDaySignChanged(int.tryParse(daySignController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthSignChanged(int.tryParse(monthSignController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsSignChanged(int.tryParse(yearsSignController.text)));
-
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentDayStartChanged(int.tryParse(dayStartController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthStartChanged(int.tryParse(monthStartController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsStartChanged(int.tryParse(yearsStartController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentHoursStartChanged(hoursStartController.text));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberTeamChanged(int.tryParse(teamNumberController.text)));
-                                            context.read<FormTournamentStep2Bloc>().add(FormTournamentServerTypeChanged(serverDropdown.dropdownValue.toString()));
-                                            if(context.read<WidgetNumberByPlayerBloc>().indexSelected == null){
-                                              context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerAnimating());
-                                            }
-                                            context.read<FormTournamentStep2Bloc>().add(const FormTournamentSubmitted2());
+                                            msgErrorStep2(context);
                                           }
                                         }
                                         if(currentIndex == 2) {
@@ -237,10 +221,7 @@ class FormTournamentView extends StatelessWidget {
                                             controls.onStepContinue!();
                                           } else {
 
-                                            context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerRangChanged(int.tryParse(pointPerRangController.text)));
-                                            context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerKillChanged(int.tryParse(pointPerKillController.text)));
-                                            context.read<FormTournamentStep3Bloc>().add(FormTournamentStartRangChanged(int.tryParse(rangStartController.text)));
-                                            context.read<FormTournamentStep3Bloc>().add(const FormTournamentSubmitted3());
+                                            msgErrorStep3(context);
                                           }
                                         }
                                         if(currentIndex == 3) {
@@ -255,7 +236,6 @@ class FormTournamentView extends StatelessWidget {
                                               context.read<SelectedImagePredefCubit>().selectImagePreDefAnimation();
                                               context.read<TakeImageGalleryCubit>().takeImageAnimation();
                                             }
-                                            context.read<FormTournamentStep4Bloc>().add(FormTournamentCashPrizeChanged(cashPrizeController.text));
                                             context.read<FormTournamentStep4Bloc>().add(const FormTournamentSubmitted4());
                                           }
                                         }
@@ -264,44 +244,48 @@ class FormTournamentView extends StatelessWidget {
                                         }
 
                                       }  else {
+                                        if(tournament == null) {
+                                          int indexGameSelect = context
+                                              .read<SelectGameBloc>()
+                                              .state
+                                              .index
+                                              .toInt();
+                                          FirebaseHandler().addTournamentFirebase(
+                                            cupNameController.text,
+                                            DateTime(int.parse(yearsSignController.text),int.parse(monthSignController.text),int.parse(daySignController.text),),
+                                            DateTime(int.parse(yearsStartController.text),int.parse(monthStartController.text),int.parse(dayStartController.text),int.parse(hoursStartController.text.substring(0,2)),int.parse(hoursStartController.text.substring(3,5))),
+                                            listCardGame[indexGameSelect]
+                                                .gameName,
+                                            serverDropdown.dropdownValue
+                                            as ServerType,
+                                            listTournamentType[context
+                                                .read<WidgetNumberByPlayerBloc>()
+                                                .indexSelected!],
+                                            int.parse(teamNumberController.text),
+                                            context.read<ListCashPrizesCubit>().list,
+                                            int.parse(roundNumberController.text),
+                                            int.parse(pointPerKillController.text),
+                                            int.parse(pointPerRangController.text),
+                                            int.parse(rangStartController.text),
+                                            (context.read<TakeImageGalleryCubit>().state.imageTaked !=null)
+                                                ? context
+                                                .read<TakeImageGalleryCubit>()
+                                                .state
+                                                .imageTaked!
+                                                : File(listImagePre[(context
+                                                .read<
+                                                SelectedImagePredefCubit>()
+                                                .state
+                                            as SelectedImagePredefInitial)
+                                                .indexSelected!]
+                                                .image,
+                                            ),
+                                            (context.read<TakeImageGalleryCubit>().state.imageTaked == null) ? false : true,
+                                          );
+                                        } else {
 
-                                        int indexGameSelect = context
-                                            .read<SelectGameBloc>()
-                                            .state
-                                            .index
-                                            .toInt();
-                                        FirebaseHandler().addTournamentFirebase(
-                                          cupNameController.text,
-                                          DateTime(int.parse(yearsSignController.text),int.parse(monthSignController.text),int.parse(daySignController.text),),
-                                          DateTime(int.parse(yearsStartController.text),int.parse(monthStartController.text),int.parse(dayStartController.text),int.parse(hoursStartController.text.substring(0,2)),int.parse(hoursStartController.text.substring(3,5))),
-                                          listCardGame[indexGameSelect]
-                                              .gameName,
-                                          serverDropdown.dropdownValue
-                                          as ServerType,
-                                          listTournamentType[context
-                                              .read<WidgetNumberByPlayerBloc>()
-                                              .indexSelected!],
-                                          int.parse(teamNumberController.text),
-                                          context.read<ListCashPrizesCubit>().list,
-                                          int.parse(roundNumberController.text),
-                                          int.parse(pointPerKillController.text),
-                                          int.parse(pointPerRangController.text),
-                                          int.parse(rangStartController.text),
-                                          (context.read<TakeImageGalleryCubit>().state.imageTaked !=null)
-                                              ? context
-                                              .read<TakeImageGalleryCubit>()
-                                              .state
-                                              .imageTaked!
-                                              : File(listImagePre[(context
-                                              .read<
-                                              SelectedImagePredefCubit>()
-                                              .state
-                                          as SelectedImagePredefInitial)
-                                              .indexSelected!]
-                                              .image,
-                                              ),
-                                          (context.read<TakeImageGalleryCubit>().state.imageTaked == null) ? false : true,
-                                        );
+                                        }
+
                                         Navigator.of(context)
                                             .pushNamed("/home");
                                       }
@@ -341,6 +325,32 @@ class FormTournamentView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void msgErrorStep3(BuildContext context) {
+    context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerRangChanged(int.tryParse(pointPerRangController.text)));
+    context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerKillChanged(int.tryParse(pointPerKillController.text)));
+    context.read<FormTournamentStep3Bloc>().add(FormTournamentStartRangChanged(int.tryParse(rangStartController.text)));
+    context.read<FormTournamentStep3Bloc>().add(const FormTournamentSubmitted3());
+  }
+
+  void msgErrorStep2(BuildContext context) {
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentNameCupChanged(cupNameController.text));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberRoundChanged(int.tryParse(roundNumberController.text)));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentDaySignChanged(int.tryParse(daySignController.text)));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthSignChanged(int.tryParse(monthSignController.text)));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsSignChanged(int.tryParse(yearsSignController.text)));
+
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentDayStartChanged(int.tryParse(dayStartController.text)));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthStartChanged(int.tryParse(monthStartController.text)));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsStartChanged(int.tryParse(yearsStartController.text)));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentHoursStartChanged(hoursStartController.text));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentNumberTeamChanged(int.tryParse(teamNumberController.text)));
+    context.read<FormTournamentStep2Bloc>().add(FormTournamentServerTypeChanged(serverDropdown.dropdownValue.toString()));
+    if(context.read<WidgetNumberByPlayerBloc>().indexSelected == null){
+      context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerAnimating());
+    }
+    context.read<FormTournamentStep2Bloc>().add(const FormTournamentSubmitted2());
   }
 
 
@@ -760,9 +770,19 @@ class FormTournamentView extends StatelessWidget {
                   );
                 },
               ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
+              builder: (context, state) {
+                return const RowWidgetNumByPlayer();
+              },
+),
+              ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                 builder: (context, state) {
                   return CustomTextField(
+                    paddingTop: 10,
+                    paddingBottom: 10,
                     screenSize: screenSize,
                     textInputAction: TextInputAction.next,
                     text: "NOMBRE D'EQUIPES",
@@ -776,14 +796,6 @@ class FormTournamentView extends StatelessWidget {
                         : null,
                   );
                 },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
-              builder: (context, state) {
-                return const RowWidgetNumByPlayer();
-              },
-),
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                   builder: (context, state) {
@@ -880,23 +892,58 @@ class FormTournamentView extends StatelessWidget {
     );
   }
 
-  void modifCup(Tournament? tournament,BuildContext context) {
+  Future<void> modifCup(Tournament? tournament,BuildContext context) async {
     if(tournament != null){
-      daySignController.text = tournament.dateDebutInscription!.day.toString();
-      monthSignController.text = tournament.dateDebutInscription!.month.toString();
-      yearsSignController.text = tournament.dateDebutInscription!.year.toString();
-      dayStartController.text = tournament.dateDebutTournois!.day.toString();
-      monthStartController.text = tournament.dateDebutTournois!.month.toString();
-      yearsStartController.text = tournament.dateDebutTournois!.year.toString();
-      hoursStartController.text = tournament.dateDebutTournois!.hour.toString() + ":" + tournament.dateDebutTournois!.minute.toString();
+      int indexGame = listCardGame.indexWhere((element) => element.gameName == tournament.game);
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if(pageController.hasClients){
+          context.read<SelectGameBloc>().add(SelectGameChange(indexSelect: indexGame.toDouble()));
+          pageController.jumpToPage(indexGame);
+        }
+      });
+      String daySign = tournament.dateDebutInscription!.day.toString();
+      String monthSign = tournament.dateDebutInscription!.month.toString();
+      String yearsSign = tournament.dateDebutInscription!.year.toString();
+      daySignController.text = (daySign.length == 1) ? "0" + daySign : daySign;
+      monthSignController.text = (monthSign.length == 1) ? "0" + monthSign : monthSign;
+      yearsSignController.text = yearsSign;
+
+      String dayStart = tournament.dateDebutTournois!.day.toString();
+      String monthStart = tournament.dateDebutTournois!.month.toString();
+      String yearsStart = tournament.dateDebutTournois!.year.toString();
+
+      dayStartController.text = (dayStart.length == 1) ? "0" + dayStart : dayStart;
+      monthStartController.text = (monthStart.length == 1) ? "0" + monthStart : monthStart;
+      yearsStartController.text = yearsStart;
+
+      String hoursStart = tournament.dateDebutTournois!.hour.toString();
+      String minutesStart = tournament.dateDebutTournois!.minute.toString();
+      hoursStartController.text = ((hoursStart.length == 1) ? "0" + hoursStart : hoursStart) + ":" + ((minutesStart.length == 1) ? "0" + minutesStart : minutesStart);
       cupNameController.text = tournament.name;
       // cashPrizeController = TextEditingController();
+      int indexPlayerBy = listTournamentType.indexWhere((element) => element.capacityTeam == tournament.tournamentType.capacityTeam);
+      context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerChanging(indexSelect: indexPlayerBy));
+      context.read<FormTournamentStep2Bloc>().add(FormTournamentPlayerByTeamChanged(indexPlayerBy));
+      serverDropdown.dropdownValue = tournament.server;
       teamNumberController.text = tournament.capacity.toString();
       roundNumberController.text = tournament.roundNumber.toString();
+      msgErrorStep2(context);
       context.read<GenerateCodeCubit>().numRoundChange(tournament.roundNumber);
       pointPerKillController.text = tournament.killPointTournament.toString();
       pointPerRangController.text = tournament.pointPerRangTournament.toString();
       rangStartController.text = tournament.rangStartTournament.toString();
+      msgErrorStep3(context);
+
+      tournament.cashPrize?.forEach((element) {
+        context.read<ListCashPrizesCubit>().addCashPrize(element);
+      });
+      if(tournament.imageName != null) {
+        File fileCup = await Utils().downloadFileImage(tournament.imageName);
+        context.read<TakeImageGalleryCubit>().loadPicture(fileCup.path);
+        context.read<SelectedImagePredefCubit>().clearImgSelect();
+        context.read<FormTournamentStep4Bloc>().add(FormTournamentImageCupChanged(fileCup));
+      }
+
     }
   }
 }
@@ -911,7 +958,6 @@ class WidgetChooseImage extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     return BlocBuilder<TakeImageGalleryCubit, TakeImageGalleryState>(
       builder: (context, state) {
-       print(context.read<TakeImageGalleryCubit>().state.imageTaked);
         final imageTaked = state.imageTaked;
         if (imageTaked != null) {
           context.read<SelectedImagePredefCubit>().clearImgSelect();

@@ -407,7 +407,7 @@ class _$TeamClassementTournamentQuery
     TeamClassementTournamentDocumentSnapshot? endBeforeDocument,
     TeamClassementTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('rang', descending: false);
+    var query = reference.orderBy('rang', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -449,7 +449,7 @@ class _$TeamClassementTournamentQuery
     TeamClassementTournamentDocumentSnapshot? endBeforeDocument,
     TeamClassementTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('totalPoints', descending: false);
+    var query = reference.orderBy('totalPoints', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

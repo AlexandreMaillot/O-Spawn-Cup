@@ -31,6 +31,7 @@ class Tournament {
   int roundNumber;
   TournamentState state = TournamentState.inscriptionFermer;
   String? imageUrl;
+  String? imageName;
   int killPointTournament;
   int? pointPerRangTournament;
   int? rangStartTournament;
@@ -46,6 +47,7 @@ class Tournament {
       required this.roundNumber,
       required this.dateDebutInscription,
       this.imageUrl,
+      this.imageName,
       this.cashPrize = const<String>[],
       // required this.listRangPointTournament,
       required this.killPointTournament,

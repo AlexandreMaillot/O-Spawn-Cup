@@ -4,13 +4,11 @@ class FormTournamentStep4State extends Equatable {
 
   final FormzStatus status;
   final ImageCup imageCup;
-  final CashPrize cashPrize;
 
 
   const FormTournamentStep4State({
     this.status = FormzStatus.pure,
     this.imageCup = const ImageCup.pure(),
-    this.cashPrize = const CashPrize.pure(),
   });
 
 
@@ -23,12 +21,11 @@ class FormTournamentStep4State extends Equatable {
     return FormTournamentStep4State(
       status: status ?? this.status,
       imageCup: imageCup ?? this.imageCup,
-      cashPrize: cashPrize ?? this.cashPrize,
 
     );
   }
   @override
-  List<Object> get props => [status,imageCup,cashPrize];
+  List<Object> get props => [status,imageCup];
 }
 
 

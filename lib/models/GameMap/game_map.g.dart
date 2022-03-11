@@ -392,7 +392,7 @@ class _$GameMapQuery extends QueryReference<GameMapQuerySnapshot>
     GameMapDocumentSnapshot? endBeforeDocument,
     GameMapDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('name', descending: false);
+    var query = reference.orderBy('name', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -434,7 +434,7 @@ class _$GameMapQuery extends QueryReference<GameMapQuerySnapshot>
     GameMapDocumentSnapshot? endBeforeDocument,
     GameMapDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('isDisabled', descending: false);
+    var query = reference.orderBy('isDisabled', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

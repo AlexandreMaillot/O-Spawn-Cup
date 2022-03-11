@@ -14,15 +14,6 @@ class FormTournamentImageCupChanged extends FormTournamentEventStep4 {
   @override
   List<File?> get props => [imageCup];
 }
-class FormTournamentCashPrizeChanged extends FormTournamentEventStep4 {
-  const FormTournamentCashPrizeChanged(this.cashPrize);
-
-  final String cashPrize;
-
-  @override
-  List<String> get props => [cashPrize];
-}
-
 
 class FormTournamentSubmitted4 extends FormTournamentEventStep4 {
   const FormTournamentSubmitted4();

@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/models/Member/member.dart';
+import "package:flutter/material.dart";
+import "package:o_spawn_cup/models/Member/member.dart";
 import 'package:o_spawn_cup/service/authentification.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_connect_with.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_divider.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_text_form_field.dart';
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_connect_with.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_divider.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_form_field.dart";
 
 
 class Register extends StatefulWidget {
@@ -59,7 +59,7 @@ class _RegisterState extends State<Register> {
                         padding: EdgeInsets.only(top: screenSize.height * 0.014),
                         child: IconButton(
                           onPressed: (){
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, "/");
                           },
                           icon: const Icon(Icons.arrow_back,color: Color(0xff191919)),
                         ),
@@ -94,7 +94,7 @@ class _RegisterState extends State<Register> {
                     Future<bool> redirectToHome = auth.signUpWithMail(emailText.text, passwordText.text, passwordverifText.text, pseudoText.text);
                     redirectToHome.then((value) {
                       if(value == true){
-                        Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                        Navigator.of(context).pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
                       }
                     });
                   }
@@ -113,13 +113,13 @@ class _RegisterState extends State<Register> {
                         Future<bool> redirect = auth.signUpWithGoogle();
                         redirect.then((value) {
                           if(value == true){
-                            Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                            Navigator.of(context).pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
                           }else {
                             print("erreur");
                           }
                         });
                       }),
-                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK", onPressedMethod: () => print('test')),
+                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK", onPressedMethod: () => print("test")),
                     ],
                   ),
                 ),

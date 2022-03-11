@@ -28,9 +28,6 @@ import "package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
 import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/Member/member.dart";
-import "package:o_spawn_cup/models/MemberTournament/member_tournament.dart"
-    as Mt;
-import "package:o_spawn_cup/models/Team/team.dart" as t;
 import "dart:math";
 
 import "package:o_spawn_cup/models/Tournament/tournament.dart";
@@ -116,7 +113,7 @@ class SignCupView extends StatelessWidget {
                   rowInformationTournament(leftText: "Date inscription:", rightText: Utils().formatDate(tournament.dateDebutInscription)),
                   rowInformationTournament(leftText: "Date du tournois:", rightText: Utils().formatDate(tournament.dateDebutTournois)),
                   rowInformationTournament(
-                      leftText: "Nombre de rounds:",
+                      leftText: "Nombre de games:",
                       rightText: tournament.roundNumber.toString()),
                   rowInformationTournament(
                       leftText: "Type de tournois:",

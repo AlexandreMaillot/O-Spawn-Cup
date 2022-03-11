@@ -8,14 +8,14 @@ import "package:o_spawn_cup/models/game_name.dart";
 import "package:o_spawn_cup/ui/view/home.dart";
 
 
-import "package:o_spawn_cup/ui/view/login.dart";
-import "package:o_spawn_cup/ui/view/login_register.dart";
+import 'package:o_spawn_cup/ui/view/login.dart';
+import 'package:o_spawn_cup/ui/view/login_register.dart';
 
 import "bloc/bloc_router.dart";
 import "bloc/list_tournament_bloc/list_tournament_bloc.dart";
 import "constant.dart";
 import "firebase_options.dart";
-import "ui/view/register.dart";
+import 'ui/view/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

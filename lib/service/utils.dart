@@ -29,21 +29,15 @@ class Utils {
 
   }
 
-  Future<File> getImageFileFromAssetssss(String path) async {
-    final byteData = await rootBundle.load('$path');
 
-    final file = File('${(await getTemporaryDirectory()).path}/$path');
-    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
-    return file;
-  }
+  Future<File> downloadFileImage(String? name) async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    File downloadToFile = File('${appDocDir.path}/' + "imgCupLoad" + ".jpeg");
 
-  getImageFileFromAssets(String path) async {
-    // File f = await getImageFileFromAssetssss('assets/images/logo.svg');
-    final byteData = await rootBundle.load(path);
-    print(path);
-    await firebase_storage.FirebaseStorage.instance
-          .ref('uploads/file-to-upload.png')
-          .putData(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+      await firebase_storage.FirebaseStorage.instance
+          .ref('tournaments/' + name! + "")
+          .writeToFile(downloadToFile);
+      return downloadToFile;
   }
 }

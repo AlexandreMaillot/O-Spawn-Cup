@@ -406,7 +406,7 @@ class _$MemberTournamentQuery
     MemberTournamentDocumentSnapshot? endBeforeDocument,
     MemberTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('documentId', descending: false);
+    var query = reference.orderBy('documentId', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -448,7 +448,7 @@ class _$MemberTournamentQuery
     MemberTournamentDocumentSnapshot? endBeforeDocument,
     MemberTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('gamerTag', descending: false);
+    var query = reference.orderBy('gamerTag', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -972,7 +972,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('pseudo', descending: false);
+    var query = reference.orderBy('pseudo', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1014,7 +1014,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('uid', descending: false);
+    var query = reference.orderBy('uid', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1056,7 +1056,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('isAdmin', descending: false);
+    var query = reference.orderBy('isAdmin', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

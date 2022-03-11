@@ -401,7 +401,7 @@ class _$RangPointTournamentQuery
     RangPointTournamentDocumentSnapshot? endBeforeDocument,
     RangPointTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('rang', descending: false);
+    var query = reference.orderBy('rang', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -443,7 +443,7 @@ class _$RangPointTournamentQuery
     RangPointTournamentDocumentSnapshot? endBeforeDocument,
     RangPointTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('point', descending: false);
+    var query = reference.orderBy('point', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

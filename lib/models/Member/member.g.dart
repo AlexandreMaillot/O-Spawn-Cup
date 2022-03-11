@@ -444,7 +444,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('pseudo', descending: false);
+    var query = reference.orderBy('pseudo', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -486,7 +486,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('uid', descending: false);
+    var query = reference.orderBy('uid', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -528,7 +528,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('isAdmin', descending: false);
+    var query = reference.orderBy('isAdmin', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

@@ -24,9 +24,12 @@ class SelectGameBloc extends Bloc<SelectGameEvent, SelectGameState> {
 
 
   FutureOr<void> _changeGameSelect(SelectGameChange event, Emitter<SelectGameState> emit) {
-    _index = event.indexSelect;
+    if(event.indexSelect != -1) {
+      _index = event.indexSelect;
 
-    emit(SelectGameChanged(_index));
+      emit(SelectGameChanged(_index));
+    }
+
   }
 
   FutureOr<void> _initSelector(SelectGameInit event, Emitter<SelectGameState> emit) {

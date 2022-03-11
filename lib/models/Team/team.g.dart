@@ -508,7 +508,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('documentId', descending: false);
+    var query = reference.orderBy('documentId', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -550,7 +550,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('name', descending: false);
+    var query = reference.orderBy('name', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -592,7 +592,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('teamCode', descending: false);
+    var query = reference.orderBy('teamCode', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -634,7 +634,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('isDisqualified', descending: false);
+    var query = reference.orderBy('isDisqualified', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1109,7 +1109,7 @@ class _$MemberTournamentQuery
     MemberTournamentDocumentSnapshot? endBeforeDocument,
     MemberTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('documentId', descending: false);
+    var query = reference.orderBy('documentId', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1151,7 +1151,7 @@ class _$MemberTournamentQuery
     MemberTournamentDocumentSnapshot? endBeforeDocument,
     MemberTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('gamerTag', descending: false);
+    var query = reference.orderBy('gamerTag', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

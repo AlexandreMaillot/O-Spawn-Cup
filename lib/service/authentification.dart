@@ -1,9 +1,8 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:google_sign_in/google_sign_in.dart";
-import "package:o_spawn_cup/models/admin.dart";
 import "package:o_spawn_cup/service/firebase_handler.dart";
 
-import "../models/Member/member.dart";
+import '../models/Member/member.dart';
 
 class Authentification {
   Authentification();
@@ -14,7 +13,7 @@ class Authentification {
   }
   void signInWithFacebook() {}
 
-  Future<bool> signInWithMail(String email, String password) async {
+  Future<bool> signInWithMail({required String email,required String password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);

@@ -17,7 +17,6 @@ part "form_tournament_step_4_state.dart";
 class FormTournamentStep4Bloc extends Bloc<FormTournamentEventStep4, FormTournamentStep4State> {
   FormTournamentStep4Bloc() : super(FormTournamentStep4State()) {
     on<FormTournamentImageCupChanged>(_onImageCupChanged);
-    on<FormTournamentCashPrizeChanged>(_onCashPrizeChanged);
     on<FormTournamentSubmitted4>(_onSubmittedStep4);
   }
 
@@ -28,7 +27,7 @@ class FormTournamentStep4Bloc extends Bloc<FormTournamentEventStep4, FormTournam
     final imageCup = ImageCup.dirty(event.imageCup);
     emit(state.copyWith(
       imageCup: imageCup,
-      status: Formz.validate([imageCup,state.cashPrize]),
+      status: Formz.validate([imageCup]),
     ));
   }
 
@@ -45,15 +44,5 @@ class FormTournamentStep4Bloc extends Bloc<FormTournamentEventStep4, FormTournam
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
-  }
-
-
-
-  FutureOr<void> _onCashPrizeChanged(FormTournamentCashPrizeChanged event, Emitter<FormTournamentStep4State> emit) {
-    final cashPrize = CashPrize.dirty(event.cashPrize);
-    emit(state.copyWith(
-      cashPrize: cashPrize,
-      status: Formz.validate([state.imageCup,cashPrize]),
-    ));
   }
 }

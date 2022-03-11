@@ -130,6 +130,7 @@ abstract class TournamentDocumentReference
     List<String>? cashPrize,
     int roundNumber,
     String? imageUrl,
+    String? imageName,
     int killPointTournament,
     int? pointPerRangTournament,
     int? rangStartTournament,
@@ -191,6 +192,7 @@ class _$TournamentDocumentReference
     Object? cashPrize = _sentinel,
     Object? roundNumber = _sentinel,
     Object? imageUrl = _sentinel,
+    Object? imageName = _sentinel,
     Object? killPointTournament = _sentinel,
     Object? pointPerRangTournament = _sentinel,
     Object? rangStartTournament = _sentinel,
@@ -202,6 +204,7 @@ class _$TournamentDocumentReference
       if (cashPrize != _sentinel) "cashPrize": cashPrize as List<String>?,
       if (roundNumber != _sentinel) "roundNumber": roundNumber as int,
       if (imageUrl != _sentinel) "imageUrl": imageUrl as String?,
+      if (imageName != _sentinel) "imageName": imageName as String?,
       if (killPointTournament != _sentinel)
         "killPointTournament": killPointTournament as int,
       if (pointPerRangTournament != _sentinel)
@@ -322,6 +325,17 @@ abstract class TournamentQuery
     List<String?>? whereIn,
     List<String?>? whereNotIn,
   });
+  TournamentQuery whereImageName({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
   TournamentQuery whereKillPointTournament({
     int? isEqualTo,
     int? isNotEqualTo,
@@ -417,6 +431,18 @@ abstract class TournamentQuery
   });
 
   TournamentQuery orderByImageUrl({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  });
+
+  TournamentQuery orderByImageName({
     bool descending = false,
     String? startAt,
     String? startAfter,
@@ -692,6 +718,34 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     );
   }
 
+  TournamentQuery whereImageName({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$TournamentQuery(
+      reference.where(
+        'imageName',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   TournamentQuery whereKillPointTournament({
     int? isEqualTo,
     int? isNotEqualTo,
@@ -787,7 +841,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('documentId', descending: false);
+    var query = reference.orderBy('documentId', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -829,7 +883,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('name', descending: false);
+    var query = reference.orderBy('name', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -871,7 +925,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('capacity', descending: false);
+    var query = reference.orderBy('capacity', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -913,7 +967,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('cashPrize', descending: false);
+    var query = reference.orderBy('cashPrize', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -955,7 +1009,7 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('roundNumber', descending: false);
+    var query = reference.orderBy('roundNumber', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -997,7 +1051,49 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('imageUrl', descending: false);
+    var query = reference.orderBy('imageUrl', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TournamentQuery(query, _collection);
+  }
+
+  TournamentQuery orderByImageName({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('imageName', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1039,7 +1135,8 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('killPointTournament', descending: false);
+    var query =
+        reference.orderBy('killPointTournament', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1081,7 +1178,8 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('pointPerRangTournament', descending: false);
+    var query =
+        reference.orderBy('pointPerRangTournament', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1123,7 +1221,8 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? endBeforeDocument,
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('rangStartTournament', descending: false);
+    var query =
+        reference.orderBy('rangStartTournament', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1709,7 +1808,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('documentId', descending: false);
+    var query = reference.orderBy('documentId', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1751,7 +1850,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('name', descending: false);
+    var query = reference.orderBy('name', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1793,7 +1892,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('teamCode', descending: false);
+    var query = reference.orderBy('teamCode', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1835,7 +1934,7 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? endBeforeDocument,
     TeamDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('isDisqualified', descending: false);
+    var query = reference.orderBy('isDisqualified', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -2249,7 +2348,7 @@ class _$RoundQuery extends QueryReference<RoundQuerySnapshot>
     RoundDocumentSnapshot? endBeforeDocument,
     RoundDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('roundNumber', descending: false);
+    var query = reference.orderBy('roundNumber', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -2732,7 +2831,7 @@ class _$MemberTournamentQuery
     MemberTournamentDocumentSnapshot? endBeforeDocument,
     MemberTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('documentId', descending: false);
+    var query = reference.orderBy('documentId', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -2774,7 +2873,7 @@ class _$MemberTournamentQuery
     MemberTournamentDocumentSnapshot? endBeforeDocument,
     MemberTournamentDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('gamerTag', descending: false);
+    var query = reference.orderBy('gamerTag', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -3298,7 +3397,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('pseudo', descending: false);
+    var query = reference.orderBy('pseudo', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -3340,7 +3439,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('uid', descending: false);
+    var query = reference.orderBy('uid', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -3382,7 +3481,7 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? endBeforeDocument,
     MemberDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('isAdmin', descending: false);
+    var query = reference.orderBy('isAdmin', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -3476,6 +3575,7 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
           ? null
           : DateTime.parse(json['dateDebutInscription'] as String),
       imageUrl: json['imageUrl'] as String?,
+      imageName: json['imageName'] as String?,
       cashPrize: json['cashPrize'] == null
           ? const <String>[]
           : Tournament._fromJson(json['cashPrize'] as List),
@@ -3497,6 +3597,7 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'roundNumber': instance.roundNumber,
       'state': _$TournamentStateEnumMap[instance.state],
       'imageUrl': instance.imageUrl,
+      'imageName': instance.imageName,
       'killPointTournament': instance.killPointTournament,
       'pointPerRangTournament': instance.pointPerRangTournament,
       'rangStartTournament': instance.rangStartTournament,

@@ -19,6 +19,11 @@ class TakeImageGalleryCubit extends Cubit<TakeImageGalleryState> {
     }
 
   }
+
+  loadPicture(String? urlPath){
+
+    emit(TakeImageGalleryFinish(File(urlPath!)));
+  }
   clearPicture() => emit(TakeImageGalleryNoData());
   takeImageAnimation() async {
     emit(TakeImageAnimated());
