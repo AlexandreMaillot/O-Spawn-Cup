@@ -17,20 +17,14 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -43,11 +37,32 @@ class DefaultFirebaseOptions {
     );
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyA5JOAhygeSrB4P7b2XajQv5DJ92Wm6R_4',
+    appId: '1:538595854832:web:b1a1aabcdd0f5b395d7535',
+    messagingSenderId: '538595854832',
+    projectId: 'o-spawn-cup-13738',
+    authDomain: 'o-spawn-cup-13738.firebaseapp.com',
+    storageBucket: 'o-spawn-cup-13738.appspot.com',
+    measurementId: 'G-E7F22DE2RQ',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAxjblo6_L9QTh2-V21lu0mEp5qgRNOIfs',
     appId: '1:538595854832:android:5a12c4e216258a925d7535',
     messagingSenderId: '538595854832',
     projectId: 'o-spawn-cup-13738',
     storageBucket: 'o-spawn-cup-13738.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBJNOFQlQBKMskjbJO7MngxlC6_1545ynM',
+    appId: '1:538595854832:ios:764ef363191f84b45d7535',
+    messagingSenderId: '538595854832',
+    projectId: 'o-spawn-cup-13738',
+    storageBucket: 'o-spawn-cup-13738.appspot.com',
+    androidClientId: '538595854832-chdmr2cor6lc6segg50sprhtd581rela.apps.googleusercontent.com',
+    iosClientId: '538595854832-siimqnget0gtb6gc7c7e41qkpbv39435.apps.googleusercontent.com',
+    iosBundleId: 'com.example.oSpawnCup',
   );
 }
