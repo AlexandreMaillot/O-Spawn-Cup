@@ -1,29 +1,24 @@
 part of 'select_game_bloc.dart';
 
 abstract class SelectGameState extends Equatable {
-  final double index;
-  const SelectGameState({required this.index});
+
+  const SelectGameState();
   @override
-  List<Object> get props => [index];
+  List<Object> get props => [];
 }
 
 class SelectGameInitial extends SelectGameState {
-  SelectGameInitial(double index) : super(index: index);
+  final double index;
+  SelectGameInitial(this.index);
   @override
   List<Object> get props => [index];
 }
-class SelectGameNoData extends SelectGameState {
-  SelectGameNoData() : super(index: 0);
-
-}
-class SelectGameError extends SelectGameState {
-  SelectGameError() : super(index: 0);
-}
-class SelectGameImageFiltred extends SelectGameState {
-  SelectGameImageFiltred() : super(index: 0);
-}
+class SelectGameNoData extends SelectGameState {}
+class SelectGameError extends SelectGameState {}
+class SelectGameImageFiltred extends SelectGameState {}
 class SelectGameChanged extends SelectGameState {
-  SelectGameChanged(double index) : super(index: index);
+  final double index;
+  SelectGameChanged(this.index);
   @override
   List<Object> get props => [index];
 }

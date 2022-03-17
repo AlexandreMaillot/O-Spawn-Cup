@@ -6,7 +6,7 @@ abstract class SelectGameEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class SelectGameInit extends SelectGameEvent {}
+class SelectGameloadList extends SelectGameEvent {}
 
 class SelectGameChange extends SelectGameEvent {
   final double indexSelect;

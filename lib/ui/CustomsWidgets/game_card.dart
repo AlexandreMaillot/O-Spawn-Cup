@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:o_spawn_cup/bloc/bloc_router.dart';
-import 'package:o_spawn_cup/ui/view/list_cup.dart';
+import 'package:o_spawn_cup/list_cup/view/list_cup_page.dart';
 
 import '../../constant.dart';
 

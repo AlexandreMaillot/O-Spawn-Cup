@@ -15,12 +15,10 @@ class SelectGameBloc extends Bloc<SelectGameEvent, SelectGameState> {
   List<CardGame> listGameName;
   double _index;
   SelectGameBloc({required this.listGameName,required double initialIndex}) : _index = initialIndex,
-        super(SelectGameInitial(initialIndex)) {
-    on<SelectGameInit>(_initSelector);
+        super(SelectGameChanged(initialIndex)) {
+    on<SelectGameloadList>(_loadGames);
     on<SelectGameChange>(_changeGameSelect);
   }
-
-
 
 
   FutureOr<void> _changeGameSelect(SelectGameChange event, Emitter<SelectGameState> emit) {
@@ -32,13 +30,20 @@ class SelectGameBloc extends Bloc<SelectGameEvent, SelectGameState> {
 
   }
 
-  FutureOr<void> _initSelector(SelectGameInit event, Emitter<SelectGameState> emit) {
+  FutureOr<void> _loadGames(SelectGameloadList event, Emitter<SelectGameState> emit) {
     if(listGameName.isEmpty) {
       emit(SelectGameNoData());
+    } else {
+      emit(SelectGameChanged(_index));
     }
   }
 
   List<TileImagePre> filteredImageByGame(){
-    return listImagePre.where((element) => element.gameName == listCardGame[state.index.toInt()].gameName).toList();
+    if(state == SelectGameChanged){
+      return listImagePre.where((element) => element.gameName == listCardGame[(state as SelectGameChanged).index.toInt()].gameName).toList();
+    } else {
+      return [];
+    }
+
   }
 }

@@ -33,6 +33,7 @@ import "package:o_spawn_cup/ui/CustomsWidgets/custom_dropdown.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_row_textfield_date.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/game_card.dart";
+import 'package:o_spawn_cup/ui/CustomsWidgets/no_data.dart';
 import "package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
 import "package:o_spawn_cup/constant.dart";
@@ -245,9 +246,9 @@ class FormTournamentView extends StatelessWidget {
 
                                       }  else {
                                         if(tournament == null) {
-                                          int indexGameSelect = context
+                                          int indexGameSelect = (context
                                               .read<SelectGameBloc>()
-                                              .state
+                                              .state as SelectGameChanged)
                                               .index
                                               .toInt();
                                           FirebaseHandler().addTournamentFirebase(
@@ -850,43 +851,47 @@ class FormTournamentView extends StatelessWidget {
       ),
       content: BlocBuilder<SelectGameBloc, SelectGameState>(
         builder: (context, state) {
-          final indexSelect =
-              context.select((SelectGameBloc bloc) => bloc.state.index);
-          return Container(
-            color: colorBackgroundTheme,
-            height: screenSize.height / 5,
-            child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                controller: pageController,
-                itemCount: listCardGame.length,
-                itemBuilder: (context, position) {
-                  if (position == indexSelect) {
-                    return Transform.scale(
-                      scale: 1,
-                      child: GameCard(
-                        position,
-                        form: true,
-                      ),
-                    );
-                  } else if (position < indexSelect) {
-                    return Transform.scale(
-                      scale: max(1 - (indexSelect - position), 0.75),
-                      child: GameCard(
-                        position,
-                        form: true,
-                      ),
-                    );
-                  } else {
-                    return Transform.scale(
-                      scale: max(1 - (position - indexSelect), 0.75),
-                      child: GameCard(
-                        position,
-                        form: true,
-                      ),
-                    );
-                  }
-                }),
-          );
+          if(state.runtimeType == SelectGameNoData) {
+            return NoData(string: "Aucun jeu disponible..");
+          } else {
+            final indexSelect = context.select((SelectGameBloc bloc) => (bloc.state as SelectGameChanged).index);
+            return Container(
+              color: colorBackgroundTheme,
+              height: screenSize.height / 5,
+              child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  controller: pageController,
+                  itemCount: listCardGame.length,
+                  itemBuilder: (context, position) {
+                    if (position == indexSelect) {
+                      return Transform.scale(
+                        scale: 1,
+                        child: GameCard(
+                          position,
+                          form: true,
+                        ),
+                      );
+                    } else if (position < indexSelect) {
+                      return Transform.scale(
+                        scale: max(1 - (indexSelect - position), 0.75),
+                        child: GameCard(
+                          position,
+                          form: true,
+                        ),
+                      );
+                    } else {
+                      return Transform.scale(
+                        scale: max(1 - (position - indexSelect), 0.75),
+                        child: GameCard(
+                          position,
+                          form: true,
+                        ),
+                      );
+                    }
+                  }),
+            );
+          }
+
         },
       ),
     );
