@@ -26,6 +26,7 @@ import "package:o_spawn_cup/models/server_type.dart";
 import "package:o_spawn_cup/models/validator/server_type.dart"
 as serverTypeValidator;
 import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
+import 'package:o_spawn_cup/pages/home/view/home.dart';
 import "package:o_spawn_cup/services/firebase_handler.dart";
 import "package:o_spawn_cup/services/utils.dart";
 import "package:o_spawn_cup/shared/widgets/custom_app_bar.dart";
@@ -229,7 +230,7 @@ class FormTournamentView extends StatelessWidget {
                                         }
 
                                         Navigator.of(context)
-                                            .pushNamed("/home");
+                                            .push(Home.route());
                                       }
                                     },
                                   ),

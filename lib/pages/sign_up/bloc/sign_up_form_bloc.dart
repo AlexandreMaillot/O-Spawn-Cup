@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/services/field_bloc_validators_errors_fr.dart';
+import 'package:o_spawn_cup/services/firebase_handler.dart';
 
 
 class SignUpFormBloc extends FormBloc<String, String> {
@@ -32,6 +33,7 @@ class SignUpFormBloc extends FormBloc<String, String> {
         email: email.value,
         password: password.value,
       );
+      FirebaseHandler().addMemberFirebase(_authenticationRepository.currentUser.email ?? "", _authenticationRepository.currentUser.id);
       emitSuccess();
     } on LogInWithEmailAndPasswordFailure catch (error) {
       emitFailure(failureResponse: error.message);

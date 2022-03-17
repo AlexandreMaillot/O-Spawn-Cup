@@ -6,7 +6,7 @@ import "package:json_annotation/json_annotation.dart";
 
 part "member.g.dart";
 @JsonSerializable(explicitToJson: true)
-class Member extends Equatable {
+class Member {
   final String pseudo;
   final String uid;
   final bool isAdmin;
@@ -14,16 +14,7 @@ class Member extends Equatable {
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
   Map<String, dynamic> toJson() => _$MemberToJson(this);
 
-  static const empty = Member(uid: "");
 
-  /// Convenience getter to determine whether the current user is empty.
-  bool get isEmpty => this == Member.empty;
-
-  /// Convenience getter to determine whether the current user is not empty.
-  bool get isNotEmpty => this != Member.empty;
-
-  @override
-  List<Object?> get props => [uid, pseudo];
 }
 @Collection<Member>("Members")
 final membersRef = MemberCollectionReference();

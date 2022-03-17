@@ -4,7 +4,7 @@ import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import "package:o_spawn_cup/constant.dart";
-import 'package:o_spawn_cup/home/widgets/widgets_shared.dart';
+import 'package:o_spawn_cup/pages/home/widgets/widgets_shared.dart';
 
 
 class Home extends StatelessWidget {

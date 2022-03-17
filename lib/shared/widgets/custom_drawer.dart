@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:o_spawn_cup/bloc/bloc_router.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/home/view/home.dart';
+import 'package:o_spawn_cup/pages/home/view/home.dart';
 import 'package:o_spawn_cup/services/authentification.dart';
 import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/pages/form_tournament/view/form_tournament.dart';
