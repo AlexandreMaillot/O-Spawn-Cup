@@ -2,7 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:o_spawn_cup/login/bloc/login_form_bloc.dart';
+import 'package:o_spawn_cup/pages/login/bloc/login_form_bloc.dart';
 void main() {
   late LoginFormBloc loginFormBloc;
 

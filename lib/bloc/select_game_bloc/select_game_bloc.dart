@@ -4,7 +4,7 @@ import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
 import "package:o_spawn_cup/models/card_game.dart";
 import "package:o_spawn_cup/models/game_name.dart";
-import 'package:o_spawn_cup/ui/CustomsWidgets/tile_image_pre.dart';
+import 'package:o_spawn_cup/shared/widgets/tile_image_pre.dart';
 
 import '../../constant.dart';
 

@@ -4,7 +4,7 @@ import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
 import "package:formz/formz.dart";
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
-import 'package:o_spawn_cup/service/firebase_handler.dart';
+import 'package:o_spawn_cup/services/firebase_handler.dart';
 
 import '../../cubit/team_firestore/team_firestore_cubit.dart';
 import '../../models/Tournament/tournament.dart';

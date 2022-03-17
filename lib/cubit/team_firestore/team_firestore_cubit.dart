@@ -4,10 +4,10 @@ import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/service/MyMessage.dart';
-import 'package:o_spawn_cup/service/email_broker.dart';
-import 'package:o_spawn_cup/service/email_message.dart';
-import 'package:o_spawn_cup/service/firebase_handler.dart';
+import 'package:o_spawn_cup/services/MyMessage.dart';
+import 'package:o_spawn_cup/services/email_broker.dart';
+import 'package:o_spawn_cup/services/email_message.dart';
+import 'package:o_spawn_cup/services/firebase_handler.dart';
 
 import '../../models/Member/member.dart';
 import '../../models/MemberTournament/member_tournament.dart';

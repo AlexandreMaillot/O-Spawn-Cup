@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:o_spawn_cup/service/field_bloc_validators_errors_fr.dart';
+import 'package:o_spawn_cup/services/field_bloc_validators_errors_fr.dart';
 
 
 

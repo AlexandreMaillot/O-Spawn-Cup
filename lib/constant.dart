@@ -4,8 +4,8 @@ import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/models/card_game.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/models/server_type.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/tile_image_pre.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/widget_num_player_by_team.dart';
+import 'package:o_spawn_cup/shared/widgets/tile_image_pre.dart';
+import 'package:o_spawn_cup/shared/widgets/widget_num_player_by_team.dart';
 
 Color colorTheme = const Color(0xffFFD739);
 Color colorBackgroundTheme = const Color(0xff191919);

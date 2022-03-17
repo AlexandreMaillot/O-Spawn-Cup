@@ -1,20 +1,12 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import "package:cloud_firestore/cloud_firestore.dart";
-import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:o_spawn_cup/app/app.dart';
-import 'package:o_spawn_cup/list_cup/bloc/list_tournament_bloc/list_tournament_bloc.dart';
-import "package:o_spawn_cup/models/game_name.dart";
-import 'package:o_spawn_cup/home/view/home.dart';
 
-
-import "bloc/bloc_router.dart";
-import "constant.dart";
 import "firebase_options.dart";
-import 'sign_up/view/sign_up_form.dart';
+
 
 void main() async {
   return BlocOverrides.runZoned(() async {

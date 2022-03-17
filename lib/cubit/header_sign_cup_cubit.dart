@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../models/Tournament/tournament.dart';
-import '../service/firebase_handler.dart';
+import '../services/firebase_handler.dart';
 
 part 'header_sign_cup_state.dart';
 
