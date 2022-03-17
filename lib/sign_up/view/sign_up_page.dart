@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:o_spawn_cup/sign_up/bloc/sign_up_form_bloc.dart';
 import 'package:o_spawn_cup/sign_up/sign_up.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -16,9 +17,9 @@ class SignUpPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Sign Up')),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: BlocProvider<SignUpCubit>(
-          create: (_) => SignUpCubit(context.read<AuthenticationRepository>()),
-          child: const SignUpForm(),
+        child: BlocProvider<SignUpFormBloc>(
+          create: (_) => SignUpFormBloc(authenticationRepository: context.read<AuthenticationRepository>()),
+          child: SignUpForm(),
         ),
       ),
     );

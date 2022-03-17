@@ -1,23 +1,19 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:o_spawn_cup/service/authentification.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_connect_with.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart';
-import 'package:o_spawn_cup/ui/CustomsWidgets/custom_divider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:o_spawn_cup/cubit/google_authentication/google_authentication_cubit.dart';
+import 'package:o_spawn_cup/login/login.dart';
+import 'package:o_spawn_cup/sign_up/sign_up.dart';
+import 'package:o_spawn_cup/start_page/start_page.dart';
 import 'package:o_spawn_cup/constant.dart';
 
-class LoginRegister extends StatefulWidget {
-  static Page page() => MaterialPage<void>(child: LoginRegister());
-  const LoginRegister({Key? key}) : super(key: key);
 
-  @override
-  _LoginRegisterState createState() => _LoginRegisterState();
-}
 
-class _LoginRegisterState extends State<LoginRegister> {
+class StartPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    Authentification auth = Authentification();
+    final googleAuthentication = context.read<GoogleAuthenticationCubit>();
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
       body: Column(
@@ -39,13 +35,11 @@ class _LoginRegisterState extends State<LoginRegister> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButtonTheme(
-                    screenSize: screenSize,
                     colorText: colorTextTheme,
                     colorButton: Colors.white,
                     text: "CONNEXION",
                     onPressedMethod: () => goToLogin(context)),
                 CustomButtonTheme(
-                    screenSize: screenSize,
                     colorText: colorTextTheme,
                     colorButton: colorTheme,
                     text: "INSCRIPTION",
@@ -68,15 +62,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                     screenSize: screenSize,
                     imageName: "assets/images/google.png",
                     text: "CONNEXION AVEC GOOGLE",
-                    onPressedMethod: () {
-                      Future<bool> redirectToHome = auth.signUpWithGoogle();
-                      redirectToHome.then((value) {
-                        if (value == true) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/home', (Route<dynamic> route) => false);
-                        }
-                      });
-                    }),
+                    onPressedMethod: () => googleAuthentication.logInWithGoogle()),
                 CustomButtonConnectWith(
                     screenSize: screenSize,
                     imageName: "assets/images/facebook.png",
@@ -92,9 +78,9 @@ class _LoginRegisterState extends State<LoginRegister> {
 }
 
 void goToLogin(context) {
-  Navigator.pushNamed(context, '/login');
+  Navigator.of(context).push<void>(LoginPage.route());
 }
 
 void goToRegister(context) {
-  Navigator.pushNamed(context, '/register');
+  Navigator.of(context).push<void>(SignUpPage.route());
 }

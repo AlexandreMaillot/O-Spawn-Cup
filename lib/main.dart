@@ -14,7 +14,7 @@ import 'package:o_spawn_cup/home/view/home.dart';
 import "bloc/bloc_router.dart";
 import "constant.dart";
 import "firebase_options.dart";
-import 'login/view/register.dart';
+import 'sign_up/view/sign_up_form.dart';
 
 void main() async {
   return BlocOverrides.runZoned(() async {

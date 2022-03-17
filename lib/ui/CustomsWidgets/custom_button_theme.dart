@@ -6,7 +6,6 @@ class CustomButtonTheme extends StatelessWidget {
   Color colorText;
   String text;
   VoidCallback onPressedMethod;
-  final Size screenSize;
   double width;
   double height;
   CustomButtonTheme({
@@ -15,13 +14,13 @@ class CustomButtonTheme extends StatelessWidget {
     this.height = 0,
     required this.colorButton,
     required this.colorText,
-    required this.screenSize,
     required this.text,
     required this.onPressedMethod,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
     return SizedBox(
       width: (width == 0.0) ? screenSize.width * 0.87 : width,
       height: (height == 0.0) ? screenSize.height * 0.05 : height,

@@ -1,137 +1,104 @@
-import 'package:flutter/material.dart';
+import 'package:authentication_repository/authentication_repository.dart';
+import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-import 'package:o_spawn_cup/sign_up/sign_up.dart';
+import 'package:o_spawn_cup/cubit/google_authentication/google_authentication_cubit.dart';
+import 'package:o_spawn_cup/sign_up/bloc/sign_up_form_bloc.dart';
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_connect_with.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_button_theme.dart";
+import 'package:o_spawn_cup/start_page/widgets/custom_divider.dart';
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_field.dart";
+import "package:o_spawn_cup/constant.dart";
+import "package:o_spawn_cup/ui/CustomsWidgets/custom_text_form_field.dart";
+
 
 
 class SignUpForm extends StatelessWidget {
-  const SignUpForm({Key? key}) : super(key: key);
+  TextEditingController emailText = TextEditingController();
+  TextEditingController passwordText = TextEditingController();
+  TextEditingController passwordverifText = TextEditingController();
+  TextEditingController pseudoText = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SignUpCubit, SignUpState>(
-      listener: (context, state) {
-        if (state.status.isSubmissionSuccess) {
-          Navigator.of(context).pop();
-        } else if (state.status.isSubmissionFailure) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'Sign Up Failure')),
-            );
-        }
-      },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _EmailInput(),
-            const SizedBox(height: 8),
-            _PasswordInput(),
-            const SizedBox(height: 8),
-            _ConfirmPasswordInput(),
-            const SizedBox(height: 8),
-            _SignUpButton(),
-          ],
+    final googleAuthentication = context.read<GoogleAuthenticationCubit>();
+    final signUpForm = context.read<SignUpFormBloc>();
+    hideKeyBoard() {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
+    Size screenSize = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: colorBackgroundTheme,
+        body: GestureDetector(
+          onTap: () {
+            hideKeyBoard();
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  color: colorTheme,
+                  width: screenSize.width,
+                  height: screenSize.height * 0.31,
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: screenSize.height * 0.014),
+                        child: IconButton(
+                          onPressed: (){
+                            Navigator.pushNamed(context, "/");
+                          },
+                          icon: const Icon(Icons.arrow_back,color: Color(0xff191919)),
+                        ),
+                      ),
+                      Center(
+                        child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                      )
+                    ],
+                  )
+                ),
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: screenSize.height * 0.022, bottom: screenSize.height * 0.044),
+                    child: SizedBox(
+                      width: screenSize.width,
+                      height: screenSize.height * 0.27,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomTextFormField(controller: emailText,screenSize: screenSize,text: "E-MAIL", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre adresse mail"),
+                          CustomTextFormField(controller: passwordText,screenSize: screenSize,text: "MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
+                          CustomTextFormField(controller: passwordverifText,screenSize: screenSize,text: "CONFIRMATION MOT DE PASSE", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: true, errorMessage: "Veuillez renseigner votre mot de passe"),
+                          CustomTextFormField(controller: pseudoText,screenSize: screenSize,text: "PSEUDO", buttonColor: Colors.white, borderColor: Colors.white,obscuretext: false, errorMessage: "Veuillez renseigner votre pseudo"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                CustomButtonTheme(colorText: colorTextTheme,colorButton: colorTheme,text: "S'INSCRIRE",onPressedMethod: () => signUpForm.submit()),
+                Padding(
+                  padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
+                  child: CustomDivider(screenSize: screenSize),
+                ),
+                SizedBox(
+                  width: screenSize.width,
+                  height: screenSize.height*0.125,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "S'INSCRIRE AVEC GOOGLE", onPressedMethod: () => googleAuthentication.logInWithGoogle()),
+                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "S'INSCRIRE AVEC FACEBOOK", onPressedMethod: () => print("test")),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-    );
-  }
-}
-
-class _EmailInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SignUpCubit, SignUpState>(
-      buildWhen: (previous, current) => previous.email != current.email,
-      builder: (context, state) {
-        return TextField(
-          key: const Key('signUpForm_emailInput_textField'),
-          onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: 'email',
-            helperText: '',
-            errorText: state.email.invalid ? 'invalid email' : null,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _PasswordInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SignUpCubit, SignUpState>(
-      buildWhen: (previous, current) => previous.password != current.password,
-      builder: (context, state) {
-        return TextField(
-          key: const Key('signUpForm_passwordInput_textField'),
-          onChanged: (password) =>
-              context.read<SignUpCubit>().passwordChanged(password),
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'password',
-            helperText: '',
-            errorText: state.password.invalid ? 'invalid password' : null,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ConfirmPasswordInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SignUpCubit, SignUpState>(
-      buildWhen: (previous, current) =>
-          previous.password != current.password ||
-          previous.confirmedPassword != current.confirmedPassword,
-      builder: (context, state) {
-        return TextField(
-          key: const Key('signUpForm_confirmedPasswordInput_textField'),
-          onChanged: (confirmPassword) => context
-              .read<SignUpCubit>()
-              .confirmedPasswordChanged(confirmPassword),
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'confirm password',
-            helperText: '',
-            errorText: state.confirmedPassword.invalid
-                ? 'passwords do not match'
-                : null,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _SignUpButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SignUpCubit, SignUpState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-                key: const Key('signUpForm_continue_raisedButton'),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  primary: Colors.orangeAccent,
-                ),
-                onPressed: state.status.isValidated
-                    ? () => context.read<SignUpCubit>().signUpFormSubmitted()
-                    : null,
-                child: const Text('SIGN UP'),
-              );
-      },
     );
   }
 }

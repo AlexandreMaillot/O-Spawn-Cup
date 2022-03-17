@@ -9,6 +9,9 @@ import 'package:o_spawn_cup/home/widgets/widgets_shared.dart';
 
 class Home extends StatelessWidget {
   static Page page() => MaterialPage<void>(child: Home());
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => Home());
+  }
   Home({
     Key? key,
   }) : super(key: key);

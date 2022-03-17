@@ -94,7 +94,6 @@ class FloatingActionBottomSheet extends StatelessWidget {
                           borderColor: Colors.white),
                       tournamentStateDropdown,
                       CustomButtonTheme(
-                        screenSize: screenSize,
                         onPressedMethod: () async {
 
                           context.read<ListTournamentBloc>().add(TournamentFilter(day: dayController.text, month: monthController.text, year: yearsController.text, tournamentType: tournamentTypeDropdown.dropdownValue as TournamentType?, tournamentState: tournamentStateDropdown.dropdownValue as TournamentState?, name: tournamentNameController.text));

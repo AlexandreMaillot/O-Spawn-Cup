@@ -7,24 +7,28 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/service/field_bloc_validators_errors_fr.dart';
 
 
-class LoginFormBloc extends FormBloc<String, String> {
+class SignUpFormBloc extends FormBloc<String, String> {
   final email = TextFieldBloc(validators: [FieldBlocValidatorsFr.required,FieldBlocValidatorsFr.email],);
   final password = TextFieldBloc(validators: [FieldBlocValidatorsFr.required,FieldBlocValidatorsFr.passwordMin6Chars],);
+  final confirmPassword = TextFieldBloc(validators: [FieldBlocValidatorsFr.required,],);
   late AuthenticationRepository _authenticationRepository;
 
-  LoginFormBloc({required AuthenticationRepository authenticationRepository}) {
+  SignUpFormBloc({required AuthenticationRepository authenticationRepository}) {
     _authenticationRepository = authenticationRepository;
     addFieldBlocs(step: 0,fieldBlocs: [
       email,
       password,
+      confirmPassword
     ]);
+    confirmPassword..subscribeToFieldBlocs([password])
+    ..addValidators([FieldBlocValidatorsFr.confirmPassword(password)]);
   }
 
   @override
   Future<FutureOr<void>> onSubmitting() async {
     emitLoading();
     try {
-      await _authenticationRepository.logInWithEmailAndPassword(
+      await _authenticationRepository.signUp(
         email: email.value,
         password: password.value,
       );

@@ -22,7 +22,7 @@ import "package:o_spawn_cup/models/game_name.dart";
 import "package:o_spawn_cup/models/make_it_responsive.dart";
 import "package:o_spawn_cup/models/server_type.dart";
 import "package:o_spawn_cup/models/validator/server_type.dart"
-    as serverTypeValidator;
+as serverTypeValidator;
 import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
 import "package:o_spawn_cup/service/firebase_handler.dart";
 import "package:o_spawn_cup/service/utils.dart";
@@ -38,57 +38,10 @@ import "package:o_spawn_cup/ui/CustomsWidgets/subtiltle_element.dart";
 import "package:o_spawn_cup/ui/CustomsWidgets/text_element.dart";
 import "package:o_spawn_cup/constant.dart";
 
-import "../../bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart";
-import "../../bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart";
-import "../../cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
+import '../../bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart';
+import '../../bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart';
+import '../../cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
 
-class FormTournament extends StatelessWidget {
-  Tournament? tournament;
-  FormTournament({
-    Key? key,
-    required this.tournament
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) =>
-              SelectGameBloc(listGameName: listCardGame, initialIndex: 1.0),
-        ),
-        BlocProvider(
-          create: (_) =>
-              StepByStepWidgetBloc(initialIndex: 0, initialIndexMax: 5),
-        ),
-        BlocProvider(
-          create: (_) => WidgetNumberByPlayerBloc(),
-        ),
-        BlocProvider(
-          create: (_) => SelectedImagePredefCubit(),
-        ),
-        BlocProvider(
-          create: (_) => GenerateCodeCubit(),
-        ),
-        BlocProvider(
-          create: (_) => TakeImageGalleryCubit(),
-        ),
-        BlocProvider(
-          create: (_) => FormTournamentStep2Bloc(),
-        ),
-        BlocProvider(
-          create: (_) => FormTournamentStep3Bloc(),
-        ),
-        BlocProvider(
-          create: (_) => FormTournamentStep4Bloc(),
-        ),
-        BlocProvider(
-          create: (_) => ListCashPrizesCubit(listCashPrizes: []),
-        ),
-      ],
-      child: FormTournamentView(tournament: tournament),
-    );
-  }
-}
 
 class FormTournamentView extends StatelessWidget {
   Tournament? tournament;
@@ -159,18 +112,18 @@ class FormTournamentView extends StatelessWidget {
                         .copyWith(primary: colorTheme.withOpacity(0.7)),
                   ),
                   child:
-                      BlocBuilder<StepByStepWidgetBloc, StepByStepWidgetState>(
+                  BlocBuilder<StepByStepWidgetBloc, StepByStepWidgetState>(
                     buildWhen: (previous, current) =>
-                        current.runtimeType == StepByStepWidgetChanged,
+                    current.runtimeType == StepByStepWidgetChanged,
                     builder: (context, state) {
                       final currentIndex = context.select(
-                          (StepByStepWidgetBloc bloc) =>
-                              bloc.state.indexCurrent);
+                              (StepByStepWidgetBloc bloc) =>
+                          bloc.state.indexCurrent);
                       return Stepper(
                           controlsBuilder: (context, controls) {
                             return Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              const EdgeInsets.symmetric(vertical: 16.0),
                               child: Row(
                                 mainAxisAlignment: (currentIndex == 0)
                                     ? MainAxisAlignment.spaceEvenly
@@ -179,7 +132,6 @@ class FormTournamentView extends StatelessWidget {
                                   if (currentIndex != 0)
                                     CustomButtonTheme(
                                       text: "RETOUR",
-                                      screenSize: screenSize,
                                       colorButton: Colors.white,
                                       colorText: colorBackgroundTheme,
                                       width: screenSize.width / 3,
@@ -191,7 +143,6 @@ class FormTournamentView extends StatelessWidget {
                                     text: (currentIndex < 5)
                                         ? "VALIDER"
                                         : "TERMINER",
-                                    screenSize: screenSize,
                                     colorButton: colorTheme,
                                     colorText: colorBackgroundTheme,
                                     width: screenSize.width / 3,
@@ -201,15 +152,6 @@ class FormTournamentView extends StatelessWidget {
                                           controls.onStepContinue!();
                                         }
                                         if(currentIndex == 1) {
-
-                                          // print("playerby: ${context.read<FormTournamentStep2Bloc>().state.playerByTeam.valid}");
-                                          // print("name: ${context.read<FormTournamentStep2Bloc>().state.nameCup.valid}");
-                                          // print("years: ${context.read<FormTournamentStep2Bloc>().state.yearsSign.valid}");
-                                          // print("day: ${context.read<FormTournamentStep2Bloc>().state.daySign.valid}");
-                                          // print("month: ${context.read<FormTournamentStep2Bloc>().state.monthSign.valid}");
-                                          // print("numberteam: ${context.read<FormTournamentStep2Bloc>().state.numberTeam.valid}");
-                                          // print("server: ${context.read<FormTournamentStep2Bloc>().state.serverType.valid}");
-
                                           if(context.read<FormTournamentStep2Bloc>().state.status.isValidated){
                                             controls.onStepContinue!();
                                           } else {
@@ -391,15 +333,15 @@ class FormTournamentView extends StatelessWidget {
                         screenSize: screenSize,
                         text: "CODE ${index + 1}",
                         controller:
-                            context.read<GenerateCodeCubit>().listCode[index],
+                        context.read<GenerateCodeCubit>().listCode[index],
                         typeTextField: TextInputType.text,
                         textAlign: TextAlign.center,
                         suffixIcon: const Icon(Icons.refresh),
                         onPressIconSuffix: () {
                           context
-                                  .read<GenerateCodeCubit>()
-                                  .listCode[index]
-                                  .text =
+                              .read<GenerateCodeCubit>()
+                              .listCode[index]
+                              .text =
                               context
                                   .read<GenerateCodeCubit>()
                                   .generateCode(beforeCode, 5);
@@ -428,45 +370,45 @@ class FormTournamentView extends StatelessWidget {
         ],
       ),
       content: BlocBuilder<ListCashPrizesCubit, ListCashPrizesState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            (context.read<ListCashPrizesCubit>().list.isEmpty)
-                ? TextElement(text: "Il n'y a aucun cash prizes !",color: Colors.white,)
-                : ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              primary: false,
-              itemCount: context.read<ListCashPrizesCubit>().list.length,
-              itemBuilder: (context, index) {
+        builder: (context, state) {
+          return Column(
+            children: [
+              (context.read<ListCashPrizesCubit>().list.isEmpty)
+                  ? TextElement(text: "Il n'y a aucun cash prizes !",color: Colors.white,)
+                  : ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                primary: false,
+                itemCount: context.read<ListCashPrizesCubit>().list.length,
+                itemBuilder: (context, index) {
 
 
-                return Row(
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  return Row(
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
 
-                    TextElement(text: (index + 1).toString()+ " ",color: Colors.white,),
-                    const Expanded(
-                      child: DottedLine(
-                        dashColor: Colors.white,
-                        lineThickness: 0.3,
+                      TextElement(text: (index + 1).toString()+ " ",color: Colors.white,),
+                      const Expanded(
+                        child: DottedLine(
+                          dashColor: Colors.white,
+                          lineThickness: 0.3,
+                        ),
                       ),
-                    ),
-                    InkWell(
-                        onTap: () => _displayTextInputDialog(context,index),
-                        child: TextElement(text: context.read<ListCashPrizesCubit>().list[index].toString() ,color: Colors.white)),
-                    IconButton(onPressed: () => context.read<ListCashPrizesCubit>().deleteCashPrizes(index),icon: const Icon(Icons.delete_forever,color: Colors.red,)),
-                  ],
-                );
+                      InkWell(
+                          onTap: () => _displayTextInputDialog(context,index),
+                          child: TextElement(text: context.read<ListCashPrizesCubit>().list[index].toString() ,color: Colors.white)),
+                      IconButton(onPressed: () => context.read<ListCashPrizesCubit>().deleteCashPrizes(index),icon: const Icon(Icons.delete_forever,color: Colors.red,)),
+                    ],
+                  );
 
-              },
-            ),
-            TextButton.icon(onPressed: () => _displayTextInputDialog(context,null), icon: const Icon(Icons.add_circle,color: Colors.white), label: TextElement(text: "Ajouter un lot",color: colorTheme,))
-          ],
-        );
-      },
-    ),
+                },
+              ),
+              TextButton.icon(onPressed: () => _displayTextInputDialog(context,null), icon: const Icon(Icons.add_circle,color: Colors.white), label: TextElement(text: "Ajouter un lot",color: colorTheme,))
+            ],
+          );
+        },
+      ),
     );
   }
   Future<void> _displayTextInputDialog(BuildContext contextLocal,int? index) async {
@@ -485,7 +427,7 @@ class FormTournamentView extends StatelessWidget {
               TextButton(
                 child: TextElement(text: "Annuler"),
                 onPressed: () {
-                    Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               ),
               TextButton(
@@ -497,7 +439,7 @@ class FormTournamentView extends StatelessWidget {
                     contextLocal.read<ListCashPrizesCubit>().addCashPrize(_textFieldController.text);
                   }
 
-                    Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -543,7 +485,7 @@ class FormTournamentView extends StatelessWidget {
                     crossAxisSpacing: 10,
                     crossAxisCount: 3,
                     children: context.select(
-                        (SelectGameBloc bloc) => bloc.filteredImageByGame()),
+                            (SelectGameBloc bloc) => bloc.filteredImageByGame()),
                   );
                 },
               ),
@@ -571,52 +513,52 @@ class FormTournamentView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               BlocBuilder<FormTournamentStep3Bloc, FormTournamentStep3State>(
-              builder: (context, state) {
-                return CustomTextField(
-                  textInputAction: TextInputAction.next,
-                screenSize: screenSize,
-                text: "POINT PAR KILL",
-                  paddingBottom: 10,
-                controller: pointPerKillController,
-                typeTextField: TextInputType.number,
-                onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerKillChanged(int.tryParse(value))),
-                errorText: state.pointPerKill.invalid
-                    ? "Le nombre de point par kill doit être renseigné !"
-                    : null,
-              );
-  },
-),
+                builder: (context, state) {
+                  return CustomTextField(
+                    textInputAction: TextInputAction.next,
+                    screenSize: screenSize,
+                    text: "POINT PAR KILL",
+                    paddingBottom: 10,
+                    controller: pointPerKillController,
+                    typeTextField: TextInputType.number,
+                    onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerKillChanged(int.tryParse(value))),
+                    errorText: state.pointPerKill.invalid
+                        ? "Le nombre de point par kill doit être renseigné !"
+                        : null,
+                  );
+                },
+              ),
               BlocBuilder<FormTournamentStep3Bloc, FormTournamentStep3State>(
-              builder: (context, state) {
-                return CustomTextField(
-                  textInputAction: TextInputAction.next,
-                screenSize: screenSize,
-                  paddingBottom: 10,
-                text: "POINT PAR RANG",
-                controller: pointPerRangController,
-                typeTextField: TextInputType.number,
-                onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerRangChanged(int.tryParse(value))),
-                errorText: state.pointPerRang.invalid
-                    ? "Le nombre de point par kill doit être renseigné !"
-                    : null,
-              );
-  },
-),
+                builder: (context, state) {
+                  return CustomTextField(
+                    textInputAction: TextInputAction.next,
+                    screenSize: screenSize,
+                    paddingBottom: 10,
+                    text: "POINT PAR RANG",
+                    controller: pointPerRangController,
+                    typeTextField: TextInputType.number,
+                    onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerRangChanged(int.tryParse(value))),
+                    errorText: state.pointPerRang.invalid
+                        ? "Le nombre de point par kill doit être renseigné !"
+                        : null,
+                  );
+                },
+              ),
               BlocBuilder<FormTournamentStep3Bloc, FormTournamentStep3State>(
-              builder: (context, state) {
-                return CustomTextField(
-                screenSize: screenSize,
-                  paddingBottom: 10,
-                text: "RANG DEBUT DU DECOMPTE",
-                controller: rangStartController,
-                typeTextField: TextInputType.number,
-                onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentStartRangChanged(int.tryParse(value))),
-                errorText: state.startRang.invalid
-                    ? "Le nombre de point par kill doit être renseigné !"
-                    : null,
-              );
-  },
-),
+                builder: (context, state) {
+                  return CustomTextField(
+                    screenSize: screenSize,
+                    paddingBottom: 10,
+                    text: "RANG DEBUT DU DECOMPTE",
+                    controller: rangStartController,
+                    typeTextField: TextInputType.number,
+                    onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentStartRangChanged(int.tryParse(value))),
+                    errorText: state.startRang.invalid
+                        ? "Le nombre de point par kill doit être renseigné !"
+                        : null,
+                  );
+                },
+              ),
             ],
           ),
         ));
@@ -694,22 +636,22 @@ class FormTournamentView extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
-              builder: (context, state) {
-                return RowTextfieldDate(
-                  paddingBottom: 10,
-                  paddingTop: 5,
-                  monthFocus: monthFocus,
-                  dayFocus: dayFocus,
-                  dayController: daySignController,
-                  yearsFocus: yearsFocus,
-                  monthController: monthSignController,
-                  yearsController: yearsSignController,
-                  onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDaySignChanged(value)),
-                  onChangedMonth: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthSignChanged(value)),
-                  onChangedYears: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsSignChanged(value)),
-                  screenSize: screenSize,
-                  dateValide:  context.read<FormTournamentStep2Bloc>().state.daySign.valid && context.read<FormTournamentStep2Bloc>().state.monthSign.valid &&  context.read<FormTournamentStep2Bloc>().state.yearsSign.valid,
-                );
+                builder: (context, state) {
+                  return RowTextfieldDate(
+                    paddingBottom: 10,
+                    paddingTop: 5,
+                    monthFocus: monthFocus,
+                    dayFocus: dayFocus,
+                    dayController: daySignController,
+                    yearsFocus: yearsFocus,
+                    monthController: monthSignController,
+                    yearsController: yearsSignController,
+                    onChangedDay: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentDaySignChanged(value)),
+                    onChangedMonth: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentMonthSignChanged(value)),
+                    onChangedYears: (context,value) => context.read<FormTournamentStep2Bloc>().add(FormTournamentYearsSignChanged(value)),
+                    screenSize: screenSize,
+                    dateValide:  context.read<FormTournamentStep2Bloc>().state.daySign.valid && context.read<FormTournamentStep2Bloc>().state.monthSign.valid &&  context.read<FormTournamentStep2Bloc>().state.yearsSign.valid,
+                  );
                 },
               ),
               Text(
@@ -774,10 +716,10 @@ class FormTournamentView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
-              builder: (context, state) {
-                return const RowWidgetNumByPlayer();
-              },
-),
+                  builder: (context, state) {
+                    return const RowWidgetNumByPlayer();
+                  },
+                ),
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                 builder: (context, state) {
@@ -800,37 +742,37 @@ class FormTournamentView extends StatelessWidget {
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
                   builder: (context, state) {
-                serverDropdown.onChanged = (context, data) {
-                  context
-                      .read<FormTournamentStep2Bloc>()
-                      .add(FormTournamentServerTypeChanged(data.toString()));
-                };
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Column(
-                    children: [
-                      serverDropdown,
-                      state.serverType.invalid
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 6.0, left: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    "Un type de serveur doit être sélectionné !",
-                                    style: TextStyle(
-                                      color: Color(0xffd22f2f),
-                                      fontSize: 12,
-                                    ),
+                    serverDropdown.onChanged = (context, data) {
+                      context
+                          .read<FormTournamentStep2Bloc>()
+                          .add(FormTournamentServerTypeChanged(data.toString()));
+                    };
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Column(
+                        children: [
+                          serverDropdown,
+                          state.serverType.invalid
+                              ? Padding(
+                            padding: const EdgeInsets.only(top: 6.0, left: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "Un type de serveur doit être sélectionné !",
+                                  style: TextStyle(
+                                    color: Color(0xffd22f2f),
+                                    fontSize: 12,
                                   ),
-                                ],
-                              ),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                );
-              }),
+                                ),
+                              ],
+                            ),
+                          )
+                              : Container(),
+                        ],
+                      ),
+                    );
+                  }),
             ],
           ),
         ));
@@ -975,67 +917,67 @@ class WidgetChooseImage extends StatelessWidget {
           },
           child: (imageTaked != null)
               ? SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: colorTheme, width: 3),
-                      borderRadius: BorderRadius.circular(9),
-                      image: DecorationImage(
-                        image: Image.file(
-                          imageTaked,
-                        ).image,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                )
-              : ShakeAnimatedWidget(
-                enabled: (state.runtimeType == TakeImageAnimated) ? true : false,
-                duration: const Duration(milliseconds: 300),
-                shakeAngle: Rotation.deg(z: 5),
-                curve: Curves.linear,
-                child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    color: (state.runtimeType == TakeImageAnimated) ? const Color(0xffd22f2f) : Colors.white,
-                    strokeWidth: 0.6,
-                    strokeCap: StrokeCap.round,
-                    radius: const Radius.circular(9),
-                    padding: const EdgeInsets.all(6),
-                    child: SizedBox(
-                      height: screenSize.height * 0.08,
-                      width: screenSize.width,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            width: 23,
-                            height: 23,
-                            child: Icon(
-                              Icons.add,
-                              color: colorHintTextTheme,
-                            ),
-                          ),
-                          TextElement(
-                            text: "CHOISIR UNE IMAGE",
-                            color: Colors.white,
-                          ),
-                          Text(
-                            "max 5 mo",
-                            style: TextStyle(
-                              color: colorOrange,
-                              fontFamily: "o_spawn_cup_font",
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+            width: MediaQuery.of(context).size.width * 0.3,
+            height: MediaQuery.of(context).size.height * 0.15,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: colorTheme, width: 3),
+                borderRadius: BorderRadius.circular(9),
+                image: DecorationImage(
+                  image: Image.file(
+                    imageTaked,
+                  ).image,
+                  fit: BoxFit.cover,
+                ),
               ),
+            ),
+          )
+              : ShakeAnimatedWidget(
+            enabled: (state.runtimeType == TakeImageAnimated) ? true : false,
+            duration: const Duration(milliseconds: 300),
+            shakeAngle: Rotation.deg(z: 5),
+            curve: Curves.linear,
+            child: DottedBorder(
+              borderType: BorderType.RRect,
+              color: (state.runtimeType == TakeImageAnimated) ? const Color(0xffd22f2f) : Colors.white,
+              strokeWidth: 0.6,
+              strokeCap: StrokeCap.round,
+              radius: const Radius.circular(9),
+              padding: const EdgeInsets.all(6),
+              child: SizedBox(
+                height: screenSize.height * 0.08,
+                width: screenSize.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      width: 23,
+                      height: 23,
+                      child: Icon(
+                        Icons.add,
+                        color: colorHintTextTheme,
+                      ),
+                    ),
+                    TextElement(
+                      text: "CHOISIR UNE IMAGE",
+                      color: Colors.white,
+                    ),
+                    Text(
+                      "max 5 mo",
+                      style: TextStyle(
+                        color: colorOrange,
+                        fontFamily: "o_spawn_cup_font",
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
         );
       },
     );
