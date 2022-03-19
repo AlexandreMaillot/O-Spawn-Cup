@@ -28,6 +28,8 @@ class Tournament {
   int capacity;
   @JsonKey(fromJson: _fromJson)
   List<String>? cashPrize;
+  @JsonKey(fromJson: _fromJson)
+  List<String>? listCodesGames;
   int roundNumber;
   TournamentState state = TournamentState.inscriptionFermer;
   String? imageUrl;
@@ -53,6 +55,7 @@ class Tournament {
       required this.killPointTournament,
       required this.pointPerRangTournament,
       required this.rangStartTournament,
+      required this.listCodesGames,
       }) {
   }
 

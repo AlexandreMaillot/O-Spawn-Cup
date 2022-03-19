@@ -78,6 +78,7 @@ class FirebaseHandler {
       TournamentType tournamentType,
       int capacity,
       List<String> cashPrize,
+      List<String> listCodesGames,
       int roundNumber,
       int killPointTournament,
       int pointPerRangTournament,
@@ -103,6 +104,7 @@ class FirebaseHandler {
       rangStartTournament: rangStartTournament,
       imageUrl: urlString,
       imageName: imageName,
+      listCodesGames: listCodesGames,
     );
     var idTournament = await tournamentsRef.add(tournament);
     for(int i = 1; i < roundNumber;i++){

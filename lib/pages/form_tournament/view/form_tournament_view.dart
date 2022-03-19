@@ -206,6 +206,7 @@ class FormTournamentView extends StatelessWidget {
                                                 .indexSelected!],
                                             int.parse(teamNumberController.text),
                                             context.read<ListCashPrizesCubit>().list,
+                                            context.read<GenerateCodeCubit>().listCode.map((e) => e.value.text).toList(),
                                             int.parse(roundNumberController.text),
                                             int.parse(pointPerKillController.text),
                                             int.parse(pointPerRangController.text),
@@ -224,6 +225,7 @@ class FormTournamentView extends StatelessWidget {
                                                 .image,
                                             ),
                                             (context.read<TakeImageGalleryCubit>().state.imageTaked == null) ? false : true,
+
                                           );
                                         } else {
 

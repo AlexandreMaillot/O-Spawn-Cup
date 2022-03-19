@@ -128,6 +128,7 @@ abstract class TournamentDocumentReference
     String name,
     int capacity,
     List<String>? cashPrize,
+    List<String>? listCodesGames,
     int roundNumber,
     String? imageUrl,
     String? imageName,
@@ -190,6 +191,7 @@ class _$TournamentDocumentReference
     Object? name = _sentinel,
     Object? capacity = _sentinel,
     Object? cashPrize = _sentinel,
+    Object? listCodesGames = _sentinel,
     Object? roundNumber = _sentinel,
     Object? imageUrl = _sentinel,
     Object? imageName = _sentinel,
@@ -202,6 +204,8 @@ class _$TournamentDocumentReference
       if (name != _sentinel) "name": name as String,
       if (capacity != _sentinel) "capacity": capacity as int,
       if (cashPrize != _sentinel) "cashPrize": cashPrize as List<String>?,
+      if (listCodesGames != _sentinel)
+        "listCodesGames": listCodesGames as List<String>?,
       if (roundNumber != _sentinel) "roundNumber": roundNumber as int,
       if (imageUrl != _sentinel) "imageUrl": imageUrl as String?,
       if (imageName != _sentinel) "imageName": imageName as String?,
@@ -294,6 +298,16 @@ abstract class TournamentQuery
     List<int>? whereNotIn,
   });
   TournamentQuery whereCashPrize({
+    List<String>? isEqualTo,
+    List<String>? isNotEqualTo,
+    List<String>? isLessThan,
+    List<String>? isLessThanOrEqualTo,
+    List<String>? isGreaterThan,
+    List<String>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? arrayContainsAny,
+  });
+  TournamentQuery whereListCodesGames({
     List<String>? isEqualTo,
     List<String>? isNotEqualTo,
     List<String>? isLessThan,
@@ -407,6 +421,18 @@ abstract class TournamentQuery
   });
 
   TournamentQuery orderByCashPrize({
+    bool descending = false,
+    List<String>? startAt,
+    List<String>? startAfter,
+    List<String>? endAt,
+    List<String>? endBefore,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  });
+
+  TournamentQuery orderByListCodesGames({
     bool descending = false,
     List<String>? startAt,
     List<String>? startAfter,
@@ -649,6 +675,32 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     return _$TournamentQuery(
       reference.where(
         'cashPrize',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
+      ),
+      _collection,
+    );
+  }
+
+  TournamentQuery whereListCodesGames({
+    List<String>? isEqualTo,
+    List<String>? isNotEqualTo,
+    List<String>? isLessThan,
+    List<String>? isLessThanOrEqualTo,
+    List<String>? isGreaterThan,
+    List<String>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? arrayContainsAny,
+  }) {
+    return _$TournamentQuery(
+      reference.where(
+        'listCodesGames',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -968,6 +1020,48 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
     TournamentDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('cashPrize', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TournamentQuery(query, _collection);
+  }
+
+  TournamentQuery orderByListCodesGames({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('listCodesGames', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -3582,6 +3676,7 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
       killPointTournament: json['killPointTournament'] as int,
       pointPerRangTournament: json['pointPerRangTournament'] as int?,
       rangStartTournament: json['rangStartTournament'] as int?,
+      listCodesGames: Tournament._fromJson(json['listCodesGames'] as List),
     )..state = $enumDecode(_$TournamentStateEnumMap, json['state']);
 
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
@@ -3594,6 +3689,7 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'tournamentType': instance.tournamentType.toJson(),
       'capacity': instance.capacity,
       'cashPrize': instance.cashPrize,
+      'listCodesGames': instance.listCodesGames,
       'roundNumber': instance.roundNumber,
       'state': _$TournamentStateEnumMap[instance.state],
       'imageUrl': instance.imageUrl,
