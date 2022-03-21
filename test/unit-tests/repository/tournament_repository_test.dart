@@ -89,6 +89,11 @@ void main() {
     tournamentRepository = TournamentRepository(tournamentCollectionReference: tournamentsRef);
   });
   group("Liste les tournois avec filtre", (){
+    test('list tournaments no tournaments', () async {
+      var baseDelete = TournamentCollectionReference(FakeFirebaseFirestore());
+      var tournamentRepositoryClear = TournamentRepository(tournamentCollectionReference: baseDelete);
+      expect(tournamentRepositoryClear.listTournaments(gameName: null), emits([]),);
+    });
     test('list tournaments no filter expect order', () async {
       listTournaments.sort((a, b) => b.dateDebutTournois!.compareTo(a.dateDebutTournois ?? DateTime.now()));
       expect(tournamentRepository.listTournaments(gameName: null), emits(listTournaments),);
@@ -125,6 +130,14 @@ void main() {
     var snapTournament = await snapshot.docs.first.reference.get();
     var tournament = snapTournament.data();
     expect(tournament!["state"], TournamentState.annuler.name);
+  });
+  test('close cup', () async {
+    tournamentRepository.cupClose(listTournaments[0],);
+
+    snapshot = await instance.collection('Tournament').get();
+    var snapTournament = await snapshot.docs.first.reference.get();
+    var tournament = snapTournament.data();
+    expect(tournament!["state"], TournamentState.terminer.name);
   });
   test('add tournament', () async {
     tournamentRepository.addTournamentInFirebase(tournament4);

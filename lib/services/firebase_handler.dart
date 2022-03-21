@@ -44,24 +44,7 @@ class FirebaseHandler {
     return urlString;
   }
 
-  checkTournamentState(Tournament tournament){
 
-    DateTime dateTimeNow = DateTime.now();
-    if(tournament.state == TournamentState.inscriptionFermer) {
-
-      if(tournament.dateDebutInscription!.isBefore(dateTimeNow)){
-        tournament.state = TournamentState.incriptionOuverte;
-        modifTournament(tournament);
-      }
-    }
-    if(tournament.state == TournamentState.incriptionOuverte || tournament.state == TournamentState.inscriptionFermer) {
-      if(tournament.dateDebutTournois!.isBefore(dateTimeNow)){
-        tournament.state = TournamentState.enCours;
-        modifTournament(tournament);
-      }
-    }
-
-  }
   cupClose(Tournament tournament){
     tournament.state = TournamentState.terminer;
     modifTournament(tournament);

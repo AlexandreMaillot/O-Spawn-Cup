@@ -7,7 +7,8 @@ import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_svg/svg.dart";
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
-import 'package:o_spawn_cup/pages/list_cup/bloc/list_tournament_bloc/list_tournament_bloc.dart';
+import 'package:o_spawn_cup/pages/list_cup/cubit/list_cup_cubit.dart';
+
 
 import "package:o_spawn_cup/shared/widgets/custom_button_theme.dart";
 import "package:o_spawn_cup/shared/widgets/custom_dropdown.dart";
@@ -40,7 +41,7 @@ class FloatingActionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-
+    final blocListCubit = context.read<ListCupCubit>();
     return FloatingActionButton(
       heroTag: "filterMenu",
       elevation: 0,
@@ -95,8 +96,15 @@ class FloatingActionBottomSheet extends StatelessWidget {
                       tournamentStateDropdown,
                       CustomButtonTheme(
                         onPressedMethod: () async {
-
-                          context.read<ListTournamentBloc>().add(TournamentFilter(day: dayController.text, month: monthController.text, year: yearsController.text, tournamentType: tournamentTypeDropdown.dropdownValue as TournamentType?, tournamentState: tournamentStateDropdown.dropdownValue as TournamentState?, name: tournamentNameController.text));
+                          int? years = int.tryParse(yearsController.text);
+                          int? month = int.tryParse(monthController.text);
+                          int? day = int.tryParse(dayController.text);
+                          String? name = tournamentNameController.text;
+                          blocListCubit.loadListCupWithFilter(
+                              name: (name != "") ? name : null,
+                              tournamentType: tournamentTypeDropdown.dropdownValue as TournamentType?,
+                              tournamentState: tournamentStateDropdown.dropdownValue as TournamentState?,
+                              dateStart: (years != null && month != null && day != null) ? DateTime(years,month,day) : null);
                           Navigator.pop(context);
                         }, text: "RECHERCHER", colorText: colorTheme, colorButton: colorBackgroundTheme,
 

@@ -30,7 +30,10 @@ class TournamentRepository {
         })
         .toList());
   }
-
+  cupClose(Tournament tournament){
+    tournament.state = TournamentState.terminer;
+    modifTournamentInFirebase(tournament);
+  }
   checkTournamentState(Tournament tournament){
     DateTime dateTimeNow = DateTime.now();
     if(tournament.state == TournamentState.inscriptionFermer) {
