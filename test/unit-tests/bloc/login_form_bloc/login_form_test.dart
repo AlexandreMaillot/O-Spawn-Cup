@@ -2,12 +2,15 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/pages/login/bloc/login_form_bloc.dart';
+
+class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
 void main() {
   late LoginFormBloc loginFormBloc;
-
-  setUpAll((){
-    final AuthenticationRepository authenticationRepository = AuthenticationRepository();
+  late AuthenticationRepository authenticationRepository;
+  setUp((){
+    authenticationRepository = MockAuthenticationRepository();
     loginFormBloc = LoginFormBloc(authenticationRepository: authenticationRepository);
   });
 
@@ -39,39 +42,6 @@ void main() {
     loginFormBloc.submit();
 
   });
-  // test('confirm password different de password', () async {
-  //   final expectedStates = [
-  //     FormBlocSubmitting<String, String>(
-  //       isValidByStep: const {0: false},
-  //       fieldBlocs: {
-  //         0: {loginFormBloc.email.name: loginFormBloc.email,
-  //           loginFormBloc.password.name: loginFormBloc.password,},
-  //       },
-  //     ),
-  //     FormBlocSubmissionFailed<String, String>(
-  //       isValidByStep: const {0: false},
-  //       fieldBlocs: {
-  //         0: {loginFormBloc.email.name: loginFormBloc.email,
-  //           loginFormBloc.password.name: loginFormBloc.password,},
-  //       },
-  //     ),
-  //     FormBlocLoaded<String, String>(
-  //       isValidByStep: const {0: false},
-  //       fieldBlocs: {
-  //         0: {loginFormBloc.email.name: loginFormBloc.email,
-  //           loginFormBloc.password.name: loginFormBloc.password,},
-  //       },
-  //     ),
-  //   ];
-  //
-  //   expect(loginFormBloc.stream, emitsInOrder(expectedStates));
-  //
-  //
-  //   loginFormBloc.email.updateValue("alexandre.maillot97@gmail.com");
-  //   loginFormBloc.password.updateValue("123456789");
-  //   loginFormBloc.submit();
-  // });
-
   test('No password', () async {
     final expectedStates = [
       FormBlocSubmitting<String, String>(
@@ -120,6 +90,7 @@ void main() {
             loginFormBloc.password.name: loginFormBloc.password,},
         },
       ),
+
       FormBlocLoaded<String, String>(
         isValidByStep: const {0: false},
         fieldBlocs: {
@@ -138,6 +109,8 @@ void main() {
   });
 
   test('Submit formulaire rempli correctement', () async {
+
+    when(() => authenticationRepository.logInWithEmailAndPassword(email: "alexandre.maillot97@gmail.com",password: "123456789")).thenAnswer((_) => Future.value());
     final expectedStates = [
       FormBlocSubmitting<String, String>(
         isValidByStep: const {0: false},
@@ -147,6 +120,13 @@ void main() {
         },
       ),
       FormBlocSubmitting<String, String>(
+        isValidByStep: const {0: true},
+        fieldBlocs: {
+          0: {loginFormBloc.email.name: loginFormBloc.email,
+            loginFormBloc.password.name: loginFormBloc.password,},
+        },
+      ),
+      FormBlocLoading<String, String>(
         isValidByStep: const {0: true},
         fieldBlocs: {
           0: {loginFormBloc.email.name: loginFormBloc.email,

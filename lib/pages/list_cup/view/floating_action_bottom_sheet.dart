@@ -1,19 +1,16 @@
-import "dart:convert";
 
-import "package:cloud_firestore/cloud_firestore.dart";
-import "package:dotted_line/dotted_line.dart";
+import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
+
 import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import "package:flutter_svg/svg.dart";
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
+import 'package:o_spawn_cup/pages/list_cup/bloc/list_cup_filter_form_bloc.dart';
 import 'package:o_spawn_cup/pages/list_cup/cubit/list_cup_cubit.dart';
-
-
+import 'package:o_spawn_cup/pages/list_cup/list_cup.dart';
 import "package:o_spawn_cup/shared/widgets/custom_button_theme.dart";
 import "package:o_spawn_cup/shared/widgets/custom_dropdown.dart";
-import "package:o_spawn_cup/shared/widgets/custom_dropdowwn_tournament_state.dart";
-import "package:o_spawn_cup/shared/widgets/custom_row_textfield_date.dart";
 import "package:o_spawn_cup/shared/widgets/custom_text_field.dart";
 import "package:o_spawn_cup/constant.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
@@ -40,6 +37,7 @@ class FloatingActionBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final listCupFilterFormBloc = context.read<ListCupFilterFormBloc>();
     Size screenSize = MediaQuery.of(context).size;
     final blocListCubit = context.read<ListCupCubit>();
     return FloatingActionButton(
@@ -61,6 +59,7 @@ class FloatingActionBottomSheet extends StatelessWidget {
                 padding: MediaQuery.of(context).viewInsets,
                 color: colorBackgroundTheme,
                 child: Container(
+                  width: MediaQuery.of(context).size.width,
 
                   decoration: BoxDecoration(
                       color: colorTheme,
@@ -73,19 +72,10 @@ class FloatingActionBottomSheet extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RowTextfieldDate(
-                          screenSize: screenSize,
-                          monthFocus: monthFocus,
-                          dayFocus: dayFocus,
-                          dayController: dayController,
-                          yearsFocus: yearsFocus,
-                          monthController: monthController,
-                          yearsController: yearsController,
-                          onChangedDay: (context,value) => print(""),
-                          onChangedMonth: (context,value) => print(""),
-                          onChangedYears: (context,value) => print(""),
-                      ),
-                      tournamentTypeDropdown,
+
+                      RowDatePick(listCupFilterFormBloc: listCupFilterFormBloc),
+                      DropdownTournamentState(listCupFilterFormBloc: listCupFilterFormBloc),
+                      // tournamentTypeDropdown,
                       CustomTextField(
                           controller: tournamentNameController,
                           textAlign: TextAlign.left,
@@ -93,7 +83,7 @@ class FloatingActionBottomSheet extends StatelessWidget {
                           text: "NOM DU TOURNOIS",
                           buttonColor: Colors.white,
                           borderColor: Colors.white),
-                      tournamentStateDropdown,
+                      DropdownTournamentType(listCupFilterFormBloc: listCupFilterFormBloc),
                       CustomButtonTheme(
                         onPressedMethod: () async {
                           int? years = int.tryParse(yearsController.text);
@@ -123,6 +113,10 @@ class FloatingActionBottomSheet extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 
 

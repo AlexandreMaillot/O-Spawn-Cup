@@ -9,7 +9,7 @@ void main() {
   test('init bloc with initialindex', () {
     expect(
       SelectGameBloc(initialIndex: 2,listGameName: []).state,
-      SelectGameInitial(2),
+      SelectGameChanged(2),
     );
   });
 

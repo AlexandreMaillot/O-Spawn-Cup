@@ -24,11 +24,11 @@ List<CardGame> listCardGame = [
 ];
 
 List<TournamentType> listTournamentType = [
-  TournamentType(name: "Solo",capacityTeam: 1),
-  TournamentType(name: "Duo",capacityTeam: 2),
-  TournamentType(name: "Trio",capacityTeam: 3),
-  TournamentType(name: "Quatuor",capacityTeam: 4),
-  TournamentType(name: "Quintet",capacityTeam: 5),
+  TournamentType.solo,
+  TournamentType.duo,
+  TournamentType.trio,
+  TournamentType.quatuor,
+  TournamentType.quintet,
 ];
 List<WidgetNumPlayerByTeam> listWidgetNumPlayerByTeam = [
   WidgetNumPlayerByTeam(
