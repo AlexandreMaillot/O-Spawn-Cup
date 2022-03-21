@@ -26,9 +26,9 @@ class Tournament extends Equatable{
   ServerType server;
   TournamentType tournamentType;
   int capacity;
-  @JsonKey(fromJson: _fromJson)
+  @JsonKey(fromJson: _listFromJson)
   List<String>? cashPrize;
-  @JsonKey(fromJson: _fromJson)
+  @JsonKey(fromJson: _listFromJson)
   List<String>? listCodesGames;
   int roundNumber;
   TournamentState _state = TournamentState.inscriptionFermer;
@@ -88,7 +88,7 @@ class Tournament extends Equatable{
 
   Map<String, Object?> toJson() => _$TournamentToJson(this);
 
-  static List<String> _fromJson(Iterable<dynamic> value) => List<String>.from(value);
+  static List<String> _listFromJson(Iterable<dynamic> value) => List<String>.from(value);
 
 
 

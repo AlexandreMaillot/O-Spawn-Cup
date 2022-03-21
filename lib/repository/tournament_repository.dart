@@ -4,6 +4,7 @@ import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
 
+
 class TournamentRepository {
 
   TournamentCollectionReference tournamentCollectionReference;
@@ -22,12 +23,40 @@ class TournamentRepository {
 
     return queryListTournament.snapshots()
         .map((event) => event.docs
-        .map((tournamentDoc) => tournamentDoc.data() as Tournament)
+        .map((tournamentDoc) {
+          Tournament tournament = tournamentDoc.data() as Tournament;
+          tournament.documentId = tournamentDoc.id;
+          return tournament;
+        })
         .toList());
   }
 
-
-
+  checkTournamentState(Tournament tournament){
+    DateTime dateTimeNow = DateTime.now();
+    if(tournament.state == TournamentState.inscriptionFermer) {
+      if(tournament.dateDebutInscription!.isBefore(dateTimeNow)){
+        changeStateTournament(tournament,TournamentState.incriptionOuverte);
+      }
+    }
+    if(tournament.state == TournamentState.incriptionOuverte || tournament.state == TournamentState.inscriptionFermer) {
+      if(tournament.dateDebutTournois!.isBefore(dateTimeNow)){
+        changeStateTournament(tournament,TournamentState.enCours);
+      }
+    }
+  }
+  changeStateTournament(Tournament tournament,TournamentState tournamentState){
+    tournament.state = tournamentState;
+    tournamentCollectionReference.doc(tournament.documentId).set(tournament);
+  }
+  addTournamentInFirebase(Tournament tournament){
+    tournamentCollectionReference.add(tournament);
+  }
+  modifTournamentInFirebase(Tournament tournament){
+    tournamentCollectionReference.doc(tournament.documentId).set(tournament);
+  }
+  deleteTournamentInFirebase(String documentId){
+    tournamentCollectionReference.doc(documentId).delete();
+  }
   Query<Object?> addOrderByDateStart(Query<Object?> queryListTournament, bool isOrder) {
     return queryListTournament.orderBy("dateDebutTournois", descending: isOrder);
   }

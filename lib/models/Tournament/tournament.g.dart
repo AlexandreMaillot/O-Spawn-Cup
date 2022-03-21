@@ -135,6 +135,7 @@ abstract class TournamentDocumentReference
     int killPointTournament,
     int? pointPerRangTournament,
     int? rangStartTournament,
+    List<Object?> props,
   });
 
   Future<void> set(Tournament value);
@@ -198,6 +199,7 @@ class _$TournamentDocumentReference
     Object? killPointTournament = _sentinel,
     Object? pointPerRangTournament = _sentinel,
     Object? rangStartTournament = _sentinel,
+    Object? props = _sentinel,
   }) async {
     final json = {
       if (documentId != _sentinel) "documentId": documentId as String?,
@@ -215,6 +217,7 @@ class _$TournamentDocumentReference
         "pointPerRangTournament": pointPerRangTournament as int?,
       if (rangStartTournament != _sentinel)
         "rangStartTournament": rangStartTournament as int?,
+      if (props != _sentinel) "props": props as List<Object?>,
     };
 
     return reference.update(json);
@@ -383,6 +386,16 @@ abstract class TournamentQuery
     List<int?>? whereIn,
     List<int?>? whereNotIn,
   });
+  TournamentQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  });
 
   TournamentQuery orderByDocumentId({
     bool descending = false,
@@ -510,6 +523,18 @@ abstract class TournamentQuery
     int? startAfter,
     int? endAt,
     int? endBefore,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  });
+
+  TournamentQuery orderByProps({
+    bool descending = false,
+    List<Object?> startAt,
+    List<Object?> startAfter,
+    List<Object?> endAt,
+    List<Object?> endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -877,6 +902,32 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
         isNull: isNull,
         whereIn: whereIn,
         whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  TournamentQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  }) {
+    return _$TournamentQuery(
+      reference.where(
+        'props',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
       ),
       _collection,
     );
@@ -1317,6 +1368,48 @@ class _$TournamentQuery extends QueryReference<TournamentQuerySnapshot>
   }) {
     var query =
         reference.orderBy('rangStartTournament', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TournamentQuery(query, _collection);
+  }
+
+  TournamentQuery orderByProps({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TournamentDocumentSnapshot? startAtDocument,
+    TournamentDocumentSnapshot? endAtDocument,
+    TournamentDocumentSnapshot? endBeforeDocument,
+    TournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('props', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -3672,11 +3765,11 @@ Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
       imageName: json['imageName'] as String?,
       cashPrize: json['cashPrize'] == null
           ? const <String>[]
-          : Tournament._fromJson(json['cashPrize'] as List),
+          : Tournament._listFromJson(json['cashPrize'] as List),
       killPointTournament: json['killPointTournament'] as int,
       pointPerRangTournament: json['pointPerRangTournament'] as int?,
       rangStartTournament: json['rangStartTournament'] as int?,
-      listCodesGames: Tournament._fromJson(json['listCodesGames'] as List),
+      listCodesGames: Tournament._listFromJson(json['listCodesGames'] as List),
     )..state = $enumDecode(_$TournamentStateEnumMap, json['state']);
 
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
@@ -3691,12 +3784,12 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'cashPrize': instance.cashPrize,
       'listCodesGames': instance.listCodesGames,
       'roundNumber': instance.roundNumber,
-      'state': _$TournamentStateEnumMap[instance.state],
       'imageUrl': instance.imageUrl,
       'imageName': instance.imageName,
       'killPointTournament': instance.killPointTournament,
       'pointPerRangTournament': instance.pointPerRangTournament,
       'rangStartTournament': instance.rangStartTournament,
+      'state': _$TournamentStateEnumMap[instance.state],
     };
 
 const _$GameNameEnumMap = {
