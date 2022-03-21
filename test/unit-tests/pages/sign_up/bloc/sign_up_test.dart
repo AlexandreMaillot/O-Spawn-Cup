@@ -1,0 +1,36 @@
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:o_spawn_cup/models/Member/member.dart';
+import 'package:o_spawn_cup/pages/sign_up/bloc/sign_up_form_bloc.dart';
+import 'package:o_spawn_cup/services/firebase_handler.dart';
+
+class AuthenticationRepositoryMock extends Mock implements AuthenticationRepository {}
+class FirebaseHandlerMock extends Mock implements FirebaseHandler {
+
+}
+void main() {
+  late AuthenticationRepositoryMock authenticationRepository;
+  late List<FormBlocState<String, String>> expectedStates;
+  late String pseudo = "";
+  late String uid = "";
+  late Member m;
+  setUpAll((){
+    authenticationRepository = AuthenticationRepositoryMock();
+  });
+  blocTest(
+    'FormSignUpStateInit',
+    build: () => SignUpFormBloc(authenticationRepository: authenticationRepository),
+    expect: () => [],
+  );
+
+  test('', () async {
+    SignUpFormBloc bloc = SignUpFormBloc(authenticationRepository: authenticationRepository);
+    m = Member(uid: "",pseudo: "");
+    when(()=> FirebaseHandlerMock().addMemberFirebase(bloc.email.value, "uid")).thenAnswer((invocation) => m = Member(uid: "",pseudo: "invocation.positionalArguments[0]"));
+
+  });
+
+}

@@ -16,5 +16,6 @@ class Member {
 
 
 }
+
 @Collection<Member>("Members")
 final membersRef = MemberCollectionReference();

@@ -16,7 +16,7 @@ class GameCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           (form == false)
-              ? Navigator.of(context).push(BlocRouter().cupSelect(listCardGame[index].gameName))
+              ? Navigator.of(context).push<void>(ListCupPage(gameName: listCardGame[index].gameName).route())
               : null;
         },
         child: ClipRRect(

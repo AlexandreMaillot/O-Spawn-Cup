@@ -886,6 +886,9 @@ class FormTournamentView extends StatelessWidget {
       tournament.cashPrize?.forEach((element) {
         context.read<ListCashPrizesCubit>().addCashPrize(element);
       });
+      tournament.listCodesGames?.asMap().forEach((key,element) {
+        context.read<GenerateCodeCubit>().listCode[key].text = element;
+      });
       if(tournament.imageName != null) {
         File fileCup = await Utils().downloadFileImage(tournament.imageName);
         context.read<TakeImageGalleryCubit>().loadPicture(fileCup.path);

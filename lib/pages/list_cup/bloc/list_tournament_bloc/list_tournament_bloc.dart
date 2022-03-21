@@ -44,7 +44,7 @@ class ListTournamentBloc extends Bloc<ListTournamentEvent, ListTournamentState> 
     String? dateMonth = event.month;
     String? dateYears = event.year;
     String date = dateYears + dateMonth + dateDay;
-
+    print(gameName.state);
 
     await tournamentsRef.reference
         .orderBy("dateDebutTournois", descending: true)

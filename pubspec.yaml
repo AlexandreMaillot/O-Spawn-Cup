@@ -73,7 +73,9 @@ dependencies:
     path: packages/authentication_repository
   bloc: ^8.0.3
   flow_builder: ^0.0.6
+  cloud_functions: ^3.2.10
 dev_dependencies:
+  fake_cloud_firestore: ^1.2.1
   mocktail: ^0.3.0
   bloc_test: ^9.0.0
   flutter_test:

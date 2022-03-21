@@ -13,7 +13,7 @@ extension GameNameExt on GameName {
       case GameName.Valorant:
         return "Valorant";
       case GameName.LeagueOfLegend:
-        return "League of legend";
+        return "LeagueOfLegend";
       case GameName.CSGO:
         return "CSGO";
       default:

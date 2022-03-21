@@ -15,7 +15,7 @@ import "../game_name.dart";
 part "tournament.g.dart";
 
 @JsonSerializable(explicitToJson: true)
-class Tournament {
+class Tournament extends Equatable{
   @JsonKey(ignore: true)
   String? documentId;
   String name;
@@ -31,14 +31,32 @@ class Tournament {
   @JsonKey(fromJson: _fromJson)
   List<String>? listCodesGames;
   int roundNumber;
-  TournamentState state = TournamentState.inscriptionFermer;
+  TournamentState _state = TournamentState.inscriptionFermer;
   String? imageUrl;
   String? imageName;
   int killPointTournament;
   int? pointPerRangTournament;
   int? rangStartTournament;
 
-
+  @override
+  List<Object?> get props => [documentId,
+    name,
+    dateDebutTournois,
+    dateDebutInscription,
+    game,
+    server,
+    tournamentType,
+    capacity,
+    cashPrize,
+    listCodesGames,
+    roundNumber,
+    _state,
+    imageUrl,
+    imageName,
+    killPointTournament,
+    pointPerRangTournament,
+    rangStartTournament
+  ];
   Tournament(
       {required this.name,
       required this.dateDebutTournois,
@@ -59,12 +77,20 @@ class Tournament {
       }) {
   }
 
+  TournamentState get state => _state;
+
+  set state(TournamentState value) {
+    _state = value;
+  }
+
   factory Tournament.fromJson(Map<String, Object?> json) =>
       _$TournamentFromJson(json);
 
   Map<String, Object?> toJson() => _$TournamentToJson(this);
 
   static List<String> _fromJson(Iterable<dynamic> value) => List<String>.from(value);
+
+
 
 
 }

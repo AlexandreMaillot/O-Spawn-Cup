@@ -13,6 +13,9 @@ import '../list_cup.dart';
 
 class ListCupPage extends StatelessWidget {
   GameName gameName;
+  Route route() {
+    return MaterialPageRoute<void>(builder: (_) => ListCupPage(gameName: gameName,));
+  }
   Page page() => MaterialPage<void>(child: ListCupPage(gameName: gameName,));
   ListCupPage({
     Key? key,
@@ -20,6 +23,7 @@ class ListCupPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print(gameName.state);
     return BlocProvider(
       create: (_) => ListTournamentBloc(gameName: gameName),
       child: ListCupView(gameName: gameName),
