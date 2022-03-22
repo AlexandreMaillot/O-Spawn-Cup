@@ -8,7 +8,7 @@ import "package:o_spawn_cup/shared/widgets/text_element.dart";
 import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
 import 'package:o_spawn_cup/pages/cup_details/view/cup_detail_page.dart';
 
-import '../../services/utils.dart';
+import '../../../services/utils.dart';
 
 
 
@@ -22,7 +22,7 @@ class CardCup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>  Navigator.of(context).push(BlocRouter().cupDetail(tournament)),
+      onTap: () =>  Navigator.of(context).push(CupDetailPage(tournament: tournament).route()),
           child: Container(
               decoration: BoxDecoration(
                   borderRadius:

@@ -11,12 +11,16 @@ import 'package:o_spawn_cup/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 
 import "package:o_spawn_cup/models/Tournament/tournament.dart";
-import 'package:o_spawn_cup/pages/cup_details/view/cup_detial_view.dart';
+import 'package:o_spawn_cup/pages/cup_details/view/cup_detail_view.dart';
 
 
 class CupDetailPage extends StatelessWidget {
   Tournament tournament;
   CupDetailPage({Key? key, required this.tournament}) : super(key: key);
+  Route route() {
+    return MaterialPageRoute<void>(builder: (_) => CupDetailPage(tournament: tournament,));
+  }
+  Page page() => MaterialPage<void>(child: CupDetailPage(tournament: tournament,));
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

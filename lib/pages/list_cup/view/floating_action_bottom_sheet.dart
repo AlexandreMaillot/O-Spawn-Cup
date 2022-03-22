@@ -5,16 +5,10 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import "package:flutter_svg/svg.dart";
-import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/pages/list_cup/bloc/list_cup_filter_form_bloc.dart';
-import 'package:o_spawn_cup/pages/list_cup/cubit/list_cup_cubit.dart';
 import 'package:o_spawn_cup/pages/list_cup/list_cup.dart';
 import "package:o_spawn_cup/shared/widgets/custom_button_theme.dart";
-import "package:o_spawn_cup/shared/widgets/custom_dropdown.dart";
-import "package:o_spawn_cup/shared/widgets/custom_text_field.dart";
 import "package:o_spawn_cup/constant.dart";
-import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
 
 
