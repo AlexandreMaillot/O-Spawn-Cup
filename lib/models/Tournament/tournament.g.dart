@@ -1605,6 +1605,7 @@ abstract class TeamDocumentReference
     String name,
     String teamCode,
     bool isDisqualified,
+    List<Object?> props,
   });
 
   Future<void> set(Team value);
@@ -1663,12 +1664,14 @@ class _$TeamDocumentReference
     Object? name = _sentinel,
     Object? teamCode = _sentinel,
     Object? isDisqualified = _sentinel,
+    Object? props = _sentinel,
   }) async {
     final json = {
       if (documentId != _sentinel) "documentId": documentId as String?,
       if (name != _sentinel) "name": name as String,
       if (teamCode != _sentinel) "teamCode": teamCode as String,
       if (isDisqualified != _sentinel) "isDisqualified": isDisqualified as bool,
+      if (props != _sentinel) "props": props as List<Object?>,
     };
 
     return reference.update(json);
@@ -1761,6 +1764,16 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     List<bool>? whereIn,
     List<bool>? whereNotIn,
   });
+  TeamQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  });
 
   TeamQuery orderByDocumentId({
     bool descending = false,
@@ -1804,6 +1817,18 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     bool startAfter,
     bool endAt,
     bool endBefore,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
+  });
+
+  TeamQuery orderByProps({
+    bool descending = false,
+    List<Object?> startAt,
+    List<Object?> startAfter,
+    List<Object?> endAt,
+    List<Object?> endBefore,
     TeamDocumentSnapshot? startAtDocument,
     TeamDocumentSnapshot? endAtDocument,
     TeamDocumentSnapshot? endBeforeDocument,
@@ -1984,6 +2009,32 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     );
   }
 
+  TeamQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  }) {
+    return _$TeamQuery(
+      reference.where(
+        'props',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
+      ),
+      _collection,
+    );
+  }
+
   TeamQuery orderByDocumentId({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -2122,6 +2173,48 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     TeamDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('isDisqualified', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$TeamQuery(query, _collection);
+  }
+
+  TeamQuery orderByProps({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    TeamDocumentSnapshot? startAtDocument,
+    TeamDocumentSnapshot? endAtDocument,
+    TeamDocumentSnapshot? endBeforeDocument,
+    TeamDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('props', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

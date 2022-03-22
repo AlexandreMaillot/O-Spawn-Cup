@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
@@ -19,6 +20,7 @@ void main() {
   late TournamentCollectionReference tournamentsRef;
   late FakeFirebaseFirestore instance;
   late QuerySnapshot<Map<String, dynamic>> snapshot;
+  Team team1 = Team(name: "MyTeam1");
   Tournament tournament4 = Tournament(name: "Tournois 4",
       dateDebutTournois: DateTime(now.year,now.month,now.day + 7),
       game: GameName.LeagueOfLegend,
@@ -189,4 +191,6 @@ void main() {
 
     });
   });
+
+
 }

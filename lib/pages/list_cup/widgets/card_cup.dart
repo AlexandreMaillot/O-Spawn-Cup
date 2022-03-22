@@ -30,7 +30,7 @@ class CardCup extends StatelessWidget {
                   border:
                   Border.all(color: (tournament.state == TournamentState.incriptionOuverte) ? colorOpen : (tournament.state == TournamentState.enCours) ? colorInProgress : colorClose,width: 2)),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(20),
                 child: Hero(
                   tag: "tagcard_cup_${tournament.documentId}",
                   child: Container(

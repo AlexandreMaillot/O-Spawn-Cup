@@ -14,6 +14,7 @@ import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart
 import 'package:o_spawn_cup/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
+import 'package:o_spawn_cup/models/make_it_responsive.dart';
 import 'package:o_spawn_cup/services/firebase_handler.dart';
 import 'package:o_spawn_cup/services/utils.dart';
 import "package:o_spawn_cup/shared/widgets/custom_app_bar.dart";
@@ -109,174 +110,9 @@ class CupDetailView extends StatelessWidget {
                           color: Colors.white,
                           thickness: 1,
                         ),
-                        SubtitleElement(
-                          text: "Inscription au tournois",
-                          color: colorTheme,
-                        ),
-                        BlocBuilder<SignCupBloc, SignCupState>(
-                          builder: (context, state) {
-                            return CustomTextField(
-                                paddingBottom: 10,
-                                onChanged: (context, value) => context
-                                    .read<SignCupBloc>()
-                                    .add(SignCupGamerTagChanged(
-                                    gamerTagController.text)),
-                                errorText: state.gamerTag.invalid
-                                    ? "Gamertag invalide"
-                                    : null,
-                                screenSize: screenSize,
-                                text: "GamerTag",
-                                buttonColor: Colors.white,
-                                borderColor: Colors.white,
-                                controller: gamerTagController);
-                          },
-                        ),
-                        Text(
-                          "*Votre pseudo in game",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: colorTheme,
-                              fontSize: 7,
-                              fontFamily: "o_spawn_cup_font",
-                              fontWeight: FontWeight.normal),
-                        ),
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 100),
-                          width: screenSize.width * 0.87,
-                          height: screenSize.height * 0.06,
-                          margin:
-                          const EdgeInsets.only(bottom: 10, top: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(31),
-                          ),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: BlocBuilder<RowMemberLeaderCubit,
-                                    RowMemberLeaderState>(
-                                  builder: (context, state) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        color: (isLeader(context))
-                                            ? colorTheme
-                                            : Colors.white,
-                                        borderRadius:
-                                        const BorderRadius.only(
-                                            topLeft:
-                                            Radius.circular(31),
-                                            bottomLeft:
-                                            Radius.circular(31)),
-                                      ),
-                                      child: TextButton(
-                                          style: ButtonStyle(
-                                            // foregroundColor: MaterialStateProperty.all(Colors.red),
-                                            overlayColor:
-                                            MaterialStateProperty.all(
-                                                Colors.transparent),
-                                          ),
-                                          onPressed: () {
-                                            context
-                                                .read<
-                                                RowMemberLeaderCubit>()
-                                                .changedRoleType(
-                                                RoleType.leader);
-                                          },
-                                          child: TextElement(
-                                            text: "Chef d'équipe",
-                                          )),
-                                    );
-                                  },
-                                ),
-                              ),
-                              const VerticalDivider(
-                                color: Color(0xff696969),
-                                width: 1,
-                                thickness: 1,
-                                // endIndent: 1,
-                              ),
-                              Expanded(
-                                child: BlocBuilder<RowMemberLeaderCubit,
-                                    RowMemberLeaderState>(
-                                  builder: (context, state) {
-                                    return AnimatedContainer(
-                                      duration: const Duration(
-                                          milliseconds: 200),
-                                      decoration: BoxDecoration(
-                                        color: (isPlayer(context))
-                                            ? colorTheme
-                                            : Colors.white,
-                                        borderRadius:
-                                        const BorderRadius.only(
-                                            topRight:
-                                            Radius.circular(31),
-                                            bottomRight:
-                                            Radius.circular(31)),
-                                      ),
-                                      child: TextButton(
-                                          style: ButtonStyle(
-                                            // foregroundColor: MaterialStateProperty.all(Colors.red),
-                                            overlayColor:
-                                            MaterialStateProperty.all(
-                                                Colors.transparent),
-                                          ),
-                                          onPressed: () {
-                                            context
-                                                .read<
-                                                RowMemberLeaderCubit>()
-                                                .changedRoleType(
-                                                RoleType.player);
-                                          },
-                                          child: TextElement(
-                                            text: "Membre d'équipe",
-                                          )),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        BlocBuilder<SignCupBloc, SignCupState>(
-                          builder: (context, stateSignBloc) {
-                            return BlocBuilder<RowMemberLeaderCubit,
-                                RowMemberLeaderState>(
-                              builder: (context, state) {
-                                return CustomTextField(
-                                    paddingBottom: 10,
-                                    onChanged: (context, value) => context
-                                        .read<SignCupBloc>()
-                                        .add(SignCupTeamCodeChanged(
-                                        teamNameController.text)),
-                                    errorText:
-                                    stateSignBloc.teamCode.invalid
-                                        ? "Code team invalide"
-                                        : null,
-                                    textInputAction: TextInputAction.done,
-                                    screenSize: screenSize,
-                                    text: (isPlayer(context))
-                                        ? "Code d'équipe"
-                                        : "Nom d'équipe",
-                                    buttonColor: Colors.white,
-                                    borderColor: Colors.white,
-                                    controller: teamNameController);
-                              },
-                            );
-                          },
-                        ),
-                        isPlayer(context)
-                            ? Text(
-                          "*Entrez le code d'équipe reçu par mail si vous êtes membre de l'équipe.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: colorTheme,
-                              fontSize: 7,
-                              fontFamily: "o_spawn_cup_font",
-                              fontWeight: FontWeight.normal),
-                        )
-                            : Container(),
+                        SignTournamentForm(),
+
+
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: BlocListener<TeamFirestoreCubit,
@@ -689,6 +525,194 @@ class CupDetailView extends StatelessWidget {
       },
     );
   }
+}
+
+class SignTournamentForm extends StatelessWidget {
+  const SignTournamentForm({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    return Column(
+      children: [
+        SubtitleElement(
+          text: "Inscription au tournois",
+          color: colorTheme,
+        ),
+        BlocBuilder<SignCupBloc, SignCupState>(
+          builder: (context, state) {
+            var gamerTagController;
+            return CustomTextField(
+                paddingBottom: 10,
+                onChanged: (context, value) => context
+                    .read<SignCupBloc>()
+                    .add(SignCupGamerTagChanged(gamerTagController.text)),
+                errorText: state.gamerTag.invalid
+                    ? "Gamertag invalide"
+                    : null,
+                screenSize: screenSize,
+                text: "GamerTag",
+                buttonColor: Colors.white,
+                borderColor: Colors.white,
+                controller: gamerTagController);
+          },
+        ),
+        Text(
+          "*Votre pseudo in game",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: colorTheme,
+              fontSize: 7,
+              fontFamily: "o_spawn_cup_font",
+              fontWeight: FontWeight.normal),
+        ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          width: screenSize.width * 0.87,
+          height: screenSize.height * 0.06,
+          margin:
+          const EdgeInsets.only(bottom: 10, top: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(31),
+          ),
+          child: Row(
+            mainAxisAlignment:
+            MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: BlocBuilder<RowMemberLeaderCubit,
+                    RowMemberLeaderState>(
+                  builder: (context, state) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: (isLeader(context))
+                            ? colorTheme
+                            : Colors.white,
+                        borderRadius:
+                        const BorderRadius.only(
+                            topLeft:
+                            Radius.circular(31),
+                            bottomLeft:
+                            Radius.circular(31)),
+                      ),
+                      child: TextButton(
+                          style: ButtonStyle(
+                            // foregroundColor: MaterialStateProperty.all(Colors.red),
+                            overlayColor:
+                            MaterialStateProperty.all(
+                                Colors.transparent),
+                          ),
+                          onPressed: () {
+                            context
+                                .read<
+                                RowMemberLeaderCubit>()
+                                .changedRoleType(
+                                RoleType.leader);
+                          },
+                          child: TextElement(
+                            text: "Chef d'équipe",
+                          )),
+                    );
+                  },
+                ),
+              ),
+              const VerticalDivider(
+                color: Color(0xff696969),
+                width: 1,
+                thickness: 1,
+                // endIndent: 1,
+              ),
+              Expanded(
+                child: BlocBuilder<RowMemberLeaderCubit,
+                    RowMemberLeaderState>(
+                  builder: (context, state) {
+                    return AnimatedContainer(
+                      duration: const Duration(
+                          milliseconds: 200),
+                      decoration: BoxDecoration(
+                        color: (isPlayer(context))
+                            ? colorTheme
+                            : Colors.white,
+                        borderRadius:
+                        const BorderRadius.only(
+                            topRight:
+                            Radius.circular(31),
+                            bottomRight:
+                            Radius.circular(31)),
+                      ),
+                      child: TextButton(
+                          style: ButtonStyle(
+                            // foregroundColor: MaterialStateProperty.all(Colors.red),
+                            overlayColor:
+                            MaterialStateProperty.all(
+                                Colors.transparent),
+                          ),
+                          onPressed: () {
+                            context
+                                .read<
+                                RowMemberLeaderCubit>()
+                                .changedRoleType(
+                                RoleType.player);
+                          },
+                          child: TextElement(
+                            text: "Membre d'équipe",
+                          )),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        BlocBuilder<SignCupBloc, SignCupState>(
+          builder: (context, stateSignBloc) {
+            return BlocBuilder<RowMemberLeaderCubit,
+                RowMemberLeaderState>(
+              builder: (context, state) {
+                var teamNameController;
+                return CustomTextField(
+                    paddingBottom: 10,
+                    onChanged: (context, value) => context
+                        .read<SignCupBloc>()
+                        .add(SignCupTeamCodeChanged(
+                        teamNameController.text)),
+                    errorText:
+                    stateSignBloc.teamCode.invalid
+                        ? "Code team invalide"
+                        : null,
+                    textInputAction: TextInputAction.done,
+                    screenSize: screenSize,
+                    text: (isPlayer(context))
+                        ? "Code d'équipe"
+                        : "Nom d'équipe",
+                    buttonColor: Colors.white,
+                    borderColor: Colors.white,
+                    controller: teamNameController);
+              },
+            );
+          },
+        ),
+        isPlayer(context)
+            ? Text(
+          "*Entrez le code d'équipe reçu par mail si vous êtes membre de l'équipe.",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: colorTheme,
+              fontSize: 7,
+              fontFamily: "o_spawn_cup_font",
+              fontWeight: FontWeight.normal),
+        )
+            : Container(),
+      ],
+    );
+  }
+  bool isPlayer(BuildContext context) =>
+      context.read<RowMemberLeaderCubit>().state.roleType == RoleType.player;
+  bool isLeader(BuildContext context) =>
+      context.read<RowMemberLeaderCubit>().state.roleType == RoleType.leader;
 }
 
 class tableTeamStat extends StatelessWidget {
