@@ -21,7 +21,6 @@ class CardCup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: () =>  Navigator.of(context).push(BlocRouter().cupDetail(tournament)),
           child: Container(
@@ -36,7 +35,6 @@ class CardCup extends StatelessWidget {
                   tag: "tagcard_cup_${tournament.documentId}",
                   child: Container(
                     decoration: BoxDecoration(
-
                       image: DecorationImage(
                         image: NetworkImage(tournament.imageUrl!,),
                         fit: BoxFit.cover,

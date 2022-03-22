@@ -18,10 +18,12 @@ class ListCupCubit extends Cubit<ListCupState> {
   ListCupCubit({required this.tournamentRepository,required GameName? gameName}) : _gameName = gameName,
         super(ListCupNoData()) {
         _listCupSubscription = tournamentRepository.listTournaments(gameName: _gameName).listen((event) async {
-      _listTournament = event;
-      emit(ListCupLoad());
-      await Future.delayed(const Duration(seconds: 1));
-      emit(ListCupLoaded(listCup: _listTournament));
+          if(_listTournament.isEmpty) {
+            emit(ListCupLoad());
+            await Future.delayed(const Duration(seconds: 1));
+          }
+        _listTournament = event;
+        emit(ListCupLoaded(listCup: _listTournament));
     });
   }
 
@@ -31,11 +33,11 @@ class ListCupCubit extends Cubit<ListCupState> {
     emit(ListCupLoad());
     await Future.delayed(const Duration(seconds: 1));
     _listCupSubscription = tournamentRepository.listTournaments(
-  gameName: _gameName,
-  name: name,
-  tournamentState: tournamentState,
-  dateStart: dateStart,
-  tournamentType: tournamentType).listen((event) {
+    gameName: _gameName,
+    name: name,
+    tournamentState: tournamentState,
+    dateStart: dateStart,
+    tournamentType: tournamentType).listen((event) {
       _listTournament = event;
       if(_listTournament.isEmpty){
         emit(ListCupNoData());

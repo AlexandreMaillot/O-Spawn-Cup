@@ -21,13 +21,14 @@ class ListCupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tournamentRepository = TournamentRepository(tournamentCollectionReference: tournamentsRef);
+    final listCupCubit = ListCupCubit(gameName: gameName,tournamentRepository: tournamentRepository);
     return MultiBlocProvider(
   providers: [
     BlocProvider(
-      create: (_) => ListCupCubit(gameName: gameName,tournamentRepository: tournamentRepository),
-),
+      create: (_) => listCupCubit,
+    ),
     BlocProvider(
-      create: (context) => ListCupFilterFormBloc(),
+      create: (context) => ListCupFilterFormBloc(listCupCubit: listCupCubit),
     ),
   ],
   child: ListCupView(gameName: gameName),
