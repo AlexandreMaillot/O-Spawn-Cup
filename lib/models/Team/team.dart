@@ -9,6 +9,7 @@ import '../MemberTournament/member_tournament.dart';
 part 'team.g.dart';
 @JsonSerializable()
 class Team extends Equatable{
+  @JsonKey(ignore: true)
   String? documentId;
   String name;
   String teamCode = "";

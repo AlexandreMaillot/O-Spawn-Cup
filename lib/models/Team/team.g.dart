@@ -9,12 +9,10 @@ part of 'team.dart';
 Team _$TeamFromJson(Map<String, dynamic> json) => Team(
       name: json['name'] as String,
     )
-      ..documentId = json['documentId'] as String?
       ..teamCode = json['teamCode'] as String
       ..isDisqualified = json['isDisqualified'] as bool;
 
 Map<String, dynamic> _$TeamToJson(Team instance) => <String, dynamic>{
-      'documentId': instance.documentId,
       'name': instance.name,
       'teamCode': instance.teamCode,
       'isDisqualified': instance.isDisqualified,

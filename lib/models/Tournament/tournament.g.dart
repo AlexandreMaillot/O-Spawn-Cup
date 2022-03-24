@@ -2826,6 +2826,7 @@ abstract class MemberTournamentDocumentReference
   Future<void> update({
     String? documentId,
     String gamerTag,
+    List<Object?> props,
   });
 
   Future<void> set(MemberTournament value);
@@ -2881,10 +2882,12 @@ class _$MemberTournamentDocumentReference
   Future<void> update({
     Object? documentId = _sentinel,
     Object? gamerTag = _sentinel,
+    Object? props = _sentinel,
   }) async {
     final json = {
       if (documentId != _sentinel) "documentId": documentId as String?,
       if (gamerTag != _sentinel) "gamerTag": gamerTag as String,
+      if (props != _sentinel) "props": props as List<Object?>,
     };
 
     return reference.update(json);
@@ -2956,6 +2959,16 @@ abstract class MemberTournamentQuery
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
+  MemberTournamentQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  });
 
   MemberTournamentQuery orderByDocumentId({
     bool descending = false,
@@ -2975,6 +2988,18 @@ abstract class MemberTournamentQuery
     String startAfter,
     String endAt,
     String endBefore,
+    MemberTournamentDocumentSnapshot? startAtDocument,
+    MemberTournamentDocumentSnapshot? endAtDocument,
+    MemberTournamentDocumentSnapshot? endBeforeDocument,
+    MemberTournamentDocumentSnapshot? startAfterDocument,
+  });
+
+  MemberTournamentQuery orderByProps({
+    bool descending = false,
+    List<Object?> startAt,
+    List<Object?> startAfter,
+    List<Object?> endAt,
+    List<Object?> endBefore,
     MemberTournamentDocumentSnapshot? startAtDocument,
     MemberTournamentDocumentSnapshot? endAtDocument,
     MemberTournamentDocumentSnapshot? endBeforeDocument,
@@ -3100,6 +3125,32 @@ class _$MemberTournamentQuery
     );
   }
 
+  MemberTournamentQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  }) {
+    return _$MemberTournamentQuery(
+      reference.where(
+        'props',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
+      ),
+      _collection,
+    );
+  }
+
   MemberTournamentQuery orderByDocumentId({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -3154,6 +3205,48 @@ class _$MemberTournamentQuery
     MemberTournamentDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('gamerTag', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MemberTournamentQuery(query, _collection);
+  }
+
+  MemberTournamentQuery orderByProps({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MemberTournamentDocumentSnapshot? startAtDocument,
+    MemberTournamentDocumentSnapshot? endAtDocument,
+    MemberTournamentDocumentSnapshot? endBeforeDocument,
+    MemberTournamentDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('props', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
