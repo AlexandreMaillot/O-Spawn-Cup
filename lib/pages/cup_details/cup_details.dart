@@ -1,0 +1,1 @@
+export 'package:o_spawn_cup/pages/cup_details/widgets/sign_tournament_form.dart';

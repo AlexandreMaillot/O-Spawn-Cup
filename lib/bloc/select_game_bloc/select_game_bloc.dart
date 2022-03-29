@@ -1,15 +1,15 @@
-import "dart:async";
+import 'dart:async';
 
-import "package:bloc/bloc.dart";
-import "package:equatable/equatable.dart";
-import "package:o_spawn_cup/models/card_game.dart";
-import "package:o_spawn_cup/models/game_name.dart";
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:o_spawn_cup/models/card_game.dart';
+import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/shared/widgets/tile_image_pre.dart';
 
 import '../../constant.dart';
 
-part "select_game_event.dart";
-part "select_game_state.dart";
+part 'select_game_event.dart';
+part 'select_game_state.dart';
 
 class SelectGameBloc extends Bloc<SelectGameEvent, SelectGameState> {
   List<CardGame> listGameName;

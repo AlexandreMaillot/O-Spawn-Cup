@@ -1,7 +1,8 @@
-import "package:dotted_line/dotted_line.dart";
+import 'package:dotted_line/dotted_line.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:o_spawn_cup/bloc/bloc_router.dart';
@@ -15,21 +16,25 @@ import 'package:o_spawn_cup/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/make_it_responsive.dart';
+import 'package:o_spawn_cup/pages/cup_details/bloc/sign_tournament_form_bloc.dart';
+import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
+import 'package:o_spawn_cup/pages/cup_details/cup_details.dart';
+import 'package:o_spawn_cup/pages/cup_details/widgets/text_field_gamer_tag.dart';
 import 'package:o_spawn_cup/services/firebase_handler.dart';
 import 'package:o_spawn_cup/services/utils.dart';
-import "package:o_spawn_cup/shared/widgets/custom_app_bar.dart";
-import "package:o_spawn_cup/shared/widgets/custom_button_theme.dart";
-import "package:o_spawn_cup/shared/widgets/custom_drawer.dart";
-import "package:o_spawn_cup/shared/widgets/custom_text_field.dart";
-import "package:o_spawn_cup/shared/widgets/subtiltle_element.dart";
-import "package:o_spawn_cup/shared/widgets/text_element.dart";
-import "package:o_spawn_cup/constant.dart";
-import "package:o_spawn_cup/models/Member/member.dart";
-import "dart:math";
+import 'package:o_spawn_cup/shared/widgets/custom_app_bar.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_drawer.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_text_field.dart';
+import 'package:o_spawn_cup/shared/widgets/subtiltle_element.dart';
+import 'package:o_spawn_cup/shared/widgets/text_element.dart';
+import 'package:o_spawn_cup/constant.dart';
+import 'package:o_spawn_cup/models/Member/member.dart';
+import 'dart:math';
 
-import "package:o_spawn_cup/models/Tournament/tournament.dart";
-import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
-import "package:o_spawn_cup/models/role_type.dart";
+import 'package:o_spawn_cup/models/Tournament/tournament.dart';
+import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
+import 'package:o_spawn_cup/models/role_type.dart';
 
 
 class CupDetailView extends StatelessWidget {
@@ -38,21 +43,20 @@ class CupDetailView extends StatelessWidget {
   TextEditingController teamNameController = TextEditingController();
   late Tournament tournament;
   List<Team> teams = [];
-  String msgSnack = "Inscription validée !";
+  String msgSnack = 'Inscription validée !';
   bool errorSign = false;
   String teamNameTextFieldHint = "Nom d'équipe";
 
   @override
   Widget build(BuildContext context) {
-    context.read<TeamFirestoreCubit>().getTeamsTournament(tournament);
-
     Size screenSize = MediaQuery.of(context).size;
+    var cupDetailCubit = context.read<CupDetailCubit>();
 
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
       endDrawer: CustomDrawer(screenSize: screenSize),
       appBar: CustomAppBar(
-        title: "INSCRIPTION",
+        title: 'INSCRIPTION',
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -63,167 +67,57 @@ class CupDetailView extends StatelessWidget {
                   top: 25, right: 15, left: 15, bottom: 15),
               child: Column(
                 children: [
-                  rowInformationTournament(leftText: "Date inscription:", rightText: Utils().formatDate(tournament.dateDebutInscription)),
-                  rowInformationTournament(leftText: "Date du tournois:", rightText: Utils().formatDate(tournament.dateDebutTournois)),
-                  rowInformationTournament(
-                      leftText: "Nombre de games:",
-                      rightText: tournament.roundNumber.toString()),
-                  rowInformationTournament(
-                      leftText: "Type de tournois:",
-                      rightText: tournament.tournamentType.name),
-                  BlocBuilder<HeaderSignCupCubit, HeaderSignCupState>(
+                  rowInformationTournament(leftText: 'Date inscription:', rightText: Utils().formatDate(tournament.dateDebutInscription)),
+                  rowInformationTournament(leftText: 'Date du tournois:', rightText: Utils().formatDate(tournament.dateDebutTournois)),
+                  rowInformationTournament(leftText: 'Nombre de games:',rightText: tournament.roundNumber.toString()),
+                  rowInformationTournament(leftText: 'Type de tournois:',rightText: tournament.tournamentType.name),
+                  BlocBuilder<CupDetailCubit, CupDetailState>(
+                    buildWhen: (previous, current) => current is CupDetailTournamentChanged,
                     builder: (context, state) {
-                      return (tournament.state == TournamentState.inscriptionFermer ||
-                          tournament.state == TournamentState.annuler ||
-                          tournament.state == TournamentState.complet ||
-                          tournament.state == TournamentState.terminer)
-                          ? rowInformationTournament(leftText: "Etat:", rightText: tournament.state.state)
-                          : Container();
-                    },),
-
-                  BlocBuilder<TeamFirestoreCubit, TeamFirestoreState>(
-                    buildWhen: (previous, current) =>
-                    current.runtimeType == TeamFirestoreLoaded,
-                    builder: (context, state) {
-                      return rowInformationTournament(
-                          leftText: "Place restantes:",
-                          rightText: (tournament.capacity -
-                              context
-                                  .read<TeamFirestoreCubit>()
-                                  .listTeam
-                                  .length)
-                              .toString() +
-                              "/" +
-                              tournament.capacity.toString());
+                      if(state.runtimeType == CupDetailTournamentChanged && (state as CupDetailTournamentChanged).isClose) {
+                          return rowInformationTournament(leftText: 'Etat:', rightText: state.tournament!.state.name);
+                      }
+                      return Container();
                     },
                   ),
-                  (tournament.capacity - teams.length == 0 || tournament.state != TournamentState.incriptionOuverte)
-                      ? Container()
-                      : Container(
-                    padding: const EdgeInsets.only(top: 20),
-                    // height: screenSize.height * 0.38,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const Divider(
-                          color: Colors.white,
-                          thickness: 1,
-                        ),
-                        SignTournamentForm(),
 
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: BlocListener<TeamFirestoreCubit,
-                              TeamFirestoreState>(
-                              listener: (context, state) {
-                                if (state is TeamFirestoreSelected ||
-                                    state is TeamFirestoreLoaded) {
-                                  var msg = "";
-                                  var stateTeam;
-                                  if (state is TeamFirestoreSelected) {
-                                    stateTeam = (state).status;
-                                  }
-                                  if (state is TeamFirestoreLoaded) {
-                                    stateTeam = (state).status;
-                                  }
-                                  switch (stateTeam) {
-                                    case FirebaseStatusEvent.teamExist:
-                                      msg = "La team existe déjà !";
-                                      errorSign = true;
-                                      break;
-                                    case FirebaseStatusEvent.teamFull:
-                                      msg = "La team est compléte !";
-                                      errorSign = false;
-                                      break;
-
-                                    case FirebaseStatusEvent.codeNotFound:
-                                      msg =
-                                      "Le code team n'est pas connu !";
-                                      errorSign = true;
-                                      break;
-                                    case FirebaseStatusEvent
-                                        .memberNotConnect:
-                                      msg = "Vous n'êtes pas connecter !";
-                                      errorSign = true;
-                                      break;
-                                    case FirebaseStatusEvent.cupFull:
-                                      msg = "Le tournois est complet !";
-                                      errorSign = false;
-                                      break;
-
-                                    case FirebaseStatusEvent
-                                        .memberAlreadySign:
-                                      msg = "Vous êtes déjà inscrit !";
-                                      errorSign = true;
-                                      break;
-                                    case FirebaseStatusEvent
-                                        .memberSignSuccess:
-                                      msg = "Enregistrement réussi !";
-                                      errorSign = false;
-                                      break;
-                                  }
-                                  if (msg != "") {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(msg),
-                                      duration:
-                                      const Duration(seconds: 3),
-                                      backgroundColor:
-                                      (errorSign == false)
-                                          ? Colors.green
-                                          : Colors.red,
-                                    ));
-                                  }
-                                }
-                              },
-                              child: CustomButtonTheme(
-                                colorButton: colorTheme,
-                                colorText: colorBackgroundTheme,
-                                text: "Confirmation",
-                                onPressedMethod: () async {
-                                  await () async {
-                                    context.read<SignCupBloc>().add(
-                                        SignCupGamerTagChanged(
-                                            gamerTagController.text));
-                                    context.read<SignCupBloc>().add(
-                                        SignCupTeamCodeChanged(
-                                            teamNameController.text));
-                                    if (context
-                                        .read<SignCupBloc>()
-                                        .state
-                                        .status
-                                        .isValidated) {
-                                      if (isPlayer(context)) {
-                                        context
-                                            .read<TeamFirestoreCubit>()
-                                            .addMemberInTeam(
-                                            tournament,
-                                            teamNameController.text,
-                                            gamerTagController.text);
-                                      }
-                                      if (isLeader(context)) {
-                                        context
-                                            .read<TeamFirestoreCubit>()
-                                            .addNewTeam(
-                                            tournament,
-                                            teamNameController.text,
-                                            gamerTagController.text);
-                                      }
-                                      context
-                                          .read<SignCupBloc>()
-                                          .add(const SignCupSubmitted());
-                                    } else {}
-
-                                    afterAddMemberTournament();
-                                  }();
-                                },
-                              )),
-                        )
-                      ],
-                    ),
+                  BlocBuilder<CupDetailCubit, CupDetailState>(
+                    buildWhen: (previous, current) => current is CupDetailListTeamChanged,
+                    builder: (context, state) {
+                      return rowInformationTournament(
+                          leftText: 'Place restantes:',
+                          rightText: (state.runtimeType == CupDetailListTeamChanged)
+                            ? (cupDetailCubit.tournament.capacity - (state as CupDetailListTeamChanged).listTeam.length).toString() +
+                              '/' +
+                          cupDetailCubit.tournament.capacity.toString()
+                              : '0/0');
+                    },
                   ),
+                BlocBuilder<CupDetailCubit, CupDetailState>(
+                    builder: (context, state) {
+                      if(state is CupDetailListTeamChanged || state is CupDetailTournamentChanged) {
+                        var statePlaces = cupDetailCubit.placesRestante(cupDetailCubit.tournament, cupDetailCubit.listTeam);
+                        if(statePlaces == statePlacesRestante.isNotFull && cupDetailCubit.tournament.state == TournamentState.inscriptionOuverte) {
+                          return Container(
+                            padding: const EdgeInsets.only(top: 20),
+                            // height: screenSize.height * 0.38,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.max,
+                              children: const [
+                                Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                                SignTournamentForm(),
+                              ],
+                            ),
+                          );
+                        }
+                      }
+                      return Container();
+                    }),
+
                   const Divider(
                     color: Colors.white,
                     thickness: 1,
@@ -253,15 +147,15 @@ class CupDetailView extends StatelessWidget {
   Member addMember() {
     var rng = Random();
     Member member =
-    Member(pseudo: "Tama" + rng.nextInt(100).toString(), uid: "ffsq");
+    Member(pseudo: 'Tama' + rng.nextInt(100).toString(), uid: 'ffsq');
     return member;
   }
 
   void afterAddMemberTournament() {
-    msgSnack = "Inscription validée !";
+    msgSnack = 'Inscription validée !';
     errorSign = false;
-    teamNameController.text = "";
-    gamerTagController.text = "";
+    teamNameController.text = '';
+    gamerTagController.text = '';
   }
 
   buildContainerHeader(Size screenSize, Tournament tournament) {
@@ -270,7 +164,7 @@ class CupDetailView extends StatelessWidget {
         return BlocBuilder<HeaderSignCupCubit, HeaderSignCupState>(
           builder: (context, stateHeader) {
             return Hero(
-              tag: "tagcard_cup_${tournament.documentId}",
+              tag: 'tagcard_cup_${tournament.documentId}',
               child: Container(
                 // width: screenSize.width,
                 height: screenSize.height * 0.25,
@@ -278,7 +172,7 @@ class CupDetailView extends StatelessWidget {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: (tournament.state == TournamentState.incriptionOuverte)
+                      color: (tournament.state == TournamentState.inscriptionOuverte)
                           ? colorOpen
                           : (tournament.state == TournamentState.enCours)
                           ? colorInProgress
@@ -310,7 +204,7 @@ class CupDetailView extends StatelessWidget {
                       style: TextStyle(
                           color: colorTheme,
                           fontSize: 35,
-                          fontFamily: "o_spawn_cup_font",
+                          fontFamily: 'o_spawn_cup_font',
                           fontWeight: FontWeight.normal),
                     ),
                     SubtitleElement(
@@ -337,12 +231,12 @@ class CupDetailView extends StatelessWidget {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            "Serveur: ${tournament.server.name}",
+                            'Serveur: ${tournament.server.name}',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: colorTheme,
                                 fontSize: 12,
-                                fontFamily: "o_spawn_cup_font",
+                                fontFamily: 'o_spawn_cup_font',
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -356,7 +250,7 @@ class CupDetailView extends StatelessWidget {
                               icon:
                               ((stateMember as MemberInitial).member?.isAdmin == true)
                                   ? SvgPicture.asset(
-                                "assets/images/icon_edit.svg",
+                                'assets/images/icon_edit.svg',
                                 // height: 30,
                                 // width: 37,
                               )
@@ -385,13 +279,13 @@ class CupDetailView extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(13)),
         image: DecorationImage(
           opacity: 0.9,
-          image: Image.asset("assets/images/forniteBackground.png").image,
+          image: Image.asset('assets/images/forniteBackground.png').image,
           fit: BoxFit.cover,
         ),
       ),
       child: const Center(
         child: Text(
-          "Believer Beach",
+          'Believer Beach',
           style: TextStyle(
             color: Colors.white,
             fontSize: 44,
@@ -409,7 +303,7 @@ class CupDetailView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.only(top: 5, bottom: 10),
               child: SubtitleElement(
-                text: "Liste des équipes",
+                text: 'Liste des équipes',
                 color: colorTheme,
               ),
             ),
@@ -420,7 +314,7 @@ class CupDetailView extends StatelessWidget {
                   children: [
                     TextButton(
                         child: SubtitleElement(
-                          text: "Global",
+                          text: 'Global',
                           color:
                           (state.globalStat) ? colorOrange : Colors.white,
                         ),
@@ -428,7 +322,7 @@ class CupDetailView extends StatelessWidget {
                             context.read<ShowStatCubit>().changeStatShow(true)),
                     TextButton(
                         child: SubtitleElement(
-                            text: "Détaillé",
+                            text: 'Détaillé',
                             color: (!state.globalStat)
                                 ? colorOrange
                                 : Colors.white),
@@ -491,7 +385,7 @@ class CupDetailView extends StatelessWidget {
                                         ),
                                         TextElement(
                                           text:
-                                          "Round ${stateRound.roundShow + 1}",
+                                          'Round ${stateRound.roundShow + 1}',
                                           color: colorTheme,
                                         ),
                                         IconButton(
@@ -527,193 +421,9 @@ class CupDetailView extends StatelessWidget {
   }
 }
 
-class SignTournamentForm extends StatelessWidget {
-  const SignTournamentForm({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        SubtitleElement(
-          text: "Inscription au tournois",
-          color: colorTheme,
-        ),
-        BlocBuilder<SignCupBloc, SignCupState>(
-          builder: (context, state) {
-            var gamerTagController;
-            return CustomTextField(
-                paddingBottom: 10,
-                onChanged: (context, value) => context
-                    .read<SignCupBloc>()
-                    .add(SignCupGamerTagChanged(gamerTagController.text)),
-                errorText: state.gamerTag.invalid
-                    ? "Gamertag invalide"
-                    : null,
-                screenSize: screenSize,
-                text: "GamerTag",
-                buttonColor: Colors.white,
-                borderColor: Colors.white,
-                controller: gamerTagController);
-          },
-        ),
-        Text(
-          "*Votre pseudo in game",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: colorTheme,
-              fontSize: 7,
-              fontFamily: "o_spawn_cup_font",
-              fontWeight: FontWeight.normal),
-        ),
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 100),
-          width: screenSize.width * 0.87,
-          height: screenSize.height * 0.06,
-          margin:
-          const EdgeInsets.only(bottom: 10, top: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(31),
-          ),
-          child: Row(
-            mainAxisAlignment:
-            MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: BlocBuilder<RowMemberLeaderCubit,
-                    RowMemberLeaderState>(
-                  builder: (context, state) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: (isLeader(context))
-                            ? colorTheme
-                            : Colors.white,
-                        borderRadius:
-                        const BorderRadius.only(
-                            topLeft:
-                            Radius.circular(31),
-                            bottomLeft:
-                            Radius.circular(31)),
-                      ),
-                      child: TextButton(
-                          style: ButtonStyle(
-                            // foregroundColor: MaterialStateProperty.all(Colors.red),
-                            overlayColor:
-                            MaterialStateProperty.all(
-                                Colors.transparent),
-                          ),
-                          onPressed: () {
-                            context
-                                .read<
-                                RowMemberLeaderCubit>()
-                                .changedRoleType(
-                                RoleType.leader);
-                          },
-                          child: TextElement(
-                            text: "Chef d'équipe",
-                          )),
-                    );
-                  },
-                ),
-              ),
-              const VerticalDivider(
-                color: Color(0xff696969),
-                width: 1,
-                thickness: 1,
-                // endIndent: 1,
-              ),
-              Expanded(
-                child: BlocBuilder<RowMemberLeaderCubit,
-                    RowMemberLeaderState>(
-                  builder: (context, state) {
-                    return AnimatedContainer(
-                      duration: const Duration(
-                          milliseconds: 200),
-                      decoration: BoxDecoration(
-                        color: (isPlayer(context))
-                            ? colorTheme
-                            : Colors.white,
-                        borderRadius:
-                        const BorderRadius.only(
-                            topRight:
-                            Radius.circular(31),
-                            bottomRight:
-                            Radius.circular(31)),
-                      ),
-                      child: TextButton(
-                          style: ButtonStyle(
-                            // foregroundColor: MaterialStateProperty.all(Colors.red),
-                            overlayColor:
-                            MaterialStateProperty.all(
-                                Colors.transparent),
-                          ),
-                          onPressed: () {
-                            context
-                                .read<
-                                RowMemberLeaderCubit>()
-                                .changedRoleType(
-                                RoleType.player);
-                          },
-                          child: TextElement(
-                            text: "Membre d'équipe",
-                          )),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        BlocBuilder<SignCupBloc, SignCupState>(
-          builder: (context, stateSignBloc) {
-            return BlocBuilder<RowMemberLeaderCubit,
-                RowMemberLeaderState>(
-              builder: (context, state) {
-                var teamNameController;
-                return CustomTextField(
-                    paddingBottom: 10,
-                    onChanged: (context, value) => context
-                        .read<SignCupBloc>()
-                        .add(SignCupTeamCodeChanged(
-                        teamNameController.text)),
-                    errorText:
-                    stateSignBloc.teamCode.invalid
-                        ? "Code team invalide"
-                        : null,
-                    textInputAction: TextInputAction.done,
-                    screenSize: screenSize,
-                    text: (isPlayer(context))
-                        ? "Code d'équipe"
-                        : "Nom d'équipe",
-                    buttonColor: Colors.white,
-                    borderColor: Colors.white,
-                    controller: teamNameController);
-              },
-            );
-          },
-        ),
-        isPlayer(context)
-            ? Text(
-          "*Entrez le code d'équipe reçu par mail si vous êtes membre de l'équipe.",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: colorTheme,
-              fontSize: 7,
-              fontFamily: "o_spawn_cup_font",
-              fontWeight: FontWeight.normal),
-        )
-            : Container(),
-      ],
-    );
-  }
-  bool isPlayer(BuildContext context) =>
-      context.read<RowMemberLeaderCubit>().state.roleType == RoleType.player;
-  bool isLeader(BuildContext context) =>
-      context.read<RowMemberLeaderCubit>().state.roleType == RoleType.leader;
-}
+
+
 
 class tableTeamStat extends StatelessWidget {
   const tableTeamStat({
@@ -785,7 +495,7 @@ class rowStatTeam extends StatelessWidget {
                         highlightColor: Colors.transparent,
                         onPressed: () {},
                         icon: SvgPicture.asset(
-                          "assets/images/downArrow.svg",
+                          'assets/images/downArrow.svg',
                           height: 10,
                           width: 15,
                           color:
@@ -798,7 +508,7 @@ class rowStatTeam extends StatelessWidget {
                 ),
                 TextElement(
                   text:
-                  "${indexTeams + 1}. ${context.read<TeamFirestoreCubit>().listTeam[indexTeams].name}",
+                  '${indexTeams + 1}. ${context.read<TeamFirestoreCubit>().listTeam[indexTeams].name}',
                   color: (context.read<TeamFirestoreCubit>().indexSelect ==
                       indexTeams)
                       ? colorTheme
@@ -811,7 +521,7 @@ class rowStatTeam extends StatelessWidget {
           Expanded(
             flex: 1,
             child: TextElement(
-              text: "0",
+              text: '0',
               color:
               (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
                   ? colorTheme
@@ -822,7 +532,7 @@ class rowStatTeam extends StatelessWidget {
           Expanded(
             flex: 1,
             child: TextElement(
-              text: "0",
+              text: '0',
               color:
               (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
                   ? colorTheme
@@ -833,7 +543,7 @@ class rowStatTeam extends StatelessWidget {
           Expanded(
             flex: 1,
             child: TextElement(
-              text: "0",
+              text: '0',
               color:
               (context.read<TeamFirestoreCubit>().indexSelect == indexTeams)
                   ? colorTheme
@@ -933,7 +643,7 @@ class listMemberInTeam extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: TextElement(
-                          text: "0",
+                          text: '0',
                           color: Colors.white,
                           textAlign: TextAlign.center,
                         ),
@@ -941,7 +651,7 @@ class listMemberInTeam extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: TextElement(
-                          text: "0",
+                          text: '0',
                           color: Colors.white,
                           textAlign: TextAlign.center,
                         ),
@@ -949,7 +659,7 @@ class listMemberInTeam extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: TextElement(
-                          text: "0",
+                          text: '0',
                           color: Colors.white,
                           textAlign: TextAlign.center,
                         ),
@@ -986,7 +696,7 @@ class columnTable extends StatelessWidget {
         Expanded(
           flex: 3,
           child: TextElement(
-            text: "Nom des équipes",
+            text: 'Nom des équipes',
             color: Colors.white,
             textAlign: TextAlign.center,
           ),
@@ -994,7 +704,7 @@ class columnTable extends StatelessWidget {
         Expanded(
           flex: 1,
           child: TextElement(
-            text: "Rang",
+            text: 'Rang',
             color: Colors.white,
             textAlign: TextAlign.center,
           ),
@@ -1002,7 +712,7 @@ class columnTable extends StatelessWidget {
         Expanded(
           flex: 1,
           child: TextElement(
-            text: "KDA",
+            text: 'KDA',
             color: Colors.white,
             textAlign: TextAlign.center,
           ),
@@ -1010,7 +720,7 @@ class columnTable extends StatelessWidget {
         Expanded(
           flex: 1,
           child: TextElement(
-            text: "Ratio",
+            text: 'Ratio',
             color: Colors.white,
             textAlign: TextAlign.center,
           ),

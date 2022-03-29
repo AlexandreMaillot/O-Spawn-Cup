@@ -23,7 +23,7 @@ class StartPageView extends StatelessWidget {
             // width: screenSize.width,
             height: screenSize.height * 0.61,
             child: Center(
-              child: Image.asset("assets/images/logoOSpawnCup.png",
+              child: Image.asset('assets/images/logoOSpawnCup.png',
                   width: screenSize.width * 0.78,
                   height: screenSize.height * 0.3),
             ),
@@ -37,12 +37,12 @@ class StartPageView extends StatelessWidget {
                 CustomButtonTheme(
                     colorText: colorTextTheme,
                     colorButton: Colors.white,
-                    text: "CONNEXION",
+                    text: 'CONNEXION',
                     onPressedMethod: () => goToLogin(context)),
                 CustomButtonTheme(
                     colorText: colorTextTheme,
                     colorButton: colorTheme,
-                    text: "INSCRIPTION",
+                    text: 'INSCRIPTION',
                     onPressedMethod: () => goToRegister(context)),
               ],
             ),
@@ -60,13 +60,13 @@ class StartPageView extends StatelessWidget {
               children: [
                 CustomButtonConnectWith(
                     screenSize: screenSize,
-                    imageName: "assets/images/google.png",
-                    text: "CONNEXION AVEC GOOGLE",
+                    imageName: 'assets/images/google.png',
+                    text: 'CONNEXION AVEC GOOGLE',
                     onPressedMethod: () => googleAuthentication.logInWithGoogle()),
                 CustomButtonConnectWith(
                     screenSize: screenSize,
-                    imageName: "assets/images/facebook.png",
-                    text: "CONNEXION AVEC FACEBOOK",
+                    imageName: 'assets/images/facebook.png',
+                    text: 'CONNEXION AVEC FACEBOOK',
                     onPressedMethod: () => print('test')),
               ],
             ),

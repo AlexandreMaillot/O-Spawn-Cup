@@ -10,14 +10,12 @@ import 'package:o_spawn_cup/models/role_type.dart';
 class MemberTournamentRepository {
   late MemberTournamentCollectionReference memberTournamentCollectionReference;
   late Team team;
-  late Tournament tournament;
   List<MemberTournament> listMemberTournament = [];
   late Stream<List<MemberTournament>> listMemberTournamentStream;
   MemberTournamentRepository({required this.memberTournamentCollectionReference,}){
     _init();
   }
   _init(){
-    loadTournament();
     loadTeam();
     listMemberTournamentStream = memberTournamentCollectionReference.snapshots()
         .map((event) => event.docs
@@ -32,32 +30,23 @@ class MemberTournamentRepository {
     });
   }
   deleteMemberTournament(MemberTournament memberTournament){
+    memberTournamentCollectionReference.doc(memberTournament.documentId).delete();
+  }
 
-  }
-  Future<void> loadTournament() async {
-    var document = memberTournamentCollectionReference.parent;
-    var document1 = document.parent.parent;
-    print(document1);
-    // var document2 = document1.parent;
-    var tournamentDoc = await document1.get();
-    // print(tournamentDoc.id);
-    // tournament = tournamentDoc.data!;
-  }
   Future<void> loadTeam() async {
     var teamDocument = await memberTournamentCollectionReference.parent.get();
-    team = teamDocument.data!;
-  }
-  Future<bool> checkTeamCapacity(Team team) async {
-    if(listMemberTournament.length + 1 <= tournament.tournamentType.capacityTeam) {
-      return true;
-    } else {
-      return false;
+
+    if(teamDocument.data != null) {
+      team = teamDocument.data!;
+      team.documentId = teamDocument.id;
     }
+
   }
-  addMemberInTeam(Member member,String gamerTag,RoleType roleType){
+
+  addMemberTournamentInTeam(Member member,String gamerTag,RoleType roleType){
     memberTournamentCollectionReference.add(MemberTournament(gamerTag: gamerTag, role: roleType, member: member));
   }
-  Stream<List<MemberTournament>> listMemberInTeam() {
+  Stream<List<MemberTournament>> listMemberTournamentInTeam() {
     return listMemberTournamentStream;
   }
 }

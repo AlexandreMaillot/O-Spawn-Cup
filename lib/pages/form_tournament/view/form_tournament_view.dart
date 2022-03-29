@@ -1,45 +1,45 @@
-import "dart:io";
-import "dart:math";
+import 'dart:io';
+import 'dart:math';
 
-import "package:animated_widgets/animated_widgets.dart";
-import "package:dotted_border/dotted_border.dart";
-import "package:dotted_line/dotted_line.dart";
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:formz/formz.dart";
+import 'package:animated_widgets/animated_widgets.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:o_spawn_cup/bloc/form_tournament_step_2_bloc/form_tournament_step_2_bloc.dart';
-import "package:o_spawn_cup/bloc/form_tournament_step_3_bloc/form_tournament_step_3_bloc.dart";
+import 'package:o_spawn_cup/bloc/form_tournament_step_3_bloc/form_tournament_step_3_bloc.dart';
 import 'package:o_spawn_cup/bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart';
-import "package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart";
-import "package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart";
-import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
-import "package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart";
-import "package:o_spawn_cup/cubit/list_cash_prizes_cubit.dart";
-import "package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
-import "package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart";
-import "package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart";
-import "package:o_spawn_cup/models/Tournament/tournament.dart";
-import "package:o_spawn_cup/models/game_name.dart";
-import "package:o_spawn_cup/models/make_it_responsive.dart";
-import "package:o_spawn_cup/models/server_type.dart";
-import "package:o_spawn_cup/models/validator/server_type.dart"
+import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
+import 'package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart';
+import 'package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart';
+import 'package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart';
+import 'package:o_spawn_cup/cubit/list_cash_prizes_cubit.dart';
+import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
+import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
+import 'package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart';
+import 'package:o_spawn_cup/models/Tournament/tournament.dart';
+import 'package:o_spawn_cup/models/game_name.dart';
+import 'package:o_spawn_cup/models/make_it_responsive.dart';
+import 'package:o_spawn_cup/models/server_type.dart';
+import 'package:o_spawn_cup/models/validator/server_type.dart'
 as serverTypeValidator;
-import "package:firebase_storage/firebase_storage.dart" as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:o_spawn_cup/pages/home/view/home.dart';
-import "package:o_spawn_cup/services/firebase_handler.dart";
-import "package:o_spawn_cup/services/utils.dart";
-import "package:o_spawn_cup/shared/widgets/custom_app_bar.dart";
-import "package:o_spawn_cup/shared/widgets/custom_button_theme.dart";
-import "package:o_spawn_cup/shared/widgets/custom_drawer.dart";
-import "package:o_spawn_cup/shared/widgets/custom_dropdown.dart";
-import "package:o_spawn_cup/shared/widgets/custom_row_textfield_date.dart";
-import "package:o_spawn_cup/shared/widgets/custom_text_field.dart";
-import "package:o_spawn_cup/shared/widgets/game_card.dart";
+import 'package:o_spawn_cup/services/firebase_handler.dart';
+import 'package:o_spawn_cup/services/utils.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_app_bar.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_drawer.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_dropdown.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_row_textfield_date.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_text_field.dart';
+import 'package:o_spawn_cup/shared/widgets/game_card.dart';
 import 'package:o_spawn_cup/shared/widgets/no_data.dart';
-import "package:o_spawn_cup/shared/widgets/subtiltle_element.dart";
-import "package:o_spawn_cup/shared/widgets/text_element.dart";
-import "package:o_spawn_cup/constant.dart";
+import 'package:o_spawn_cup/shared/widgets/subtiltle_element.dart';
+import 'package:o_spawn_cup/shared/widgets/text_element.dart';
+import 'package:o_spawn_cup/constant.dart';
 
 
 
@@ -64,7 +64,7 @@ class FormTournamentView extends StatelessWidget {
   TextEditingController rangStartController = TextEditingController();
 
   CustomDropdown serverDropdown = CustomDropdown(
-    hintText: "SERVEUR",
+    hintText: 'SERVEUR',
     listItem: listServerTypeDropdown,
   );
   List<TextEditingController> controllersCodeGenerate = [];
@@ -88,7 +88,7 @@ class FormTournamentView extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
       appBar: CustomAppBar(
-        title: "",
+        title: '',
       ),
       drawer: CustomDrawer(screenSize: screenSize),
       body: SafeArea(
@@ -101,7 +101,7 @@ class FormTournamentView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SubtitleElement(
-                    text: "CREATION DE TOURNOIS",
+                    text: 'CREATION DE TOURNOIS',
                     color: colorTheme,
                   ),
                 ),
@@ -131,7 +131,7 @@ class FormTournamentView extends StatelessWidget {
                                 children: <Widget>[
                                   if (currentIndex != 0)
                                     CustomButtonTheme(
-                                      text: "RETOUR",
+                                      text: 'RETOUR',
                                       colorButton: Colors.white,
                                       colorText: colorBackgroundTheme,
                                       width: screenSize.width / 3,
@@ -141,8 +141,8 @@ class FormTournamentView extends StatelessWidget {
                                     ),
                                   CustomButtonTheme(
                                     text: (currentIndex < 5)
-                                        ? "VALIDER"
-                                        : "TERMINER",
+                                        ? 'VALIDER'
+                                        : 'TERMINER',
                                     colorButton: colorTheme,
                                     colorText: colorBackgroundTheme,
                                     width: screenSize.width / 3,
@@ -310,7 +310,7 @@ class FormTournamentView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextElement(
-            text: "Identifiants",
+            text: 'Identifiants',
             color: colorTheme,
           )
         ],
@@ -321,7 +321,7 @@ class FormTournamentView extends StatelessWidget {
           ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: (roundNumberController.text != "")
+              itemCount: (roundNumberController.text != '')
                   ? int.parse(roundNumberController.text)
                   : 0,
               itemBuilder: (context, index) {
@@ -333,7 +333,7 @@ class FormTournamentView extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         // paddingBottom: 10,
                         screenSize: screenSize,
-                        text: "CODE ${index + 1}",
+                        text: 'CODE ${index + 1}',
                         controller:
                         context.read<GenerateCodeCubit>().listCode[index],
                         typeTextField: TextInputType.text,
@@ -366,7 +366,7 @@ class FormTournamentView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextElement(
-            text: "Cash prizes",
+            text: 'Cash prizes',
             color: colorTheme,
           )
         ],
@@ -390,7 +390,7 @@ class FormTournamentView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
 
-                      TextElement(text: (index + 1).toString()+ " ",color: Colors.white,),
+                      TextElement(text: (index + 1).toString()+ ' ',color: Colors.white,),
                       const Expanded(
                         child: DottedLine(
                           dashColor: Colors.white,
@@ -406,7 +406,7 @@ class FormTournamentView extends StatelessWidget {
 
                 },
               ),
-              TextButton.icon(onPressed: () => _displayTextInputDialog(context,null), icon: const Icon(Icons.add_circle,color: Colors.white), label: TextElement(text: "Ajouter un lot",color: colorTheme,))
+              TextButton.icon(onPressed: () => _displayTextInputDialog(context,null), icon: const Icon(Icons.add_circle,color: Colors.white), label: TextElement(text: 'Ajouter un lot',color: colorTheme,))
             ],
           );
         },
@@ -418,22 +418,22 @@ class FormTournamentView extends StatelessWidget {
     return showDialog(
         context: contextLocal,
         builder: (context) {
-          _textFieldController.text = (index != null) ? contextLocal.read<ListCashPrizesCubit>().list[index] : "";
+          _textFieldController.text = (index != null) ? contextLocal.read<ListCashPrizesCubit>().list[index] : '';
           return AlertDialog(
-            title: TextElement(text: "Ajouter un cash prize"),
+            title: TextElement(text: 'Ajouter un cash prize'),
             content: TextField(
               controller: _textFieldController,
-              decoration: const InputDecoration(hintText: "Pull o-spawn,discord nitro,Skin fornite..."),
+              decoration: const InputDecoration(hintText: 'Pull o-spawn,discord nitro,Skin fornite...'),
             ),
             actions: <Widget>[
               TextButton(
-                child: TextElement(text: "Annuler"),
+                child: TextElement(text: 'Annuler'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
               TextButton(
-                child: TextElement(text: "Valider",color: colorOrange,),
+                child: TextElement(text: 'Valider',color: colorOrange,),
                 onPressed: () {
                   if(index != null){
                     contextLocal.read<ListCashPrizesCubit>().modifCashPrize(index,_textFieldController.text);
@@ -456,7 +456,7 @@ class FormTournamentView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextElement(
-              text: "Personnalisation",
+              text: 'Personnalisation',
               color: colorTheme,
             )
           ],
@@ -467,12 +467,12 @@ class FormTournamentView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextElement(
-                text: "ou",
+                text: 'ou',
                 color: Colors.white,
               ),
             ),
             TextElement(
-              text: "IMAGES PRE-DEFINIES",
+              text: 'IMAGES PRE-DEFINIES',
               color: Colors.white,
             ),
             Padding(
@@ -504,7 +504,7 @@ class FormTournamentView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextElement(
-              text: "Points",
+              text: 'Points',
               color: colorTheme,
             )
           ],
@@ -519,13 +519,13 @@ class FormTournamentView extends StatelessWidget {
                   return CustomTextField(
                     textInputAction: TextInputAction.next,
                     screenSize: screenSize,
-                    text: "POINT PAR KILL",
+                    text: 'POINT PAR KILL',
                     paddingBottom: 10,
                     controller: pointPerKillController,
                     typeTextField: TextInputType.number,
                     onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerKillChanged(int.tryParse(value))),
                     errorText: state.pointPerKill.invalid
-                        ? "Le nombre de point par kill doit être renseigné !"
+                        ? 'Le nombre de point par kill doit être renseigné !'
                         : null,
                   );
                 },
@@ -536,12 +536,12 @@ class FormTournamentView extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     screenSize: screenSize,
                     paddingBottom: 10,
-                    text: "POINT PAR RANG",
+                    text: 'POINT PAR RANG',
                     controller: pointPerRangController,
                     typeTextField: TextInputType.number,
                     onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentPointPerRangChanged(int.tryParse(value))),
                     errorText: state.pointPerRang.invalid
-                        ? "Le nombre de point par kill doit être renseigné !"
+                        ? 'Le nombre de point par kill doit être renseigné !'
                         : null,
                   );
                 },
@@ -551,12 +551,12 @@ class FormTournamentView extends StatelessWidget {
                   return CustomTextField(
                     screenSize: screenSize,
                     paddingBottom: 10,
-                    text: "RANG DEBUT DU DECOMPTE",
+                    text: 'RANG DEBUT DU DECOMPTE',
                     controller: rangStartController,
                     typeTextField: TextInputType.number,
                     onChanged: (context, value) => context.read<FormTournamentStep3Bloc>().add(FormTournamentStartRangChanged(int.tryParse(value))),
                     errorText: state.startRang.invalid
-                        ? "Le nombre de point par kill doit être renseigné !"
+                        ? 'Le nombre de point par kill doit être renseigné !'
                         : null,
                   );
                 },
@@ -574,7 +574,7 @@ class FormTournamentView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextElement(
-              text: "Informations",
+              text: 'Informations',
               color: colorTheme,
             )
           ],
@@ -591,13 +591,13 @@ class FormTournamentView extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     paddingBottom: 10,
                     screenSize: screenSize,
-                    text: "NOM DU TOURNOIS",
+                    text: 'NOM DU TOURNOIS',
                     controller: cupNameController,
                     onChanged: (context, value) => context
                         .read<FormTournamentStep2Bloc>()
                         .add(FormTournamentNameCupChanged(value)),
                     errorText: state.nameCup.invalid
-                        ? "Le nom du tournois doit être renseigné !"
+                        ? 'Le nom du tournois doit être renseigné !'
                         : null,
                   );
                 },
@@ -608,17 +608,17 @@ class FormTournamentView extends StatelessWidget {
                     paddingBottom: 10,
                     textInputAction: TextInputAction.next,
                     screenSize: screenSize,
-                    text: "NOMBRE DE GAME(S)",
+                    text: 'NOMBRE DE GAME(S)',
                     controller: roundNumberController,
                     typeTextField: TextInputType.number,
                     errorText: state.numberRound.invalid
-                        ? "Le nombre de round doit être supérieur à zéro !"
+                        ? 'Le nombre de round doit être supérieur à zéro !'
                         : null,
                     onChanged: (context, value) {
                       context
                           .read<FormTournamentStep2Bloc>()
                           .add(FormTournamentNumberRoundChanged(int.tryParse(value)));
-                      if (value != "") {
+                      if (value != '') {
                         int? numberRound = int.parse(value);
                         context
                             .read<GenerateCodeCubit>()
@@ -629,12 +629,12 @@ class FormTournamentView extends StatelessWidget {
                 },
               ),
               Text(
-                "Date début des inscriptions",
+                'Date début des inscriptions',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: colorTheme,
                     fontSize: 10,
-                    fontFamily: "o_spawn_cup_font",
+                    fontFamily: 'o_spawn_cup_font',
                     fontWeight: FontWeight.normal),
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
@@ -657,12 +657,12 @@ class FormTournamentView extends StatelessWidget {
                 },
               ),
               Text(
-                "Date début du tournois",
+                'Date début du tournois',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: colorTheme,
                     fontSize: 10,
-                    fontFamily: "o_spawn_cup_font",
+                    fontFamily: 'o_spawn_cup_font',
                     fontWeight: FontWeight.normal),
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
@@ -685,12 +685,12 @@ class FormTournamentView extends StatelessWidget {
                 },
               ),
               Text(
-                "Heure début du tournois",
+                'Heure début du tournois',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: colorTheme,
                     fontSize: 10,
-                    fontFamily: "o_spawn_cup_font",
+                    fontFamily: 'o_spawn_cup_font',
                     fontWeight: FontWeight.normal),
               ),
               BlocBuilder<FormTournamentStep2Bloc, FormTournamentStep2State>(
@@ -702,7 +702,7 @@ class FormTournamentView extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     textAlign: TextAlign.left,
                     widthTextfield: screenSize.width * 0.4,
-                    text: "Heure",
+                    text: 'Heure',
                     suffixIcon: const Icon(Icons.access_time_outlined),
                     controller: hoursStartController,
                     onChanged: (context, value) => context
@@ -761,7 +761,7 @@ class FormTournamentView extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: const [
                                 Text(
-                                  "Un type de serveur doit être sélectionné !",
+                                  'Un type de serveur doit être sélectionné !',
                                   style: TextStyle(
                                     color: Color(0xffd22f2f),
                                     fontSize: 12,
@@ -788,7 +788,7 @@ class FormTournamentView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextElement(
-            text: "Choix du jeu",
+            text: 'Choix du jeu',
             color: colorTheme,
           )
         ],
@@ -796,7 +796,7 @@ class FormTournamentView extends StatelessWidget {
       content: BlocBuilder<SelectGameBloc, SelectGameState>(
         builder: (context, state) {
           if(state.runtimeType == SelectGameNoData) {
-            return NoData(string: "Aucun jeu disponible..");
+            return NoData(string: 'Aucun jeu disponible..');
           } else {
             final indexSelect = context.select((SelectGameBloc bloc) => (bloc.state as SelectGameChanged).index);
             return Container(
@@ -853,21 +853,21 @@ class FormTournamentView extends StatelessWidget {
       String daySign = tournament.dateDebutInscription!.day.toString();
       String monthSign = tournament.dateDebutInscription!.month.toString();
       String yearsSign = tournament.dateDebutInscription!.year.toString();
-      daySignController.text = (daySign.length == 1) ? "0" + daySign : daySign;
-      monthSignController.text = (monthSign.length == 1) ? "0" + monthSign : monthSign;
+      daySignController.text = (daySign.length == 1) ? '0' + daySign : daySign;
+      monthSignController.text = (monthSign.length == 1) ? '0' + monthSign : monthSign;
       yearsSignController.text = yearsSign;
 
       String dayStart = tournament.dateDebutTournois!.day.toString();
       String monthStart = tournament.dateDebutTournois!.month.toString();
       String yearsStart = tournament.dateDebutTournois!.year.toString();
 
-      dayStartController.text = (dayStart.length == 1) ? "0" + dayStart : dayStart;
-      monthStartController.text = (monthStart.length == 1) ? "0" + monthStart : monthStart;
+      dayStartController.text = (dayStart.length == 1) ? '0' + dayStart : dayStart;
+      monthStartController.text = (monthStart.length == 1) ? '0' + monthStart : monthStart;
       yearsStartController.text = yearsStart;
 
       String hoursStart = tournament.dateDebutTournois!.hour.toString();
       String minutesStart = tournament.dateDebutTournois!.minute.toString();
-      hoursStartController.text = ((hoursStart.length == 1) ? "0" + hoursStart : hoursStart) + ":" + ((minutesStart.length == 1) ? "0" + minutesStart : minutesStart);
+      hoursStartController.text = ((hoursStart.length == 1) ? '0' + hoursStart : hoursStart) + ':' + ((minutesStart.length == 1) ? '0' + minutesStart : minutesStart);
       cupNameController.text = tournament.name;
       // cashPrizeController = TextEditingController();
       int indexPlayerBy = listTournamentType.indexWhere((element) => element.capacityTeam == tournament.tournamentType.capacityTeam);
@@ -968,14 +968,14 @@ class WidgetChooseImage extends StatelessWidget {
                       ),
                     ),
                     TextElement(
-                      text: "CHOISIR UNE IMAGE",
+                      text: 'CHOISIR UNE IMAGE',
                       color: Colors.white,
                     ),
                     Text(
-                      "max 5 mo",
+                      'max 5 mo',
                       style: TextStyle(
                         color: colorOrange,
-                        fontFamily: "o_spawn_cup_font",
+                        fontFamily: 'o_spawn_cup_font',
                       ),
                     )
                   ],
@@ -1001,7 +1001,7 @@ class RowWidgetNumByPlayer extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextElement(
-            text: "NOMBRE DE JOUEURS PAR EQUIPE",
+            text: 'NOMBRE DE JOUEURS PAR EQUIPE',
             color: Colors.white,
             textAlign: TextAlign.center,
           ),

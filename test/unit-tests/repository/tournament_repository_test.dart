@@ -177,7 +177,7 @@ void main() {
       snapshot = await instance.collection('Tournament').get();
       var snapTournament = await snapshot.docs[2].reference.get();
       var tournament = snapTournament.data();
-      expect(tournament!["state"], TournamentState.incriptionOuverte.name);
+      expect(tournament!["state"], TournamentState.inscriptionOuverte.name);
     });
     test('change state auto for start cup', () async {
       DateTime nexDateStart = DateTime(now.year,now.month,now.day,now.hour - 1);

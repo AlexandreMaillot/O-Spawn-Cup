@@ -39,10 +39,10 @@ class TournamentRepository {
     DateTime dateTimeNow = DateTime.now();
     if(tournament.state == TournamentState.inscriptionFermer) {
       if(tournament.dateDebutInscription!.isBefore(dateTimeNow)){
-        changeStateTournament(tournament,TournamentState.incriptionOuverte);
+        changeStateTournament(tournament,TournamentState.inscriptionOuverte);
       }
     }
-    if(tournament.state == TournamentState.incriptionOuverte || tournament.state == TournamentState.inscriptionFermer) {
+    if(tournament.state == TournamentState.inscriptionOuverte || tournament.state == TournamentState.inscriptionFermer) {
       if(tournament.dateDebutTournois!.isBefore(dateTimeNow)){
         changeStateTournament(tournament,TournamentState.enCours);
       }

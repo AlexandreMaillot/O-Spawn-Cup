@@ -117,6 +117,7 @@ abstract class MemberDocumentReference
     String pseudo,
     String uid,
     bool isAdmin,
+    List<Object?> props,
   });
 
   Future<void> set(Member value);
@@ -164,11 +165,13 @@ class _$MemberDocumentReference
     Object? pseudo = _sentinel,
     Object? uid = _sentinel,
     Object? isAdmin = _sentinel,
+    Object? props = _sentinel,
   }) async {
     final json = {
       if (pseudo != _sentinel) "pseudo": pseudo as String,
       if (uid != _sentinel) "uid": uid as String,
       if (isAdmin != _sentinel) "isAdmin": isAdmin as bool,
+      if (props != _sentinel) "props": props as List<Object?>,
     };
 
     return reference.update(json);
@@ -250,6 +253,16 @@ abstract class MemberQuery implements QueryReference<MemberQuerySnapshot> {
     List<bool>? whereIn,
     List<bool>? whereNotIn,
   });
+  MemberQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  });
 
   MemberQuery orderByPseudo({
     bool descending = false,
@@ -281,6 +294,18 @@ abstract class MemberQuery implements QueryReference<MemberQuerySnapshot> {
     bool startAfter,
     bool endAt,
     bool endBefore,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  });
+
+  MemberQuery orderByProps({
+    bool descending = false,
+    List<Object?> startAt,
+    List<Object?> startAfter,
+    List<Object?> endAt,
+    List<Object?> endBefore,
     MemberDocumentSnapshot? startAtDocument,
     MemberDocumentSnapshot? endAtDocument,
     MemberDocumentSnapshot? endBeforeDocument,
@@ -433,6 +458,32 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     );
   }
 
+  MemberQuery whereProps({
+    List<Object?>? isEqualTo,
+    List<Object?>? isNotEqualTo,
+    List<Object?>? isLessThan,
+    List<Object?>? isLessThanOrEqualTo,
+    List<Object?>? isGreaterThan,
+    List<Object?>? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<Object?>? arrayContainsAny,
+  }) {
+    return _$MemberQuery(
+      reference.where(
+        'props',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        arrayContainsAny: arrayContainsAny,
+      ),
+      _collection,
+    );
+  }
+
   MemberQuery orderByPseudo({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -529,6 +580,48 @@ class _$MemberQuery extends QueryReference<MemberQuerySnapshot>
     MemberDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('isAdmin', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MemberQuery(query, _collection);
+  }
+
+  MemberQuery orderByProps({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MemberDocumentSnapshot? startAtDocument,
+    MemberDocumentSnapshot? endAtDocument,
+    MemberDocumentSnapshot? endBeforeDocument,
+    MemberDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('props', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);

@@ -16,6 +16,7 @@ class GoogleAuthenticationCubit extends Cubit<GoogleAuthenticationState> {
     emit(GoogleAuthenticationLoad());
     try {
       await _authenticationRepository.logInWithGoogle();
+      print(_authenticationRepository.currentUser);
       FirebaseHandler().addMemberFirebase("", _authenticationRepository.currentUser.id);
       emit(GoogleAuthenticationSuccess());
     } on LogInWithGoogleFailure catch (error) {

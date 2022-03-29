@@ -6,13 +6,16 @@ import "package:json_annotation/json_annotation.dart";
 
 part "member.g.dart";
 @JsonSerializable(explicitToJson: true)
-class Member {
+class Member extends Equatable{
   final String pseudo;
   final String uid;
   final bool isAdmin;
   const Member({this.pseudo = "",required this.uid,this.isAdmin = false});
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
   Map<String, dynamic> toJson() => _$MemberToJson(this);
+
+  @override
+  List<Object?> get props => [pseudo,uid,isAdmin];
 
 
 }

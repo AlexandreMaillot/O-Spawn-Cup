@@ -1,6 +1,6 @@
-import "package:firebase_auth/firebase_auth.dart";
-import "package:google_sign_in/google_sign_in.dart";
-import "package:o_spawn_cup/services/firebase_handler.dart";
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:o_spawn_cup/services/firebase_handler.dart';
 
 import '../models/Member/member.dart';
 
@@ -23,10 +23,10 @@ class Authentification {
         return false;
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {
-        print("No user found for that email.");
-      } else if (e.code == "wrong-password") {
-        print("Wrong password provided for that user.");
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
       }
     } catch (e) {
       print(e);
@@ -54,7 +54,7 @@ class Authentification {
         await FirebaseAuth.instance.signInWithCredential(credential);
     if (userCredential != null) {
       if(userCredential.additionalUserInfo?.isNewUser == true){
-        FirebaseHandler().addMemberFirebase("", userCredential.user!.uid);
+        FirebaseHandler().addMemberFirebase('', userCredential.user!.uid);
       } else {
 
       }
@@ -82,7 +82,7 @@ class Authentification {
         email: email,
         password: password,
       );
-      FirebaseHandler().addMemberFirebase("", userCredential.user!.uid);
+      FirebaseHandler().addMemberFirebase('', userCredential.user!.uid);
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         return true;
@@ -90,12 +90,12 @@ class Authentification {
         return false;
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == "weak-password") {
-        print("The password provided is too weak.");
-      } else if (e.code == "email-already-in-use") {
-        print("The account already exists for that email.");
-      } else if (e.code == "invalid-email") {
-        print("invalid email.");
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      } else if (e.code == 'invalid-email') {
+        print('invalid email.');
       }
     } catch (e) {
       print(e);

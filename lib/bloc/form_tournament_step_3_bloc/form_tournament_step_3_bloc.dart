@@ -1,24 +1,16 @@
 
 import 'dart:async';
 
-import "package:bloc/bloc.dart";
-import "package:equatable/equatable.dart";
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:o_spawn_cup/models/validator/name_cup.dart';
-import 'package:o_spawn_cup/models/validator/number_round.dart';
-import 'package:o_spawn_cup/models/validator/player_by_team.dart';
 import 'package:o_spawn_cup/models/validator/point_per_kill.dart';
 import 'package:o_spawn_cup/models/validator/point_per_rang.dart';
-import 'package:o_spawn_cup/models/validator/server_type.dart';
 import 'package:o_spawn_cup/models/validator/start_rang.dart';
 
-import '../../models/validator/day.dart';
-import '../../models/validator/month.dart';
-import '../../models/validator/number_team.dart';
-import '../../models/validator/years.dart';
 
-part "form_tournament_step_3_event.dart";
-part "form_tournament_step_3_state.dart";
+part 'form_tournament_step_3_event.dart';
+part 'form_tournament_step_3_state.dart';
 
 class FormTournamentStep3Bloc extends Bloc<FormTournamentEventStep3, FormTournamentStep3State> {
   FormTournamentStep3Bloc() : super(FormTournamentStep3State()) {

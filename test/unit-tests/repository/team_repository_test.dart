@@ -18,10 +18,10 @@ void main() {
   late TeamRepository teamRepository;
   late TournamentCollectionReference tournamentsRef;
   late TeamCollectionReference teamsRef;
-  late List<Team> listTeam = [Team(name: "MyTeam1"),Team(name: "MyTeam2"),Team(name: "MyTeam3")];
-  late MemberTournament memberTournament = MemberTournament(gamerTag: "", role: RoleType.player, member: Member(uid: ""));
+  late List<Team> listTeam = [Team(name: 'MyTeam1'),Team(name: 'MyTeam2'),Team(name: 'MyTeam3')];
+  late MemberTournament memberTournament = MemberTournament(gamerTag: '', role: RoleType.player, member: const Member(uid: ''));
 
-  Tournament tournament4 = Tournament(name: "Tournois 4",
+  Tournament tournament4 = Tournament(name: 'Tournois 4',
       dateDebutTournois: DateTime(now.year,now.month,now.day + 7),
       game: GameName.LeagueOfLegend,
       server: ServerType.EU,
@@ -32,25 +32,25 @@ void main() {
       killPointTournament: 1,
       pointPerRangTournament: 1,
       rangStartTournament: 15,
-      cashPrize: ["Mon lot 1","Mon lot 2","Mon lot 3"],
-      listCodesGames: ["MonCode1","MonCode2","MonCode3",]);
+      cashPrize: const ['Mon lot 1','Mon lot 2','Mon lot 3'],
+      listCodesGames: const ['MonCode1','MonCode2','MonCode3',]);
   setUp(() async {
     instance = FakeFirebaseFirestore();
-    tournament4.documentId = "id4";
-    await instance.collection('Tournament').doc("id4").set(tournament4.toJson());
+    tournament4.documentId = 'id4';
+    await instance.collection('Tournament').doc('id4').set(tournament4.toJson());
     tournamentsRef = TournamentCollectionReference(instance);
-    listTeam[0].documentId = "id1";
-    listTeam[1].documentId = "id2";
-    listTeam[2].documentId = "id3";
-    listTeam[0].teamCode = "1234";
-    tournamentsRef.doc("id4").teams.doc("id1").set(listTeam[0]);
-    tournamentsRef.doc("id4").teams.doc("id2").set(listTeam[1]);
-    tournamentsRef.doc("id4").teams.doc("id3").set(listTeam[2]);
+    listTeam[0].documentId = 'id1';
+    listTeam[1].documentId = 'id2';
+    listTeam[2].documentId = 'id3';
+    listTeam[0].teamCode = '1234';
+    tournamentsRef.doc('id4').teams.doc('id1').set(listTeam[0]);
+    tournamentsRef.doc('id4').teams.doc('id2').set(listTeam[1]);
+    tournamentsRef.doc('id4').teams.doc('id3').set(listTeam[2]);
 
 
-    teamsRef = TeamCollectionReference(tournamentsRef.doc("id4").reference);
+    teamsRef = TeamCollectionReference(tournamentsRef.doc('id4').reference);
     for(int i = 0; i<=10 ; i++) {
-      teamsRef.doc("id3").membersTournament.add(memberTournament);
+      teamsRef.doc('id3').membersTournament.add(memberTournament);
     }
 
     teamRepository = TeamRepository(teamCollectionReference: teamsRef);
@@ -60,26 +60,27 @@ void main() {
     expect(teamRepository.listTeamsInTournament(), emits(listTeam));
   });
   test('team name not exist', () async {
-    expect(await teamRepository.checkNameTeam("MyTeam3"), true);
+    expect(await teamRepository.checkNameTeam('MyTeam3'), true);
   });
   test('team name exist', () async {
     teamRepository.listTeam = listTeam;
-    expect(await teamRepository.checkNameTeam("MyTeam2"), false);
+    expect(await teamRepository.checkNameTeam('MyTeam2'), false);
   });
-  test('find team with code team', () {
+  test('find team with code team', () async {
 
     teamRepository.listTeam = listTeam;
-    expect(teamRepository.findTeamWithCode("1234"),listTeam[0]);
+    var team = await teamRepository.findTeamWithCode('1234');
+    expect(team?.data,isNotNull);
   });
-  test('not find team with code team', () {
+  test('not find team with code team', () async {
     teamRepository.listTeam = listTeam;
-    expect(teamRepository.findTeamWithCode("12"),null);
+    expect(await teamRepository.findTeamWithCode('12'),null);
   });
   test('generate code team not empty', () {
-    expect(teamRepository.generateCodeTeam("1234", 5),isNotEmpty);
+    expect(teamRepository.generateCodeTeam('1234', 5),isNotEmpty);
   });
   test('generate code team lenght 5', () {
-    var codeBefore = "1234";
+    var codeBefore = '1234';
     var code = teamRepository.generateCodeTeam(codeBefore, 5);
     expect(code.length,codeBefore.length + 5);
   });
@@ -93,15 +94,33 @@ void main() {
     expect(teamRepository.numberTeamInTournament(), listTeam.length);
   });
 
+  test('check team is full', () async {
+    tournament4.tournamentType = TournamentType.solo;
+    listTeam[0].listMemberTournament.add(memberTournament);
+    teamRepository.tournament = tournament4;
+    expect(await teamRepository.checkTeamCapacity(listTeam[0]), false);
+  });
+  test('check team is not full', () async {
+    teamRepository.tournament = tournament4;
+    expect(await teamRepository.checkTeamCapacity(listTeam[1]), true);
+  });
+  test('delete in no member', () {
+    expect(listTeam[1].isDisqualified,false);
+    teamRepository.disqualifiedTeamWithNoMember(listTeam[1]);
+    expect(listTeam[1].isDisqualified,true);
+  });
+  test('load memberTournament in team', () {
+    teamRepository.addListMemberTournamentInTeam(listTeam[2]).then((value) => expect(listTeam[2].listMemberTournament,isNotEmpty));
+  });
+
   test('add Team in tournament', () async {
     var teamCol = await teamsRef.get();
     var numTeam = teamCol.docs.length;
-    teamRepository.addTeamInTournament(listTeam[0], const Member(uid: ""), "MonGameTag",);
+    teamRepository.addTeamInTournament(listTeam[0],);
     teamCol = await teamsRef.get();
     expect(teamCol.docs.length, numTeam + 1);
   });
   test('check tournament team not full', () async {
-    // when(() => tournamentRepository.countTeamInTournament(tournament4)).thenAnswer((_) => Future.value(10));
     teamRepository.tournament = tournament4;
     expect(await teamRepository.checkTournamentCapacity(), true);
   });

@@ -1,18 +1,20 @@
 
-import "dart:async";
+// ignore_for_file: unused_import
+
+import 'dart:async';
 import 'dart:io';
 
-import "package:bloc/bloc.dart";
-import "package:equatable/equatable.dart";
-import "package:formz/formz.dart";
-import "package:o_spawn_cup/models/validator/point_per_kill.dart";
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
+import 'package:o_spawn_cup/models/validator/point_per_kill.dart';
 
 import '../../models/validator/cash_prize.dart';
 import '../../models/validator/image_cup.dart';
 
 
-part "form_tournament_step_4_event.dart";
-part "form_tournament_step_4_state.dart";
+part 'form_tournament_step_4_event.dart';
+part 'form_tournament_step_4_state.dart';
 
 class FormTournamentStep4Bloc extends Bloc<FormTournamentEventStep4, FormTournamentStep4State> {
   FormTournamentStep4Bloc() : super(FormTournamentStep4State()) {

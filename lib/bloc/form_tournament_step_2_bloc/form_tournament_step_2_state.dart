@@ -1,4 +1,4 @@
-part of "form_tournament_step_2_bloc.dart";
+part of 'form_tournament_step_2_bloc.dart';
 
 class FormTournamentStep2State extends Equatable {
 

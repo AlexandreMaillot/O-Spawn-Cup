@@ -1,22 +1,22 @@
 
-import "dart:async";
+import 'dart:async';
 
-import "package:bloc/bloc.dart";
-import "package:equatable/equatable.dart";
-import "package:formz/formz.dart";
-import "package:o_spawn_cup/models/validator/name_cup.dart";
-import "package:o_spawn_cup/models/validator/number_round.dart";
-import "package:o_spawn_cup/models/validator/player_by_team.dart";
-import "package:o_spawn_cup/models/validator/server_type.dart";
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
+import 'package:o_spawn_cup/models/validator/name_cup.dart';
+import 'package:o_spawn_cup/models/validator/number_round.dart';
+import 'package:o_spawn_cup/models/validator/player_by_team.dart';
+import 'package:o_spawn_cup/models/validator/server_type.dart';
 
-import "../../models/validator/day.dart";
+import '../../models/validator/day.dart';
 import '../../models/validator/hours.dart';
-import "../../models/validator/month.dart";
-import "../../models/validator/number_team.dart";
-import "../../models/validator/years.dart";
+import '../../models/validator/month.dart';
+import '../../models/validator/number_team.dart';
+import '../../models/validator/years.dart';
 
-part "form_tournament_step_2_event.dart";
-part "form_tournament_step_2_state.dart";
+part 'form_tournament_step_2_event.dart';
+part 'form_tournament_step_2_state.dart';
 
 class FormTournamentStep2Bloc extends Bloc<FormTournamentEventStep2, FormTournamentStep2State> {
   FormTournamentStep2Bloc() : super(FormTournamentStep2State()) {

@@ -28,7 +28,7 @@ class CardCup extends StatelessWidget {
                   borderRadius:
                   const BorderRadius.all(Radius.circular(22)),
                   border:
-                  Border.all(color: (tournament.state == TournamentState.incriptionOuverte) ? colorOpen : (tournament.state == TournamentState.enCours) ? colorInProgress : colorClose,width: 2)),
+                  Border.all(color: (tournament.state == TournamentState.inscriptionOuverte) ? colorOpen : (tournament.state == TournamentState.enCours) ? colorInProgress : colorClose,width: 2)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
                 child: Hero(

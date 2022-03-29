@@ -11,6 +11,8 @@ part 'team.g.dart';
 class Team extends Equatable{
   @JsonKey(ignore: true)
   String? documentId;
+  @JsonKey(ignore: true)
+  List<MemberTournament> listMemberTournament = [];
   String name;
   String teamCode = "";
   bool isDisqualified = false;

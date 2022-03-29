@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
@@ -27,14 +28,28 @@ class TeamRepository {
           return team;
         }).toList());
 
-    listTeamStream.listen((event) {
+    listTeamStream.listen((event) async {
+      for (var team in event) {
+        await addListMemberTournamentInTeam(team);
+      }
+
       listTeam = event;
     });
+  }
+
+  Future<void> addListMemberTournamentInTeam(Team team) async {
+    var memberTournament = await teamCollectionReference.doc(team.documentId).membersTournament.get();
+    team.listMemberTournament = memberTournament.docs.map((e) => e.data).toList();
   }
 
   Future<void> loadTournament() async {
     var tournamentDocument = await teamCollectionReference.parent.get();
     tournament = tournamentDocument.data!;
+  }
+  disqualifiedTeamWithNoMember(Team team){
+    if(team.listMemberTournament.isEmpty){
+      team.isDisqualified = true;
+    }
   }
   int numberTeamInTournament() {
      return listTeam.length;
@@ -48,10 +63,10 @@ class TeamRepository {
     }
 
   }
-  Team? findTeamWithCode(String teamCode){
+  Future<TeamDocumentSnapshot?> findTeamWithCode(String teamCode) async {
     var teamExistWithCode = listTeam.where((element) => element.teamCode == teamCode);
     if(teamExistWithCode.isNotEmpty){
-      return teamExistWithCode.first;
+      return await teamCollectionReference.doc(teamExistWithCode.first.documentId).get();
     } else {
       return null;
     }
@@ -63,15 +78,21 @@ class TeamRepository {
     String code = beforeCode + String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
     return code;
   }
-  addTeamInTournament(Team team,Member member,String gamerTag){
-    teamCollectionReference.add(team);
+  Future<TeamDocumentReference> addTeamInTournament(Team team,) async {
+    return await teamCollectionReference.add(team);
   }
 
   Stream<List<Team>> listTeamsInTournament() {
     return listTeamStream;
   }
 
-
+  Future<bool> checkTeamCapacity(Team team) async {
+    if(team.listMemberTournament.length + 1 <= tournament.tournamentType.capacityTeam) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   Future<bool> checkTournamentCapacity() async {
     var numberTeam = numberTeamInTournament();
