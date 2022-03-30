@@ -34,5 +34,8 @@ class SignTournamentFormBloc extends FormBloc<String, String> {
   @override
   Future<FutureOr<void>> onSubmitting() async {
     _cupDetailCubit.addMemberTournament(gamerTag.value, roleSelector.value, teamName.value);
+    gamerTag.clear();
+    roleSelector.clear();
+    teamName.clear();
   }
 }

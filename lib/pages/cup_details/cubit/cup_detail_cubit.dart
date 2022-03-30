@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:o_spawn_cup/app/app.dart';
 import 'package:o_spawn_cup/models/Member/member.dart' as mem;
+import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
@@ -21,25 +22,22 @@ class CupDetailCubit extends Cubit<CupDetailState> {
   AppBloc appBloc;
   late MemberTournamentRepository memberTournamentRepository;
   late MemberRepository memberRepository;
+  late TournamentRepository tournamentRepository;
   List<Team> listTeam = [];
   List<MemberTournament> _listMemberTournament = [];
   late mem.Member member;
   late Tournament tournament;
-  CupDetailCubit({required this.teamRepository,required this.memberRepository,required this.appBloc}) : super(CupDetailInitial()){
-
+  CupDetailCubit({required this.tournamentRepository,required this.teamRepository,required this.memberRepository,required this.appBloc}) : super(CupDetailInitial()){
     memberRepository.currentMember(appBloc.state.user.id).listen((event) {
       if(event != null) {
-        print(event);
         member = event;
+        emit(CupDetailMemberChanged(member: member));
       }
     });
     teamRepository.listTeamStream.listen((event) {
       listTeam = event;
       emit(CupDetailListTeamChanged(listTeam: listTeam));
     });
-    // memberTournamentRepository.listMemberTournamentStream.listen((event) {
-    //   _listMemberTournament = event;
-    // });
     teamRepository.teamCollectionReference.parent.snapshots().listen((event) {
       if(event.data != null) {
         tournament = event.data!;
@@ -48,7 +46,9 @@ class CupDetailCubit extends Cubit<CupDetailState> {
       }
     });
   }
-
+  closeCup(){
+    tournamentRepository.cupClose(tournament);
+  }
   statePlacesRestante placesRestante(Tournament tournois, List<Team> teams){
     var places = tournois.capacity - teams.length;
     if(places > 0) {
@@ -60,62 +60,40 @@ class CupDetailCubit extends Cubit<CupDetailState> {
   }
   addMemberTournament(String gamerTag,RoleType roleType,String teamName) async {
     TeamDocumentReference teamDocReference;
-    if(roleType == RoleType.leader) {
-      if(await teamRepository.checkNameTeam(teamName)) {
-        teamDocReference = await teamRepository.addTeamInTournament(Team(name: teamName),);
-        memberTournamentRepository = MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(teamDocReference.reference));
-        memberTournamentRepository.addMemberTournamentInTeam(member, gamerTag, roleType);
-        emit(CupDetailMemberTournamentAdded());
-      } else {
-        print("Team exist");
-      }
+    if(placesRestante(tournament,listTeam) == statePlacesRestante.isNotFull) {
+      if(isLeader(roleType)) {
+        if(await teamNameNotExist(teamName)) {
+          teamDocReference = await teamRepository.addTeamInTournament(Team(name: teamName),);
+          memberTournamentRepository = MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(teamDocReference.reference));
+          memberTournamentRepository.addMemberTournamentInTeam(member, gamerTag, roleType);
+          emit(CupDetailMemberTournamentAdded());
+        } else {
+          emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Nom de team existante'));
+        }
 
-    }
-    if(roleType == RoleType.player){
-      var team = await teamRepository.findTeamWithCode(teamName);
-      if(team != null) {
-        memberTournamentRepository = MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(team.reference.reference));
-        memberTournamentRepository.addMemberTournamentInTeam(member, gamerTag, roleType);
-        emit(CupDetailMemberTournamentAdded());
-      } else {
-        print("la team n'existe pas ");
       }
+      if(isPlayer(roleType)){
+        var team = await teamRepository.findTeamWithCode(teamName);
+        if(findTeam(team)) {
+          memberTournamentRepository = MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(team!.reference.reference));
+          memberTournamentRepository.addMemberTournamentInTeam(member, gamerTag, roleType);
+          emit(CupDetailMemberTournamentAdded());
+        } else {
+          emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Code team non reconnu'));
+        }
+      }
+    } else {
+      emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Tournois full'));
     }
-
-// context.read<SignCupBloc>().add(
-    //     SignCupGamerTagChanged(
-    //         gamerTagController.text));
-    // context.read<SignCupBloc>().add(
-    //     SignCupTeamCodeChanged(
-    //         teamNameController.text));
-    // if (context
-    //     .read<SignCupBloc>()
-    //     .state
-    //     .status
-    //     .isValidated) {
-    //   if (isPlayer(context)) {
-    //     context
-    //         .read<TeamFirestoreCubit>()
-    //         .addMemberInTeam(
-    //         tournament,
-    //         teamNameController.text,
-    //         gamerTagController.text);
-    //   }
-    //   if (isLeader(context)) {
-    //     context
-    //         .read<TeamFirestoreCubit>()
-    //         .addNewTeam(
-    //         tournament,
-    //         teamNameController.text,
-    //         gamerTagController.text);
-    //   }
-    //   context
-    //       .read<SignCupBloc>()
-    //       .add(const SignCupSubmitted());
-    // } else {}
-    //
-    // afterAddMemberTournament();
   }
+
+  bool findTeam(TeamDocumentSnapshot? team) => team != null;
+
+  Future<bool> teamNameNotExist(String teamName) async => await teamRepository.checkNameTeam(teamName);
+
+  bool isPlayer(RoleType roleType) => roleType == RoleType.player;
+
+  bool isLeader(RoleType roleType) => roleType == RoleType.leader;
 
   bool checkStateTournament(Tournament tournament) {
     if(tournament.state == TournamentState.inscriptionFermer ||

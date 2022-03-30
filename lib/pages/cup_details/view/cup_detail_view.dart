@@ -19,6 +19,7 @@ import 'package:o_spawn_cup/models/make_it_responsive.dart';
 import 'package:o_spawn_cup/pages/cup_details/bloc/sign_tournament_form_bloc.dart';
 import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
 import 'package:o_spawn_cup/pages/cup_details/cup_details.dart';
+import 'package:o_spawn_cup/pages/cup_details/widgets/container_header.dart';
 import 'package:o_spawn_cup/pages/cup_details/widgets/text_field_gamer_tag.dart';
 import 'package:o_spawn_cup/services/firebase_handler.dart';
 import 'package:o_spawn_cup/services/utils.dart';
@@ -61,7 +62,7 @@ class CupDetailView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildContainerHeader(screenSize, tournament),
+            ContainerHeader(),
             Container(
               padding: const EdgeInsets.only(
                   top: 25, right: 15, left: 15, bottom: 15),
@@ -94,6 +95,7 @@ class CupDetailView extends StatelessWidget {
                     },
                   ),
                 BlocBuilder<CupDetailCubit, CupDetailState>(
+                  buildWhen: (previous, current) => current is CupDetailListTeamChanged,
                     builder: (context, state) {
                       if(state is CupDetailListTeamChanged || state is CupDetailTournamentChanged) {
                         var statePlaces = cupDetailCubit.placesRestante(cupDetailCubit.tournament, cupDetailCubit.listTeam);
@@ -158,120 +160,7 @@ class CupDetailView extends StatelessWidget {
     gamerTagController.text = '';
   }
 
-  buildContainerHeader(Size screenSize, Tournament tournament) {
-    return BlocBuilder<MemberCubit, MemberState>(
-      builder: (context, stateMember) {
-        return BlocBuilder<HeaderSignCupCubit, HeaderSignCupState>(
-          builder: (context, stateHeader) {
-            return Hero(
-              tag: 'tagcard_cup_${tournament.documentId}',
-              child: Container(
-                // width: screenSize.width,
-                height: screenSize.height * 0.25,
-                // color: Colors.orange,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: (tournament.state == TournamentState.inscriptionOuverte)
-                          ? colorOpen
-                          : (tournament.state == TournamentState.enCours)
-                          ? colorInProgress
-                          : colorClose,
-                      blurRadius: 25.0, // soften the shadow
-                      spreadRadius: 10, //extend the shadow
-                      offset: const Offset(
-                        0, // Move to right 10  horizontally
-                        -15, // Move to bottom 10 Vertically
-                      ),
-                    )
-                  ],
-                  image: DecorationImage(
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.95), BlendMode.dstATop),
-                    opacity: 0.31,
-                    image: Image.network(tournament.imageUrl!).image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: screenSize.height * 0.03,
-                    ),
-                    Text(
-                      tournament.name,
-                      style: TextStyle(
-                          color: colorTheme,
-                          fontSize: 35,
-                          fontFamily: 'o_spawn_cup_font',
-                          fontWeight: FontWeight.normal),
-                    ),
-                    SubtitleElement(
-                      text: tournament.game.name,
-                      color: Colors.white,
-                    ),
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.,
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Material(
-                              color: Colors.transparent,
-                              child: IconButton(
-                                splashColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                icon:
-                                ((stateMember as MemberInitial).member?.isAdmin == true)
-                                    ? const Icon(Icons.close_outlined,color: Colors.white,)
-                                    : Container(),
-                                onPressed: () => context.read<HeaderSignCupCubit>().closeCup(tournament),
-                              ),
-                            )),
-                        Expanded(
-                          flex: 5,
-                          child: Text(
-                            'Serveur: ${tournament.server.name}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: colorTheme,
-                                fontSize: 12,
-                                fontFamily: 'o_spawn_cup_font',
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: IconButton(
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              icon:
-                              ((stateMember as MemberInitial).member?.isAdmin == true)
-                                  ? SvgPicture.asset(
-                                'assets/images/icon_edit.svg',
-                                // height: 30,
-                                // width: 37,
-                              )
-                                  : Container(),
-                              onPressed: () => Navigator.of(context).push(BlocRouter().cupForm(tournament)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Container buildContainerMap(Size screenSize) {
+  Widget buildContainerMap(Size screenSize) {
     return Container(
       width: screenSize.width,
       height: screenSize.height * 0.18,
@@ -420,6 +309,8 @@ class CupDetailView extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

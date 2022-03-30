@@ -127,8 +127,8 @@ abstract class TournamentDocumentReference
     String? documentId,
     String name,
     int capacity,
-    List<String>? cashPrize,
-    List<String>? listCodesGames,
+    List<String> cashPrize,
+    List<String> listCodesGames,
     int roundNumber,
     String? imageUrl,
     String? imageName,
@@ -205,9 +205,9 @@ class _$TournamentDocumentReference
       if (documentId != _sentinel) "documentId": documentId as String?,
       if (name != _sentinel) "name": name as String,
       if (capacity != _sentinel) "capacity": capacity as int,
-      if (cashPrize != _sentinel) "cashPrize": cashPrize as List<String>?,
+      if (cashPrize != _sentinel) "cashPrize": cashPrize as List<String>,
       if (listCodesGames != _sentinel)
-        "listCodesGames": listCodesGames as List<String>?,
+        "listCodesGames": listCodesGames as List<String>,
       if (roundNumber != _sentinel) "roundNumber": roundNumber as int,
       if (imageUrl != _sentinel) "imageUrl": imageUrl as String?,
       if (imageName != _sentinel) "imageName": imageName as String?,
@@ -435,10 +435,10 @@ abstract class TournamentQuery
 
   TournamentQuery orderByCashPrize({
     bool descending = false,
-    List<String>? startAt,
-    List<String>? startAfter,
-    List<String>? endAt,
-    List<String>? endBefore,
+    List<String> startAt,
+    List<String> startAfter,
+    List<String> endAt,
+    List<String> endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -447,10 +447,10 @@ abstract class TournamentQuery
 
   TournamentQuery orderByListCodesGames({
     bool descending = false,
-    List<String>? startAt,
-    List<String>? startAfter,
-    List<String>? endAt,
-    List<String>? endBefore,
+    List<String> startAt,
+    List<String> startAfter,
+    List<String> endAt,
+    List<String> endBefore,
     TournamentDocumentSnapshot? startAtDocument,
     TournamentDocumentSnapshot? endAtDocument,
     TournamentDocumentSnapshot? endBeforeDocument,
@@ -4179,7 +4179,7 @@ const _$ServerTypeEnumMap = {
 };
 
 const _$TournamentStateEnumMap = {
-  TournamentState.inscriptionOuverte: 'incriptionOuverte',
+  TournamentState.inscriptionOuverte: 'inscriptionOuverte',
   TournamentState.inscriptionFermer: 'inscriptionFermer',
   TournamentState.enCours: 'enCours',
   TournamentState.annuler: 'annuler',

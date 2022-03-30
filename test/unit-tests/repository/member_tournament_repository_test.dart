@@ -81,7 +81,15 @@ void main() {
     expect(snapshot.docs.length, listMemberTournament.where((element) => element.documentId != 'id2').length);
   });
 
-
+  test('member is not sign', () async {
+    var member = const Member(uid: 'monUid');
+    expect(memberTournamentRepository.memberIsSign(member),false);
+  });
+  test('member is sign', () async {
+    var member = const Member(uid: 'monUid');
+    memberTournamentRepository.listMemberTournament = [MemberTournament(gamerTag: '', role: RoleType.leader, member: member)];
+    expect(memberTournamentRepository.memberIsSign(member),true);
+  });
   test('id membertournament not null', () async {
     expect(memberTournamentRepository.listMemberTournamentStream,emits(listMemberTournament.where((element) => element.documentId != null)));
   });

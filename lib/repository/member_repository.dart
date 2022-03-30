@@ -14,4 +14,5 @@ class MemberRepository {
   updateMember(Member member){
     memberCollectionReference.doc(member.uid).set(member);
   }
+
 }

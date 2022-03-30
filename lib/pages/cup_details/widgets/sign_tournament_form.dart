@@ -22,7 +22,6 @@ class SignTournamentForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var signTournamentFormBloc = context.read<SignTournamentFormBloc>();
-    Size screenSize = MediaQuery.of(context).size;
     var errorSign;
     return Column(
       children: [

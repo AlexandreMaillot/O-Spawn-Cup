@@ -27,9 +27,9 @@ class Tournament extends Equatable{
   TournamentType tournamentType;
   int capacity;
   @JsonKey(fromJson: _listFromJson)
-  List<String>? cashPrize;
+  List<String> cashPrize = [];
   @JsonKey(fromJson: _listFromJson)
-  List<String>? listCodesGames;
+  List<String> listCodesGames = [];
   int roundNumber;
   TournamentState _state = TournamentState.inscriptionFermer;
   String? imageUrl;

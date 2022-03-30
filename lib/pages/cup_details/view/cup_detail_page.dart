@@ -20,6 +20,7 @@ import 'package:o_spawn_cup/pages/cup_details/view/cup_detail_view.dart';
 import 'package:o_spawn_cup/repository/member_repository.dart';
 import 'package:o_spawn_cup/repository/member_tounament_repository.dart';
 import 'package:o_spawn_cup/repository/team_repository.dart';
+import 'package:o_spawn_cup/repository/tournament_repository.dart';
 
 
 class CupDetailPage extends StatelessWidget {
@@ -31,7 +32,7 @@ class CupDetailPage extends StatelessWidget {
   Page page() => MaterialPage<void>(child: CupDetailPage(tournament: tournament,));
   @override
   Widget build(BuildContext context) {
-    var cupDetailCubit = CupDetailCubit(teamRepository: TeamRepository(teamCollectionReference: TeamCollectionReference(tournamentsRef.doc(tournament.documentId).reference)),appBloc: context.read<AppBloc>(),memberRepository: MemberRepository(memberCollectionReference: m.MemberCollectionReference()));
+    var cupDetailCubit = CupDetailCubit(tournamentRepository: TournamentRepository(tournamentCollectionReference: TournamentCollectionReference()),teamRepository: TeamRepository(teamCollectionReference: TeamCollectionReference(tournamentsRef.doc(tournament.documentId).reference)),appBloc: context.read<AppBloc>(),memberRepository: MemberRepository(memberCollectionReference: m.MemberCollectionReference()));
     return MultiBlocProvider(
       providers: [
         BlocProvider(

@@ -15,19 +15,24 @@ import 'package:o_spawn_cup/models/server_type.dart';
 import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
 import 'package:o_spawn_cup/repository/member_repository.dart';
 import 'package:o_spawn_cup/repository/team_repository.dart';
+import 'package:o_spawn_cup/repository/tournament_repository.dart';
 
 class MockAppBloc extends Mock implements AppBloc{}
+class MockTournament extends Mock implements Tournament{}
+class MockTeams extends Mock implements Team{}
 void main() {
   DateTime now = DateTime.now();
   late FakeFirebaseFirestore instance;
   late TeamRepository teamRepository;
   late MemberRepository memberRepository;
+  late TournamentRepository tournamentRepository;
   late TournamentCollectionReference tournamentsRef;
   late TeamCollectionReference teamsRef;
   late m.MemberCollectionReference memberRef;
   late Tournament tournament5;
   late CupDetailCubit cubit;
   late MockAppBloc appBloc;
+  late MockTournament tournamentMock;
   late Team team = Team(name: "MyTeam",);
   Tournament tournament4 = Tournament(name: 'Tournois 4',
       dateDebutTournois: DateTime(now.year,now.month,now.day + 7),
@@ -54,6 +59,7 @@ void main() {
     await instance.collection('Tournament').doc('id4').set(tournament4.toJson());
     tournamentsRef = TournamentCollectionReference(instance);
     tournamentsRef.doc('id4').teams.doc('id1').set(team);
+    tournamentRepository = TournamentRepository(tournamentCollectionReference: TournamentCollectionReference(instance));
     teamsRef = TeamCollectionReference(tournamentsRef.doc('id4').reference);
     memberRef = m.MemberCollectionReference(instance);
 
@@ -69,7 +75,11 @@ void main() {
 
   group('Normal test', (){
     setUp((){
-      cubit = CupDetailCubit(teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository);
+      cubit = CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository);
+      tournamentMock = MockTournament();
+    });
+    test('init state', (){
+      expect(cubit.state, CupDetailInitial());
     });
     test('place restantes ok', (){
       var isFull = cubit.placesRestante(tournament5, [Team(name: ''),Team(name: ''),Team(name: '')]);
@@ -83,6 +93,34 @@ void main() {
       var isFull = cubit.placesRestante(tournament5, teams);
       expect(isFull, statePlacesRestante.isFull);
     });
+    group("checktournament state function", (){
+      test('checkStateTournament inscription fermer', (){
+        when(() => tournamentMock.state,).thenReturn(TournamentState.inscriptionFermer);
+        var isClose = cubit.checkStateTournament(tournamentMock);
+        expect(isClose, true);
+      });
+      test('checkStateTournament annuler', (){
+        when(() => tournamentMock.state,).thenReturn(TournamentState.annuler);
+        var isClose = cubit.checkStateTournament(tournamentMock);
+        expect(isClose, true);
+      });
+      test('checkStateTournament complet', (){
+        when(() => tournamentMock.state,).thenReturn(TournamentState.complet);
+        var isClose = cubit.checkStateTournament(tournamentMock);
+        expect(isClose, true);
+      });
+      test('checkStateTournament terminer', (){
+        when(() => tournamentMock.state,).thenReturn(TournamentState.terminer);
+        var isClose = cubit.checkStateTournament(tournamentMock);
+        expect(isClose, true);
+      });
+      test('checkStateTournament terminer', (){
+        when(() => tournamentMock.state,).thenReturn(TournamentState.inscriptionOuverte);
+        var isClose = cubit.checkStateTournament(tournamentMock);
+        expect(isClose, false);
+      });
+    });
+
   });
 
   group('Bloc test', (){
@@ -91,64 +129,136 @@ void main() {
       setUp: (){
 
       },
-      build: () => CupDetailCubit(teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
+      build: () => CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
       expect: () => [
 
         isA<CupDetailListTeamChanged>(),
         isA<CupDetailTournamentChanged>(),
       ],
     );
-    blocTest(
-      'Cup detail checkState not close',
-      setUp: () {
-        tournament4.documentId = 'id4';
-      },
-      build: () => CupDetailCubit(teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
-      act: (CupDetailCubit bloc) => bloc.checkStateTournament(tournament4),
-      skip: 1,
-      expect: () => [
-        CupDetailTournamentChanged(tournament: tournament4,isClose: true)
-      ],
-    );
+    group("AddMember function", (){
+      setUp((){
+        tournamentMock = MockTournament();
+        when(() => tournamentMock.capacity,).thenReturn(100);
+      });
+      blocTest(
+        'Cup detail checkState not close',
+        setUp: () {
+          tournament4.documentId = 'id4';
+        },
+        build: () => CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
+        act: (CupDetailCubit bloc) => bloc.checkStateTournament(tournament4),
+        skip: 1,
+        expect: () => [
+          CupDetailTournamentChanged(tournament: tournament4,isClose: true)
+        ],
+      );
 
-    blocTest(
-      'Cup detail addMemberTournament leader',
-      setUp: () {
+      blocTest(
+        'Cup detail addMemberTournament leader',
+        setUp: () {
+          tournamentMock = MockTournament();
+          when(() => tournamentMock.capacity,).thenReturn(100);
+        },
+        build: () => CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
+        act: (CupDetailCubit bloc) {
+          bloc.tournament = tournamentMock;
+          bloc.member = const m.Member(uid: '12345');
+          bloc.addMemberTournament('MonGamerTag', RoleType.leader, 'NameTeam');
+        },
+        skip: 1,
+        expect: () => [
+          isA<CupDetailMemberTournamentAdded>(),
+          isA<CupDetailListTeamChanged>(),
+          isA<CupDetailTournamentChanged>(),
+        ],
+      );
 
-      },
-      build: () => CupDetailCubit(teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
-      act: (CupDetailCubit bloc) {
-        bloc.member = const m.Member(uid: '12345');
-        bloc.addMemberTournament('MonGamerTag', RoleType.leader, 'NameTeam');
-      },
-      skip: 1,
-      expect: () => [
-        isA<CupDetailMemberTournamentAdded>(),
-        isA<CupDetailListTeamChanged>(),
-        isA<CupDetailTournamentChanged>(),
-      ],
-    );
+      blocTest(
+        'Cup detail addMemberTournament player',
+        setUp: () {
 
-    blocTest(
-      'Cup detail addMemberTournament player',
-      setUp: () {
+        },
+        build: () => CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
+        act: (CupDetailCubit bloc) {
+          bloc.tournament = tournamentMock;
+          teamRepository.listTeam = [team];
+          bloc.member = const m.Member(uid: '1234');
 
-      },
-      build: () => CupDetailCubit(teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
-      act: (CupDetailCubit bloc) {
-        teamRepository.listTeam = [team];
-        bloc.member = const m.Member(uid: '1234');
+          bloc.addMemberTournament('MonGamerTag', RoleType.player, 'codeTeam');
+        },
+        // skip: 1,
+        expect: () => [
+          isA<CupDetailListTeamChanged>(),
+          isA<CupDetailMemberTournamentAdded>(),
+          isA<CupDetailTournamentChanged>(),
 
-        bloc.addMemberTournament('MonGamerTag', RoleType.player, 'codeTeam');
-      },
-      // skip: 1,
-      expect: () => [
-        isA<CupDetailListTeamChanged>(),
-        isA<CupDetailMemberTournamentAdded>(),
-        isA<CupDetailTournamentChanged>(),
+        ],
+      );
+      blocTest(
+        'Cup detail addMemberTournament leader team existante',
+        setUp: () {
 
-      ],
-    );
+        },
+        build: () => CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
+        act: (CupDetailCubit bloc) {
+          bloc.tournament = tournamentMock;
+          teamRepository.listTeam = [team];
+          bloc.member = const m.Member(uid: '1234');
+          bloc.addMemberTournament('MonGamerTag', RoleType.leader, 'MyTeam');
+        },
+        // skip: 1,
+        expect: () => [
+          isA<CupDetailListTeamChanged>(),
+          CupDetailErrorMemberTournamentAdded(errorMsg: 'Nom de team existante'),
+          isA<CupDetailTournamentChanged>(),
+
+        ],
+      );
+      blocTest(
+        'Cup detail addMemberTournament player Code team not exist',
+        setUp: () {
+
+        },
+        build: () => CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
+        act: (CupDetailCubit bloc) {
+          bloc.tournament = tournamentMock;
+          teamRepository.listTeam = [team];
+          bloc.member = const m.Member(uid: '1234');
+          bloc.addMemberTournament('MonGamerTag', RoleType.player, 'codeT');
+        },
+        // skip: 1,
+        expect: () => [
+          isA<CupDetailListTeamChanged>(),
+          CupDetailErrorMemberTournamentAdded(errorMsg: 'Code team non reconnu'),
+          isA<CupDetailTournamentChanged>(),
+
+        ],
+      );
+
+      blocTest(
+        'Cup detail addMemberTournament tournois full',
+        setUp: () {
+          when(() => tournamentMock.capacity,).thenReturn(1);
+        },
+        build: () => CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: appBloc,memberRepository: memberRepository),
+        act: (CupDetailCubit bloc) {
+          bloc.tournament = tournamentMock;
+          bloc.listTeam = [team];
+          teamRepository.listTeam = [team];
+          bloc.addMemberTournament('MonGamerTag', RoleType.player, 'codeT');
+        },
+        // skip: 1,
+        expect: () => [
+          CupDetailErrorMemberTournamentAdded(errorMsg: 'Tournois full'),
+          isA<CupDetailListTeamChanged>(),
+          isA<CupDetailTournamentChanged>(),
+
+        ],
+      );
+
+    });
+
   });
 
 }
