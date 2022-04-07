@@ -9,13 +9,13 @@ import 'package:o_spawn_cup/cubit/header_sign_cup_cubit.dart';
 import 'package:o_spawn_cup/cubit/member_bloc/member_cubit.dart';
 import 'package:o_spawn_cup/cubit/round_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
-import 'package:o_spawn_cup/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 import 'package:o_spawn_cup/models/Member/member.dart' as m;
 
 import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import 'package:o_spawn_cup/pages/cup_details/bloc/sign_tournament_form_bloc.dart';
 import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
+import 'package:o_spawn_cup/pages/cup_details/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/pages/cup_details/view/cup_detail_view.dart';
 import 'package:o_spawn_cup/repository/member_repository.dart';
 import 'package:o_spawn_cup/repository/member_tounament_repository.dart';
@@ -32,7 +32,9 @@ class CupDetailPage extends StatelessWidget {
   Page page() => MaterialPage<void>(child: CupDetailPage(tournament: tournament,));
   @override
   Widget build(BuildContext context) {
-    var cupDetailCubit = CupDetailCubit(tournamentRepository: TournamentRepository(tournamentCollectionReference: TournamentCollectionReference()),teamRepository: TeamRepository(teamCollectionReference: TeamCollectionReference(tournamentsRef.doc(tournament.documentId).reference)),appBloc: context.read<AppBloc>(),memberRepository: MemberRepository(memberCollectionReference: m.MemberCollectionReference()));
+    var tournamentRepository = TournamentRepository(tournamentCollectionReference: TournamentCollectionReference());
+    var teamRepository = TeamRepository(teamCollectionReference: TeamCollectionReference(tournamentsRef.doc(tournament.documentId).reference));
+    var cupDetailCubit = CupDetailCubit(tournamentRepository: tournamentRepository,teamRepository: teamRepository,appBloc: context.read<AppBloc>(),memberRepository: MemberRepository(memberCollectionReference: m.MemberCollectionReference()));
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -49,7 +51,7 @@ class CupDetailPage extends StatelessWidget {
           create: (_) => SignCupBloc(),
         ),
         BlocProvider(
-          create: (_) => ShowStatCubit(),
+          create: (_) => ShowStatCubit(tournament: tournament,tournamentRepository: tournamentRepository,teamRepository: teamRepository),
         ),
         BlocProvider(
           create: (_) => RoundStatCubit(roundMax: tournament.roundNumber),

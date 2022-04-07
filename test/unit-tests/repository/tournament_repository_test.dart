@@ -3,11 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:o_spawn_cup/models/Member/member.dart';
+import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
+import 'package:o_spawn_cup/models/role_type.dart';
 import 'package:o_spawn_cup/models/server_type.dart';
 import 'package:o_spawn_cup/repository/tournament_repository.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
@@ -192,5 +195,13 @@ void main() {
     });
   });
 
-
+  test('member is not sign', () async {
+    var member = const Member(uid: 'monUid');
+    expect(tournamentRepository.memberIsSign(member,[]),false);
+  });
+  test('member is sign', () async {
+    var member = const Member(uid: 'monUid');
+    var listMemberTournament = [MemberTournament(gamerTag: '', role: RoleType.leader, member: member)];
+    expect(tournamentRepository.memberIsSign(member,listMemberTournament),true);
+  });
 }

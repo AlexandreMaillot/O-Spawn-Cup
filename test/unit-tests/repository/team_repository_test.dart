@@ -55,7 +55,14 @@ void main() {
 
     teamRepository = TeamRepository(teamCollectionReference: teamsRef);
   });
-
+  test('list collection member tournament ', () async {
+    var list = await teamsRef.doc('id3').membersTournament.get().then((value) => value.docs.map((e) {
+      var data = e.data;
+      data.documentId = e.id;
+      return data;
+    }).toList());
+    expect(teamRepository.listAllMemberTournamentInTeamCollection(), emits(list));
+  });
   test('List all team in tournament', () async {
     expect(teamRepository.listTeamsInTournament(), emits(listTeam));
   });
@@ -112,7 +119,9 @@ void main() {
   test('load memberTournament in team', () {
     teamRepository.addListMemberTournamentInTeam(listTeam[2]).then((value) => expect(listTeam[2].listMemberTournament,isNotEmpty));
   });
-
+  test('get teamDocumentReference', () {
+    expect(teamRepository.getTeamDocumentReference(listTeam[1]), teamsRef.doc(listTeam[1].documentId).reference);
+  });
   test('add Team in tournament', () async {
     var teamCol = await teamsRef.get();
     var numTeam = teamCol.docs.length;

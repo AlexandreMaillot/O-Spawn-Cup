@@ -15,16 +15,17 @@ class TeamRepository {
   List<Team> listTeam = [];
   late Stream<List<Team>> listTeamStream;
   TeamRepository({required this.teamCollectionReference,}){
-    _init();
+    init();
   }
 
-  Future _init() async{
+  init() async{
     loadTournament();
     listTeamStream = teamCollectionReference.snapshots()
-        .map((event) => event.docs
+        .map((event) => event.docs.where((element) => element.data.isDisqualified == false)
         .map((teamDoc) {
           Team team = teamDoc.data;
           team.documentId = teamDoc.id;
+
           return team;
         }).toList());
 
@@ -37,6 +38,16 @@ class TeamRepository {
     });
   }
 
+  Stream<List<MemberTournament>> listAllMemberTournamentInTeamCollection() {
+    return teamCollectionReference.reference.firestore.collectionGroup('membersTournament')
+        .snapshots()
+        .map((event) => event.docs
+        .map((e) {
+          var memberTournament = MemberTournament.fromJson(e.data());
+          memberTournament.documentId = e.id;
+          return memberTournament;
+        }).toList());
+  }
   Future<void> addListMemberTournamentInTeam(Team team) async {
     var memberTournament = await teamCollectionReference.doc(team.documentId).membersTournament.get();
     team.listMemberTournament = memberTournament.docs.map((e) => e.data).toList();
@@ -46,10 +57,12 @@ class TeamRepository {
     var tournamentDocument = await teamCollectionReference.parent.get();
     tournament = tournamentDocument.data!;
   }
-  disqualifiedTeamWithNoMember(Team team){
+  bool disqualifiedTeamWithNoMember(Team team){
     if(team.listMemberTournament.isEmpty){
       team.isDisqualified = true;
     }
+    teamCollectionReference.doc(team.documentId).set(team);
+    return team.isDisqualified;
   }
   int numberTeamInTournament() {
      return listTeam.length;
@@ -63,6 +76,10 @@ class TeamRepository {
     }
 
   }
+
+  DocumentReference<Team> getTeamDocumentReference(Team team){
+    return teamCollectionReference.doc(team.documentId).reference;
+  }
   Future<TeamDocumentSnapshot?> findTeamWithCode(String teamCode) async {
     var teamExistWithCode = listTeam.where((element) => element.teamCode == teamCode);
     if(teamExistWithCode.isNotEmpty){
@@ -73,7 +90,7 @@ class TeamRepository {
   }
 
   String generateCodeTeam(String beforeCode,int length){
-    const String _chars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+    const String _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     final Random _rnd = Random();
     String code = beforeCode + String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
     return code;

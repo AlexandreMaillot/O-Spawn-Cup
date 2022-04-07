@@ -43,9 +43,7 @@ class MemberTournamentRepository {
 
   }
 
-  bool memberIsSign(Member member){
-    return listMemberTournament.where((element) => element.member == member).isNotEmpty;
-  }
+
 
   bool isSign(Member member) => listMemberTournament.where((element) => element.member == member).isNotEmpty;
   addMemberTournamentInTeam(Member member,String gamerTag,RoleType roleType){

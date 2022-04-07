@@ -37,5 +37,6 @@ class SignTournamentFormBloc extends FormBloc<String, String> {
     gamerTag.clear();
     roleSelector.clear();
     teamName.clear();
+    reload();
   }
 }

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:o_spawn_cup/models/Member/member.dart';
+import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
@@ -31,6 +33,14 @@ class TournamentRepository {
         })
         .toList());
   }
+  Stream<Tournament?> getTournament(Tournament tournament){
+    return tournamentCollectionReference.doc(tournament.documentId).snapshots()
+        .map((event) {
+          var tournois = event.data;
+          tournois?.documentId = tournament.documentId;
+          return tournois;
+    });
+  }
   cupClose(Tournament tournament){
     tournament.state = TournamentState.terminer;
     modifTournamentInFirebase(tournament);
@@ -47,6 +57,9 @@ class TournamentRepository {
         changeStateTournament(tournament,TournamentState.enCours);
       }
     }
+  }
+  bool memberIsSign(Member member,List<MemberTournament> allMemberTournament){
+    return allMemberTournament.where((element) => element.member == member).isNotEmpty;
   }
   changeStateTournament(Tournament tournament,TournamentState tournamentState){
     tournament.state = tournamentState;

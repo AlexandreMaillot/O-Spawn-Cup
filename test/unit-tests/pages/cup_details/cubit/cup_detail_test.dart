@@ -4,6 +4,7 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/app/app.dart';
+import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Member/member.dart' as m;
@@ -79,7 +80,16 @@ void main() {
       tournamentMock = MockTournament();
     });
     test('init state', (){
-      expect(cubit.state, CupDetailInitial());
+      expect(cubit.state, CupDetailTournamentChanged(tournament: tournament4,isClose: true));
+    });
+    test('currentMemberIsSign function', (){
+      cubit.member = m.Member(uid: "uid");
+      expect(cubit.currentMemberIsSign(), false);
+    });
+    test('currentMemberIs not Sign function', (){
+      cubit.member = m.Member(uid: "uid");
+      cubit.listMemberTournament = [MemberTournament(gamerTag: "", role: RoleType.leader, member: cubit.member)];
+      expect(cubit.currentMemberIsSign(), true);
     });
     test('place restantes ok', (){
       var isFull = cubit.placesRestante(tournament5, [Team(name: ''),Team(name: ''),Team(name: '')]);
@@ -134,6 +144,8 @@ void main() {
 
         isA<CupDetailListTeamChanged>(),
         isA<CupDetailTournamentChanged>(),
+        isA<CupDetailListMemberTournamentChanged>(),
+
       ],
     );
     group("AddMember function", (){
@@ -150,7 +162,9 @@ void main() {
         act: (CupDetailCubit bloc) => bloc.checkStateTournament(tournament4),
         skip: 1,
         expect: () => [
-          CupDetailTournamentChanged(tournament: tournament4,isClose: true)
+          CupDetailTournamentChanged(tournament: tournament4,isClose: true),
+          CupDetailListMemberTournamentChanged(listMemberTournament: []),
+
         ],
       );
 
@@ -166,11 +180,13 @@ void main() {
           bloc.member = const m.Member(uid: '12345');
           bloc.addMemberTournament('MonGamerTag', RoleType.leader, 'NameTeam');
         },
-        skip: 1,
+        // skip: 2,
         expect: () => [
-          isA<CupDetailMemberTournamentAdded>(),
           isA<CupDetailListTeamChanged>(),
           isA<CupDetailTournamentChanged>(),
+          isA<CupDetailListMemberTournamentChanged>(),
+          isA<CupDetailMemberTournamentAdded>(),
+          isA<CupDetailListTeamChanged>(),
         ],
       );
 
@@ -190,8 +206,9 @@ void main() {
         // skip: 1,
         expect: () => [
           isA<CupDetailListTeamChanged>(),
-          isA<CupDetailMemberTournamentAdded>(),
           isA<CupDetailTournamentChanged>(),
+          isA<CupDetailMemberTournamentAdded>(),
+          isA<CupDetailListMemberTournamentChanged>(),
 
         ],
       );
@@ -210,8 +227,9 @@ void main() {
         // skip: 1,
         expect: () => [
           isA<CupDetailListTeamChanged>(),
-          CupDetailErrorMemberTournamentAdded(errorMsg: 'Nom de team existante'),
           isA<CupDetailTournamentChanged>(),
+          CupDetailErrorMemberTournamentAdded(errorMsg: 'Nom de team existante'),
+          isA<CupDetailListMemberTournamentChanged>(),
 
         ],
       );
@@ -230,8 +248,9 @@ void main() {
         // skip: 1,
         expect: () => [
           isA<CupDetailListTeamChanged>(),
-          CupDetailErrorMemberTournamentAdded(errorMsg: 'Code team non reconnu'),
           isA<CupDetailTournamentChanged>(),
+          CupDetailErrorMemberTournamentAdded(errorMsg: 'Code team non reconnu'),
+          isA<CupDetailListMemberTournamentChanged>(),
 
         ],
       );
@@ -253,6 +272,8 @@ void main() {
           CupDetailErrorMemberTournamentAdded(errorMsg: 'Tournois full'),
           isA<CupDetailListTeamChanged>(),
           isA<CupDetailTournamentChanged>(),
+          isA<CupDetailListMemberTournamentChanged>(),
+
 
         ],
       );

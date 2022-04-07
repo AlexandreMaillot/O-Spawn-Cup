@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -24,10 +26,20 @@ class CupDetailCubit extends Cubit<CupDetailState> {
   late MemberRepository memberRepository;
   late TournamentRepository tournamentRepository;
   List<Team> listTeam = [];
-  List<MemberTournament> _listMemberTournament = [];
+  List<MemberTournament> listMemberTournament = [];
+
   late mem.Member member;
-  late Tournament tournament;
+  Tournament? tournament;
   CupDetailCubit({required this.tournamentRepository,required this.teamRepository,required this.memberRepository,required this.appBloc}) : super(CupDetailInitial()){
+    _init();
+  }
+
+  _init(){
+
+     teamRepository.listAllMemberTournamentInTeamCollection().listen((event) {
+      listMemberTournament = event;
+      emit(CupDetailListMemberTournamentChanged(listMemberTournament: listMemberTournament));
+    });
     memberRepository.currentMember(appBloc.state.user.id).listen((event) {
       if(event != null) {
         member = event;
@@ -41,13 +53,13 @@ class CupDetailCubit extends Cubit<CupDetailState> {
     teamRepository.teamCollectionReference.parent.snapshots().listen((event) {
       if(event.data != null) {
         tournament = event.data!;
-        tournament.documentId = event.id;
-          emit(CupDetailTournamentChanged(tournament: tournament,isClose: checkStateTournament(tournament)));
+        tournament?.documentId = event.id;
+          emit(CupDetailTournamentChanged(tournament: tournament,isClose: checkStateTournament(tournament!)));
       }
     });
   }
   closeCup(){
-    tournamentRepository.cupClose(tournament);
+    tournamentRepository.cupClose(tournament!);
   }
   statePlacesRestante placesRestante(Tournament tournois, List<Team> teams){
     var places = tournois.capacity - teams.length;
@@ -58,9 +70,13 @@ class CupDetailCubit extends Cubit<CupDetailState> {
     }
 
   }
+
+  bool currentMemberIsSign(){
+    return tournamentRepository.memberIsSign(member,listMemberTournament);
+  }
   addMemberTournament(String gamerTag,RoleType roleType,String teamName) async {
     TeamDocumentReference teamDocReference;
-    if(placesRestante(tournament,listTeam) == statePlacesRestante.isNotFull) {
+    if(placesRestante(tournament!,listTeam) == statePlacesRestante.isNotFull) {
       if(isLeader(roleType)) {
         if(await teamNameNotExist(teamName)) {
           teamDocReference = await teamRepository.addTeamInTournament(Team(name: teamName),);

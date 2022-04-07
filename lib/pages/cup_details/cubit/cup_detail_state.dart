@@ -32,6 +32,12 @@ class CupDetailMemberTournamentAdded extends CupDetailState {
   @override
   List<Object> get props => [];
 }
+class CupDetailListMemberTournamentChanged extends CupDetailState {
+  List<MemberTournament> listMemberTournament;
+  CupDetailListMemberTournamentChanged({required this.listMemberTournament});
+  @override
+  List<Object> get props => [listMemberTournament];
+}
 class CupDetailErrorMemberTournamentAdded extends CupDetailState {
   String errorMsg;
   CupDetailErrorMemberTournamentAdded({required this.errorMsg});

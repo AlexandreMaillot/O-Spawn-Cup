@@ -26,11 +26,5 @@ void main() {
     expect: () => [],
   );
 
-  test('', () async {
-    SignUpFormBloc bloc = SignUpFormBloc(authenticationRepository: authenticationRepository);
-    m = Member(uid: "",pseudo: "");
-    when(()=> FirebaseHandlerMock().addMemberFirebase(bloc.email.value, "uid")).thenAnswer((invocation) => m = Member(uid: "",pseudo: "invocation.positionalArguments[0]"));
-
-  });
 
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
@@ -58,11 +59,13 @@ void main() {
     memberTournamentsRef.doc('id1').set(listMemberTournament[0]);
     memberTournamentsRef.doc('id2').set(listMemberTournament[1]);
     memberTournamentsRef.doc('id3').set(listMemberTournament[2]);
+
     memberTournamentRepository = MemberTournamentRepository(memberTournamentCollectionReference: memberTournamentsRef);
   });
   test('load team', () async {
     memberTournamentRepository.loadTeam().then((value) => expect(memberTournamentRepository.team, listTeam[0]));
   });
+
   test('list MemberTournament Stream', () {
     expect(memberTournamentRepository.listMemberTournamentInTeam(), emits(listMemberTournament));
   });
@@ -81,15 +84,7 @@ void main() {
     expect(snapshot.docs.length, listMemberTournament.where((element) => element.documentId != 'id2').length);
   });
 
-  test('member is not sign', () async {
-    var member = const Member(uid: 'monUid');
-    expect(memberTournamentRepository.memberIsSign(member),false);
-  });
-  test('member is sign', () async {
-    var member = const Member(uid: 'monUid');
-    memberTournamentRepository.listMemberTournament = [MemberTournament(gamerTag: '', role: RoleType.leader, member: member)];
-    expect(memberTournamentRepository.memberIsSign(member),true);
-  });
+
   test('id membertournament not null', () async {
     expect(memberTournamentRepository.listMemberTournamentStream,emits(listMemberTournament.where((element) => element.documentId != null)));
   });

@@ -22,15 +22,15 @@ class ContainerHeader extends StatelessWidget {
         var cupDetailCubit = context.read<CupDetailCubit>();
         if(state.runtimeType == CupDetailTournamentChanged || state.runtimeType == CupDetailMemberChanged) {
           return Hero(
-            tag: 'tagcard_cup_${cupDetailCubit.tournament.documentId}',
+            tag: 'tagcard_cup_${cupDetailCubit.tournament!.documentId}',
             child: Container(
               height: screenSize.height * 0.25,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: (cupDetailCubit.tournament.state == TournamentState.inscriptionOuverte)
+                    color: (cupDetailCubit.tournament!.state == TournamentState.inscriptionOuverte)
                         ? colorOpen
-                        : (cupDetailCubit.tournament.state == TournamentState.enCours)
+                        : (cupDetailCubit.tournament!.state == TournamentState.enCours)
                         ? colorInProgress
                         : colorClose,
                     blurRadius: 25.0, // soften the shadow
@@ -45,7 +45,7 @@ class ContainerHeader extends StatelessWidget {
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.95), BlendMode.dstATop),
                   opacity: 0.31,
-                  image: Image.network(cupDetailCubit.tournament.imageUrl!).image,
+                  image: Image.network(cupDetailCubit.tournament!.imageUrl!).image,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -56,7 +56,7 @@ class ContainerHeader extends StatelessWidget {
                     height: screenSize.height * 0.03,
                   ),
                   Text(
-                    cupDetailCubit.tournament.name,
+                    cupDetailCubit.tournament!.name,
                     style: TextStyle(
                         color: colorTheme,
                         fontSize: 35,
@@ -64,7 +64,7 @@ class ContainerHeader extends StatelessWidget {
                         fontWeight: FontWeight.normal),
                   ),
                   SubtitleElement(
-                    text: cupDetailCubit.tournament.game.name,
+                    text: cupDetailCubit.tournament!.game.name,
                     color: Colors.white,
                   ),
                   Row(
@@ -86,7 +86,7 @@ class ContainerHeader extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: Text(
-                          'Serveur: ${cupDetailCubit.tournament.server.name}',
+                          'Serveur: ${cupDetailCubit.tournament!.server.name}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: colorTheme,
