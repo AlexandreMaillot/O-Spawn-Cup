@@ -5,6 +5,7 @@ import 'package:o_spawn_cup/bloc/form_tournament_step_2_bloc/form_tournament_ste
 import "package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart";
 import "package:o_spawn_cup/constant.dart";
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
+import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
 class WidgetNumPlayerByTeam extends StatelessWidget {
   String image;
   int index;
@@ -20,20 +21,14 @@ class WidgetNumPlayerByTeam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tournamentFormBloc = context.read<TournamentFormBloc>();
     return BlocBuilder<WidgetNumberByPlayerBloc, WidgetNumberByPlayerState>(
-  builder: (context, state) {
+      bloc: tournamentFormBloc.widgetNumberByPlayerBloc,
+      builder: (context, state) {
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: () {
-
-        context.read<WidgetNumberByPlayerBloc>().add(WidgetNumberByPlayerChanging(indexSelect: index));
-        int? indexModif = index;
-        if(context.read<WidgetNumberByPlayerBloc>().indexSelected == index){
-          indexModif = null;
-        }
-        context.read<FormTournamentStep2Bloc>().add(FormTournamentPlayerByTeamChanged(indexModif));
-      },
+      onTap: () => tournamentFormBloc.tapOnNumberPlayerByTeamWidget(index),
       child: ShakeAnimatedWidget(
         enabled: (state.runtimeType == WidgetNumberByPlayerAnimate) ? true : false,
         duration: const Duration(milliseconds: 300),

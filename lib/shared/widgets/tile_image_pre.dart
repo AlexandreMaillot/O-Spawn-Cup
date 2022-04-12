@@ -8,6 +8,7 @@ import "package:o_spawn_cup/constant.dart";
 import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
 import 'package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
+import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
 
 import '../../bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart';
 
@@ -25,26 +26,13 @@ class TileImagePre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-
+    var tournamentFormBloc = context.read<TournamentFormBloc>();
     return BlocBuilder<SelectedImagePredefCubit, SelectedImagePredefState>(
     builder: (context, state) {
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: ()  {
-        var indexSelect = index;
-        print(index);
-        print(gameName);
-        context.read<SelectedImagePredefCubit>().changedIndexSelect(index);
-        context.read<TakeImageGalleryCubit>().clearPicture();
-        if(indexSelect == (state as SelectedImagePredefInitial).indexSelected) {
-          context.read<FormTournamentStep4Bloc>().add(const FormTournamentImageCupChanged(null));
-        } else {
-          context.read<FormTournamentStep4Bloc>().add(FormTournamentImageCupChanged(File(listImagePre[indexSelect].image)));
-        }
-
-
-        },
+      onTap: () => tournamentFormBloc.tapOnTileImagepreDef(index),
       child: ShakeAnimatedWidget(
         enabled: (state.runtimeType == SelectedImagePredefAnimated) ? true : false,
         duration: const Duration(milliseconds: 300),

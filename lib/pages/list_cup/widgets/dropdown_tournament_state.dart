@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
+import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
+
 import 'package:o_spawn_cup/pages/list_cup/bloc/list_cup_filter_form_bloc.dart';
 
 class DropdownTournamentState extends StatelessWidget {
   const DropdownTournamentState({
     Key? key,
-    required this.listCupFilterFormBloc,
+    required this.selectFieldBloc,
   }) : super(key: key);
 
-  final ListCupFilterFormBloc listCupFilterFormBloc;
+  final SelectFieldBloc<TournamentState, dynamic>  selectFieldBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,8 @@ class DropdownTournamentState extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(31),
       ),
-      child: DropdownFieldBlocBuilder<TournamentType>(
-        selectFieldBloc: listCupFilterFormBloc.tournamentType,
+      child: DropdownFieldBlocBuilder<TournamentState>(
+        selectFieldBloc: selectFieldBloc,
         emptyItemLabel: "Aucun",
         showEmptyItem: true,
         isExpanded: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/bloc/sign_cup_bloc/sign_cup_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
@@ -70,59 +71,20 @@ class SignTournamentForm extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.only(top: 20),
-          child: BlocListener<TeamFirestoreCubit, TeamFirestoreState>(
-              listener: (context, state) {
-                if (state is TeamFirestoreSelected ||
-                    state is TeamFirestoreLoaded) {
-                  var msg = '';
-                  var stateTeam;
-                  if (state is TeamFirestoreSelected) {
-                    stateTeam = (state).status;
-                  }
-                  if (state is TeamFirestoreLoaded) {
-                    stateTeam = (state).status;
-                  }
-                  switch (stateTeam) {
-                    case FirebaseStatusEvent.teamExist:
-                      msg = 'La team existe déjà !';
-                      errorSign = true;
-                      break;
-                    case FirebaseStatusEvent.teamFull:
-                      msg = 'La team est compléte !';
-                      errorSign = false;
-                      break;
-
-                    case FirebaseStatusEvent.codeNotFound:
-                      msg = "Le code team n'est pas connu !";
-                      errorSign = true;
-                      break;
-                    case FirebaseStatusEvent.memberNotConnect:
-                      msg = "Vous n'êtes pas connecter !";
-                      errorSign = true;
-                      break;
-                    case FirebaseStatusEvent.cupFull:
-                      msg = 'Le tournois est complet !';
-                      errorSign = false;
-                      break;
-
-                    case FirebaseStatusEvent.memberAlreadySign:
-                      msg = 'Vous êtes déjà inscrit !';
-                      errorSign = true;
-                      break;
-                    case FirebaseStatusEvent.memberSignSuccess:
-                      msg = 'Enregistrement réussi !';
-                      errorSign = false;
-                      break;
-                  }
-                  if (msg != '') {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(msg),
-                      duration: const Duration(seconds: 3),
-                      backgroundColor:
-                          (errorSign == false) ? Colors.green : Colors.red,
-                    ));
-                  }
-                }
+          child: FormBlocListener<SignTournamentFormBloc, String,String>(
+            onFailure: (context, state) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.redAccent,
+                content: Text(state.failureResponse ?? 'Erreur...'),
+                duration: const Duration(seconds: 2),
+              ));
+            },
+              onSuccess: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text(state.successResponse ?? 'Inscription reussi !'),
+                  duration: const Duration(seconds: 2),
+                ));
               },
               child: CustomButtonTheme(
                 colorButton: colorTheme,

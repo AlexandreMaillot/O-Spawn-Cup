@@ -13,6 +13,7 @@ import 'package:o_spawn_cup/services/field_bloc_validators_errors_fr.dart';
 class SignTournamentFormBloc extends FormBloc<String, String> {
 
   late CupDetailCubit _cupDetailCubit;
+  String errorResponse = "";
   final gamerTag = TextFieldBloc(validators: [FieldBlocValidatorsFr.required],);
   final roleSelector = InputFieldBloc<RoleType, Object>(
     validators: [FieldBlocValidatorsFr.required],
@@ -33,10 +34,16 @@ class SignTournamentFormBloc extends FormBloc<String, String> {
 
   @override
   Future<FutureOr<void>> onSubmitting() async {
-    _cupDetailCubit.addMemberTournament(gamerTag.value, roleSelector.value, teamName.value);
-    gamerTag.clear();
-    roleSelector.clear();
-    teamName.clear();
-    reload();
+    await _cupDetailCubit.addMemberTournament(gamerTag.value, roleSelector.value, teamName.value);
+    if(_cupDetailCubit.state is CupDetailErrorMemberTournamentAdded) {
+      emitFailure(failureResponse: (_cupDetailCubit.state as CupDetailErrorMemberTournamentAdded).errorMsg);
+    } else {
+      emitSuccess();
+      gamerTag.clear();
+      roleSelector.clear();
+      teamName.clear();
+      reload();
+    }
+
   }
 }

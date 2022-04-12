@@ -74,7 +74,7 @@ class CupDetailCubit extends Cubit<CupDetailState> {
   bool currentMemberIsSign(){
     return tournamentRepository.memberIsSign(member,listMemberTournament);
   }
-  addMemberTournament(String gamerTag,RoleType roleType,String teamName) async {
+  Future addMemberTournament(String gamerTag,RoleType roleType,String teamName) async {
     TeamDocumentReference teamDocReference;
     if(placesRestante(tournament!,listTeam) == statePlacesRestante.isNotFull) {
       if(isLeader(roleType)) {

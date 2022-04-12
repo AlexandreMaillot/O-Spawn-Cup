@@ -1,5 +1,5 @@
 export 'package:o_spawn_cup/pages/list_cup/widgets/row_tournament_state.dart';
-export 'package:o_spawn_cup/pages/list_cup/widgets/row_date_pick.dart';
+export 'package:o_spawn_cup/shared/widgets/row_date_pick.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/dropdown_tournament_state.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/dropdown_tournament_type.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/arrow_button.dart';

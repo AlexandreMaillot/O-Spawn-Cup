@@ -15,7 +15,9 @@ import "package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.da
 
 import "package:o_spawn_cup/models/Tournament/tournament.dart";
 import "package:o_spawn_cup/constant.dart";
+import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
 import 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_view.dart';
+import 'package:o_spawn_cup/repository/tournament_repository.dart';
 
 
 class FormTournament extends StatelessWidget {
@@ -30,6 +32,9 @@ class FormTournament extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var  widgetNumberByPlayerBloc = WidgetNumberByPlayerBloc();
+    var  takeImageGalleryCubit = TakeImageGalleryCubit();
+    var  selectedImagePredefCubit = SelectedImagePredefCubit();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -41,16 +46,16 @@ class FormTournament extends StatelessWidget {
               StepByStepWidgetBloc(initialIndex: 0, initialIndexMax: 5),
         ),
         BlocProvider(
-          create: (_) => WidgetNumberByPlayerBloc(),
+          create: (_) => widgetNumberByPlayerBloc,
         ),
         BlocProvider(
-          create: (_) => SelectedImagePredefCubit(),
+          create: (_) => selectedImagePredefCubit,
         ),
         BlocProvider(
           create: (_) => GenerateCodeCubit(),
         ),
         BlocProvider(
-          create: (_) => TakeImageGalleryCubit(),
+          create: (_) => takeImageGalleryCubit,
         ),
         BlocProvider(
           create: (_) => FormTournamentStep2Bloc(),
@@ -63,6 +68,14 @@ class FormTournament extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => ListCashPrizesCubit(listCashPrizes: []),
+        ),
+        BlocProvider(
+          create: (_) => TournamentFormBloc(
+              tournamentRepository: TournamentRepository(tournamentCollectionReference: TournamentCollectionReference()),
+            widgetNumberByPlayerBloc: widgetNumberByPlayerBloc,
+              takeImageGalleryCubit: takeImageGalleryCubit,
+            selectedImagePredefCubit: selectedImagePredefCubit,
+          ),
         ),
       ],
       child: FormTournamentView(tournament: tournament),

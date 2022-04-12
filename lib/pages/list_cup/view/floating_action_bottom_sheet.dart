@@ -1,14 +1,14 @@
 
 import 'package:flutter/cupertino.dart';
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
-import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import "package:flutter_svg/svg.dart";
+import 'package:flutter_svg/svg.dart';
 import 'package:o_spawn_cup/pages/list_cup/bloc/list_cup_filter_form_bloc.dart';
 import 'package:o_spawn_cup/pages/list_cup/list_cup.dart';
-import "package:o_spawn_cup/shared/widgets/custom_button_theme.dart";
-import "package:o_spawn_cup/constant.dart";
+import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
+import 'package:o_spawn_cup/constant.dart';
 
 
 
@@ -19,11 +19,11 @@ class FloatingActionBottomSheet extends StatelessWidget {
     final listCupFilterFormBloc = context.read<ListCupFilterFormBloc>();
     Size screenSize = MediaQuery.of(context).size;
     return FloatingActionButton(
-      heroTag: "filterMenu",
+      heroTag: 'filterMenu',
       elevation: 0,
       backgroundColor: colorTheme,
       child: SvgPicture.asset(
-        "assets/images/parameterIcon.svg",
+        'assets/images/parameterIcon.svg',
         height: 30,
         width: 30,
       ),
@@ -48,15 +48,15 @@ class FloatingActionBottomSheet extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RowDatePick(listCupFilterFormBloc: listCupFilterFormBloc),
-                      DropdownTournamentState(listCupFilterFormBloc: listCupFilterFormBloc),
+                      RowDatePick(inputFieldBloc: listCupFilterFormBloc.startCupDate, hintText: 'Début tournois'),
+                      DropdownTournamentState(selectFieldBloc: listCupFilterFormBloc.tournamentState),
                       TextFieldNameCup(listCupFilterFormBloc: listCupFilterFormBloc),
-                      DropdownTournamentType(listCupFilterFormBloc: listCupFilterFormBloc),
+                      DropdownTournamentType(selectFieldBloc: listCupFilterFormBloc.tournamentType),
                       CustomButtonTheme(
                         onPressedMethod: () {
                           listCupFilterFormBloc.submit();
                           Navigator.pop(context);
-                        }, text: "RECHERCHER", colorText: colorTheme, colorButton: colorBackgroundTheme,
+                        }, text: 'RECHERCHER', colorText: colorTheme, colorButton: colorBackgroundTheme,
 
                       ),
                     ],

@@ -4,6 +4,7 @@ class FieldBlocValidatorsErrorsFr {
   FieldBlocValidatorsErrorsFr._();
 
   static const String required = 'Requis !';
+  static const String not0 = 'Egal 0';
 
   static const String email = 'Email mauvais format';
   static const String dateSup  = 'Date antérieur à la date de référence';
@@ -72,6 +73,13 @@ class FieldBlocValidatorsFr {
   static String? min4Char(String? string) {
     if (string == null || string.runes.length < 4) {
       return FieldBlocValidatorsErrorsFr.stringMin4Chars;
+    }
+    return null;
+  }
+
+  static String? numberNot0(String? string) {
+    if (string == '0') {
+      return FieldBlocValidatorsErrorsFr.not0;
     }
     return null;
   }

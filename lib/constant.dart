@@ -30,33 +30,7 @@ List<TournamentType> listTournamentType = [
   TournamentType.quatuor,
   TournamentType.quintet,
 ];
-List<WidgetNumPlayerByTeam> listWidgetNumPlayerByTeam = [
-  WidgetNumPlayerByTeam(
-    tournamentType: listTournamentType[0],
-    image: "assets/images/img_onePlayer.png",
-    index: 0,
-  ),
-  WidgetNumPlayerByTeam(
-    tournamentType: listTournamentType[1],
-    image: "assets/images/img_twoPlayer.png",
-    index: 1,
-  ),
-  WidgetNumPlayerByTeam(
-    tournamentType: listTournamentType[2],
-    image: "assets/images/img_threePlayer.png",
-    index: 2,
-  ),
-  WidgetNumPlayerByTeam(
-    tournamentType: listTournamentType[3],
-    image: "assets/images/img_fourPlayer.png",
-    index: 3,
-  ),
-  WidgetNumPlayerByTeam(
-    tournamentType: listTournamentType[4],
-    image: "assets/images/img_fivePlayer.png",
-    index: 4,
-  ),
-];
+
 
 List<TileImagePre> listImagePre = [
   TileImagePre(
