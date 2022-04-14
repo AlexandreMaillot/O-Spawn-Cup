@@ -1,16 +1,12 @@
-import 'dart:io';
 
 import 'package:animated_widgets/animated_widgets.dart';
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:o_spawn_cup/constant.dart";
-import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
-import 'package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
+import 'package:o_spawn_cup/pages/form_tournament/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
 
-import '../../bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart';
 
 class TileImagePre extends StatelessWidget {
   String image;

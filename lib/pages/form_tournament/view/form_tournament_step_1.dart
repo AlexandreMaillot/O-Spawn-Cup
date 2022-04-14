@@ -1,22 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
-import 'package:o_spawn_cup/repository/tournament_repository.dart';
 import 'package:o_spawn_cup/shared/widgets/game_card.dart';
 import 'package:o_spawn_cup/shared/widgets/no_data.dart';
 import 'package:o_spawn_cup/shared/widgets/text_element.dart';
 
 FormBlocStep buildStep1(SelectGameBloc selectGameBloc,TournamentFormBloc tournamentFormBloc) {
-  PageController pageController = PageController(viewportFraction: 0.5, initialPage: 1,keepPage: false);
-  pageController.addListener(() {
-    tournamentFormBloc.game.updateValue(listCardGame[pageController.page!.toInt()].gameName);
-    selectGameBloc.add(SelectGameChange(indexSelect: pageController.page!));
+
+  tournamentFormBloc.pageController.addListener(() {
+    tournamentFormBloc.game.updateValue(listCardGame[tournamentFormBloc.pageController.page!.toInt()].gameName);
+    selectGameBloc.add(SelectGameChange(indexSelect: tournamentFormBloc.pageController.page!));
   });
+
   return FormBlocStep(
     state: tournamentFormBloc.state.currentStep > 0 ? StepState.complete : StepState.disabled,
     isActive: tournamentFormBloc.state.currentStep >= 0,
@@ -44,7 +43,7 @@ FormBlocStep buildStep1(SelectGameBloc selectGameBloc,TournamentFormBloc tournam
             height: screenSize.height / 5,
             child: PageView.builder(
                 scrollDirection: Axis.horizontal,
-                controller: pageController,
+                controller: tournamentFormBloc.pageController,
                 itemCount: listCardGame.length,
                 itemBuilder: (context, position) {
                   if (position == indexSelect) {
@@ -81,4 +80,15 @@ FormBlocStep buildStep1(SelectGameBloc selectGameBloc,TournamentFormBloc tournam
   },
 ),
   );
+
+}
+initGameSelect(TournamentFormBloc tournamentFormBloc,){
+  WidgetsBinding.instance!.addPostFrameCallback((_) {
+    if(tournamentFormBloc.pageController.hasClients){
+      if(tournamentFormBloc.tournament != null){
+        int indexGame = listCardGame.indexWhere((element) => element.gameName == tournamentFormBloc.tournament!.game);
+        tournamentFormBloc.pageController.jumpToPage(indexGame);
+      }
+    }
+  });
 }

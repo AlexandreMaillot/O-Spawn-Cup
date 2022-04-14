@@ -4,8 +4,12 @@ export 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_step_2.da
 export 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_step_3.dart';
 export 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_step_4.dart';
 export 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_step_5.dart';
+export 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_step_6.dart';
 export 'package:o_spawn_cup/shared/widgets/text_field_form.dart';
 export 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_view.dart';
 export 'package:o_spawn_cup/pages/form_tournament/widgets/row_number_player_by_team.dart';
 export 'package:o_spawn_cup/pages/form_tournament/widgets/widget_choose_image.dart';
+export 'package:o_spawn_cup/pages/form_tournament/widgets/dropdown_server.dart';
+export 'package:o_spawn_cup/pages/form_tournament/widgets/tile_image_pre.dart';
+export 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
 export 'package:o_spawn_cup/pages/form_tournament/widgets/widget_shared.dart';

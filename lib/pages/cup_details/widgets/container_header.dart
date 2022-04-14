@@ -6,6 +6,7 @@ import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
+import 'package:o_spawn_cup/pages/form_tournament/form_tournament.dart';
 import 'package:o_spawn_cup/shared/widgets/subtiltle_element.dart';
 
 class ContainerHeader extends StatelessWidget {
@@ -110,7 +111,7 @@ class ContainerHeader extends StatelessWidget {
                               // width: 37,
                             )
                                 : Container(),
-                            onPressed: () => Navigator.of(context).push(BlocRouter().cupForm(cupDetailCubit.tournament)),
+                            onPressed: () => Navigator.of(context).push(FormTournament(tournament: cupDetailCubit.tournament).route()),
                           ),
                         ),
                       ),

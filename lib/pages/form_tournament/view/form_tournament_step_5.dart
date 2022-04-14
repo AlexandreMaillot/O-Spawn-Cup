@@ -1,9 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/cubit/list_cash_prizes_cubit.dart';
 import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
 import 'package:o_spawn_cup/shared/widgets/text_element.dart';
 
@@ -21,22 +19,22 @@ FormBlocStep buildStep5(TournamentFormBloc tournamentFormBloc,) {
         )
       ],
     ),
-    content: BlocBuilder<ListCashPrizesCubit, ListCashPrizesState>(
+    content: BlocBuilder(
+      bloc: tournamentFormBloc.listCashPrize,
       builder: (context, state) {
         return Column(
           children: [
-            (context.read<ListCashPrizesCubit>().list.isEmpty)
+            (tournamentFormBloc.listCashPrize.value.isEmpty)
                 ? TextElement(text: "Il n'y a aucun cash prizes !",color: Colors.white,)
                 : ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               primary: false,
-              itemCount: context.read<ListCashPrizesCubit>().list.length,
+              itemCount: tournamentFormBloc.listCashPrize.value.length,
               itemBuilder: (context, index) {
 
 
                 return Row(
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 
@@ -49,8 +47,8 @@ FormBlocStep buildStep5(TournamentFormBloc tournamentFormBloc,) {
                     ),
                     InkWell(
                         onTap: () => _displayTextInputDialog(context,index),
-                        child: TextElement(text: context.read<ListCashPrizesCubit>().list[index].toString() ,color: Colors.white)),
-                    IconButton(onPressed: () => context.read<ListCashPrizesCubit>().deleteCashPrizes(index),icon: const Icon(Icons.delete_forever,color: Colors.red,)),
+                        child: TextElement(text: tournamentFormBloc.listCashPrize.value[index].toString() ,color: Colors.white)),
+                    IconButton(onPressed: () => tournamentFormBloc.deleteCashPrize(index),icon: const Icon(Icons.delete_forever,color: Colors.red,)),
                   ],
                 );
 
@@ -65,10 +63,11 @@ FormBlocStep buildStep5(TournamentFormBloc tournamentFormBloc,) {
 }
 Future<void> _displayTextInputDialog(BuildContext contextLocal,int? index) async {
   TextEditingController _textFieldController = TextEditingController();
+  var tournamentFormBloc = contextLocal.read<TournamentFormBloc>();
   return showDialog(
       context: contextLocal,
       builder: (context) {
-        _textFieldController.text = (index != null) ? contextLocal.read<ListCashPrizesCubit>().list[index] : '';
+        _textFieldController.text = (index != null) ? tournamentFormBloc.listCashPrize.value[index] : '';
         return AlertDialog(
           title: TextElement(text: 'Ajouter un cash prize'),
           content: TextField(
@@ -86,9 +85,9 @@ Future<void> _displayTextInputDialog(BuildContext contextLocal,int? index) async
               child: TextElement(text: 'Valider',color: colorOrange,),
               onPressed: () {
                 if(index != null){
-                  contextLocal.read<ListCashPrizesCubit>().modifCashPrize(index,_textFieldController.text);
+                  tournamentFormBloc.modifCashPrize(index,_textFieldController.text);
                 } else {
-                  contextLocal.read<ListCashPrizesCubit>().addCashPrize(_textFieldController.text);
+                  tournamentFormBloc.addCashPrize(_textFieldController.text);
                 }
 
                 Navigator.pop(context);

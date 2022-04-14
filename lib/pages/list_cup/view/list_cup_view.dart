@@ -1,10 +1,10 @@
 
-import "package:flutter/material.dart";
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:o_spawn_cup/constant.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:o_spawn_cup/constant.dart';
 
 
-import "package:o_spawn_cup/models/game_name.dart";
+import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/pages/list_cup/cubit/list_cup_cubit.dart';
 
 import '../list_cup.dart';
@@ -22,8 +22,8 @@ class ListCupView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
-      endDrawer: CustomDrawer(screenSize: screenSize),
-      appBar: CustomAppBar(title: "TOURNOIS",),
+      endDrawer: const CustomDrawer(),
+      appBar: CustomAppBar(title: 'TOURNOIS',),
       bottomNavigationBar: const BottomBar(),
       body: Container(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 18),

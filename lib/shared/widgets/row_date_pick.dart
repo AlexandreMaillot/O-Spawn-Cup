@@ -9,17 +9,23 @@ class RowDatePick extends StatelessWidget {
     Key? key,
     required this.inputFieldBloc,
     required this.hintText,
+    this.focusNode,
+    this.nextFocusNode,
   }) : super(key: key);
 
 
   final InputFieldBloc<DateTime?, dynamic> inputFieldBloc;
   final String hintText;
+  final FocusNode? focusNode;
+  final FocusNode? nextFocusNode;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.07,
       child: DateTimeFieldBlocBuilder(
+              focusNode: focusNode,
+              nextFocusNode: nextFocusNode,
               showClearIcon: true,
               textAlign: TextAlign.center,
               dateTimeFieldBloc: inputFieldBloc,

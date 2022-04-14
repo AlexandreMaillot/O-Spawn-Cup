@@ -23,8 +23,8 @@ void main() {
   late TournamentCollectionReference tournamentsRef;
   late FakeFirebaseFirestore instance;
   late QuerySnapshot<Map<String, dynamic>> snapshot;
-  Team team1 = Team(name: "MyTeam1");
-  Tournament tournament4 = Tournament(name: "Tournois 4",
+  Team team1 = Team(name: 'MyTeam1');
+  Tournament tournament4 = Tournament(name: 'Tournois 4',
       dateDebutTournois: DateTime(now.year,now.month,now.day + 7),
       game: GameName.LeagueOfLegend,
       server: ServerType.EU,
@@ -35,10 +35,10 @@ void main() {
       killPointTournament: 1,
       pointPerRangTournament: 1,
       rangStartTournament: 15,
-      cashPrize: ["Mon lot 1","Mon lot 2","Mon lot 3"],
-      listCodesGames: ["MonCode1","MonCode2","MonCode3",]);
+      cashPrize: ['Mon lot 1','Mon lot 2','Mon lot 3'],
+      listCodesGames: ['MonCode1','MonCode2','MonCode3',]);
   List<Tournament> listTournaments = [
-    Tournament(name: "Tournois 1",
+    Tournament(name: 'Tournois 1',
         dateDebutTournois: DateTime(now.year,now.month,now.day + 7),
         game: GameName.LeagueOfLegend,
         server: ServerType.EU,
@@ -49,10 +49,10 @@ void main() {
         killPointTournament: 1,
         pointPerRangTournament: 1,
         rangStartTournament: 15,
-        cashPrize: ["Mon lot 1","Mon lot 2","Mon lot 3"],
-        listCodesGames: ["MonCode1","MonCode2","MonCode3",]),
+        cashPrize: ['Mon lot 1','Mon lot 2','Mon lot 3'],
+        listCodesGames: ['MonCode1','MonCode2','MonCode3',]),
 
-    Tournament(name: "Tournois 2",
+    Tournament(name: 'Tournois 2',
         dateDebutTournois: DateTime(now.year,now.month,now.day + 3),
         game: GameName.LeagueOfLegend,
         server: ServerType.EU,
@@ -63,9 +63,9 @@ void main() {
         killPointTournament: 1,
         pointPerRangTournament: 1,
         rangStartTournament: 15,
-        cashPrize: ["Mon lot 1","Mon lot 2","Mon lot 3"],
-        listCodesGames: ["MonCode1","MonCode2","MonCode3",]),
-    Tournament(name: "Tournois 3",
+        cashPrize: ['Mon lot 1','Mon lot 2','Mon lot 3'],
+        listCodesGames: ['MonCode1','MonCode2','MonCode3',]),
+    Tournament(name: 'Tournois 3',
         dateDebutTournois: DateTime(now.year,now.month,now.day + 5),
         game: GameName.Fornite,
         server: ServerType.EU,
@@ -76,24 +76,24 @@ void main() {
         killPointTournament: 1,
         pointPerRangTournament: 1,
         rangStartTournament: 15,
-        cashPrize: ["Mon lot 1","Mon lot 2","Mon lot 3"],
-        listCodesGames: ["MonCode1","MonCode2","MonCode3",]),
+        cashPrize: ['Mon lot 1','Mon lot 2','Mon lot 3'],
+        listCodesGames: ['MonCode1','MonCode2','MonCode3',]),
   ];
   setUp(() async {
     instance = FakeFirebaseFirestore();
     listTournaments[0].state = TournamentState.enCours;
-    listTournaments[0].documentId = "id1";
-    listTournaments[1].documentId = "id2";
-    listTournaments[2].documentId = "id3";
+    listTournaments[0].documentId = 'id1';
+    listTournaments[1].documentId = 'id2';
+    listTournaments[2].documentId = 'id3';
     int index = 0;
     for (var element in listTournaments) {
       index++;
-      await instance.collection('Tournament').doc("id$index").set(element.toJson());
+      await instance.collection('Tournament').doc('id$index').set(element.toJson());
     }
     tournamentsRef = TournamentCollectionReference(instance);
     tournamentRepository = TournamentRepository(tournamentCollectionReference: tournamentsRef);
   });
-  group("Liste les tournois avec filtre", (){
+  group('Liste les tournois avec filtre', (){
     test('list tournaments no tournaments', () async {
       var baseDelete = TournamentCollectionReference(FakeFirebaseFirestore());
       var tournamentRepositoryClear = TournamentRepository(tournamentCollectionReference: baseDelete);
@@ -112,7 +112,7 @@ void main() {
     });
 
     test('list tournaments filter by name', () {
-      expect(tournamentRepository.listTournaments(gameName: null,name: "Tournois 2"), emits(listTournaments.where((element) => element.name == "Tournois 2")),);
+      expect(tournamentRepository.listTournaments(gameName: null,name: 'Tournois 2'), emits(listTournaments.where((element) => element.name == 'Tournois 2')),);
     });
     test('list tournaments filter by date start cup', () {
       var date = DateTime(now.year,now.month,now.day + 4);
@@ -134,7 +134,7 @@ void main() {
     snapshot = await instance.collection('Tournament').get();
     var snapTournament = await snapshot.docs.first.reference.get();
     var tournament = snapTournament.data();
-    expect(tournament!["state"], TournamentState.annuler.name);
+    expect(tournament!['state'], TournamentState.annuler.name);
   });
   test('close cup', () async {
     tournamentRepository.cupClose(listTournaments[0],);
@@ -142,28 +142,30 @@ void main() {
     snapshot = await instance.collection('Tournament').get();
     var snapTournament = await snapshot.docs.first.reference.get();
     var tournament = snapTournament.data();
-    expect(tournament!["state"], TournamentState.terminer.name);
+    expect(tournament!['state'], TournamentState.terminer.name);
   });
   test('add tournament', () async {
     tournamentRepository.addTournamentInFirebase(tournament4);
     snapshot = await instance.collection('Tournament').get();
     expect(snapshot.docs.length, 4);
+    var snapRounds = await instance.collection('Tournament').doc(snapshot.docs.last.id).collection('rounds').get();
+    expect(snapRounds.docs.length,tournament4.roundNumber);
   });
   test('modif tournament', () async {
 
-    listTournaments[0].name = "Name modifie";
+    listTournaments[0].name = 'Name modifie';
     tournamentRepository.modifTournamentInFirebase(listTournaments[0]);
 
     snapshot = await instance.collection('Tournament').get();
     var snapTournament = await snapshot.docs.first.reference.get();
     var tournament = snapTournament.data();
-    expect(tournament!["name"], "Name modifie");
+    expect(tournament!['name'], 'Name modifie');
   });
   test('delete tournament', () async {
-    tournamentRepository.deleteTournamentInFirebase("id3");
+    tournamentRepository.deleteTournamentInFirebase('id3');
     snapshot = await instance.collection('Tournament').get();
 
-    expect(snapshot.docs.length, listTournaments.where((element) => element.documentId != "id3").length);
+    expect(snapshot.docs.length, listTournaments.where((element) => element.documentId != 'id3').length);
   });
   test('id tournament not null', () async {
     listTournaments.sort((a, b) => b.dateDebutTournois!.compareTo(a.dateDebutTournois ?? DateTime.now()));
@@ -171,7 +173,7 @@ void main() {
   });
 
 
-  group("Changement automatique état des tournois", (){
+  group('Changement automatique état des tournois', (){
     test('change state auto for start sign cup', () async {
       DateTime nexDateInscription = DateTime(now.year,now.month,now.day,now.hour - 1);
       listTournaments[2].dateDebutInscription = nexDateInscription;
@@ -180,7 +182,7 @@ void main() {
       snapshot = await instance.collection('Tournament').get();
       var snapTournament = await snapshot.docs[2].reference.get();
       var tournament = snapTournament.data();
-      expect(tournament!["state"], TournamentState.inscriptionOuverte.name);
+      expect(tournament!['state'], TournamentState.inscriptionOuverte.name);
     });
     test('change state auto for start cup', () async {
       DateTime nexDateStart = DateTime(now.year,now.month,now.day,now.hour - 1);
@@ -189,7 +191,7 @@ void main() {
       snapshot = await instance.collection('Tournament').get();
       var snapTournament = await snapshot.docs[2].reference.get();
       var tournament = snapTournament.data();
-      expect(tournament!["state"], TournamentState.enCours.name);
+      expect(tournament!['state'], TournamentState.enCours.name);
       tournamentRepository.checkTournamentState(listTournaments[2]);
 
     });

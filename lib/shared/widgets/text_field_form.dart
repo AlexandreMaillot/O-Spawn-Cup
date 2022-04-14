@@ -10,13 +10,19 @@ class TextFieldForm extends StatelessWidget {
     required this.textFieldBloc,
     required this.hintText,
     this.textInputType,
-    this.onChanged
+    this.onChanged,
+    this.suffixIcon,
+    this.onPressIconSuffix,
+    this.textInputAction,
   }) : super(key: key);
 
   final TextFieldBloc textFieldBloc;
   final String hintText;
   TextInputType? textInputType;
+  TextInputAction? textInputAction;
   onChangeCallback? onChanged;
+  Widget? suffixIcon;
+  Function()? onPressIconSuffix;
   @override
   Widget build(BuildContext context) {
     return TextFieldBlocBuilder(
@@ -29,6 +35,7 @@ class TextFieldForm extends StatelessWidget {
       textFieldBloc: textFieldBloc,
       autofillHints: const [AutofillHints.name],
       keyboardType: textInputType ?? TextInputType.name,
+      textInputAction: textInputAction,
       // suffixButton: SuffixButton.clearText,
       textAlign: TextAlign.center,
       clearTextIcon: Container(margin: const EdgeInsets.only(left: 13),child: Icon(Icons.clear,color: colorHintTextTheme,)),
@@ -46,7 +53,14 @@ class TextFieldForm extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-
+        suffixIcon: (suffixIcon != null)
+            ? IconButton(
+          onPressed: onPressIconSuffix,
+          icon: suffixIcon!,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        )
+            : null,
         hintText: hintText,
         hintStyle: TextStyle(
           color: const Color(0xff707070).withOpacity(0.43),

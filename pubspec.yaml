@@ -73,6 +73,7 @@ dependencies:
   bloc: ^8.0.3
   flow_builder: ^0.0.6
   cloud_functions: ^3.2.10
+  flutter_cache_manager: ^3.3.0
 dev_dependencies:
 #  dart_code_metrics: ^4.13.0
   fake_cloud_firestore: ^1.2.1
@@ -80,6 +81,7 @@ dev_dependencies:
   bloc_test: ^9.0.0
   firebase_auth_mocks: ^0.8.3
   google_sign_in_mocks: ^0.2.1
+  firebase_storage_mocks: ^0.5.0
   flutter_test:
     sdk: flutter
 

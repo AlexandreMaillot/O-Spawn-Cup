@@ -9,10 +9,14 @@ class TimePick extends StatelessWidget {
     Key? key,
     required this.inputFieldBloc,
     required this.hintText,
+    this.focusNode,
+    this.nextFocusNode,
   }) : super(key: key);
 
   final InputFieldBloc<TimeOfDay?, dynamic> inputFieldBloc;
   final String hintText;
+  final FocusNode? focusNode;
+  final FocusNode? nextFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +24,8 @@ class TimePick extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.5,
       height: MediaQuery.of(context).size.height * 0.07,
       child: TimeFieldBlocBuilder(
+        focusNode: focusNode,
+        nextFocusNode: nextFocusNode,
         timeFieldBloc: inputFieldBloc,
         textAlign: TextAlign.center,
         format: DateFormat('hh:mm'),

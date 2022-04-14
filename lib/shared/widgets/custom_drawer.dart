@@ -1,7 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:o_spawn_cup/bloc/bloc_router.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/pages/home/view/home.dart';
 import 'package:o_spawn_cup/services/authentification.dart';
@@ -13,14 +12,12 @@ import '../../models/Member/member.dart';
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
     Key? key,
-    required this.screenSize,
   }) : super(key: key);
 
-  final Size screenSize;
 
   @override
   Widget build(BuildContext context) {
-
+    Size screenSize = MediaQuery.of(context).size;
     return SafeArea(
       child: Drawer(
         child: Column(
@@ -44,7 +41,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                       SizedBox(
                         child: Text(
-                            "Mon Pseudo",
+                            'Mon Pseudo',
                           style: TextStyle(color: Colors.white,),
                         ),
                       ),
@@ -99,7 +96,7 @@ class CreateCupButton extends StatelessWidget {
             return CustomButtonTheme(
             colorText: colorTextTheme,
             colorButton: Colors.white,
-            text: "CREER UN TOURNOIS",
+            text: 'CREER UN TOURNOIS',
             onPressedMethod: () => Navigator.of(context).push<void>(FormTournament(tournament: null).route()),
           );
           }
@@ -120,8 +117,8 @@ class ProfilButton extends StatelessWidget {
     return CustomButtonTheme(
       colorText: colorTextTheme,
       colorButton: Colors.white,
-      text: "PROFIL",
-      onPressedMethod: () => print("profil"),
+      text: 'PROFIL',
+      onPressedMethod: () => print('profil'),
     );
   }
 }
@@ -134,11 +131,10 @@ class HomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
     return CustomButtonTheme(
       colorText: colorTextTheme,
       colorButton: Colors.white,
-      text: "ACCUEIL",
+      text: 'ACCUEIL',
       onPressedMethod: () => Navigator.of(context).pushAndRemoveUntil(Home.route(), (Route<dynamic> route) => false),
     );
   }
@@ -165,7 +161,7 @@ class LogoutButton extends StatelessWidget {
               child: Icon(Icons.power_settings_new,color: colorBackgroundTheme,),
             ),
             Text(
-              "Déconnexion",
+              'Déconnexion',
               style: TextStyle(
                 color: colorBackgroundTheme,
               ),

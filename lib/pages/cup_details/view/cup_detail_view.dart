@@ -3,36 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:formz/formz.dart';
-import 'package:o_spawn_cup/bloc/bloc_router.dart';
 import 'package:o_spawn_cup/bloc/member_tournament_firestore_bloc/member_tournament_firestore_bloc.dart';
-import 'package:o_spawn_cup/bloc/sign_cup_bloc/sign_cup_bloc.dart';
-import 'package:o_spawn_cup/cubit/header_sign_cup_cubit.dart';
-import 'package:o_spawn_cup/cubit/member_bloc/member_cubit.dart';
 import 'package:o_spawn_cup/cubit/round_stat_cubit.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
-import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
-import 'package:o_spawn_cup/models/make_it_responsive.dart';
-import 'package:o_spawn_cup/pages/cup_details/bloc/sign_tournament_form_bloc.dart';
 import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
 import 'package:o_spawn_cup/pages/cup_details/cubit/show_stat_cubit.dart';
 import 'package:o_spawn_cup/pages/cup_details/cup_details.dart';
 import 'package:o_spawn_cup/pages/cup_details/widgets/container_header.dart';
-import 'package:o_spawn_cup/pages/cup_details/widgets/text_field_gamer_tag.dart';
-import 'package:o_spawn_cup/repository/member_tounament_repository.dart';
-import 'package:o_spawn_cup/services/firebase_handler.dart';
 import 'package:o_spawn_cup/services/utils.dart';
 import 'package:o_spawn_cup/shared/widgets/custom_app_bar.dart';
-import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/shared/widgets/custom_drawer.dart';
-import 'package:o_spawn_cup/shared/widgets/custom_text_field.dart';
 import 'package:o_spawn_cup/shared/widgets/subtiltle_element.dart';
 import 'package:o_spawn_cup/shared/widgets/text_element.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/models/Member/member.dart';
-import 'dart:math';
 
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
@@ -50,12 +34,11 @@ class CupDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     var cupDetailCubit = context.read<CupDetailCubit>();
 
     return Scaffold(
       backgroundColor: colorBackgroundTheme,
-      endDrawer: CustomDrawer(screenSize: screenSize),
+      endDrawer: const CustomDrawer(),
       appBar: CustomAppBar(
         title: 'INSCRIPTION',
       ),
@@ -90,7 +73,7 @@ class CupDetailView extends StatelessWidget {
                           (state as CupDetailTournamentChanged).isClose) {
                         return RowInformationTournament(
                             leftText: 'Etat:',
-                            rightText: state.tournament!.state.name);
+                            rightText: state.tournament!.state.state);
                       }
                       return Container();
                     },
@@ -108,16 +91,17 @@ class CupDetailView extends StatelessWidget {
                                 : '0/0');
                       }
                       return const CircularProgressIndicator();
+
                     },
                   ),
                   BlocBuilder<CupDetailCubit, CupDetailState>(
-                      buildWhen: (previous, current) =>
-                          current is CupDetailListTeamChanged || current is CupDetailTournamentChanged,
+                      buildWhen: (previous, current) => current is CupDetailListTeamChanged || current is CupDetailTournamentChanged,
                       builder: (context, state) {
-                        // print(state);
+
                         if(cupDetailCubit.tournament != null) {
                           if (state is CupDetailListTeamChanged ||
                               state is CupDetailTournamentChanged) {
+
                             var statePlaces = cupDetailCubit.placesRestante(
                                 cupDetailCubit.tournament!,
                                 cupDetailCubit.listTeam);
@@ -140,10 +124,11 @@ class CupDetailView extends StatelessWidget {
                                   ],
                                 ),
                               );
+                            } else {
+                             return  Container();
                             }
                           }
                         }
-
                         return const CircularProgressIndicator();
                       }),
                   const Divider(

@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:o_spawn_cup/models/card_game.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
-import 'package:o_spawn_cup/shared/widgets/tile_image_pre.dart';
+import 'package:o_spawn_cup/pages/form_tournament/widgets/tile_image_pre.dart';
 
 import '../../constant.dart';
 
@@ -39,7 +39,7 @@ class SelectGameBloc extends Bloc<SelectGameEvent, SelectGameState> {
   }
 
   List<TileImagePre> filteredImageByGame(){
-    if(state == SelectGameChanged){
+    if(state.runtimeType == SelectGameChanged){
       return listImagePre.where((element) => element.gameName == listCardGame[(state as SelectGameChanged).index.toInt()].gameName).toList();
     } else {
       return [];

@@ -1,8 +1,8 @@
 import "package:bloc/bloc.dart";
 import "package:equatable/equatable.dart";
-import 'package:o_spawn_cup/shared/widgets/tile_image_pre.dart';
+import 'package:o_spawn_cup/pages/form_tournament/widgets/tile_image_pre.dart';
 
-part "selected_image_predef_state.dart";
+part 'selected_image_predef_state.dart';
 
 class SelectedImagePredefCubit extends Cubit<SelectedImagePredefState> {
   List<TileImagePre> listImageFiltred = [];
@@ -12,6 +12,7 @@ class SelectedImagePredefCubit extends Cubit<SelectedImagePredefState> {
     if(indexSelect == (state as SelectedImagePredefInitial).indexSelected) {
       indexSelect = null;
     }
+    print(indexSelect);
     emit(SelectedImagePredefInitial(indexSelected: indexSelect));
   }
   clearImgSelect() => emit(SelectedImagePredefInitial(indexSelected: null));

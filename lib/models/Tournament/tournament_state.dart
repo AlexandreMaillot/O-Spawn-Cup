@@ -4,19 +4,19 @@ extension TournamentStateExt on TournamentState {
   String get state {
     switch (this) {
       case TournamentState.enCours:
-        return "En cours";
+        return 'En cours';
       case TournamentState.annuler:
-        return "Annuler";
+        return 'Annuler';
       case TournamentState.terminer:
-        return "Terminer";
+        return 'Terminer';
         case TournamentState.inscriptionFermer:
-        return "Inscription fermer";
+        return 'Inscription fermer';
         case TournamentState.inscriptionOuverte:
-        return "Inscription ouverte";
+        return 'Inscription ouverte';
       case TournamentState.complet:
-        return "Complet";
+        return 'Complet';
       default:
-        return "";
+        return '';
     }
   }
 }

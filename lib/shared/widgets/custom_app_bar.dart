@@ -1,6 +1,6 @@
-import "package:flutter/material.dart";
-import "package:flutter_svg/svg.dart";
-import "package:o_spawn_cup/constant.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:o_spawn_cup/constant.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   String title;
@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           builder: (BuildContext context) {
             return (backArrow) ? IconButton(
               icon: SvgPicture.asset(
-                "assets/images/backArrow.svg",
+                'assets/images/backArrow.svg',
                 height: 30,
                 width: 37,
               ),
@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             builder: (BuildContext context) {
               return IconButton(
                 icon: SvgPicture.asset(
-                  "assets/images/drawer.svg",
+                  'assets/images/drawer.svg',
                   height: 30,
                   width: 37,
                 ),
@@ -58,7 +58,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             shadows: [
               Shadow(color: const Color(0xff000000).withOpacity(0.39),blurRadius: 15,offset: const Offset(0, 3)),
             ],
-            fontFamily: "o_spawn_cup_font",
+            fontFamily: 'o_spawn_cup_font',
             fontSize: 29,
             fontWeight: FontWeight.normal,
           ),

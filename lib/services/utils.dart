@@ -31,13 +31,5 @@ class Utils {
 
 
 
-  Future<File> downloadFileImage(String? name) async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    File downloadToFile = File('${appDocDir.path}/' + "imgCupLoad" + ".jpeg");
 
-      await firebase_storage.FirebaseStorage.instance
-          .ref('tournaments/' + name! + "")
-          .writeToFile(downloadToFile);
-      return downloadToFile;
-  }
 }

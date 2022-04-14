@@ -3,11 +3,9 @@ import 'package:animated_widgets/widgets/shake_animated_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:o_spawn_cup/bloc/form_tournament_step_4_bloc/form_tournament_step_4_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
-import 'package:o_spawn_cup/cubit/take_image_gallery/take_image_gallery_cubit.dart';
 import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
+import 'package:o_spawn_cup/pages/form_tournament/cubit/take_image_gallery/take_image_gallery_cubit.dart';
 import 'package:o_spawn_cup/shared/widgets/text_element.dart';
 
 class WidgetChooseImage extends StatelessWidget {
@@ -22,9 +20,10 @@ class WidgetChooseImage extends StatelessWidget {
     return BlocBuilder<TakeImageGalleryCubit, TakeImageGalleryState>(
       builder: (context, state) {
         tournamentFormBloc.loadImageTaked(state.imageTaked);
+        // print(tournamentFormBloc.imageCup.value!.path);
         return InkWell(
-          onTap: () => tournamentFormBloc.takeImageGalleryCubit.takePicture(),
-          child: (tournamentFormBloc.imageCup.value != null)
+          onTap: () => tournamentFormBloc.takePictureInGallery(),
+          child: (tournamentFormBloc.imageCup.value != null && tournamentFormBloc.takeByCamera)
               ? SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             height: MediaQuery.of(context).size.height * 0.15,

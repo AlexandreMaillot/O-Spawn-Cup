@@ -54,7 +54,7 @@ class CupDetailCubit extends Cubit<CupDetailState> {
       if(event.data != null) {
         tournament = event.data!;
         tournament?.documentId = event.id;
-          emit(CupDetailTournamentChanged(tournament: tournament,isClose: checkStateTournament(tournament!)));
+        emit(CupDetailTournamentChanged(tournament: tournament,isClose: checkStateTournament(tournament!)));
       }
     });
   }

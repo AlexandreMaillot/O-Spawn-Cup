@@ -1,10 +1,10 @@
-import "dart:io";
+import 'dart:io';
 
-import "package:bloc/bloc.dart";
-import "package:equatable/equatable.dart";
-import "package:image_picker/image_picker.dart";
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
-part "take_image_gallery_state.dart";
+part 'take_image_gallery_state.dart';
 
 class TakeImageGalleryCubit extends Cubit<TakeImageGalleryState> {
   TakeImageGalleryCubit() : super(TakeImageGalleryInitial());
@@ -24,6 +24,7 @@ class TakeImageGalleryCubit extends Cubit<TakeImageGalleryState> {
 
     emit(TakeImageGalleryFinish(File(urlPath!)));
   }
+
   clearPicture() => emit(TakeImageGalleryNoData());
   takeImageAnimation() async {
     emit(TakeImageAnimated());

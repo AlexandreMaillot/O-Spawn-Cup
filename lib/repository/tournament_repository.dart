@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
+import 'package:o_spawn_cup/models/Round/round.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
@@ -65,8 +66,12 @@ class TournamentRepository {
     tournament.state = tournamentState;
     tournamentCollectionReference.doc(tournament.documentId).set(tournament);
   }
-  addTournamentInFirebase(Tournament tournament){
-    tournamentCollectionReference.add(tournament);
+  addTournamentInFirebase(Tournament tournament) async {
+    var tournamentAdded = await tournamentCollectionReference.add(tournament);
+    for(int i = 1; i <= tournament.roundNumber;i++){
+      Round round = Round(roundNumber: i);
+      tournamentCollectionReference.doc(tournamentAdded.id).rounds.add(round);
+    }
   }
   modifTournamentInFirebase(Tournament tournament){
     tournamentCollectionReference.doc(tournament.documentId).set(tournament);

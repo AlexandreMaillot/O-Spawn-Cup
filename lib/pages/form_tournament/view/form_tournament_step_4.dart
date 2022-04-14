@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
 import 'package:o_spawn_cup/pages/form_tournament/widgets/widget_choose_image.dart';
@@ -36,7 +34,8 @@ FormBlocStep buildStep4(TournamentFormBloc tournamentFormBloc,) {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: BlocBuilder<SelectGameBloc, SelectGameState>(
+            child: BlocBuilder(
+              bloc: tournamentFormBloc.game,
               builder: (context, state) {
                 return GridView.count(
                   shrinkWrap: true,
