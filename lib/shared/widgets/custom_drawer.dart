@@ -1,6 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:o_spawn_cup/app/app.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/pages/home/view/home.dart';
 import 'package:o_spawn_cup/services/authentification.dart';
@@ -148,7 +150,7 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authenticationRepository = context.read<AuthenticationRepository>();
+    final appBloc = context.read<AppBloc>();
     final Size screenSize = MediaQuery.of(context).size;
     return SizedBox(
       width: screenSize.width,
@@ -169,7 +171,11 @@ class LogoutButton extends StatelessWidget {
 
           ],
         ),
-        onPressed: () => authenticationRepository.logOut(),
+        onPressed: () {
+          appBloc.add(AppLogoutRequested());
+          context.flow<AppStatus>().update((state) => AppStatus.unauthenticated);
+          // Navigator.push
+        },
       ),
     );
   }

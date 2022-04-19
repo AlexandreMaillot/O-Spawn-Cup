@@ -2,11 +2,13 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:o_spawn_cup/cubit/google_authentication/google_authentication_cubit.dart';
+import 'package:o_spawn_cup/models/Member/member.dart';
+import 'package:o_spawn_cup/repository/member_repository.dart';
 
 import 'start_page_view.dart';
 
 class StartPage extends StatelessWidget {
-  static Page page() => MaterialPage<void>(child: const StartPage());
+  static Page page() => const MaterialPage<void>(child: StartPage());
   const StartPage({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +17,7 @@ class StartPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
 
-        BlocProvider(create: (_) => GoogleAuthenticationCubit(authenticationRepository: authenticationRepository),
+        BlocProvider(create: (_) => GoogleAuthenticationCubit(authenticationRepository: authenticationRepository,memberRepository: MemberRepository(memberCollectionReference: MemberCollectionReference())),
         ),
       ],
       child: StartPageView(),

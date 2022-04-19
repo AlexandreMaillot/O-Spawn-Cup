@@ -37,8 +37,8 @@ class AppView extends StatelessWidget {
     return MaterialApp(
       theme: theme,
       debugShowCheckedModeBanner: false,
-      home: FlowBuilder<AppStatus>(
-        state: context.select((AppBloc bloc) => bloc.state.status),
+      home: FlowBuilder<AppState>(
+        state: context.select((AppBloc bloc) => bloc.state),
         onGeneratePages: onGenerateAppViewPages,
       ),
     );
