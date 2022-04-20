@@ -11,11 +11,12 @@ import 'package:o_spawn_cup/models/role_type.dart';
 import 'package:o_spawn_cup/models/server_type.dart';
 import 'package:o_spawn_cup/repository/team_repository.dart';
 
-
+class MockTeam extends Mock implements Team {}
 void main() {
   DateTime now = DateTime.now();
   late FakeFirebaseFirestore instance;
   late TeamRepository teamRepository;
+  late MockTeam team;
   late TournamentCollectionReference tournamentsRef;
   late TeamCollectionReference teamsRef;
   late List<Team> listTeam = [Team(name: 'MyTeam1'),Team(name: 'MyTeam2'),Team(name: 'MyTeam3')];
@@ -36,6 +37,7 @@ void main() {
       listCodesGames: const ['MonCode1','MonCode2','MonCode3',]);
   setUp(() async {
     instance = FakeFirebaseFirestore();
+    team = MockTeam();
     tournament4.documentId = 'id4';
     await instance.collection('Tournament').doc('id4').set(tournament4.toJson());
     tournamentsRef = TournamentCollectionReference(instance);
@@ -128,6 +130,12 @@ void main() {
     teamRepository.addTeamInTournament(listTeam[0],);
     teamCol = await teamsRef.get();
     expect(teamCol.docs.length, numTeam + 1);
+  });
+  test('add Team in tournament with code', () async {
+    var myTeam = Team(name: 'NouvelleTeam');
+    teamRepository.addTeamInTournament(myTeam);
+    var teamCol = await teamsRef.get();
+    expect(teamCol.docs[3].data.teamCode, isNot(''));
   });
   test('check tournament team not full', () async {
     teamRepository.tournament = tournament4;

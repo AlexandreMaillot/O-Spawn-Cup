@@ -89,7 +89,9 @@ class CupDetailCubit extends Cubit<CupDetailState> {
       if(isLeader(roleType)) {
         if(await teamNameNotExist(teamName)) {
           var team = Team(name: teamName);
+
           teamDocReference = await teamRepository.addTeamInTournament(team,);
+          print(1234);
           memberTournamentRepository??= MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(teamDocReference.reference));
           memberTournamentRepository!.addMemberTournamentInTeam(member, gamerTag, roleType);
           emit(CupDetailMemberTournamentAdded());

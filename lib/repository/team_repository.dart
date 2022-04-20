@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
 import 'package:o_spawn_cup/models/Team/team.dart';
@@ -96,6 +98,8 @@ class TeamRepository {
     return code;
   }
   Future<TeamDocumentReference> addTeamInTournament(Team team,) async {
+    final f = DateFormat('mmMMssddhh');
+    team.teamCode = generateCodeTeam(f.format(DateTime.now()) , 6);
     return await teamCollectionReference.add(team);
   }
 
