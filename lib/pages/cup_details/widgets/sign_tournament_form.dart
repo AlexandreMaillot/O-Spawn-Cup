@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:o_spawn_cup/bloc/sign_cup_bloc/sign_cup_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/cubit/row_member_leader/row_member_leader_cubit.dart';
 import 'package:o_spawn_cup/cubit/team_firestore/team_firestore_cubit.dart';
@@ -23,7 +22,6 @@ class SignTournamentForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var signTournamentFormBloc = context.read<SignTournamentFormBloc>();
-    var errorSign;
     return Column(
       children: [
         SubtitleElement(

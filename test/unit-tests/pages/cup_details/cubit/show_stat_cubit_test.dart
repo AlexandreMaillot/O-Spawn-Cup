@@ -17,8 +17,6 @@ import 'package:o_spawn_cup/repository/member_tounament_repository.dart';
 import 'package:o_spawn_cup/repository/team_repository.dart';
 import 'package:o_spawn_cup/repository/tournament_repository.dart';
 
-import '../../../../class/team_repository_overridden.dart';
-import '../../../../class/tournament_repository_overrindden.dart';
 
 class MockTeamRepository extends Mock implements TeamRepository{}
 class MockTeam extends Mock implements Team{}
@@ -52,8 +50,6 @@ void main() {
   late MockTeamDocumentReference teamDocumentReference;
   late MockTournamentDocumentSnap tournamentDocumentSnap;
   late MockDocumentReference documentReference;
-  late TeamRepositoryOverridden teamRepositoryOverridden;
-  late TournamentRepositoryOverridden tournamentRepositoryOverridden;
 
   Team team = Team(name: 'MyTeam',);
   Tournament tournament = Tournament(name: 'Tournois 4',

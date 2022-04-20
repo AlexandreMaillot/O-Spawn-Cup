@@ -68,9 +68,9 @@ class TeamFirestoreCubit extends Cubit<TeamFirestoreState> {
     if(listReturn[1] != null){
       await FirebaseHandler().verifStateCup(teamNumber, tournament);
       listTeam.add(listReturn[1]);
-      MyMessage myMessage = EmailMessage(EmailBroker());
-      myMessage.sendMessageWelcomeMethod(tournament, listReturn[1], FirebaseAuth.instance.currentUser!.email);
-      myMessage.sendMessageTeamCodeMethod(tournament, listReturn[1], FirebaseAuth.instance.currentUser!.email);
+      // // MyMessage myMessage = EmailMessage(EmailBroker());
+      // myMessage.sendMessageWelcomeMethod(tournament, listReturn[1], FirebaseAuth.instance.currentUser!.email);
+      // myMessage.sendMessageTeamCodeMethod(tournament, listReturn[1], FirebaseAuth.instance.currentUser!.email);
     }
 
     teamNumber = listTeam.length;

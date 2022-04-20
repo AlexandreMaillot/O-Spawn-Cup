@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import 'package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart';
 import 'package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart';
@@ -69,7 +70,7 @@ class FormTournament extends StatelessWidget {
             generateCodeCubit: generateCodeCubit,
             selectGameBloc: selectGameBloc,
             tournament: tournament,
-            firestorageService: FirestorageService(firebaseStorage: FirebaseStorage.instance),
+            firestorageService: FirestorageService(firebaseStorage: FirebaseStorage.instance,defaultCacheManager: DefaultCacheManager()),
           ),
         ),
       ],

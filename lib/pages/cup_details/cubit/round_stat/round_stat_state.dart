@@ -1,4 +1,4 @@
-part of '../../cubit/round_stat_cubit.dart';
+part of 'round_stat_cubit.dart';
 
 abstract class RoundStatState extends Equatable {
   int roundShow;

@@ -1,46 +1,35 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:o_spawn_cup/services/smtp_broker.dart';
 
 class EmailBroker {
+  SmtpServer smtpServer;
+  EmailBroker({required this.smtpServer});
+
   Future<void> sendEmailMessage(String message,String htmlMessage,String subject,String email) async {
-    SmtpServer smtpServer = paramEmail();
-    Message myMessage = createMessage(message,htmlMessage,subject,email);
-
-    await showReport(myMessage, smtpServer);
+    Message myMessage = createEmailMessage(message,htmlMessage,subject,email);
+    await sendEmail(myMessage, smtpServer);
   }
 
-  SmtpServer paramEmail() {
-    String username = "tamoro974@gmail.com";
-    String token = "fftvuferdeyhpqqh";
-    // String password = 'AIzaSyC67O8S6jcsHAnV0ursdHN2gTcjeaj76wA';
-    // String password = 'fgmpfizenmfzmdlb';
 
-    final smtpServer = SmtpServer("ssl0.ovh.net",port: 587,username: "contact@o-spawn.re",password: "AF6PJ4KMU0OG7s&NCCwC");
-    return smtpServer;
-  }
-
-  Message createMessage(String message,String htmlMessage,String subject,String email) {
-
-
+  Message createEmailMessage(String message,String htmlMessage,String subject,String email) {
     final myMessage = Message()
-      ..from = const Address("contact@o-spawn.re", "O-Spawn")
+      ..from = const Address('contact@o-spawn.re', 'O-Spawn')
       ..recipients.add(email)
-    // ..ccRecipients.addAll(["destCc1@example.com", "destCc2@example.com"])
-    //   ..bccRecipients.add(const Address("bccAddress@example.com"))
       ..subject = subject
       ..text = message
       ..html = htmlMessage;
     return myMessage;
   }
 
-  Future<void> showReport(Message message, SmtpServer smtpServer) async {
+  Future<void> sendEmail(Message message, SmtpServer smtpServer) async {
     try {
       final sendReport = await send(message, smtpServer);
-      print("Message sent: " + sendReport.toString());
+      print('Message sent: ' + sendReport.toString());
     } on MailerException catch (e) {
-      print("$e Message not sent.");
+      print('$e Message not sent.');
       for (var p in e.problems) {
-        print("Problem: ${p.code}: ${p.msg}");
+        print('Problem: ${p.code}: ${p.msg}');
       }
     }
   }

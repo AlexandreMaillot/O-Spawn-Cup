@@ -26,7 +26,7 @@ class DropdownTournamentState extends StatelessWidget {
       ),
       child: DropdownFieldBlocBuilder<TournamentState>(
         selectFieldBloc: selectFieldBloc,
-        emptyItemLabel: "Aucun",
+        emptyItemLabel: 'Aucun',
         showEmptyItem: true,
         isExpanded: true,
         decoration: InputDecoration(
@@ -37,7 +37,7 @@ class DropdownTournamentState extends StatelessWidget {
           hintText: 'TYPE DE TOURNOIS',
           hintStyle: TextStyle(
             color: const Color(0xff707070).withOpacity(0.43),
-            fontFamily: "o_spawn_cup_font",
+            fontFamily: 'o_spawn_cup_font',
             fontSize: 14,
           ),
           suffixIcon: Container(

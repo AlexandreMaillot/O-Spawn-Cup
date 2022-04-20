@@ -7,8 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path_provider/path_provider.dart';
 class FirestorageService {
-  late storage.FirebaseStorage firebaseStorage;
-  FirestorageService({required this.firebaseStorage});
+  storage.FirebaseStorage firebaseStorage;
+  DefaultCacheManager defaultCacheManager;
+  FirestorageService({required this.firebaseStorage,required this.defaultCacheManager});
 
   String getPreffixImage(){
     return DateTime.now().millisecondsSinceEpoch.toInt().toString();
@@ -27,13 +28,14 @@ class FirestorageService {
     String urlString = await snapshot.ref.getDownloadURL();
     return urlString;
   }
+
   Future<File> downloadFileImage(String? name) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
 
     File downloadToFile = File('${appDocDir.path}/test.jpeg');
 
     var cupImgRef = firebaseStorage.ref('tournaments/' + name!);
-    downloadToFile = await DefaultCacheManager().getSingleFile(await cupImgRef.getDownloadURL());
+    downloadToFile = await defaultCacheManager.getSingleFile(await cupImgRef.getDownloadURL());
     return downloadToFile;
 
   }

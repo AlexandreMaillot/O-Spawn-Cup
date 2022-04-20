@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:o_spawn_cup/app/app.dart';
@@ -15,6 +14,7 @@ import 'package:o_spawn_cup/repository/member_repository.dart';
 import 'package:o_spawn_cup/repository/member_tounament_repository.dart';
 import 'package:o_spawn_cup/repository/team_repository.dart';
 import 'package:o_spawn_cup/repository/tournament_repository.dart';
+import 'package:o_spawn_cup/services/email_message.dart';
 
 part 'cup_detail_state.dart';
 enum statePlacesRestante {isFull,isNotFull}
@@ -22,15 +22,21 @@ enum statePlacesRestante {isFull,isNotFull}
 class CupDetailCubit extends Cubit<CupDetailState> {
   TeamRepository teamRepository;
   AppBloc appBloc;
-  late MemberTournamentRepository memberTournamentRepository;
+  MemberTournamentRepository? memberTournamentRepository;
   late MemberRepository memberRepository;
   late TournamentRepository tournamentRepository;
+  late EmailMessage emailMessage;
   List<Team> listTeam = [];
   List<MemberTournament> listMemberTournament = [];
 
   late mem.Member member;
   Tournament? tournament;
-  CupDetailCubit({required this.tournamentRepository,required this.teamRepository,required this.memberRepository,required this.appBloc}) : super(CupDetailInitial()){
+  CupDetailCubit({required this.tournamentRepository,
+    required this.teamRepository,
+    required this.memberRepository,
+    required this.appBloc,
+    this.memberTournamentRepository,
+    required this.emailMessage}) : super(CupDetailInitial()){
     _init();
   }
 
@@ -74,15 +80,21 @@ class CupDetailCubit extends Cubit<CupDetailState> {
   bool currentMemberIsSign(){
     return tournamentRepository.memberIsSign(member,listMemberTournament);
   }
-  Future addMemberTournament(String gamerTag,RoleType roleType,String teamName) async {
+  Future addMemberTournament(
+      {required String gamerTag,
+        required RoleType roleType,
+        required String teamName,}) async {
     TeamDocumentReference teamDocReference;
     if(placesRestante(tournament!,listTeam) == statePlacesRestante.isNotFull) {
       if(isLeader(roleType)) {
         if(await teamNameNotExist(teamName)) {
-          teamDocReference = await teamRepository.addTeamInTournament(Team(name: teamName),);
-          memberTournamentRepository = MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(teamDocReference.reference));
-          memberTournamentRepository.addMemberTournamentInTeam(member, gamerTag, roleType);
+          var team = Team(name: teamName);
+          teamDocReference = await teamRepository.addTeamInTournament(team,);
+          memberTournamentRepository??= MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(teamDocReference.reference));
+          memberTournamentRepository!.addMemberTournamentInTeam(member, gamerTag, roleType);
           emit(CupDetailMemberTournamentAdded());
+          emailMessage.sendMessageWelcomeMethod(tournament!, team, appBloc.state.user.email);
+          emailMessage.sendMessageTeamCodeMethod(tournament!,team, appBloc.state.user.email);
         } else {
           emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Nom de team existante'));
         }
@@ -91,9 +103,13 @@ class CupDetailCubit extends Cubit<CupDetailState> {
       if(isPlayer(roleType)){
         var team = await teamRepository.findTeamWithCode(teamName);
         if(findTeam(team)) {
-          memberTournamentRepository = MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(team!.reference.reference));
-          memberTournamentRepository.addMemberTournamentInTeam(member, gamerTag, roleType);
+          memberTournamentRepository ??= MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(team!.reference.reference));
+
+          memberTournamentRepository!.addMemberTournamentInTeam(member, gamerTag, roleType);
           emit(CupDetailMemberTournamentAdded());
+          // MyMessage myMessage =
+
+          emailMessage.sendMessageTeamCodeMethod(tournament!, team!.data!, appBloc.state.user.email);
         } else {
           emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Code team non reconnu'));
         }

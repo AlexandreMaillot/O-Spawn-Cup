@@ -13,7 +13,7 @@ void main() {
   late MockTournamentRepository tournamentRepository;
 
   DateTime now = DateTime.now();
-  Tournament tournament1 = Tournament(name: "Tournois 1",
+  Tournament tournament1 = Tournament(name: 'Tournois 1',
       dateDebutTournois: DateTime(now.year,now.month,now.day + 7),
       game: GameName.LeagueOfLegend,
       server: ServerType.EU,
@@ -24,9 +24,9 @@ void main() {
       killPointTournament: 1,
       pointPerRangTournament: 1,
       rangStartTournament: 15,
-      cashPrize: const ["Mon lot 1","Mon lot 2","Mon lot 3"],
-      listCodesGames: const ["MonCode1","MonCode2","MonCode3",]);
-  Tournament tournament2 = Tournament(name: "Tournois 2",
+      cashPrize: const ['Mon lot 1','Mon lot 2','Mon lot 3'],
+      listCodesGames: const ['MonCode1','MonCode2','MonCode3',]);
+  Tournament tournament2 = Tournament(name: 'Tournois 2',
       dateDebutTournois: DateTime(now.year,now.month,now.day + 5),
       game: GameName.Fornite,
       server: ServerType.EU,
@@ -37,8 +37,8 @@ void main() {
       killPointTournament: 1,
       pointPerRangTournament: 1,
       rangStartTournament: 15,
-      cashPrize: const ["Mon lot 1","Mon lot 2","Mon lot 3"],
-      listCodesGames: const ["MonCode1","MonCode2","MonCode3",]);
+      cashPrize: const ['Mon lot 1','Mon lot 2','Mon lot 3'],
+      listCodesGames: const ['MonCode1','MonCode2','MonCode3',]);
 
 
   setUp((){

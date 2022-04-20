@@ -80,41 +80,41 @@ class TournamentRepository {
     tournamentCollectionReference.doc(documentId).delete();
   }
   Query<Object?> addOrderByDateStart(Query<Object?> queryListTournament, bool isOrder) {
-    return queryListTournament.orderBy("dateDebutTournois", descending: isOrder);
+    return queryListTournament.orderBy('dateDebutTournois', descending: isOrder);
   }
   Query<Object?> addFilterForGameName(Query<Object?> queryListTournament, GameName? gameName) {
     if(gameName == null) {
       return queryListTournament;
     } else {
-      return queryListTournament.where("game", isEqualTo: gameName.state);
+      return queryListTournament.where('game', isEqualTo: gameName.state);
     }
   }
   Query<Object?> addFilterForName(Query<Object?> queryListTournament, String? name) {
     if(name == null) {
       return queryListTournament;
     } else {
-      return queryListTournament.where("name", isEqualTo: name);
+      return queryListTournament.where('name', isEqualTo: name);
     }
   }
   Query<Object?> addFilterForDateStart(Query<Object?> queryListTournament, DateTime? date) {
     if(date == null) {
       return queryListTournament;
     } else {
-      return queryListTournament.where("dateDebutTournois", isGreaterThanOrEqualTo: date.toString());
+      return queryListTournament.where('dateDebutTournois', isGreaterThanOrEqualTo: date.toString());
     }
   }
   Query<Object?> addFilterForTournamentState(Query<Object?> queryListTournament, TournamentState? tournamentState) {
     if(tournamentState == null) {
       return queryListTournament;
     } else {
-      return queryListTournament.where("state", isEqualTo: tournamentState.name);
+      return queryListTournament.where('state', isEqualTo: tournamentState.name);
     }
   }
   Query<Object?> addFilterForTournamentType(Query<Object?> queryListTournament, TournamentType? tournamentType) {
     if(tournamentType == null) {
       return queryListTournament;
     } else {
-      return queryListTournament.where("tournamentType.capacityTeam", isEqualTo: tournamentType.capacityTeam);
+      return queryListTournament.where('tournamentType.capacityTeam', isEqualTo: tournamentType.capacityTeam);
     }
   }
 

@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart' as mock_fire;
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/repository/firestorage_service.dart';
+import 'package:path_provider/path_provider.dart';
 class MockFile extends Mock implements File{}
 class MockReference extends Mock implements Reference {}
 class MockFirebaseStorage extends Mock implements FirebaseStorage {}
@@ -15,6 +18,7 @@ class MockTaskSnapshot extends Mock implements TaskSnapshot {}
  class MockAssetBundle extends Mock implements AssetBundle {}
  class MockPlatformAssetBundle extends Mock implements PlatformAssetBundle {}
  class MockDownloadTask extends Mock implements DownloadTask {}
+ class MockDefaultCacheManager extends Mock implements DefaultCacheManager {}
 void main() {
   late FirestorageService firestorageService;
   late MockFile file;
@@ -27,6 +31,7 @@ void main() {
   late MockAssetBundle assetBundle;
   late MockPlatformAssetBundle platformAssetBundle;
   late MockDownloadTask downloadTask;
+  late MockDefaultCacheManager defaultCacheManager;
 
   setUp((){
     storage = MockFirebaseStorage();
@@ -34,12 +39,13 @@ void main() {
     taskSnapshot = MockTaskSnapshot();
     downloadTask = MockDownloadTask();
     assetBundle = MockAssetBundle();
+    defaultCacheManager = MockDefaultCacheManager();
     platformAssetBundle = MockPlatformAssetBundle();
     uint8list = Uint8List(10);
     byteData = ByteData(10);
     file = MockFile();
     reference = MockReference();
-    firestorageService = FirestorageService(firebaseStorage: storage,);
+    firestorageService = FirestorageService(firebaseStorage: storage,defaultCacheManager: defaultCacheManager);
 
   });
   test('getPreffixImage', () {
@@ -47,13 +53,17 @@ void main() {
     var preffix = firestorageService.getPreffixImage();
     expect(preffix.length, 13);
   });
-  test('dowloadFileImage', () {
-    var name = 'nameTest';
-    when(() => storage.ref('tournaments/' + name + '')).thenAnswer((invocation) => reference);
-    when(() => reference.writeToFile(file)).thenAnswer((invocation) => downloadTask);
-    print((reference.writeToFile(file)));
-    firestorageService.downloadFileImage(name);
-    // expect(preffix.length, 13);
+  //TODO test downloadFileImage
+  test('dowloadFileImage', () async {
+    // var name = 'nameTest';
+    // when(() => storage.ref('tournaments/' + name + '')).thenAnswer((invocation) => reference);
+    // when(() => reference.writeToFile(file)).thenAnswer((invocation) => downloadTask);
+    // when(() => reference.putFile(file)).thenAnswer((invocation) => uploadTask);
+    // when(() => reference.getDownloadURL()).thenAnswer((invocation) => Future.value('monlien/monimagetest.png'));
+    // when(() async => await defaultCacheManager.getSingleFile('monlien/monimagetest.png')).thenAnswer((invocation) async => Future.value(file));
+    // var finalFile = await firestorageService.downloadFileImage(name);
+    // Directory appDocDir = await getApplicationDocumentsDirectory();
+    // expect(finalFile.path, '${appDocDir.path}/test.jpeg');
   });
   test('addImageToStorage avec camera/gallery', () async {
 
