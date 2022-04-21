@@ -27,7 +27,7 @@ class CupDetailPage extends StatelessWidget {
   Route route() {
     return MaterialPageRoute<void>(builder: (_) => CupDetailPage(tournament: tournament,));
   }
-  Page page() => MaterialPage<void>(child: CupDetailPage(tournament: tournament,));
+  static Page page({required Tournament tournois}) => MaterialPage<void>(child: CupDetailPage(tournament: tournois,));
   @override
   Widget build(BuildContext context) {
     var tournamentRepository = TournamentRepository(tournamentCollectionReference: TournamentCollectionReference());

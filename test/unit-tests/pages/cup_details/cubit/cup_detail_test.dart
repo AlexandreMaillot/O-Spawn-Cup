@@ -106,7 +106,7 @@ void main() {
 
     appBloc = MockAppBloc();
     user = MockUser();
-    when(() => appBloc.state).thenAnswer((_) => const AppState.unauthenticated());
+    when(() => appBloc.state).thenAnswer((_) => const AppState(user: null, status: AppStatus.unauthenticated));
 
   });
 
@@ -226,7 +226,7 @@ void main() {
         'Cup detail addMemberTournament leader',
         setUp: () {
           tournamentMock = MockTournament();
-          when(() => appBloc.state).thenAnswer((_) => AppState.authenticated(user));
+          when(() => appBloc.state).thenAnswer((_) => AppState(user: user, status: AppStatus.authenticated));
           when(() => tournamentMock.capacity,).thenReturn(100);
           when(() => user.email,).thenReturn('alexandre.maillot97@gmail.com');
           // when(() => appBloc.state.user,).thenReturn(user);

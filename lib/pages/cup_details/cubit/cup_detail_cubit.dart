@@ -46,7 +46,7 @@ class CupDetailCubit extends Cubit<CupDetailState> {
       listMemberTournament = event;
       emit(CupDetailListMemberTournamentChanged(listMemberTournament: listMemberTournament));
     });
-    memberRepository.currentMember(appBloc.state.user.id).listen((event) {
+    memberRepository.currentMember(appBloc.state.user!.id).listen((event) {
       if(event != null) {
         member = event;
         emit(CupDetailMemberChanged(member: member));
@@ -95,8 +95,8 @@ class CupDetailCubit extends Cubit<CupDetailState> {
           memberTournamentRepository??= MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(teamDocReference.reference));
           memberTournamentRepository!.addMemberTournamentInTeam(member, gamerTag, roleType);
           emit(CupDetailMemberTournamentAdded());
-          emailMessage.sendMessageWelcomeMethod(tournament!, team, appBloc.state.user.email);
-          emailMessage.sendMessageTeamCodeMethod(tournament!,team, appBloc.state.user.email);
+          emailMessage.sendMessageWelcomeMethod(tournament!, team, appBloc.state.user!.email);
+          emailMessage.sendMessageTeamCodeMethod(tournament!,team, appBloc.state.user!.email);
         } else {
           emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Nom de team existante'));
         }
@@ -111,7 +111,7 @@ class CupDetailCubit extends Cubit<CupDetailState> {
           emit(CupDetailMemberTournamentAdded());
           // MyMessage myMessage =
 
-          emailMessage.sendMessageTeamCodeMethod(tournament!, team!.data!, appBloc.state.user.email);
+          emailMessage.sendMessageTeamCodeMethod(tournament!, team!.data!, appBloc.state.user!.email);
         } else {
           emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Code team non reconnu'));
         }

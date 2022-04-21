@@ -39,7 +39,7 @@ class AppView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: FlowBuilder<AppState>(
         state: context.select((AppBloc bloc) => bloc.state),
-        onGeneratePages: onGenerateAppViewPages,
+        onGeneratePages: (app,pages) => onGenerateAppViewPages(app: app),
       ),
     );
   }

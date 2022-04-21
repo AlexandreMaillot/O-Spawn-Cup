@@ -4,27 +4,39 @@ enum AppStatus {
   authenticated,
   unauthenticated,
 }
+enum FormTournamentStatus {
+  enCreation,
+  enModification,
+}
 
 class AppState extends Equatable {
-  const AppState._({
+  const AppState({
     required this.status,
     this.user = User.empty,
     this.tournament,
     this.gameName,
-    this.creatingTournament = false,
+    this.formTournamentStatus,
   });
+  AppState copyWith(
+      {AppStatus? status,
+      User? user,
+      Tournament? tournament,
+      GameName? gameName,
+        FormTournamentStatus? formTournamentStatus}) {
+    return AppState(
+        status: status,
+        gameName: gameName,
+        tournament: tournament,
+        formTournamentStatus: formTournamentStatus,
+        user: user);
+  }
 
-  const AppState.authenticated(User user)
-      : this._(status: AppStatus.authenticated, user: user);
-
-  const AppState.unauthenticated() : this._(status: AppStatus.unauthenticated);
-
-  final AppStatus status;
-  final User user;
+  final AppStatus? status;
+  final User? user;
   final Tournament? tournament;
   final GameName? gameName;
-  final bool creatingTournament;
+  final FormTournamentStatus? formTournamentStatus;
 
   @override
-  List<Object?> get props => [status, user,gameName,tournament];
+  List<Object?> get props => [status, user, gameName, tournament, formTournamentStatus];
 }

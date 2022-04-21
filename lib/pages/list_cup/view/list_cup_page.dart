@@ -13,7 +13,7 @@ class ListCupPage extends StatelessWidget {
   Route route() {
     return MaterialPageRoute<void>(builder: (_) => ListCupPage(gameName: gameName,));
   }
-  Page page() => MaterialPage<void>(child: ListCupPage(gameName: gameName,));
+  static Page page({required GameName gameName}) => MaterialPage<void>(child: ListCupPage(gameName: gameName,));
   ListCupPage({
     Key? key,
     required this.gameName

@@ -22,7 +22,7 @@ class FormTournament extends StatelessWidget {
   Route route() {
     return MaterialPageRoute<void>(builder: (_) => FormTournament(tournament: tournament,));
   }
-  Page page() => MaterialPage<void>(child: FormTournament(tournament: tournament,));
+  static Page page({required Tournament? tournois}) => MaterialPage<void>(child: FormTournament(tournament: tournois,));
   Tournament? tournament;
   FormTournament({
     Key? key,
