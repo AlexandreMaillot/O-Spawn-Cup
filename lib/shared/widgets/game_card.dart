@@ -1,4 +1,6 @@
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:o_spawn_cup/app/app.dart';
 import 'package:o_spawn_cup/pages/list_cup/list_cup.dart';
 
 import '../../constant.dart';
@@ -15,7 +17,8 @@ class GameCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           (form == false)
-              ? Navigator.of(context).push<void>(ListCupPage(gameName: listCardGame[index].gameName).route())
+              ? context.flow<AppState>().update((app) => app.copyWith(gameName: listCardGame[index].gameName))
+          // Navigator.of(context).push<void>(ListCupPage(gameName: listCardGame[index].gameName).route())
               : null;
         },
         child: ClipRRect(

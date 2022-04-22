@@ -12,7 +12,7 @@ List<Page> onGenerateAppViewPages({required AppState app, List<Page<dynamic>>? p
   final gameSelect = app.gameName;
   final tournamentSelect = app.tournament;
   final formTournamentStatus = app.formTournamentStatus;
-
+  print(app);
   switch (app.status) {
     case AppStatus.authenticated:
       switch (app.formTournamentStatus) {

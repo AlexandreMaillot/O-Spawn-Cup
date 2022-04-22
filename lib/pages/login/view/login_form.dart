@@ -1,14 +1,14 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/cubit/google_authentication/google_authentication_cubit.dart';
 import 'package:o_spawn_cup/pages/login/bloc/login_form_bloc.dart';
 import 'package:o_spawn_cup/pages/login/login.dart';
 
-import "package:o_spawn_cup/shared/widgets/custom_button_connect_with.dart";
+import 'package:o_spawn_cup/shared/widgets/custom_button_connect_with.dart';
 import 'package:o_spawn_cup/pages/start_page/widgets/custom_divider.dart';
-import "package:o_spawn_cup/shared/widgets/custom_text_field.dart";
-import "package:o_spawn_cup/constant.dart";
-import "package:o_spawn_cup/shared/widgets/custom_button_theme.dart";
+import 'package:o_spawn_cup/shared/widgets/custom_text_field.dart';
+import 'package:o_spawn_cup/constant.dart';
+import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
 import 'package:o_spawn_cup/services/authentification.dart';
 
 
@@ -46,13 +46,13 @@ class LoginForm extends StatelessWidget {
                         padding: EdgeInsets.only(top: screenSize.height * 0.05),
                         child: IconButton(
                           onPressed: (){
-                            Navigator.pushNamed(context, "/");
+                            Navigator.pushNamed(context, '/');
                           },
                           icon: const Icon(Icons.arrow_back,color: Color(0xff191919)),
                         ),
                       ),
                       Center(
-                            child: Image.asset("assets/images/logoOSpawnCup.png",width: screenSize.width * 0.78, height: screenSize.height * 0.3),
+                            child: Image.asset('assets/images/logoOSpawnCup.png',width: screenSize.width * 0.78, height: screenSize.height * 0.3),
                       ),
                     ],
                   ),
@@ -64,14 +64,14 @@ class LoginForm extends StatelessWidget {
                     height: screenSize.height * 0.13,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         _EmailInput(),
                         _PasswordInput(),
                       ],
                     ),
                   ),
                 ),
-                CustomButtonTheme(colorButton: colorTheme,colorText: colorTextTheme,text: "CONNEXION",onPressedMethod: () => loginFormBloc.submit()),
+                CustomButtonTheme(colorButton: colorTheme,colorText: colorTextTheme,text: 'CONNEXION',onPressedMethod: () => loginFormBloc.submit()),
                 Padding(
                     padding: EdgeInsets.only(top: screenSize.height * 0.037, bottom: screenSize.height * 0.024),
                     child: CustomDivider(screenSize: screenSize),
@@ -82,8 +82,8 @@ class LoginForm extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomButtonConnectWith(screenSize: screenSize,imageName: "assets/images/google.png",text: "CONNEXION AVEC GOOGLE", onPressedMethod: () => googleAuthentication.logInWithGoogle()),
-                      CustomButtonConnectWith(screenSize : screenSize, imageName: "assets/images/facebook.png", text: "CONNEXION AVEC FACEBOOK", onPressedMethod: () => print("test")),
+                      CustomButtonConnectWith(screenSize: screenSize,imageName: 'assets/images/google.png',text: 'CONNEXION AVEC GOOGLE', onPressedMethod: () => googleAuthentication.logInWithGoogle()),
+                      CustomButtonConnectWith(screenSize : screenSize, imageName: 'assets/images/facebook.png', text: 'CONNEXION AVEC FACEBOOK', onPressedMethod: () => print('test')),
                     ],
                   ),
                 ),
@@ -117,7 +117,7 @@ class _PasswordInput extends StatelessWidget {
           borderSide: BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(31),
         ),
-        hintText: "MOT DE PASSE",
+        hintText: 'MOT DE PASSE',
         hintStyle: TextStyle(
           color: const Color(0xff707070).withOpacity(0.43),
           fontFamily: 'o_spawn_cup_font',
@@ -153,7 +153,7 @@ class _EmailInput extends StatelessWidget {
           borderSide: BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(31),
         ),
-        hintText: "E-MAIL",
+        hintText: 'E-MAIL',
         hintStyle: TextStyle(
           color: const Color(0xff707070).withOpacity(0.43),
           fontFamily: 'o_spawn_cup_font',

@@ -1,12 +1,11 @@
-import "package:cloud_firestore/cloud_firestore.dart";
-import "package:flutter/material.dart";
-import "package:flutter_svg/flutter_svg.dart";
-import 'package:o_spawn_cup/bloc/bloc_router.dart';
-import "package:o_spawn_cup/constant.dart";
-import "package:o_spawn_cup/models/Tournament/tournament.dart";
-import "package:o_spawn_cup/shared/widgets/text_element.dart";
-import "package:o_spawn_cup/models/Tournament/tournament_state.dart";
-import 'package:o_spawn_cup/pages/cup_details/view/cup_detail_page.dart';
+import 'package:flow_builder/flow_builder.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:o_spawn_cup/app/bloc/app_bloc.dart';
+import 'package:o_spawn_cup/constant.dart';
+import 'package:o_spawn_cup/models/Tournament/tournament.dart';
+import 'package:o_spawn_cup/shared/widgets/text_element.dart';
+import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 
 import '../../../services/utils.dart';
 
@@ -22,7 +21,7 @@ class CardCup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>  Navigator.of(context).push(CupDetailPage(tournament: tournament).route()),
+      onTap: () =>  context.flow<AppState>().update((app) => app.copyWith(gameName: tournament.game,tournament: tournament)),
           child: Container(
               decoration: BoxDecoration(
                   borderRadius:
@@ -32,7 +31,7 @@ class CardCup extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
                 child: Hero(
-                  tag: "tagcard_cup_${tournament.documentId}",
+                  tag: 'tagcard_cup_${tournament.documentId}',
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -52,7 +51,7 @@ class CardCup extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              SvgPicture.asset("assets/images/tournament_type_icon.svg"),
+                              SvgPicture.asset('assets/images/tournament_type_icon.svg'),
                               TextElement(text: tournament.tournamentType.name,color: Colors.white,),
                             ],
                           ),

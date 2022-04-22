@@ -1,6 +1,8 @@
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:o_spawn_cup/app/bloc/app_bloc.dart';
 import 'package:o_spawn_cup/bloc/bloc_router.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/models/Tournament/tournament.dart';
@@ -34,17 +36,13 @@ class ContainerHeader extends StatelessWidget {
                         : (cupDetailCubit.tournament!.state == TournamentState.enCours)
                         ? colorInProgress
                         : colorClose,
-                    blurRadius: 25.0, // soften the shadow
-                    spreadRadius: 10, //extend the shadow
-                    offset: const Offset(
-                      0, // Move to right 10  horizontally
-                      -15, // Move to bottom 10 Vertically
-                    ),
+                    blurRadius: 25.0,
+                    spreadRadius: 10,
+                    offset: const Offset(0,-15,),
                   )
                 ],
                 image: DecorationImage(
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.95), BlendMode.dstATop),
+                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.95), BlendMode.dstATop),
                   opacity: 0.31,
                   image: Image.network(cupDetailCubit.tournament!.imageUrl!).image,
                   fit: BoxFit.cover,
@@ -105,13 +103,9 @@ class ContainerHeader extends StatelessWidget {
                             highlightColor: Colors.transparent,
                             icon:
                             (cupDetailCubit.member.isAdmin == true)
-                                ? SvgPicture.asset(
-                              'assets/images/icon_edit.svg',
-                              // height: 30,
-                              // width: 37,
-                            )
+                                ? SvgPicture.asset('assets/images/icon_edit.svg')
                                 : Container(),
-                            onPressed: () => Navigator.of(context).push(FormTournament(tournament: cupDetailCubit.tournament).route()),
+                            onPressed: () => context.flow<AppState>().update((app) => app.copyWith(formTournamentStatus: FormTournamentStatus.enModification)),
                           ),
                         ),
                       ),
@@ -122,7 +116,7 @@ class ContainerHeader extends StatelessWidget {
             ),
           );
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
 
       },

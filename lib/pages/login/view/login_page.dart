@@ -23,9 +23,6 @@ class LoginPage extends StatelessWidget {
             create: (_) =>
                 LoginFormBloc(authenticationRepository: authenticationRepository),
           ),
-          // BlocProvider(
-          //   create: (context) => GoogleAuthenticationCubit(authenticationRepository: authenticationRepository),
-          // ),
         ],
         child: LoginForm(),
       ),

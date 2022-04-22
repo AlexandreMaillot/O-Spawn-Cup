@@ -24,7 +24,7 @@ class AppState extends Equatable {
       GameName? gameName,
         FormTournamentStatus? formTournamentStatus}) {
     return AppState(
-        status: status,
+        status: status ?? this.status,
         gameName: gameName,
         tournament: tournament,
         formTournamentStatus: formTournamentStatus,
