@@ -13,7 +13,7 @@ dependencies:
     path: packages/authentication_repository
   bloc: ^8.0.3
   cached_network_image: ^3.2.0
-  cloud_firestore: ^3.1.12
+  cloud_firestore: ^3.1.13
   cloud_firestore_odm: ^1.0.0-dev.10
   cloud_functions: ^3.2.10
   cupertino_icons: ^1.0.4
