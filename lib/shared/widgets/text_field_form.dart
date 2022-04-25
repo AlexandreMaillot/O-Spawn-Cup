@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/pages/cup_details/bloc/sign_tournament_form_bloc.dart';
-import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
-typedef onChangeCallback = void Function(String data);
+
+typedef OnChangeCallback = void Function(String data);
+
 class TextFieldForm extends StatelessWidget {
-  TextFieldForm({
+  const TextFieldForm({
     Key? key,
     required this.textFieldBloc,
     required this.hintText,
@@ -14,52 +14,56 @@ class TextFieldForm extends StatelessWidget {
     this.suffixIcon,
     this.onPressIconSuffix,
     this.textInputAction,
+    this.isObscure,
   }) : super(key: key);
 
   final TextFieldBloc textFieldBloc;
   final String hintText;
-  TextInputType? textInputType;
-  TextInputAction? textInputAction;
-  onChangeCallback? onChanged;
-  Widget? suffixIcon;
-  Function()? onPressIconSuffix;
+  final TextInputType? textInputType;
+  final TextInputAction? textInputAction;
+  final OnChangeCallback? onChanged;
+  final Widget? suffixIcon;
+  final bool? isObscure;
+  final Function()? onPressIconSuffix;
   @override
   Widget build(BuildContext context) {
     return TextFieldBlocBuilder(
-      onChanged: (value) {
-        if(onChanged != null){
-          onChanged!(value);
-        }
-      },
-
+      onChanged: onChange,
       textFieldBloc: textFieldBloc,
       autofillHints: const [AutofillHints.name],
       keyboardType: textInputType ?? TextInputType.name,
       textInputAction: textInputAction,
       // suffixButton: SuffixButton.clearText,
       textAlign: TextAlign.center,
-      clearTextIcon: Container(margin: const EdgeInsets.only(left: 13),child: Icon(Icons.clear,color: colorHintTextTheme,)),
+      obscureText: isObscure,
+      clearTextIcon: Container(
+        margin: const EdgeInsets.only(left: 13),
+        child: const Icon(
+          Icons.clear,
+          color: colorHintTextTheme,
+        ),
+      ),
       decoration: InputDecoration(
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10),
         isCollapsed: true,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
         filled: true,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
         suffixIcon: (suffixIcon != null)
             ? IconButton(
-          onPressed: onPressIconSuffix,
-          icon: suffixIcon!,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        )
+                onPressed: onPressIconSuffix,
+                icon: suffixIcon!,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              )
             : null,
         hintText: hintText,
         hintStyle: TextStyle(
@@ -69,5 +73,9 @@ class TextFieldForm extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void onChange(String value) {
+    onChanged?.call(value);
   }
 }

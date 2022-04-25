@@ -5,23 +5,25 @@ part 'round_stat_state.dart';
 
 class RoundStatCubit extends Cubit<RoundStatState> {
   int roundMax;
-  RoundStatCubit({required this.roundMax}) : super(RoundStatInitial());
+  RoundStatCubit({required this.roundMax}) : super(const RoundStatInitial());
 
-  changeTabContinue(){
-      if(state.roundShow == 0) {
-        emit(RoundStatChanged(roundMax - 1));
-      } else {
-        emit(RoundStatChanged(state.roundShow - 1));
-      }
+  void changeTabContinue() {
+    if (state.roundShow == 0) {
+      emit(RoundStatChanged(roundMax - 1));
+    } else {
+      emit(RoundStatChanged(state.roundShow - 1));
+    }
   }
-  changeTabCancel(){
-    if(state.roundShow == roundMax - 1) {
-      emit(RoundStatChanged(0));
+
+  void changeTabCancel() {
+    if (state.roundShow == roundMax - 1) {
+      emit(const RoundStatChanged(0));
     } else {
       emit(RoundStatChanged(state.roundShow + 1));
     }
   }
-  changeTabOnTap(int index){
 
+  void changeTabOnTap(int index) {
+    // TODO(Tamarok): Change tab on tap.
   }
 }

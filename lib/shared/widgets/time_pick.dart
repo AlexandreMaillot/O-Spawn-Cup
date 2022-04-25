@@ -1,11 +1,8 @@
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/pages/list_cup/bloc/list_cup_filter_form_bloc.dart';
 
 class TimePick extends StatelessWidget {
-  TimePick({
+  const TimePick({
     Key? key,
     required this.inputFieldBloc,
     required this.hintText,
@@ -29,20 +26,20 @@ class TimePick extends StatelessWidget {
         timeFieldBloc: inputFieldBloc,
         textAlign: TextAlign.center,
         format: DateFormat('hh:mm'),
-        initialTime: const TimeOfDay(hour: 0,minute: 0),
+        initialTime: const TimeOfDay(hour: 0, minute: 0),
         showClearIcon: true,
-
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.access_time_outlined),
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
           hintText: hintText,
           filled: true,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
         ),
       ),

@@ -1,35 +1,25 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
-#
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
-# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
-# invoked from the command line by running `flutter analyze`.
+include: package:very_good_analysis/analysis_options.yaml
 
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
-include: package:flutter_lints/flutter.yaml
-
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: true
+  exclude:
+    - "example/**"
+    - "lib/generated/**"
+    - "build/**"
+    - "test/**"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  plugins:
+    - dart_code_metrics
 linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at
-  # https://dart-lang.github.io/linter/lints/index.html.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
-    prefer_single_quotes: true
-    always_use_package_imports: true
+    public_member_api_docs: false
+    sort_constructors_first: false
+    avoid_print: true
+    avoid_redundant_argument_values: false
 
-
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
 dart_code_metrics:
   anti-patterns:
     - long-method
@@ -37,10 +27,10 @@ dart_code_metrics:
   metrics:
     cyclomatic-complexity: 6
     maximum-nesting-level: 5
-    number-of-parameters: 4
-    source-lines-of-code: 50
+    source-lines-of-code: 100
   metrics-exclude:
     - test/**
+    - lib/generated/**
   rules:
     - newline-before-return
     - no-boolean-literal-compare
@@ -48,3 +38,24 @@ dart_code_metrics:
     - prefer-trailing-comma
     - prefer-conditional-expressions
     - no-equal-then-else
+    - prefer-async-await
+    - avoid-missing-enum-constant-in-map
+#    - avoid-ignoring-return-values
+    - avoid-global-state
+#    - avoid-dynamic
+#    - no-magic-number:
+#        allowed: [0,1,2,3,4,5,6,7,8,9,10]
+    - prefer-first
+    - prefer-immediate-return
+    - prefer-last
+
+    - always-remove-listener
+    - avoid-border-all
+    - avoid-returning-widgets
+    - avoid-wrapping-in-padding
+    - prefer-const-border-radius
+    - prefer-extracting-callbacks
+    - prefer-single-widget-per-file
+
+  rules-exclude:
+    - lib/generated/**

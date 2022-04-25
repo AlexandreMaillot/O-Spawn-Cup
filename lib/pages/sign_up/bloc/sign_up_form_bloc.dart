@@ -1,28 +1,46 @@
 import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/services/field_bloc_validators_errors_fr.dart';
 import 'package:o_spawn_cup/services/firebase_handler.dart';
 
-
 class SignUpFormBloc extends FormBloc<String, String> {
-  final email = TextFieldBloc(validators: [FieldBlocValidatorsFr.required,FieldBlocValidatorsFr.email],);
-  final password = TextFieldBloc(validators: [FieldBlocValidatorsFr.required,FieldBlocValidatorsFr.passwordMin6Chars],);
-  final confirmPassword = TextFieldBloc(validators: [FieldBlocValidatorsFr.required,],);
+  final email = TextFieldBloc<TextFieldBloc>(
+    validators: [FieldBlocValidatorsFr.required, FieldBlocValidatorsFr.email],
+  );
+  final password = TextFieldBloc<TextFieldBloc>(
+    validators: [
+      FieldBlocValidatorsFr.required,
+      FieldBlocValidatorsFr.passwordMin6Chars,
+    ],
+  );
+  final confirmPassword = TextFieldBloc<TextFieldBloc>(
+    validators: [
+      FieldBlocValidatorsFr.required,
+    ],
+  );
+  final pseudo = TextFieldBloc<TextFieldBloc>(
+    validators: [
+      FieldBlocValidatorsFr.required,
+    ],
+  );
   late AuthenticationRepository _authenticationRepository;
 
   SignUpFormBloc({required AuthenticationRepository authenticationRepository}) {
     _authenticationRepository = authenticationRepository;
-    addFieldBlocs(step: 0,fieldBlocs: [
-      email,
-      password,
-      confirmPassword
-    ]);
-    confirmPassword..subscribeToFieldBlocs([password])
-    ..addValidators([FieldBlocValidatorsFr.confirmPassword(password)]);
+    addFieldBlocs(
+      step: 0,
+      fieldBlocs: [
+        email,
+        password,
+        confirmPassword,
+        pseudo,
+      ],
+    );
+    confirmPassword
+      ..subscribeToFieldBlocs([password])
+      ..addValidators([FieldBlocValidatorsFr.confirmPassword(password)]);
   }
 
   @override
@@ -33,7 +51,10 @@ class SignUpFormBloc extends FormBloc<String, String> {
         email: email.value,
         password: password.value,
       );
-      FirebaseHandler().addMemberFirebase(_authenticationRepository.currentUser.email ?? "", _authenticationRepository.currentUser.id);
+      FirebaseHandler().addMemberFirebase(
+        pseudo.value,
+        _authenticationRepository.currentUser.id,
+      );
       emitSuccess();
     } on LogInWithEmailAndPasswordFailure catch (error) {
       emitFailure(failureResponse: error.message);

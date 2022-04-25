@@ -701,7 +701,7 @@ class MemberQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 // **************************************************************************
 
 Member _$MemberFromJson(Map<String, dynamic> json) => Member(
-      pseudo: json['pseudo'] as String? ?? "",
+      pseudo: json['pseudo'] as String? ?? '',
       uid: json['uid'] as String,
       isAdmin: json['isAdmin'] as bool? ?? false,
     );

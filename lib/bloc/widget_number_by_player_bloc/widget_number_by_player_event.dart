@@ -7,11 +7,10 @@ abstract class WidgetNumberByPlayerEvent extends Equatable {
 }
 
 class WidgetNumberByPlayerChanging extends WidgetNumberByPlayerEvent {
-  int? indexSelect;
-  WidgetNumberByPlayerChanging({required this.indexSelect});
+  final int? indexSelect;
+  const WidgetNumberByPlayerChanging({required this.indexSelect});
   @override
   List<int?> get props => [indexSelect];
 }
-class WidgetNumberByPlayerAnimating extends WidgetNumberByPlayerEvent {
 
-}
+class WidgetNumberByPlayerAnimating extends WidgetNumberByPlayerEvent {}

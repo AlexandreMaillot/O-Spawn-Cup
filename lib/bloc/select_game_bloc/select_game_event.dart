@@ -10,7 +10,7 @@ class SelectGameloadList extends SelectGameEvent {}
 
 class SelectGameChange extends SelectGameEvent {
   final double indexSelect;
-  SelectGameChange({required this.indexSelect});
+  const SelectGameChange({required this.indexSelect});
   @override
   List<Object> get props => [indexSelect];
 }

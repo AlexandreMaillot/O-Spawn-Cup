@@ -5,12 +5,16 @@ abstract class StepByStepWidgetEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 class StepByStepWidgetInitialisation extends StepByStepWidgetEvent {}
+
 class StepByStepWidgetContinue extends StepByStepWidgetEvent {}
+
 class StepByStepWidgetCancel extends StepByStepWidgetEvent {}
+
 class StepByStepWidgetByTap extends StepByStepWidgetEvent {
   final int indexTap;
-  StepByStepWidgetByTap({required this.indexTap});
+  const StepByStepWidgetByTap({required this.indexTap});
   @override
   List<Object?> get props => [indexTap];
 }

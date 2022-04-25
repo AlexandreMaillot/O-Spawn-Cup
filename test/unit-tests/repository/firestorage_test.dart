@@ -3,22 +3,33 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage_mocks/firebase_storage_mocks.dart'
+    as mock_fire;
 import 'package:flutter/services.dart';
-import 'package:firebase_storage_mocks/firebase_storage_mocks.dart' as mock_fire;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/repository/firestorage_service.dart';
 import 'package:path_provider/path_provider.dart';
-class MockFile extends Mock implements File{}
+
+class MockFile extends Mock implements File {}
+
 class MockReference extends Mock implements Reference {}
+
 class MockFirebaseStorage extends Mock implements FirebaseStorage {}
+
 class MockUploadTask extends Mock implements UploadTask {}
+
 class MockTaskSnapshot extends Mock implements TaskSnapshot {}
- class MockAssetBundle extends Mock implements AssetBundle {}
- class MockPlatformAssetBundle extends Mock implements PlatformAssetBundle {}
- class MockDownloadTask extends Mock implements DownloadTask {}
- class MockDefaultCacheManager extends Mock implements DefaultCacheManager {}
+
+class MockAssetBundle extends Mock implements AssetBundle {}
+
+class MockPlatformAssetBundle extends Mock implements PlatformAssetBundle {}
+
+class MockDownloadTask extends Mock implements DownloadTask {}
+
+class MockDefaultCacheManager extends Mock implements DefaultCacheManager {}
+
 void main() {
   late FirestorageService firestorageService;
   late MockFile file;
@@ -33,7 +44,7 @@ void main() {
   late MockDownloadTask downloadTask;
   late MockDefaultCacheManager defaultCacheManager;
 
-  setUp((){
+  setUp(() {
     storage = MockFirebaseStorage();
     uploadTask = MockUploadTask();
     taskSnapshot = MockTaskSnapshot();
@@ -45,11 +56,10 @@ void main() {
     byteData = ByteData(10);
     file = MockFile();
     reference = MockReference();
-    firestorageService = FirestorageService(firebaseStorage: storage,defaultCacheManager: defaultCacheManager);
-
+    firestorageService = FirestorageService(
+        firebaseStorage: storage, defaultCacheManager: defaultCacheManager);
   });
   test('getPreffixImage', () {
-
     var preffix = firestorageService.getPreffixImage();
     expect(preffix.length, 13);
   });
@@ -66,18 +76,19 @@ void main() {
     // expect(finalFile.path, '${appDocDir.path}/test.jpeg');
   });
   test('addImageToStorage avec camera/gallery', () async {
-
     when(() => storage.ref()).thenReturn(reference);
     when(() => reference.child(any())).thenReturn(reference);
-    when(() => reference.putFile(file)).thenAnswer((invocation) => mock_fire.MockUploadTask(reference));
+    when(() => reference.putFile(file))
+        .thenAnswer((invocation) => mock_fire.MockUploadTask(reference));
     when(() => taskSnapshot.ref).thenReturn(reference);
-    when(() => reference.getDownloadURL()).thenAnswer((invocation) => Future.value('url'));
-    await firestorageService.addImageToStorage('fileName',file, true);
+    when(() => reference.getDownloadURL())
+        .thenAnswer((invocation) => Future.value('url'));
+    await firestorageService.addImageToStorage(
+        imageName: 'fileName', file: file, takeByCamera: true);
   });
 
   //TODO test image predefini a faire
   test('addImageToStorage avec image predefinie', () async {
-
     // when(() => storage.ref()).thenReturn(reference);
     // when(() => reference.child(any())).thenReturn(reference);
     // when(() => file.path).thenReturn('test');

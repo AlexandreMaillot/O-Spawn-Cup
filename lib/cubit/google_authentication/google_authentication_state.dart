@@ -8,17 +8,20 @@ class GoogleAuthenticationInitial extends GoogleAuthenticationState {
   @override
   List<Object> get props => [];
 }
+
 class GoogleAuthenticationLoad extends GoogleAuthenticationState {
   @override
   List<Object> get props => [];
 }
+
 class GoogleAuthenticationSuccess extends GoogleAuthenticationState {
   @override
   List<Object> get props => [];
 }
+
 class GoogleAuthenticationFailure extends GoogleAuthenticationState {
-  String error;
-  GoogleAuthenticationFailure({required this.error});
+  final String error;
+  const GoogleAuthenticationFailure({required this.error});
   @override
   List<Object> get props => [error];
 }

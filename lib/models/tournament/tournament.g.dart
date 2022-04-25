@@ -54,7 +54,7 @@ class _$TournamentCollectionReference extends _$TournamentQuery
     firestore ??= FirebaseFirestore.instance;
 
     return _$TournamentCollectionReference._(
-      firestore.collection('Tournament').withConverter(
+      firestore.collection('tournament').withConverter(
             fromFirestore: TournamentCollectionReference.fromFirestore,
             toFirestore: TournamentCollectionReference.toFirestore,
           ),
@@ -1604,7 +1604,7 @@ abstract class TeamDocumentReference
     String? documentId,
     List<MemberTournament> listMemberTournament,
     String name,
-    String teamCode,
+    String? teamCode,
     bool isDisqualified,
     List<Object?> props,
   });
@@ -1673,7 +1673,7 @@ class _$TeamDocumentReference
       if (listMemberTournament != _sentinel)
         "listMemberTournament": listMemberTournament as List<MemberTournament>,
       if (name != _sentinel) "name": name as String,
-      if (teamCode != _sentinel) "teamCode": teamCode as String,
+      if (teamCode != _sentinel) "teamCode": teamCode as String?,
       if (isDisqualified != _sentinel) "isDisqualified": isDisqualified as bool,
       if (props != _sentinel) "props": props as List<Object?>,
     };
@@ -1764,8 +1764,8 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   });
   TeamQuery whereIsDisqualified({
     bool? isEqualTo,
@@ -1827,10 +1827,10 @@ abstract class TeamQuery implements QueryReference<TeamQuerySnapshot> {
 
   TeamQuery orderByTeamCode({
     bool descending = false,
-    String startAt,
-    String startAfter,
-    String endAt,
-    String endBefore,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
     TeamDocumentSnapshot? startAtDocument,
     TeamDocumentSnapshot? endAtDocument,
     TeamDocumentSnapshot? endBeforeDocument,
@@ -2013,8 +2013,8 @@ class _$TeamQuery extends QueryReference<TeamQuerySnapshot>
     String? isGreaterThan,
     String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<String>? whereIn,
-    List<String>? whereNotIn,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
   }) {
     return _$TeamQuery(
       reference.where(
@@ -4158,24 +4158,24 @@ Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
       'cashPrize': instance.cashPrize,
       'listCodesGames': instance.listCodesGames,
       'roundNumber': instance.roundNumber,
+      'state': _$TournamentStateEnumMap[instance.state],
       'imageUrl': instance.imageUrl,
       'imageName': instance.imageName,
       'killPointTournament': instance.killPointTournament,
       'pointPerRangTournament': instance.pointPerRangTournament,
       'rangStartTournament': instance.rangStartTournament,
-      'state': _$TournamentStateEnumMap[instance.state],
     };
 
 const _$GameNameEnumMap = {
-  GameName.Fornite: 'Fornite',
-  GameName.Valorant: 'Valorant',
-  GameName.LeagueOfLegend: 'LeagueOfLegend',
-  GameName.CSGO: 'CSGO',
+  GameName.fornite: 'fornite',
+  GameName.valorant: 'valorant',
+  GameName.leagueOfLegend: 'leagueOfLegend',
+  GameName.csgo: 'csgo',
 };
 
 const _$ServerTypeEnumMap = {
-  ServerType.EU: 'EU',
-  ServerType.US: 'US',
+  ServerType.eu: 'eu',
+  ServerType.us: 'us',
 };
 
 const _$TournamentStateEnumMap = {

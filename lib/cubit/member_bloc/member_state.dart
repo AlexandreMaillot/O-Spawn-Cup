@@ -5,8 +5,8 @@ abstract class MemberState extends Equatable {
 }
 
 class MemberInitial extends MemberState {
-  Member? member;
-  MemberInitial({this.member});
+  final Member? member;
+  const MemberInitial({this.member});
   @override
   List<Member?> get props => [member];
 }

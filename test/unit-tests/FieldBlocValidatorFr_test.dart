@@ -65,23 +65,23 @@ void main() {
   group('FieldBlocValidator confirmpass', () {
 
     test("field '' ", () {
-      final password = TextFieldBloc();
+      final password = TextFieldBloc<dynamic>();
       String? check = FieldBlocValidatorsFr.verifConfirmPassword('',password);
       expect(FieldBlocValidatorsErrorsFr.confirmPassword, check);
     },);
 
     test('field null', () {
-      final password = TextFieldBloc();
+      final password = TextFieldBloc<dynamic>();
       String? check = FieldBlocValidatorsFr.verifConfirmPassword(null,password);
       expect(FieldBlocValidatorsErrorsFr.confirmPassword, check);
     },);
     test('field password different de confirmpassword', () {
-      final password = TextFieldBloc(initialValue: 'Test123');
+      final password = TextFieldBloc<dynamic>(initialValue: 'Test123');
       String? check = FieldBlocValidatorsFr.verifConfirmPassword('Test',password);
       expect(FieldBlocValidatorsErrorsFr.confirmPassword, check);
     },);
     test('field password different de confirmpassword avec casse', () {
-      final password = TextFieldBloc(initialValue: 'TEST');
+      final password = TextFieldBloc<dynamic>(initialValue: 'TEST');
       String? check = FieldBlocValidatorsFr.verifConfirmPassword('test',password);
       expect(FieldBlocValidatorsErrorsFr.confirmPassword, check);
     },);

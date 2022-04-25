@@ -1052,7 +1052,7 @@ Round _$RoundFromJson(Map<String, dynamic> json) => Round(
           : GameMap.fromJson(json['map'] as Map<String, dynamic>),
       roundState:
           $enumDecodeNullable(_$RoundStateEnumMap, json['roundState']) ??
-              RoundState.EnAttente,
+              RoundState.enAttente,
       roundNumber: json['roundNumber'] as int,
     );
 
@@ -1063,7 +1063,7 @@ Map<String, dynamic> _$RoundToJson(Round instance) => <String, dynamic>{
     };
 
 const _$RoundStateEnumMap = {
-  RoundState.EnAttente: 'EnAttente',
-  RoundState.EnCours: 'EnCours',
-  RoundState.Terminer: 'Terminer',
+  RoundState.enAttente: 'enAttente',
+  RoundState.enCours: 'enCours',
+  RoundState.terminer: 'terminer',
 };

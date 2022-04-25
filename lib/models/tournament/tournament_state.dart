@@ -1,4 +1,11 @@
-enum TournamentState { inscriptionOuverte,inscriptionFermer, enCours, annuler, terminer,complet }
+enum TournamentState {
+  inscriptionOuverte,
+  inscriptionFermer,
+  enCours,
+  annuler,
+  terminer,
+  complet,
+}
 
 extension TournamentStateExt on TournamentState {
   String get state {
@@ -9,14 +16,12 @@ extension TournamentStateExt on TournamentState {
         return 'Annuler';
       case TournamentState.terminer:
         return 'Terminer';
-        case TournamentState.inscriptionFermer:
+      case TournamentState.inscriptionFermer:
         return 'Inscription fermer';
-        case TournamentState.inscriptionOuverte:
+      case TournamentState.inscriptionOuverte:
         return 'Inscription ouverte';
       case TournamentState.complet:
         return 'Complet';
-      default:
-        return '';
     }
   }
 }

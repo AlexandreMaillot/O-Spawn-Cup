@@ -5,7 +5,7 @@ import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/models/card_game.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
 void main() {
-  List<CardGame> list = [CardGame("img", GameName.CSGO),CardGame("img", GameName.Fornite),CardGame("img", GameName.LeagueOfLegend)];
+  List<CardGame> list = [CardGame("img", GameName.csgo),CardGame("img", GameName.fornite),CardGame("img", GameName.leagueOfLegend)];
   test('init bloc with initialindex', () {
     expect(
       SelectGameBloc(initialIndex: 2,listGameName: []).state,

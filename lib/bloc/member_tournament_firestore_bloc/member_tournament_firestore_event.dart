@@ -6,13 +6,18 @@ abstract class MemberTournamentFirestoreEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
-class MemberTournamentFirestoreAdd extends MemberTournamentFirestoreEvent{
 
-  String teamName;
-  String gamerTag;
-  RoleType roleType;
-  MemberTournamentFirestoreAdd({required this.teamName,required this.gamerTag,required RoleType this.roleType});
-  List<Object?> get props => [teamName,gamerTag,roleType];
+class MemberTournamentFirestoreAdd extends MemberTournamentFirestoreEvent {
+  final String teamName;
+  final String gamerTag;
+  final RoleType roleType;
+  const MemberTournamentFirestoreAdd({
+    required this.teamName,
+    required this.gamerTag,
+    required this.roleType,
+  });
+  @override
+  List<Object?> get props => [teamName, gamerTag, roleType];
 }
 
-class MemberTournamentFirestoreUpdate extends MemberTournamentFirestoreEvent{}
+class MemberTournamentFirestoreUpdate extends MemberTournamentFirestoreEvent {}

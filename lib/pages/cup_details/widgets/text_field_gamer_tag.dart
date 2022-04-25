@@ -13,22 +13,29 @@ class TextFieldGamerTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
+
     return Container(
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.05,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(31),
+        borderRadius: BorderRadius.all(Radius.circular(31)),
       ),
       child: TextFieldBlocBuilder(
         textFieldBloc: signTournamentFormBloc.gamerTag,
-        autofillHints: [AutofillHints.name],
+        autofillHints: const [AutofillHints.name],
         keyboardType: TextInputType.name,
         // suffixButton: SuffixButton.clearText,
         textAlign: TextAlign.center,
-        clearTextIcon: Container(margin: EdgeInsets.only(left: 13),child: Icon(Icons.clear,color: colorHintTextTheme,)),
+        clearTextIcon: Container(
+          margin: const EdgeInsets.only(left: 13),
+          child: const Icon(
+            Icons.clear,
+            color: colorHintTextTheme,
+          ),
+        ),
 
         decoration: InputDecoration(
           iconColor: Colors.green,
@@ -40,7 +47,6 @@ class TextFieldGamerTag extends StatelessWidget {
           isCollapsed: true,
           enabledBorder: InputBorder.none,
           border: InputBorder.none,
-
           hintText: 'GamerTag',
           hintStyle: TextStyle(
             color: const Color(0xff707070).withOpacity(0.43),

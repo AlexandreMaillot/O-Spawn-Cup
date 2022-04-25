@@ -5,16 +5,14 @@ abstract class SelectedImagePredefState extends Equatable {
 }
 
 class SelectedImagePredefInitial extends SelectedImagePredefState {
-  int? indexSelected;
+  final int? indexSelected;
 
-  SelectedImagePredefInitial({required this.indexSelected});
+  const SelectedImagePredefInitial({required this.indexSelected});
   @override
   List<int?> get props => [indexSelected];
-
-
 }
+
 class SelectedImagePredefAnimated extends SelectedImagePredefState {
   @override
   List<int?> get props => [];
-
 }

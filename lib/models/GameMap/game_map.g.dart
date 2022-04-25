@@ -525,8 +525,8 @@ Map<String, dynamic> _$GameMapToJson(GameMap instance) => <String, dynamic>{
     };
 
 const _$GameNameEnumMap = {
-  GameName.Fornite: 'Fornite',
-  GameName.Valorant: 'Valorant',
-  GameName.LeagueOfLegend: 'LeagueOfLegend',
-  GameName.CSGO: 'CSGO',
+  GameName.fornite: 'fornite',
+  GameName.valorant: 'valorant',
+  GameName.leagueOfLegend: 'leagueOfLegend',
+  GameName.csgo: 'csgo',
 };

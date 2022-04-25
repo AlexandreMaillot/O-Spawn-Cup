@@ -6,10 +6,10 @@ import 'package:o_spawn_cup/app/app.dart';
 import 'package:o_spawn_cup/models/Member/member.dart' as mem;
 import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
-import 'package:o_spawn_cup/models/Team/team.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/models/role_type.dart';
+import 'package:o_spawn_cup/models/team/team.dart';
+import 'package:o_spawn_cup/models/tournament/tournament.dart';
+import 'package:o_spawn_cup/models/tournament/tournament_state.dart';
 import 'package:o_spawn_cup/repository/member_repository.dart';
 import 'package:o_spawn_cup/repository/member_tounament_repository.dart';
 import 'package:o_spawn_cup/repository/team_repository.dart';
@@ -17,7 +17,8 @@ import 'package:o_spawn_cup/repository/tournament_repository.dart';
 import 'package:o_spawn_cup/services/email_message.dart';
 
 part 'cup_detail_state.dart';
-enum statePlacesRestante {isFull,isNotFull}
+
+enum statePlacesRestante { isFull, isNotFull }
 
 class CupDetailCubit extends Cubit<CupDetailState> {
   TeamRepository teamRepository;
@@ -31,23 +32,28 @@ class CupDetailCubit extends Cubit<CupDetailState> {
 
   late mem.Member member;
   Tournament? tournament;
-  CupDetailCubit({required this.tournamentRepository,
+  CupDetailCubit({
+    required this.tournamentRepository,
     required this.teamRepository,
     required this.memberRepository,
     required this.appBloc,
     this.memberTournamentRepository,
-    required this.emailMessage}) : super(CupDetailInitial()){
+    required this.emailMessage,
+  }) : super(CupDetailInitial()) {
     _init();
   }
 
-  _init(){
-
-     teamRepository.listAllMemberTournamentInTeamCollection().listen((event) {
+  void _init() {
+    teamRepository.listAllMemberTournamentInTeamCollection().listen((event) {
       listMemberTournament = event;
-      emit(CupDetailListMemberTournamentChanged(listMemberTournament: listMemberTournament));
+      emit(
+        CupDetailListMemberTournamentChanged(
+          listMemberTournament: listMemberTournament,
+        ),
+      );
     });
     memberRepository.currentMember(appBloc.state.user!.id).listen((event) {
-      if(event != null) {
+      if (event != null) {
         member = event;
         emit(CupDetailMemberChanged(member: member));
       }
@@ -57,88 +63,127 @@ class CupDetailCubit extends Cubit<CupDetailState> {
       emit(CupDetailListTeamChanged(listTeam: listTeam));
     });
     teamRepository.teamCollectionReference.parent.snapshots().listen((event) {
-      if(event.data != null) {
-        tournament = event.data!;
+      if (event.data != null) {
+        tournament = event.data;
         tournament?.documentId = event.id;
-        emit(CupDetailTournamentChanged(tournament: tournament,isClose: checkStateTournament(tournament!)));
+        emit(
+          CupDetailTournamentChanged(
+            tournament: tournament,
+            isClose: checkStateTournament(tournament!),
+          ),
+        );
       }
     });
   }
-  closeCup(){
+
+  void closeCup() {
     tournamentRepository.cupClose(tournament!);
   }
-  statePlacesRestante placesRestante(Tournament tournois, List<Team> teams){
-    var places = tournois.capacity - teams.length;
-    if(places > 0) {
-      return statePlacesRestante.isNotFull;
-    } else {
-      return statePlacesRestante.isFull;
-    }
 
+  statePlacesRestante placesRestante(Tournament tournois, List<Team> teams) {
+    final places = tournois.capacity - teams.length;
+
+    return places > 0
+        ? statePlacesRestante.isNotFull
+        : statePlacesRestante.isFull;
   }
 
-  bool currentMemberIsSign(){
-    return tournamentRepository.memberIsSign(member,listMemberTournament);
+  bool currentMemberIsSign() {
+    return tournamentRepository.memberIsSign(member, listMemberTournament);
   }
-  Future addMemberTournament(
-      {required String gamerTag,
-        required RoleType roleType,
-        required String teamName,}) async {
+
+  Future addMemberTournament({
+    required String gamerTag,
+    required RoleType roleType,
+    required String teamName,
+  }) async {
     TeamDocumentReference teamDocReference;
-    if(placesRestante(tournament!,listTeam) == statePlacesRestante.isNotFull) {
-      if(isLeader(roleType)) {
-        if(await teamNameNotExist(teamName)) {
-          var team = Team(name: teamName);
+    if (placesRestante(tournament!, listTeam) ==
+        statePlacesRestante.isNotFull) {
+      if (isLeader(roleType)) {
+        if (await teamNameNotExist(teamName)) {
+          final team = Team(name: teamName);
 
-          teamDocReference = await teamRepository.addTeamInTournament(team,);
-          print(1234);
-          memberTournamentRepository??= MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(teamDocReference.reference));
-          memberTournamentRepository!.addMemberTournamentInTeam(member, gamerTag, roleType);
-          emit(CupDetailMemberTournamentAdded());
-          emailMessage.sendMessageWelcomeMethod(tournament!, team, appBloc.state.user!.email);
-          emailMessage.sendMessageTeamCodeMethod(tournament!,team, appBloc.state.user!.email);
+          teamDocReference = await teamRepository.addTeamInTournament(
+            team,
+          );
+          memberTournamentRepository ??= MemberTournamentRepository(
+            memberTournamentCollectionReference:
+                MemberTournamentCollectionReference(
+              teamDocReference.reference,
+            ),
+          );
+          memberTournamentRepository!
+              .addMemberTournamentInTeam(member, gamerTag, roleType);
+          emit(const CupDetailMemberTournamentAdded());
+          emailMessage
+            ..sendMessageWelcomeMethod(
+              tournament!,
+              team,
+              appBloc.state.user!.email,
+            )
+            ..sendMessageTeamCodeMethod(
+              tournament!,
+              team,
+              appBloc.state.user!.email,
+            );
         } else {
-          emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Nom de team existante'));
+          emit(
+            const CupDetailErrorMemberTournamentAdded(
+              errorMsg: 'Nom de team existante',
+            ),
+          );
         }
-
       }
-      if(isPlayer(roleType)){
-        var team = await teamRepository.findTeamWithCode(teamName);
-        if(findTeam(team)) {
-          memberTournamentRepository ??= MemberTournamentRepository(memberTournamentCollectionReference: MemberTournamentCollectionReference(team!.reference.reference));
+      if (isPlayer(roleType)) {
+        final team = await teamRepository.findTeamWithCode(teamName);
+        if (findTeam(team)) {
+          memberTournamentRepository ??= MemberTournamentRepository(
+            memberTournamentCollectionReference:
+                MemberTournamentCollectionReference(
+              team!.reference.reference,
+            ),
+          );
 
-          memberTournamentRepository!.addMemberTournamentInTeam(member, gamerTag, roleType);
-          emit(CupDetailMemberTournamentAdded());
+          memberTournamentRepository!
+              .addMemberTournamentInTeam(member, gamerTag, roleType);
+          emit(const CupDetailMemberTournamentAdded());
           // MyMessage myMessage =
 
-          emailMessage.sendMessageTeamCodeMethod(tournament!, team!.data!, appBloc.state.user!.email);
+          emailMessage.sendMessageTeamCodeMethod(
+            tournament!,
+            team!.data!,
+            appBloc.state.user!.email,
+          );
         } else {
-          emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Code team non reconnu'));
+          emit(
+            const CupDetailErrorMemberTournamentAdded(
+              errorMsg: 'Code team non reconnu',
+            ),
+          );
         }
       }
     } else {
-      emit(CupDetailErrorMemberTournamentAdded(errorMsg: 'Tournois full'));
+      emit(
+        const CupDetailErrorMemberTournamentAdded(errorMsg: 'Tournois full'),
+      );
     }
   }
 
   bool findTeam(TeamDocumentSnapshot? team) => team != null;
 
-  Future<bool> teamNameNotExist(String teamName) async => await teamRepository.checkNameTeam(teamName);
+  Future<bool> teamNameNotExist(String teamName) async =>
+      teamRepository.checkNameTeam(teamName);
 
   bool isPlayer(RoleType roleType) => roleType == RoleType.player;
 
   bool isLeader(RoleType roleType) => roleType == RoleType.leader;
 
   bool checkStateTournament(Tournament tournament) {
-    if(tournament.state == TournamentState.inscriptionFermer ||
+    return tournament.state == TournamentState.inscriptionFermer ||
         tournament.state == TournamentState.annuler ||
         tournament.state == TournamentState.complet ||
-        tournament.state == TournamentState.terminer) {
-      return true;
-    } else {
-      return false;
-    }
-
+        tournament.state == TournamentState.terminer ||
+        false;
   }
-
 }

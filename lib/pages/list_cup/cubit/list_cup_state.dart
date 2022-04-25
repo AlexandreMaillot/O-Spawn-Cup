@@ -8,17 +8,20 @@ class ListCupLoad extends ListCupState {
   @override
   List<Object> get props => [];
 }
+
 class ListCupFiltred extends ListCupState {
   @override
   List<Object> get props => [];
 }
+
 class ListCupNoData extends ListCupState {
   @override
   List<Object> get props => [];
 }
+
 class ListCupLoaded extends ListCupState {
-  List<Tournament> listCup;
-  ListCupLoaded({required this.listCup});
+  final List<Tournament> listCup;
+  const ListCupLoaded({required this.listCup});
   @override
   List<Object> get props => [listCup];
 }

@@ -1,16 +1,17 @@
 part of 'round_stat_cubit.dart';
 
 abstract class RoundStatState extends Equatable {
-  int roundShow;
+  final int roundShow;
 
-  RoundStatState(this.roundShow);
+  const RoundStatState(this.roundShow);
   @override
   List<Object> get props => [roundShow];
 }
 
 class RoundStatInitial extends RoundStatState {
-  RoundStatInitial() : super(0);
+  const RoundStatInitial() : super(0);
 }
+
 class RoundStatChanged extends RoundStatState {
-  RoundStatChanged(int roundShow) : super(roundShow);
+  const RoundStatChanged(int roundShow) : super(roundShow);
 }

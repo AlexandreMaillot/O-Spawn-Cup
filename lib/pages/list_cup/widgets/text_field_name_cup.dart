@@ -13,22 +13,28 @@ class TextFieldNameCup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
+
     return Container(
       width: screenSize.width * 0.87,
       height: screenSize.height * 0.05,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(31),
+        borderRadius: BorderRadius.all(Radius.circular(31)),
       ),
       child: TextFieldBlocBuilder(
         textFieldBloc: listCupFilterFormBloc.name,
-        autofillHints: [AutofillHints.name],
+        autofillHints: const [AutofillHints.name],
         keyboardType: TextInputType.name,
         suffixButton: SuffixButton.clearText,
-        clearTextIcon: Container(margin: EdgeInsets.only(left: 13),child: Icon(Icons.clear,color: colorHintTextTheme,)),
-
+        clearTextIcon: Container(
+          margin: const EdgeInsets.only(left: 13),
+          child: const Icon(
+            Icons.clear,
+            color: colorHintTextTheme,
+          ),
+        ),
         decoration: InputDecoration(
           iconColor: Colors.green,
           suffixIconColor: Colors.green,
@@ -42,7 +48,7 @@ class TextFieldNameCup extends StatelessWidget {
           hintText: 'NOM DU TOURNOIS',
           hintStyle: TextStyle(
             color: const Color(0xff707070).withOpacity(0.43),
-            fontFamily: "o_spawn_cup_font",
+            fontFamily: 'o_spawn_cup_font',
             fontSize: 14,
           ),
         ),

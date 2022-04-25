@@ -4,5 +4,5 @@ class CardGame {
   String img;
   GameName gameName;
 
-  CardGame(this.img,this.gameName);
+  CardGame(this.img, this.gameName);
 }

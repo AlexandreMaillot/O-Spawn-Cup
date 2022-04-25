@@ -7,11 +7,17 @@ abstract class MemberTournamentFirestoreState extends Equatable {
 }
 
 class MemberTournamentFirestoreInitial extends MemberTournamentFirestoreState {}
+
 class MemberTournamentFirestoreAdding extends MemberTournamentFirestoreState {}
+
 class MemberTournamentFirestoreAdded extends MemberTournamentFirestoreState {}
+
 class MemberTournamentFirestoreError extends MemberTournamentFirestoreState {
-  String msg;
-  MemberTournamentFirestoreError({required this.msg});
+  final String msg;
+  const MemberTournamentFirestoreError({required this.msg});
 }
-class MemberTournamentFirestoreUpdating extends MemberTournamentFirestoreState {}
+
+class MemberTournamentFirestoreUpdating extends MemberTournamentFirestoreState {
+}
+
 class MemberTournamentFirestoreUpdated extends MemberTournamentFirestoreState {}

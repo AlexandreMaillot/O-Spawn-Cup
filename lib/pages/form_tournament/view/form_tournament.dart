@@ -5,9 +5,9 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import 'package:o_spawn_cup/bloc/step_by_step_widget_bloc/step_by_step_widget_bloc.dart';
 import 'package:o_spawn_cup/bloc/widget_number_by_player_bloc/widget_number_by_player_bloc.dart';
-import 'package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/constant.dart';
+import 'package:o_spawn_cup/cubit/generate_code_cubit/generate_code_cubit.dart';
+import 'package:o_spawn_cup/models/tournament/tournament.dart';
 import 'package:o_spawn_cup/pages/form_tournament/bloc/tournament_form_bloc.dart';
 import 'package:o_spawn_cup/pages/form_tournament/cubit/list_cash_prize/list_cash_prizes_cubit.dart';
 import 'package:o_spawn_cup/pages/form_tournament/cubit/selected_image_predef_cubit/selected_image_predef_cubit.dart';
@@ -16,26 +16,35 @@ import 'package:o_spawn_cup/pages/form_tournament/view/form_tournament_view.dart
 import 'package:o_spawn_cup/repository/firestorage_service.dart';
 import 'package:o_spawn_cup/repository/tournament_repository.dart';
 
-
 class FormTournament extends StatelessWidget {
-
   Route route() {
-    return MaterialPageRoute<void>(builder: (_) => FormTournament(tournament: tournament,));
+    return MaterialPageRoute<void>(
+      builder: (_) => FormTournament(
+        tournament: tournament,
+      ),
+    );
   }
-  static Page page({required Tournament? tournois}) => MaterialPage<void>(child: FormTournament(tournament: tournois,));
-  Tournament? tournament;
-  FormTournament({
+
+  static Page page({required Tournament? tournois}) => MaterialPage<void>(
+        child: FormTournament(
+          tournament: tournois,
+        ),
+      );
+  final Tournament? tournament;
+  const FormTournament({
     Key? key,
-    required this.tournament
+    required this.tournament,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var  widgetNumberByPlayerBloc = WidgetNumberByPlayerBloc();
-    var  takeImageGalleryCubit = TakeImageGalleryCubit();
-    var  selectedImagePredefCubit = SelectedImagePredefCubit();
-    var  generateCodeCubit = GenerateCodeCubit();
+    final widgetNumberByPlayerBloc = WidgetNumberByPlayerBloc();
+    final takeImageGalleryCubit = TakeImageGalleryCubit();
+    final selectedImagePredefCubit = SelectedImagePredefCubit();
+    final generateCodeCubit = GenerateCodeCubit();
 
-    var  selectGameBloc = SelectGameBloc(listGameName: listCardGame, initialIndex: 1.0);
+    final selectGameBloc =
+        SelectGameBloc(listGameName: listCardGame, initialIndex: 1);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -57,20 +66,24 @@ class FormTournament extends StatelessWidget {
         BlocProvider(
           create: (_) => takeImageGalleryCubit,
         ),
-
         BlocProvider(
           create: (_) => ListCashPrizesCubit(listCashPrizes: []),
         ),
         BlocProvider(
           create: (_) => TournamentFormBloc(
-              tournamentRepository: TournamentRepository(tournamentCollectionReference: TournamentCollectionReference()),
+            tournamentRepository: TournamentRepository(
+              tournamentCollectionReference: TournamentCollectionReference(),
+            ),
             widgetNumberByPlayerBloc: widgetNumberByPlayerBloc,
-              takeImageGalleryCubit: takeImageGalleryCubit,
+            takeImageGalleryCubit: takeImageGalleryCubit,
             selectedImagePredefCubit: selectedImagePredefCubit,
             generateCodeCubit: generateCodeCubit,
             selectGameBloc: selectGameBloc,
             tournament: tournament,
-            firestorageService: FirestorageService(firebaseStorage: FirebaseStorage.instance,defaultCacheManager: DefaultCacheManager()),
+            firestorageService: FirestorageService(
+              firebaseStorage: FirebaseStorage.instance,
+              defaultCacheManager: DefaultCacheManager(),
+            ),
           ),
         ),
       ],

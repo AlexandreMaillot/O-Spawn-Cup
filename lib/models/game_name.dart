@@ -1,23 +1,28 @@
 enum GameName {
-  Fornite,
-  Valorant,
-  LeagueOfLegend,
-  CSGO
+  fornite,
+  valorant,
+  leagueOfLegend,
+  csgo,
 }
+
+const gameNameEnum = {
+  GameName.fornite: 'fornite',
+  GameName.valorant: 'valorant',
+  GameName.leagueOfLegend: 'leagueOfLegend',
+  GameName.csgo: 'csgo',
+};
 
 extension GameNameExt on GameName {
   String get state {
     switch (this) {
-      case GameName.Fornite:
-        return "Fornite";
-      case GameName.Valorant:
-        return "Valorant";
-      case GameName.LeagueOfLegend:
-        return "LeagueOfLegend";
-      case GameName.CSGO:
-        return "CSGO";
-      default:
-        return "";
+      case GameName.fornite:
+        return 'Fornite';
+      case GameName.valorant:
+        return 'Valorant';
+      case GameName.leagueOfLegend:
+        return 'LeagueOfLegend';
+      case GameName.csgo:
+        return 'CSGO';
     }
   }
 }

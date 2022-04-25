@@ -3,9 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:o_spawn_cup/constant.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  String title;
-  bool backArrow;
-  CustomAppBar({
+  final String title;
+  final bool backArrow;
+  const CustomAppBar({
     Key? key,
     required this.title,
     this.backArrow = true,
@@ -15,7 +15,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Container(
       color: colorBackgroundTheme,
-
       child: AppBar(
         automaticallyImplyLeading: true,
         shape: const RoundedRectangleBorder(
@@ -25,15 +24,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         leading: Builder(
           builder: (BuildContext context) {
-            return (backArrow) ? IconButton(
-              icon: SvgPicture.asset(
-                'assets/images/backArrow.svg',
-                height: 30,
-                width: 37,
-              ),
-              onPressed: () => Navigator.of(context).maybePop(),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            ) : Container();
+            return backArrow
+                ? IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/images/backArrow.svg',
+                      height: 30,
+                      width: 37,
+                    ),
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  )
+                : Container();
           },
         ),
         actions: [
@@ -56,7 +58,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           style: TextStyle(
             color: colorTheme,
             shadows: [
-              Shadow(color: const Color(0xff000000).withOpacity(0.39),blurRadius: 15,offset: const Offset(0, 3)),
+              Shadow(
+                color: const Color(0xff000000).withOpacity(0.39),
+                blurRadius: 15,
+                offset: const Offset(0, 3),
+              ),
             ],
             fontFamily: 'o_spawn_cup_font',
             fontSize: 29,

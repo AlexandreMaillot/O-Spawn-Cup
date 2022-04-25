@@ -2,37 +2,34 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
-import 'package:o_spawn_cup/models/Team/team.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
-import 'package:o_spawn_cup/models/role_type.dart';
-import 'package:o_spawn_cup/repository/member_tounament_repository.dart';
+import 'package:o_spawn_cup/models/team/team.dart';
+import 'package:o_spawn_cup/models/tournament/tournament.dart';
 
 class TeamRepository {
   TeamCollectionReference teamCollectionReference;
   late Tournament tournament;
   List<Team> listTeam = [];
   late Stream<List<Team>> listTeamStream;
-  TeamRepository({required this.teamCollectionReference,}){
+  TeamRepository({
+    required this.teamCollectionReference,
+  }) {
     init();
   }
 
-  init() async{
+  void init() {
     loadTournament();
-    listTeamStream = teamCollectionReference.snapshots()
-        .map((event) => event.docs.where((element) => element.data.isDisqualified == false)
-        .map((teamDoc) {
-          Team team = teamDoc.data;
-          team.documentId = teamDoc.id;
-
-          return team;
-        }).toList());
+    listTeamStream = teamCollectionReference.snapshots().map(
+          (event) => event.docs
+              .where((element) => !element.data.isDisqualified)
+              .map((teamDoc) {
+            return teamDoc.data.copyWith(documentId: teamDoc.id);
+          }).toList(),
+        );
 
     listTeamStream.listen((event) async {
-      for (var team in event) {
+      for (final team in event) {
         await addListMemberTournamentInTeam(team);
       }
 
@@ -41,66 +38,90 @@ class TeamRepository {
   }
 
   Stream<List<MemberTournament>> listAllMemberTournamentInTeamCollection() {
-    return teamCollectionReference.reference.firestore.collectionGroup('membersTournament')
+    return teamCollectionReference.reference.firestore
+        .collectionGroup('membersTournament')
         .snapshots()
-        .map((event) => event.docs
-        .map((e) {
-          var memberTournament = MemberTournament.fromJson(e.data());
-          memberTournament.documentId = e.id;
-          return memberTournament;
-        }).toList());
+        .map(
+          (event) => event.docs.map((e) {
+            return MemberTournament.fromJson(e.data()).copyWith(
+              documentId: e.id,
+            );
+          }).toList(),
+        );
   }
-  Future<void> addListMemberTournamentInTeam(Team team) async {
-    var memberTournament = await teamCollectionReference.doc(team.documentId).membersTournament.get();
-    team.listMemberTournament = memberTournament.docs.map((e) => e.data).toList();
+
+  Future<Team> addListMemberTournamentInTeam(Team team) async {
+    final memberTournament = await teamCollectionReference
+        .doc(team.documentId)
+        .membersTournament
+        .get();
+
+    return team.copyWith(
+      listMemberTournament: memberTournament.docs.map((e) => e.data).toList(),
+    );
   }
 
   Future<void> loadTournament() async {
-    var tournamentDocument = await teamCollectionReference.parent.get();
+    final tournamentDocument = await teamCollectionReference.parent.get();
     tournament = tournamentDocument.data!;
   }
-  bool disqualifiedTeamWithNoMember(Team team){
-    if(team.listMemberTournament.isEmpty){
-      team.isDisqualified = true;
+
+  Team disqualifiedTeamWithNoMember(Team team) {
+    var teamModified = team;
+    if (team.listMemberTournament.isEmpty) {
+      teamModified = team.copyWith(isDisqualified: true);
     }
-    teamCollectionReference.doc(team.documentId).set(team);
-    return team.isDisqualified;
+    teamCollectionReference.doc(teamModified.documentId).set(teamModified);
+
+    return teamModified;
   }
+
   int numberTeamInTournament() {
-     return listTeam.length;
+    return listTeam.length;
   }
+
   Future<bool> checkNameTeam(String name) async {
-    var teamExistWithName = listTeam.where((element) => element.name == name);
-    if(teamExistWithName.isNotEmpty){
-      return false;
-    } else {
-      return true;
-    }
+    final teamExistWithName = listTeam.where((element) => element.name == name);
 
+    return teamExistWithName.isEmpty;
   }
 
-  DocumentReference<Team> getTeamDocumentReference(Team team){
+  DocumentReference<Team> getTeamDocumentReference(Team team) {
     return teamCollectionReference.doc(team.documentId).reference;
   }
+
   Future<TeamDocumentSnapshot?> findTeamWithCode(String teamCode) async {
-    var teamExistWithCode = listTeam.where((element) => element.teamCode == teamCode);
-    if(teamExistWithCode.isNotEmpty){
-      return await teamCollectionReference.doc(teamExistWithCode.first.documentId).get();
-    } else {
-      return null;
-    }
+    final teamExistWithCode =
+        listTeam.where((element) => element.teamCode == teamCode);
+
+    return teamExistWithCode.isNotEmpty
+        ? await teamCollectionReference
+            .doc(teamExistWithCode.first.documentId)
+            .get()
+        : null;
   }
 
-  String generateCodeTeam(String beforeCode,int length){
-    const String _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    final Random _rnd = Random();
-    String code = beforeCode + String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-    return code;
+  String generateCodeTeam(String beforeCode, int length) {
+    const _chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final _rnd = Random();
+
+    return beforeCode +
+        String.fromCharCodes(
+          Iterable.generate(
+            length,
+            (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length)),
+          ),
+        );
   }
-  Future<TeamDocumentReference> addTeamInTournament(Team team,) async {
+
+  Future<TeamDocumentReference> addTeamInTournament(
+    Team team,
+  ) async {
     final f = DateFormat('mmMMssddhh');
-    team.teamCode = generateCodeTeam(f.format(DateTime.now()) , 6);
-    return await teamCollectionReference.add(team);
+    team.copyWith(teamCode: generateCodeTeam(f.format(DateTime.now()), 6));
+
+    return teamCollectionReference.add(team);
   }
 
   Stream<List<Team>> listTeamsInTournament() {
@@ -108,19 +129,14 @@ class TeamRepository {
   }
 
   Future<bool> checkTeamCapacity(Team team) async {
-    if(team.listMemberTournament.length + 1 <= tournament.tournamentType.capacityTeam) {
-      return true;
-    } else {
-      return false;
-    }
+    return team.listMemberTournament.length + 1 <=
+            tournament.tournamentType.capacityTeam ||
+        false;
   }
 
   Future<bool> checkTournamentCapacity() async {
-    var numberTeam = numberTeamInTournament();
-    if(tournament.capacity - numberTeam + 1 > 0){
-      return true;
-    } else {
-      return false;
-    }
+    final numberTeam = numberTeamInTournament();
+
+    return tournament.capacity - numberTeam + 1 > 0 || false;
   }
 }

@@ -9,4 +9,5 @@ abstract class GenerateCodeState extends Equatable {
 class GenerateCodeInitial extends GenerateCodeState {}
 
 class GenerateCodeFinish extends GenerateCodeState {}
+
 class GenerateCodeNumChanged extends GenerateCodeState {}

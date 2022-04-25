@@ -1,22 +1,19 @@
-
 import 'package:flutter/material.dart';
 
-class CustomDivider extends StatelessWidget{
-
-  Size screenSize;
-
-
-  CustomDivider({
+class CustomDivider extends StatelessWidget {
+  const CustomDivider({
     Key? key,
-    required this.screenSize,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Padding(
       padding: EdgeInsets.only(
-          left: screenSize.width * 0.069,
-          right: screenSize.width * 0.069),
+        left: screenSize.width * 0.069,
+        right: screenSize.width * 0.069,
+      ),
       child: Row(
         children: const [
           Expanded(
@@ -26,7 +23,7 @@ class CustomDivider extends StatelessWidget{
             ),
           ),
           Text(
-            " OU ",
+            ' OU ',
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'o_spawn_cup_font',
@@ -43,5 +40,4 @@ class CustomDivider extends StatelessWidget{
       ),
     );
   }
-  
 }

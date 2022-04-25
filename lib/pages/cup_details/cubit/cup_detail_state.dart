@@ -8,39 +8,50 @@ class CupDetailInitial extends CupDetailState {
   @override
   List<Object> get props => [];
 }
+
 class CupDetailTournamentChanged extends CupDetailState {
-  Tournament? tournament;
-  bool isClose;
-  CupDetailTournamentChanged({required this.tournament,required this.isClose});
+  final Tournament? tournament;
+  final bool isClose;
+  const CupDetailTournamentChanged({
+    required this.tournament,
+    required this.isClose,
+  });
   @override
   List<Tournament?> get props => [tournament];
 }
+
 class CupDetailListTeamChanged extends CupDetailState {
-  List<Team> listTeam;
-  CupDetailListTeamChanged({required this.listTeam});
+  final List<Team> listTeam;
+  const CupDetailListTeamChanged({required this.listTeam});
   @override
   List<Object> get props => [listTeam];
 }
+
 class CupDetailMemberChanged extends CupDetailState {
-  Member member;
-  CupDetailMemberChanged({required this.member});
+  final Member member;
+  const CupDetailMemberChanged({required this.member});
   @override
   List<Object> get props => [member];
 }
+
 class CupDetailMemberTournamentAdded extends CupDetailState {
-  CupDetailMemberTournamentAdded();
+  const CupDetailMemberTournamentAdded();
   @override
   List<Object> get props => [];
 }
+
 class CupDetailListMemberTournamentChanged extends CupDetailState {
-  List<MemberTournament> listMemberTournament;
-  CupDetailListMemberTournamentChanged({required this.listMemberTournament});
+  final List<MemberTournament> listMemberTournament;
+  const CupDetailListMemberTournamentChanged({
+    required this.listMemberTournament,
+  });
   @override
   List<Object> get props => [listMemberTournament];
 }
+
 class CupDetailErrorMemberTournamentAdded extends CupDetailState {
-  String errorMsg;
-  CupDetailErrorMemberTournamentAdded({required this.errorMsg});
+  final String errorMsg;
+  const CupDetailErrorMemberTournamentAdded({required this.errorMsg});
   @override
   List<Object> get props => [errorMsg];
 }

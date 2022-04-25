@@ -17,18 +17,20 @@ class AppState extends Equatable {
     this.gameName,
     this.formTournamentStatus,
   });
-  AppState copyWith(
-      {AppStatus? status,
-      User? user,
-      Tournament? tournament,
-      GameName? gameName,
-        FormTournamentStatus? formTournamentStatus}) {
+  AppState copyWith({
+    AppStatus? status,
+    User? user,
+    Tournament? tournament,
+    GameName? gameName,
+    FormTournamentStatus? formTournamentStatus,
+  }) {
     return AppState(
-        status: status ?? this.status,
-        gameName: gameName,
-        tournament: tournament,
-        formTournamentStatus: formTournamentStatus,
-        user: user);
+      status: status ?? this.status,
+      gameName: gameName,
+      tournament: tournament,
+      formTournamentStatus: formTournamentStatus,
+      user: user,
+    );
   }
 
   final AppStatus? status;
@@ -38,5 +40,6 @@ class AppState extends Equatable {
   final FormTournamentStatus? formTournamentStatus;
 
   @override
-  List<Object?> get props => [status, user, gameName, tournament, formTournamentStatus];
+  List<Object?> get props =>
+      [status, user, gameName, tournament, formTournamentStatus];
 }

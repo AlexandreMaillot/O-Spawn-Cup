@@ -9,9 +9,10 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      // shape: const CircularNotchedRectangle(),
       color: colorTheme,
-      child: Container(height: 25,),
+      child: Container(
+        height: 25,
+      ),
     );
   }
 }

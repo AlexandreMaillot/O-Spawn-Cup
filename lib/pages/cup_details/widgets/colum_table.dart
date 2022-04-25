@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:o_spawn_cup/shared/widgets/text_element.dart';
 
-class columnTable extends StatelessWidget {
-  const columnTable({
+class ColumnTable extends StatelessWidget {
+  const ColumnTable({
     Key? key,
   }) : super(key: key);
 
@@ -10,7 +10,7 @@ class columnTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
+      children: const [
         Expanded(
           flex: 3,
           child: TextElement(

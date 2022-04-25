@@ -3,65 +3,94 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
-import 'package:o_spawn_cup/models/Team/team.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/models/role_type.dart';
 import 'package:o_spawn_cup/models/server_type.dart';
+import 'package:o_spawn_cup/models/team/team.dart';
+import 'package:o_spawn_cup/models/tournament/tournament.dart';
 import 'package:o_spawn_cup/repository/team_repository.dart';
 
 class MockTeam extends Mock implements Team {}
+
 void main() {
-  DateTime now = DateTime.now();
+  final now = DateTime.now();
   late FakeFirebaseFirestore instance;
   late TeamRepository teamRepository;
   late TournamentCollectionReference tournamentsRef;
   late TeamCollectionReference teamsRef;
-  late List<Team> listTeam = [Team(name: 'MyTeam1'),Team(name: 'MyTeam2'),Team(name: 'MyTeam3')];
-  late MemberTournament memberTournament = MemberTournament(gamerTag: '', role: RoleType.player, member: const Member(uid: ''));
+  List<Team> listTeam = <Team>[
+    Team(
+      name: 'MyTeam1',
+      documentId: 'id1',
+      teamCode: '1234',
+    ),
+    Team(
+      name: 'MyTeam2',
+      documentId: 'id2',
+    ),
+    Team(
+      name: 'MyTeam3',
+      documentId: 'id3',
+    ),
+  ];
+  const memberTournament = MemberTournament(
+    gamerTag: '',
+    role: RoleType.player,
+    member: Member(uid: ''),
+  );
 
-  Tournament tournament4 = Tournament(name: 'Tournois 4',
-      dateDebutTournois: DateTime(now.year,now.month,now.day + 7),
-      game: GameName.LeagueOfLegend,
-      server: ServerType.EU,
-      tournamentType: TournamentType.quintet,
-      capacity: 33,
-      roundNumber: 3,
-      dateDebutInscription: DateTime(now.year,now.month + 1,now.day + 7),
-      killPointTournament: 1,
-      pointPerRangTournament: 1,
-      rangStartTournament: 15,
-      cashPrize: const ['Mon lot 1','Mon lot 2','Mon lot 3'],
-      listCodesGames: const ['MonCode1','MonCode2','MonCode3',]);
+  final tournament4 = Tournament(
+    name: 'Tournois 4',
+    dateDebutTournois: DateTime(now.year, now.month, now.day + 7),
+    game: GameName.leagueOfLegend,
+    server: ServerType.eu,
+    tournamentType: TournamentType.quintet,
+    capacity: 33,
+    roundNumber: 3,
+    dateDebutInscription: DateTime(now.year, now.month + 1, now.day + 7),
+    killPointTournament: 1,
+    pointPerRangTournament: 1,
+    rangStartTournament: 15,
+    cashPrize: const [
+      'Mon lot 1',
+      'Mon lot 2',
+      'Mon lot 3',
+    ],
+    listCodesGames: const [
+      'MonCode1',
+      'MonCode2',
+      'MonCode3',
+    ],
+  );
   setUp(() async {
     instance = FakeFirebaseFirestore();
     tournament4.documentId = 'id4';
-    await instance.collection('Tournament').doc('id4').set(tournament4.toJson());
+    await instance
+        .collection('tournament')
+        .doc('id4')
+        .set(tournament4.toJson());
     tournamentsRef = TournamentCollectionReference(instance);
-    listTeam[0].documentId = 'id1';
-    listTeam[1].documentId = 'id2';
-    listTeam[2].documentId = 'id3';
-    listTeam[0].teamCode = '1234';
-    tournamentsRef.doc('id4').teams.doc('id1').set(listTeam[0]);
-    tournamentsRef.doc('id4').teams.doc('id2').set(listTeam[1]);
-    tournamentsRef.doc('id4').teams.doc('id3').set(listTeam[2]);
-
+    await tournamentsRef.doc('id4').teams.doc('id1').set(listTeam.first);
+    await tournamentsRef.doc('id4').teams.doc('id2').set(listTeam[1]);
+    await tournamentsRef.doc('id4').teams.doc('id3').set(listTeam[2]);
 
     teamsRef = TeamCollectionReference(tournamentsRef.doc('id4').reference);
-    for(int i = 0; i<=10 ; i++) {
-      teamsRef.doc('id3').membersTournament.add(memberTournament);
+    for (var i = 0; i <= 10; i++) {
+      await teamsRef.doc('id3').membersTournament.add(memberTournament);
     }
 
     teamRepository = TeamRepository(teamCollectionReference: teamsRef);
   });
   test('list collection member tournament ', () async {
-    var list = await teamsRef.doc('id3').membersTournament.get().then((value) => value.docs.map((e) {
-      var data = e.data;
-      data.documentId = e.id;
-      return data;
-    }).toList());
-    expect(teamRepository.listAllMemberTournamentInTeamCollection(), emits(list));
+    final list = await teamsRef.doc('id3').membersTournament.get();
+    var listMemberTournament = list.docs.map((e) {
+      return e.data.copyWith(documentId: e.id);
+    }).toList();
+    expect(
+      teamRepository.listAllMemberTournamentInTeamCollection(),
+      emits(listMemberTournament),
+    );
   });
   test('List all team in tournament', () async {
     expect(teamRepository.listTeamsInTournament(), emits(listTeam));
@@ -74,27 +103,28 @@ void main() {
     expect(await teamRepository.checkNameTeam('MyTeam2'), false);
   });
   test('find team with code team', () async {
-
     teamRepository.listTeam = listTeam;
-    var team = await teamRepository.findTeamWithCode('1234');
-    expect(team?.data,isNotNull);
+    final team = await teamRepository.findTeamWithCode('1234');
+    expect(team?.data, isNotNull);
   });
   test('not find team with code team', () async {
     teamRepository.listTeam = listTeam;
-    expect(await teamRepository.findTeamWithCode('12'),null);
+    expect(await teamRepository.findTeamWithCode('12'), null);
   });
   test('generate code team not empty', () {
-    expect(teamRepository.generateCodeTeam('1234', 5),isNotEmpty);
+    expect(teamRepository.generateCodeTeam('1234', 5), isNotEmpty);
   });
   test('generate code team lenght 5', () {
-    var codeBefore = '1234';
-    var code = teamRepository.generateCodeTeam(codeBefore, 5);
-    expect(code.length,codeBefore.length + 5);
+    const codeBefore = '1234';
+    final code = teamRepository.generateCodeTeam(codeBefore, 5);
+    expect(code.length, codeBefore.length + 5);
   });
 
-
   test('id team not null', () async {
-    expect(teamRepository.listTeamsInTournament(), emits(listTeam.where((element) => element.documentId != null)));
+    expect(
+      teamRepository.listTeamsInTournament(),
+      emits(listTeam.where((element) => element.documentId != null)),
+    );
   });
   test('count team', () async {
     teamRepository.listTeam = listTeam;
@@ -103,36 +133,47 @@ void main() {
 
   test('check team is full', () async {
     tournament4.tournamentType = TournamentType.solo;
-    listTeam[0].listMemberTournament.add(memberTournament);
+    List<MemberTournament> list = [];
+    list.addAll(listTeam.first.listMemberTournament);
+    list.add(memberTournament);
+    listTeam.first = listTeam.first.copyWith(listMemberTournament: list);
     teamRepository.tournament = tournament4;
-    expect(await teamRepository.checkTeamCapacity(listTeam[0]), false);
+    expect(await teamRepository.checkTeamCapacity(listTeam.first), false);
   });
   test('check team is not full', () async {
     teamRepository.tournament = tournament4;
     expect(await teamRepository.checkTeamCapacity(listTeam[1]), true);
   });
   test('delete in no member', () {
-    expect(listTeam[1].isDisqualified,false);
-    teamRepository.disqualifiedTeamWithNoMember(listTeam[1]);
-    expect(listTeam[1].isDisqualified,true);
+    expect(listTeam[1].isDisqualified, false);
+    expect(
+      teamRepository.disqualifiedTeamWithNoMember(listTeam[1]).isDisqualified,
+      true,
+    );
   });
-  test('load memberTournament in team', () {
-    teamRepository.addListMemberTournamentInTeam(listTeam[2]).then((value) => expect(listTeam[2].listMemberTournament,isNotEmpty));
+  test('load memberTournament in team', () async {
+    Team team = await teamRepository.addListMemberTournamentInTeam(listTeam[2]);
+    expect(team.listMemberTournament, isNotEmpty);
   });
   test('get teamDocumentReference', () {
-    expect(teamRepository.getTeamDocumentReference(listTeam[1]), teamsRef.doc(listTeam[1].documentId).reference);
+    expect(
+      teamRepository.getTeamDocumentReference(listTeam[1]),
+      teamsRef.doc(listTeam[1].documentId).reference,
+    );
   });
-  test('add Team in tournament', () async {
+  test('add team in tournament', () async {
     var teamCol = await teamsRef.get();
-    var numTeam = teamCol.docs.length;
-    teamRepository.addTeamInTournament(listTeam[0],);
+    final numTeam = teamCol.docs.length;
+    await teamRepository.addTeamInTournament(
+      listTeam.first,
+    );
     teamCol = await teamsRef.get();
     expect(teamCol.docs.length, numTeam + 1);
   });
-  test('add Team in tournament with code ', () async {
-    var myTeam = Team(name: 'NouvelleTeam');
-    teamRepository.addTeamInTournament(myTeam);
-    var teamCol = await teamsRef.get();
+  test('add team in tournament with code ', () async {
+    final myTeam = Team(name: 'NouvelleTeam');
+    await teamRepository.addTeamInTournament(myTeam);
+    final teamCol = await teamsRef.get();
     expect(teamCol.docs[3].data.teamCode, isNot(''));
   });
   test('check tournament team not full', () async {
@@ -141,8 +182,9 @@ void main() {
   });
   test('check tournament team full', () async {
     tournament4.capacity = 1;
-    teamRepository.listTeam = listTeam;
-    teamRepository.tournament = tournament4;
+    teamRepository
+      ..listTeam = listTeam
+      ..tournament = tournament4;
     expect(await teamRepository.checkTournamentCapacity(), false);
   });
 }

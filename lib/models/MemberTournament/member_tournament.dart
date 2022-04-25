@@ -1,29 +1,43 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:o_spawn_cup/models/RoundClassementMember/round_classement_member.dart';
-import 'package:o_spawn_cup/models/Team/team.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
-
+import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/models/role_type.dart';
 
-import '../Member/member.dart';
 part 'member_tournament.g.dart';
-@JsonSerializable(explicitToJson: true)
-class MemberTournament extends Equatable{
-  @JsonKey(ignore: true)
-  String? documentId;
-  String gamerTag;
-  RoleType role;
-  Member member;
 
-  MemberTournament({required this.gamerTag,required this.role,required this.member});
-  factory MemberTournament.fromJson(Map<String, dynamic> json) => _$MemberTournamentFromJson(json);
+@JsonSerializable(explicitToJson: true)
+class MemberTournament extends Equatable {
+  @JsonKey(ignore: true)
+  final String? documentId;
+  final String gamerTag;
+  final RoleType role;
+  final Member member;
+
+  const MemberTournament({
+    this.documentId,
+    required this.gamerTag,
+    required this.role,
+    required this.member,
+  });
+
+  MemberTournament copyWith({
+    String? documentId,
+    String? gamerTag,
+    RoleType? role,
+    Member? member,
+  }) {
+    return MemberTournament(
+      gamerTag: gamerTag ?? this.gamerTag,
+      member: member ?? this.member,
+      role: role ?? this.role,
+      documentId: documentId ?? this.documentId,
+    );
+  }
+
+  factory MemberTournament.fromJson(Map<String, dynamic> json) =>
+      _$MemberTournamentFromJson(json);
   Map<String, dynamic> toJson() => _$MemberTournamentToJson(this);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [documentId,gamerTag,role,member];
-
+  List<Object?> get props => [documentId, gamerTag, role, member];
 }

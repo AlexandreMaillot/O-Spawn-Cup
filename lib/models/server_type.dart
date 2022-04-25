@@ -1,4 +1,4 @@
 enum ServerType {
-  EU,
-  US
+  eu,
+  us,
 }

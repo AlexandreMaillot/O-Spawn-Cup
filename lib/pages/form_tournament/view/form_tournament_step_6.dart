@@ -12,11 +12,11 @@ FormBlocStep buildStep6(TournamentFormBloc tournamentFormBloc) {
     isActive: tournamentFormBloc.state.currentStep >= 5,
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      children: [
+      children: const [
         TextElement(
           text: 'Identifiants',
           color: colorTheme,
-        )
+        ),
       ],
     ),
     content: Column(
@@ -38,15 +38,17 @@ FormBlocStep buildStep6(TournamentFormBloc tournamentFormBloc) {
                       textFieldBloc: state.fieldBlocs[index],
                       hintText: 'CODE ${index + 1}',
                       suffixIcon: const Icon(Icons.refresh),
-                      onPressIconSuffix: () => tournamentFormBloc.changeCode(index),
+                      onPressIconSuffix: () =>
+                          tournamentFormBloc.changeCode(index),
                     ),
                   );
                 },
               );
             }
+
             return Container();
           },
-        )
+        ),
       ],
     ),
   );

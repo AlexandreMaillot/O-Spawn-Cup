@@ -1,6 +1,5 @@
 enum RoundState {
-  EnAttente,
-  EnCours,
-  Terminer,
-
+  enAttente,
+  enCours,
+  terminer,
 }

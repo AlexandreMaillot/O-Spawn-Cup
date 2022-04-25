@@ -4,8 +4,8 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
+import 'package:o_spawn_cup/models/tournament/tournament.dart';
 import 'package:very_good_analysis/very_good_analysis.dart';
 
 part 'app_event.dart';
@@ -16,7 +16,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       : _authenticationRepository = authenticationRepository,
         super(
           authenticationRepository.currentUser.isNotEmpty
-              ? AppState(user: authenticationRepository.currentUser, status: AppStatus.authenticated)
+              ? AppState(
+                  user: authenticationRepository.currentUser,
+                  status: AppStatus.authenticated,
+                )
               : const AppState(user: null, status: AppStatus.unauthenticated),
         ) {
     on<AppUserChanged>(_onUserChanged);
@@ -44,6 +47,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   @override
   Future<void> close() {
     _userSubscription.cancel();
+
     return super.close();
   }
 }

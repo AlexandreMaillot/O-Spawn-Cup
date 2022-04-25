@@ -14,49 +14,43 @@ class RowTournamentState extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                color: colorOpen,
-              ),
-              width: 17,
-              height: 17,
+          Container(
+            padding: const EdgeInsets.only(right: 4),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+              color: colorOpen,
             ),
+            width: 17,
+            height: 17,
           ),
-          TextElement(
-            text: "Ouvert",
+          const TextElement(
+            text: 'Ouvert',
             color: Colors.white,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16,right: 4),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                color: colorInProgress,
-              ),
-              width: 17,
-              height: 17,
+          Container(
+            padding: const EdgeInsets.only(left: 16, right: 4),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+              color: colorInProgress,
             ),
+            width: 17,
+            height: 17,
           ),
-          TextElement(
-            text: "En cours",
+          const TextElement(
+            text: 'En cours',
             color: Colors.white,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16,right: 4),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                color: colorClose,
-              ),
-              width: 17,
-              height: 17,
+          Container(
+            padding: const EdgeInsets.only(left: 16, right: 4),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+              color: colorClose,
             ),
+            width: 17,
+            height: 17,
           ),
-          TextElement(
-            text: "Fermé",
+          const TextElement(
+            text: 'Fermé',
             color: Colors.white,
           ),
         ],

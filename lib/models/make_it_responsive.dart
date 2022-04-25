@@ -8,7 +8,6 @@ class MakeItResponsive {
     final size = MediaQuery.of(context).size;
     if (size.width > maxPoint) {
       return ScreenSize.large;
-
     } else if (size.width < minPoint) {
       return ScreenSize.small;
     } else {
