@@ -22,7 +22,6 @@ class StartPageView extends StatelessWidget {
         children: [
           Container(
             color: colorTheme,
-            // width: screenSize.width,
             height: screenSize.height * 0.61,
             child: Center(
               child: Image.asset(

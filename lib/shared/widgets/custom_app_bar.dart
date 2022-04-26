@@ -40,15 +40,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         actions: [
           Builder(
-            builder: (BuildContext context) {
+            builder: (contextProvider) {
               return IconButton(
                 icon: SvgPicture.asset(
                   'assets/images/drawer.svg',
                   height: 30,
                   width: 37,
                 ),
-                onPressed: () => Scaffold.of(context).openEndDrawer(),
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                onPressed: () => Scaffold.of(contextProvider).openEndDrawer(),
+                tooltip: MaterialLocalizations.of(contextProvider)
+                    .openAppDrawerTooltip,
               );
             },
           ),

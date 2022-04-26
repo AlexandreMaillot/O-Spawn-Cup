@@ -1,4 +1,3 @@
-import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:o_spawn_cup/app/bloc/app_bloc.dart';
@@ -40,8 +39,11 @@ class LogoutButton extends StatelessWidget {
     );
   }
 
-  void logout(AppBloc appBloc, BuildContext context) {
+  void logout(
+    AppBloc appBloc,
+    BuildContext context,
+  ) {
+    Navigator.pop(context);
     appBloc.add(AppLogoutRequested());
-    context.flow<AppStatus>().update((state) => AppStatus.unauthenticated);
   }
 }

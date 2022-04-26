@@ -33,7 +33,6 @@ class TextFieldForm extends StatelessWidget {
       autofillHints: const [AutofillHints.name],
       keyboardType: textInputType ?? TextInputType.name,
       textInputAction: textInputAction,
-      // suffixButton: SuffixButton.clearText,
       textAlign: TextAlign.center,
       obscureText: isObscure,
       clearTextIcon: Container(

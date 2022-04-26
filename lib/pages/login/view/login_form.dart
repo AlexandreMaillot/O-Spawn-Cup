@@ -17,14 +17,11 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final loginFormBloc = context.read<LoginFormBloc>();
     final googleAuthentication = context.read<GoogleAuthenticationCubit>();
-    void hideKeyBoard() {
-      FocusScope.of(context).requestFocus(FocusNode());
-    }
 
     final screenSize = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: hideKeyBoard,
+      onTap: () => hideKeyBoard(context),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -38,9 +35,7 @@ class LoginForm extends StatelessWidget {
                 children: [
                   IconButton(
                     padding: EdgeInsets.only(top: screenSize.height * 0.05),
-
-                    // TODO(Tamarok): check push
-                    onPressed: () => Navigator.pushNamed(context, '/'),
+                    onPressed: () => Navigator.pop(context),
                     icon:
                         const Icon(Icons.arrow_back, color: Color(0xff191919)),
                   ),
@@ -60,8 +55,8 @@ class LoginForm extends StatelessWidget {
                 bottom: screenSize.height * 0.044,
               ),
               child: SizedBox(
-                width: screenSize.width,
-                height: screenSize.height * 0.13,
+                width: screenSize.width * 0.87,
+                // height: screenSize.height * 0.13,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -70,7 +65,8 @@ class LoginForm extends StatelessWidget {
                       hintText: 'E-MAIL',
                     ),
                     TextFieldForm(
-                      textFieldBloc: loginFormBloc.email,
+                      textFieldBloc: loginFormBloc.password,
+                      isObscure: true,
                       hintText: 'MOT DE PASSE',
                     ),
                   ],
@@ -115,5 +111,9 @@ class LoginForm extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void hideKeyBoard(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 }
