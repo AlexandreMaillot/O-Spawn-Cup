@@ -1,10 +1,13 @@
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mockingjay/mockingjay.dart';
 import 'package:network_image_mock/network_image_mock.dart';
+import 'package:o_spawn_cup/app/app.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/models/TournamentType/tournament_type.dart';
+import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/models/tournament/tournament.dart';
 import 'package:o_spawn_cup/models/tournament/tournament_state.dart';
 import 'package:o_spawn_cup/pages/list_cup/list_cup.dart';
@@ -290,7 +293,6 @@ void main() {
   });
 
   group('Affichage type de tournois', () {
-    final dateNow = DateTime.now();
     setUp(() {
       when(
         () => tournament.imageUrl,
@@ -322,6 +324,63 @@ void main() {
         expect(
           tournamentTypeElement.text,
           TournamentType.trio.name,
+        );
+      },
+    );
+  });
+  group('Navigation vers le tournois', () {
+    const appState = AppState(status: AppStatus.authenticated);
+    late AppState stateModified;
+    setUp(() {
+      when(
+        () => tournament.imageUrl,
+      ).thenReturn(
+        '',
+      );
+      when(
+        () => tournament.tournamentType,
+      ).thenReturn(TournamentType.trio);
+      when(
+        () => tournament.state,
+      ).thenReturn(TournamentState.annuler);
+      when(
+        () => tournament.game,
+      ).thenReturn(GameName.csgo);
+    });
+    testWidgets(
+      'onTap sur la card',
+      (WidgetTester tester) async {
+        await mockNetworkImagesFor(
+          () => tester.pumpWidget(
+            MaterialApp(
+              home: FlowBuilder<AppState>(
+                onGeneratePages: (state, pages) {
+                  stateModified = state;
+
+                  return [
+                    MaterialPage(
+                      child: Material(
+                        child: CardCup(
+                          tournament: tournament,
+                        ),
+                      ),
+                    ),
+                  ];
+                },
+                state: appState,
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.byType(InkWell));
+        expect(
+          stateModified.gameName,
+          tournament.game,
+        );
+        expect(
+          stateModified.tournament,
+          tournament,
         );
       },
     );
