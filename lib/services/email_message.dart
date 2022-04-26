@@ -17,9 +17,9 @@ class EmailMessage extends MyMessage {
     if (email != null && email != '') {
       _broker.sendEmailMessage(
         'Salut, tu es bien inscrit pour le tournois ${tournament.name} qui '
-            'aura lieu le ${Utils().formatDate(tournament.dateDebutTournois)}',
+            'aura lieu le ${Utils.formatDate(tournament.dateDebutTournois)}',
         '<p>Salut, tu es bien inscrit pour le tournois <b>${tournament.name}</b> qui '
-            'aura lieu le <b>${Utils().formatDate(tournament.dateDebutTournois)}</b></p>',
+            'aura lieu le <b>${Utils.formatDate(tournament.dateDebutTournois)}</b></p>',
         'Inscription validée',
         email,
       );
@@ -37,9 +37,9 @@ class EmailMessage extends MyMessage {
     if (email != null && email != '') {
       _broker.sendEmailMessage(
         'Voici le code pour le tournois qui '
-            'aura lieu le ${Utils().formatDate(tournament.dateDebutTournois)}',
+            'aura lieu le ${Utils.formatDate(tournament.dateDebutTournois)}',
         '<p>Voici le code pour le tournois qui '
-            'aura lieu le ${Utils().formatDate(tournament.dateDebutTournois)} \n <b> : ${team.teamCode}</b></p>',
+            'aura lieu le ${Utils.formatDate(tournament.dateDebutTournois)} \n <b> : ${team.teamCode}</b></p>',
         "Code chef d'équipe",
         email,
       );

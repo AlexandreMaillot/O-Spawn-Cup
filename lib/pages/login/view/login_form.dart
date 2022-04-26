@@ -98,12 +98,12 @@ class LoginForm extends StatelessWidget {
                     text: 'CONNEXION AVEC GOOGLE',
                     onPressedMethod: googleAuthentication.logInWithGoogle,
                   ),
-                  CustomButtonConnectWith(
-                    screenSize: screenSize,
-                    imageName: 'assets/images/facebook.png',
-                    text: 'CONNEXION AVEC FACEBOOK',
-                    onPressedMethod: () => log('test'),
-                  ),
+                  // CustomButtonConnectWith(
+                  //   screenSize: screenSize,
+                  //   imageName: 'assets/images/facebook.png',
+                  //   text: 'CONNEXION AVEC FACEBOOK',
+                  //   onPressedMethod: () => log('test'),
+                  // ),
                 ],
               ),
             ),

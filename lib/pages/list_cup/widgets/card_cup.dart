@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:o_spawn_cup/app/bloc/app_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
 import 'package:o_spawn_cup/models/tournament/tournament.dart';
+import 'package:o_spawn_cup/models/tournament/tournament_state.dart';
 import 'package:o_spawn_cup/services/utils.dart';
 import 'package:o_spawn_cup/shared/widgets/text_element.dart';
 
@@ -54,7 +54,8 @@ class CardCup extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 8, top: 8),
                     child: TextElement(
-                      text: Utils().formatDate(tournament.dateDebutTournois),
+                      key: const Key('DateDebutTournois'),
+                      text: Utils.formatDate(tournament.dateDebutTournois),
                       color: Colors.white,
                     ),
                   ),
@@ -66,6 +67,7 @@ class CardCup extends StatelessWidget {
                           'assets/images/tournament_type_icon.svg',
                         ),
                         TextElement(
+                          key: const Key('TournamentType'),
                           text: tournament.tournamentType.name,
                           color: Colors.white,
                         ),

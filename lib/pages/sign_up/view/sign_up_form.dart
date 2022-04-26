@@ -117,12 +117,12 @@ class SignUpForm extends StatelessWidget {
                     text: "S'INSCRIRE AVEC GOOGLE",
                     onPressedMethod: googleAuthentication.logInWithGoogle,
                   ),
-                  CustomButtonConnectWith(
-                    screenSize: screenSize,
-                    imageName: 'assets/images/facebook.png',
-                    text: "S'INSCRIRE AVEC FACEBOOK",
-                    onPressedMethod: () => log('test'),
-                  ),
+                  // CustomButtonConnectWith(
+                  //   screenSize: screenSize,
+                  //   imageName: 'assets/images/facebook.png',
+                  //   text: "S'INSCRIRE AVEC FACEBOOK",
+                  //   onPressedMethod: () => log('test'),
+                  // ),
                 ],
               ),
             ),

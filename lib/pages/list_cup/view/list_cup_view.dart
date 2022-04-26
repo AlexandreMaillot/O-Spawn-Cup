@@ -34,20 +34,7 @@ class ListCupView extends StatelessWidget {
               return Column(
                 children: [
                   const RowTournamentState(),
-                  Flexible(
-                    child: GridView.builder(
-                      itemCount: listCup.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CardCup(tournament: listCup[index]);
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        crossAxisCount: 2,
-                      ),
-                    ),
-                  ),
+                  ListCardCup(listCup: listCup),
                 ],
               );
             }

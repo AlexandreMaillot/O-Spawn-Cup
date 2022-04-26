@@ -8,7 +8,7 @@ analyzer:
     - "example/**"
     - "lib/generated/**"
     - "build/**"
-    - "test/**"
+#    - "test/**"
     - "**/*.g.dart"
     - "**/*.freezed.dart"
   plugins:

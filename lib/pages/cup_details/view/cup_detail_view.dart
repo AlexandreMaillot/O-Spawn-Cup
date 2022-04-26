@@ -45,11 +45,11 @@ class CupDetailView extends StatelessWidget {
                   RowInformationTournament(
                     leftText: 'Date inscription:',
                     rightText:
-                        Utils().formatDate(tournament.dateDebutInscription),
+                        Utils.formatDate(tournament.dateDebutInscription),
                   ),
                   RowInformationTournament(
                     leftText: 'Date du tournois:',
-                    rightText: Utils().formatDate(tournament.dateDebutTournois),
+                    rightText: Utils.formatDate(tournament.dateDebutTournois),
                   ),
                   RowInformationTournament(
                     leftText: 'Nombre de games:',

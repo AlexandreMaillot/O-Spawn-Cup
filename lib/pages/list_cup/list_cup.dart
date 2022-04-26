@@ -5,6 +5,7 @@ export 'package:o_spawn_cup/pages/list_cup/widgets/bottom_bar.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/card_cup.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/dropdown_tournament_state.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/dropdown_tournament_type.dart';
+export 'package:o_spawn_cup/pages/list_cup/widgets/list_card_cup.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/row_tournament_state.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/shimmer_load_cup.dart';
 export 'package:o_spawn_cup/pages/list_cup/widgets/text_field_name_cup.dart';

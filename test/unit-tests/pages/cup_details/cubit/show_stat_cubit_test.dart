@@ -48,7 +48,7 @@ class MockCollectionReference extends Mock
     implements CollectionReference<Map<String, dynamic>> {}
 
 void main() {
-  DateTime now = DateTime.now();
+  final now = DateTime.now();
   late FakeFirebaseFirestore instance;
   late ShowStatCubit cubit;
   late MockTeamRepository teamRepository;
@@ -66,10 +66,10 @@ void main() {
   late MockTournamentDocumentSnap tournamentDocumentSnap;
   late MockDocumentReference documentReference;
 
-  Team team = Team(
+  const team = Team(
     name: 'MyTeam',
   );
-  Tournament tournament = Tournament(
+  final tournament = Tournament(
     name: 'Tournois 4',
     dateDebutTournois: DateTime(now.year, now.month, now.day + 7),
     game: GameName.leagueOfLegend,
@@ -105,41 +105,40 @@ void main() {
     teamDocumentReference = MockTeamDocumentReference();
     tournamentDocumentSnap = MockTournamentDocumentSnap();
     documentReference = MockDocumentReference();
-    // teamRepositoryOverridden = TeamRepositoryOverridden(teamCollectionReference: teamCollectionReference);
-    // tournamentRepositoryOverridden = TournamentRepositoryOverridden(tournamentCollectionReference: tournamentCollectionReference);
 
     when(() => teamRepository.listTeamStream).thenAnswer(
       (invocation) => Stream.value([]),
     );
 
     when(() => tournamentRepository.getTournament(tournament)).thenAnswer(
-      (invocation) => Stream.empty(),
+      (invocation) => const Stream.empty(),
     );
     cubit = ShowStatCubit(
-        tournament: tournament,
-        tournamentRepository: tournamentRepository,
-        teamRepository: teamRepository);
+      tournament: tournament,
+      tournamentRepository: tournamentRepository,
+      teamRepository: teamRepository,
+    );
   });
   group('Normal test', () {
     setUp(() {});
 
-    test("resetRowSelect", () {
+    test('resetRowSelect', () {
       cubit.resetRowSelect();
       expect(cubit.indexRowSelect, null);
-      expect(cubit.state, ShowStatRowSelected(rowSelect: null));
+      expect(cubit.state, const ShowStatRowSelected(rowSelect: null));
     });
   });
   group('Bloc test', () {
     blocTest<ShowStatCubit, ShowStatState>(
       'emits showstatchanged true',
       setUp: () {
-        cubit.emit(ShowStatChanged(globalStat: false));
+        cubit.emit(const ShowStatChanged(globalStat: false));
       },
       build: () => cubit,
       act: (bloc) => bloc.changeStatShow(isGlobal: true),
       expect: () => [
-        ShowStatRowSelected(rowSelect: null),
-        ShowStatChanged(globalStat: true)
+        const ShowStatRowSelected(rowSelect: null),
+        const ShowStatChanged(globalStat: true),
       ],
     );
     blocTest<ShowStatCubit, ShowStatState>(
@@ -148,8 +147,8 @@ void main() {
       build: () => cubit,
       act: (bloc) => bloc.changeStatShow(isGlobal: false),
       expect: () => [
-        ShowStatRowSelected(rowSelect: null),
-        ShowStatChanged(globalStat: false)
+        const ShowStatRowSelected(rowSelect: null),
+        const ShowStatChanged(globalStat: false),
       ],
     );
 
@@ -163,10 +162,12 @@ void main() {
       },
       build: () => cubit,
       act: (bloc) => bloc.selectRowTeam(
-          memberTournamentRepository: memberTournamentRepository, rowSelect: 1),
+        memberTournamentRepository: memberTournamentRepository,
+        rowSelect: 1,
+      ),
       expect: () => [
-        ShowStatRowSelected(rowSelect: 1),
-        isA<ShowStatMemberTournamentLoaded>()
+        const ShowStatRowSelected(rowSelect: 1),
+        isA<ShowStatMemberTournamentLoaded>(),
       ],
     );
     blocTest<ShowStatCubit, ShowStatState>(
@@ -179,10 +180,12 @@ void main() {
       },
       build: () => cubit,
       act: (bloc) => bloc.selectRowTeam(
-          memberTournamentRepository: memberTournamentRepository, rowSelect: 1),
+        memberTournamentRepository: memberTournamentRepository,
+        rowSelect: 1,
+      ),
       expect: () => [
-        ShowStatRowSelected(rowSelect: 1),
-        isA<ShowStatMemberTournamentLoaded>()
+        const ShowStatRowSelected(rowSelect: 1),
+        isA<ShowStatMemberTournamentLoaded>(),
       ],
     );
 
@@ -195,8 +198,8 @@ void main() {
         bloc.selectRowTeam(memberTournamentRepository: null, rowSelect: 1);
       },
       expect: () => [
-        ShowStatRowSelected(rowSelect: 1),
-        ShowStatRowSelected(rowSelect: null),
+        const ShowStatRowSelected(rowSelect: 1),
+        const ShowStatRowSelected(rowSelect: null),
       ],
     );
 
@@ -206,7 +209,7 @@ void main() {
       build: () => cubit,
       act: (bloc) =>
           bloc.selectRowTeam(memberTournamentRepository: null, rowSelect: 1),
-      expect: () => [ShowStatRowSelected(rowSelect: 1)],
+      expect: () => [const ShowStatRowSelected(rowSelect: 1)],
     );
 
     blocTest<ShowStatCubit, ShowStatState>(

@@ -546,12 +546,17 @@ void main() {
     group('Step 6', () {
       setUp(() {
         //J'ai ajouter un autre step pour pouvoir verifier la validité de la liste de code
-        tournamentFormBloc.addFieldBlocs(fieldBlocs: [
-          TextFieldBloc(validators: [FieldBlocValidatorsFr.required])
-        ], step: 6);
+        tournamentFormBloc.addFieldBlocs(
+          fieldBlocs: [
+            TextFieldBloc(validators: [FieldBlocValidatorsFr.required]),
+          ],
+          step: 6,
+        );
         tournamentFormBloc.updateCurrentStep(5);
         tournamentFormBloc.listCode.addFieldBloc(TextFieldBloc(
-            validators: [FieldBlocValidatorsFr.required], initialValue: ''));
+          validators: [FieldBlocValidatorsFr.required],
+          initialValue: '',
+        ));
       });
       blocTest(
         'submit avec etat global step 6 valide',

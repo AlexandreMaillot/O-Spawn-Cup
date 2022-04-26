@@ -74,7 +74,7 @@ void main() {
   late MockTeam mockTeam;
   late MockTournament tournamentMock;
   late MockMemberTournamentRepository memberTournamentRepository;
-  late final team = Team(
+  late final team = const Team(
     name: 'MyTeam',
     teamCode: 'codeTeam',
   );
@@ -182,13 +182,15 @@ void main() {
     });
     test('place restantes ok', () {
       final isFull = cubit.placesRestante(
-          tournament5, [Team(name: ''), Team(name: ''), Team(name: '')]);
+        tournament5,
+        [const Team(name: ''), const Team(name: ''), const Team(name: '')],
+      );
       expect(isFull, statePlacesRestante.isNotFull);
     });
     test('place restantes nok', () {
       final teams = <Team>[];
       for (var i = 0; i <= 50; i++) {
-        teams.add(Team(name: ''));
+        teams.add(const Team(name: ''));
       }
       final isFull = cubit.placesRestante(tournament5, teams);
       expect(isFull, statePlacesRestante.isFull);
@@ -274,7 +276,7 @@ void main() {
         skip: 1,
         expect: () => [
           CupDetailTournamentChanged(tournament: tournament4, isClose: true),
-          CupDetailListMemberTournamentChanged(listMemberTournament: []),
+          const CupDetailListMemberTournamentChanged(listMemberTournament: []),
         ],
       );
 
@@ -402,7 +404,7 @@ void main() {
         expect: () => [
           isA<CupDetailListTeamChanged>(),
           isA<CupDetailTournamentChanged>(),
-          CupDetailErrorMemberTournamentAdded(
+          const CupDetailErrorMemberTournamentAdded(
               errorMsg: 'Nom de team existante'),
           isA<CupDetailListMemberTournamentChanged>(),
         ],
@@ -431,7 +433,7 @@ void main() {
         expect: () => [
           isA<CupDetailListTeamChanged>(),
           isA<CupDetailTournamentChanged>(),
-          CupDetailErrorMemberTournamentAdded(
+          const CupDetailErrorMemberTournamentAdded(
               errorMsg: 'Code team non reconnu'),
           isA<CupDetailListMemberTournamentChanged>(),
         ],
@@ -463,7 +465,7 @@ void main() {
         },
         // skip: 1,
         expect: () => [
-          CupDetailErrorMemberTournamentAdded(errorMsg: 'Tournois full'),
+          const CupDetailErrorMemberTournamentAdded(errorMsg: 'Tournois full'),
           isA<CupDetailListTeamChanged>(),
           isA<CupDetailTournamentChanged>(),
           isA<CupDetailListMemberTournamentChanged>(),
