@@ -16,11 +16,11 @@ void main() {
   group('Normal test', () {
     // when(() => smtpServer.host,).thenReturn('MonHost');
     test('sendEmailMessage', () {
-      const monEmail = 'monemail@email.com';
-      const monSujet = 'MonSujet';
-      const monMessage = 'MonMessage';
-      const monMessageHtml = 'MonHtmlMessage';
-      //Todo sendEmailMessage
+      // const monEmail = 'monemail@email.com';
+      // const monSujet = 'MonSujet';
+      // const monMessage = 'MonMessage';
+      // const monMessageHtml = 'MonHtmlMessage';
+      // Todo(Tamarok): sendEmailMessage
       // emailBroker.sendEmailMessage(monMessage, monMessageHtml, monSujet, monEmail);
     });
     test('Create Message', () {

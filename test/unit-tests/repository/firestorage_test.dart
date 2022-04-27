@@ -63,7 +63,7 @@ void main() {
     final preffix = firestorageService.getPreffixImage();
     expect(preffix.length, 13);
   });
-  //TODO test downloadFileImage
+  // TODO(Tamarok): test downloadFileImage
   test('dowloadFileImage', () async {
     // var name = 'nameTest';
     // when(() => storage.ref('tournaments/' + name + ''))
@@ -95,7 +95,7 @@ void main() {
     );
   });
 
-  //TODO test image predefini a faire
+  // TODO(Tamarok): test image predefini a faire
   test('addImageToStorage avec image predefinie', () async {
     // when(() => storage.ref()).thenReturn(reference);
     // when(() => reference.child(any())).thenReturn(reference);
