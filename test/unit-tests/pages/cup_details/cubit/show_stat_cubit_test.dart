@@ -120,8 +120,6 @@ void main() {
     );
   });
   group('Normal test', () {
-    setUp(() {});
-
     test('resetRowSelect', () {
       cubit.resetRowSelect();
       expect(cubit.indexRowSelect, null);
@@ -143,7 +141,6 @@ void main() {
     );
     blocTest<ShowStatCubit, ShowStatState>(
       'emits showstatchanged false',
-      setUp: () {},
       build: () => cubit,
       act: (bloc) => bloc.changeStatShow(isGlobal: false),
       expect: () => [
@@ -191,11 +188,11 @@ void main() {
 
     blocTest<ShowStatCubit, ShowStatState>(
       'emits rowselect null',
-      setUp: () {},
       build: () => cubit,
       act: (bloc) {
-        bloc.selectRowTeam(memberTournamentRepository: null, rowSelect: 1);
-        bloc.selectRowTeam(memberTournamentRepository: null, rowSelect: 1);
+        bloc
+          ..selectRowTeam(memberTournamentRepository: null, rowSelect: 1)
+          ..selectRowTeam(memberTournamentRepository: null, rowSelect: 1);
       },
       expect: () => [
         const ShowStatRowSelected(rowSelect: 1),
@@ -205,7 +202,6 @@ void main() {
 
     blocTest<ShowStatCubit, ShowStatState>(
       'emits rowselect 1',
-      setUp: () {},
       build: () => cubit,
       act: (bloc) =>
           bloc.selectRowTeam(memberTournamentRepository: null, rowSelect: 1),
@@ -217,9 +213,10 @@ void main() {
       setUp: () {
         cubit.memberTournamentRepositoryLocal =
             MockMemberTournamentRepository();
-        when(() => cubit.memberTournamentRepositoryLocal
-                .deleteMemberTournament(memberTournament))
-            .thenAnswer((invocation) => null);
+        when(
+          () => cubit.memberTournamentRepositoryLocal
+              .deleteMemberTournament(memberTournament),
+        ).thenAnswer((invocation) => null);
         when(() => cubit.memberTournamentRepositoryLocal.listMemberTournament)
             .thenReturn([]);
         when(() => cubit.teamRepository.disqualifiedTeamWithNoMember(teamMock))
@@ -239,9 +236,10 @@ void main() {
       setUp: () {
         cubit.memberTournamentRepositoryLocal =
             MockMemberTournamentRepository();
-        when(() => cubit.memberTournamentRepositoryLocal
-                .deleteMemberTournament(memberTournament))
-            .thenAnswer((invocation) => null);
+        when(
+          () => cubit.memberTournamentRepositoryLocal
+              .deleteMemberTournament(memberTournament),
+        ).thenAnswer((invocation) => null);
         when(() => cubit.memberTournamentRepositoryLocal.listMemberTournament)
             .thenReturn([]);
         when(() => cubit.teamRepository.disqualifiedTeamWithNoMember(teamMock))

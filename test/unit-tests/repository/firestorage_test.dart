@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -10,7 +9,6 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/repository/firestorage_service.dart';
-import 'package:path_provider/path_provider.dart';
 
 class MockFile extends Mock implements File {}
 
@@ -57,20 +55,27 @@ void main() {
     file = MockFile();
     reference = MockReference();
     firestorageService = FirestorageService(
-        firebaseStorage: storage, defaultCacheManager: defaultCacheManager);
+      firebaseStorage: storage,
+      defaultCacheManager: defaultCacheManager,
+    );
   });
   test('getPreffixImage', () {
-    var preffix = firestorageService.getPreffixImage();
+    final preffix = firestorageService.getPreffixImage();
     expect(preffix.length, 13);
   });
   //TODO test downloadFileImage
   test('dowloadFileImage', () async {
     // var name = 'nameTest';
-    // when(() => storage.ref('tournaments/' + name + '')).thenAnswer((invocation) => reference);
-    // when(() => reference.writeToFile(file)).thenAnswer((invocation) => downloadTask);
+    // when(() => storage.ref('tournaments/' + name + ''))
+    // .thenAnswer((invocation) => reference);
+    // when(() => reference.writeToFile(file))
+    // .thenAnswer((invocation) => downloadTask);
     // when(() => reference.putFile(file)).thenAnswer((invocation) => uploadTask);
-    // when(() => reference.getDownloadURL()).thenAnswer((invocation) => Future.value('monlien/monimagetest.png'));
-    // when(() async => await defaultCacheManager.getSingleFile('monlien/monimagetest.png')).thenAnswer((invocation) async => Future.value(file));
+    // when(() => reference.getDownloadURL())
+    // .thenAnswer((invocation) => Future.value('monlien/monimagetest.png'));
+    // when(() async => await defaultCacheManager
+    // .getSingleFile('monlien/monimagetest.png'))
+    // .thenAnswer((invocation) async => Future.value(file));
     // var finalFile = await firestorageService.downloadFileImage(name);
     // Directory appDocDir = await getApplicationDocumentsDirectory();
     // expect(finalFile.path, '${appDocDir.path}/test.jpeg');
@@ -84,7 +89,10 @@ void main() {
     when(() => reference.getDownloadURL())
         .thenAnswer((invocation) => Future.value('url'));
     await firestorageService.addImageToStorage(
-        imageName: 'fileName', file: file, takeByCamera: true);
+      imageName: 'fileName',
+      file: file,
+      takeByCamera: true,
+    );
   });
 
   //TODO test image predefini a faire

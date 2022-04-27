@@ -189,9 +189,12 @@ void main() {
       // expect(mytournamentFormBloc.listCashPrize.value, tournament.cashPrize);
       // TODO(Tamarok): test listCodeGame
       expect(mytournamentFormBloc.listCode.value.first.value, 'init');
-      // expect(mytournamentFormBloc.listCode.value[1].value, tournament.listCodesGames[0]);
-      // expect(mytournamentFormBloc.listCode.value[2].value, tournament.listCodesGames[1]);
-      // expect(mytournamentFormBloc.listCode.value[3].value, tournament.listCodesGames[2]);
+      // expect(mytournamentFormBloc.listCode.value[1].value,
+      // tournament.listCodesGames[0]);
+      // expect(mytournamentFormBloc.listCode.value[2].value,
+      // tournament.listCodesGames[1]);
+      // expect(mytournamentFormBloc.listCode.value[3].value,
+      // tournament.listCodesGames[2]);
     });
   });
   group('Normal test', () {
@@ -224,7 +227,7 @@ void main() {
       when(
         () => selectedImagePredefCubit.state,
       ).thenAnswer(
-        (invocation) => SelectedImagePredefInitial(indexSelected: null),
+        (invocation) => const SelectedImagePredefInitial(indexSelected: null),
       );
       tournamentFormBloc.tapOnTileImagepreDef(1);
       expect(tournamentFormBloc.imageCup.state.isValid, true);
@@ -237,7 +240,7 @@ void main() {
       when(
         () => selectedImagePredefCubit.state,
       ).thenAnswer(
-        (invocation) => SelectedImagePredefInitial(indexSelected: 1),
+        (invocation) => const SelectedImagePredefInitial(indexSelected: 1),
       );
       tournamentFormBloc.tapOnTileImagepreDef(1);
       expect(tournamentFormBloc.imageCup.state.isValid, false);
@@ -545,18 +548,22 @@ void main() {
     });
     group('Step 6', () {
       setUp(() {
-        //J'ai ajouter un autre step pour pouvoir verifier la validité de la liste de code
-        tournamentFormBloc.addFieldBlocs(
-          fieldBlocs: [
-            TextFieldBloc(validators: [FieldBlocValidatorsFr.required]),
-          ],
-          step: 6,
-        );
-        tournamentFormBloc.updateCurrentStep(5);
-        tournamentFormBloc.listCode.addFieldBloc(TextFieldBloc(
-          validators: [FieldBlocValidatorsFr.required],
-          initialValue: '',
-        ));
+        //J'ai ajouter un autre step pour pouvoir
+        // verifier la validité de la liste de code
+        tournamentFormBloc
+          ..addFieldBlocs(
+            fieldBlocs: [
+              TextFieldBloc(validators: [FieldBlocValidatorsFr.required]),
+            ],
+            step: 6,
+          )
+          ..updateCurrentStep(5)
+          ..listCode.addFieldBloc(
+            TextFieldBloc(
+              validators: [FieldBlocValidatorsFr.required],
+              initialValue: '',
+            ),
+          );
       });
       blocTest(
         'submit avec etat global step 6 valide',
@@ -594,9 +601,12 @@ void main() {
 
         tournamentFormBloc.listCashPrize.updateValue(['Cash 1', 'Cash 2']);
 
-        tournamentFormBloc.listCode.addFieldBloc(TextFieldBloc(
+        tournamentFormBloc.listCode.addFieldBloc(
+          TextFieldBloc(
             validators: [FieldBlocValidatorsFr.required],
-            initialValue: 'test'));
+            initialValue: 'test',
+          ),
+        );
       },
       act: (TournamentFormBloc bloc) {
         bloc.submit();

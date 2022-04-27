@@ -36,7 +36,7 @@ class GoogleAuthenticationCubit extends Cubit<GoogleAuthenticationState> {
     } on LogInWithGoogleFailure catch (error) {
       emit(GoogleAuthenticationFailure(error: error.message));
     } catch (error) {
-      throw ArgumentError(error.toString());
+      // throw ArgumentError(error.toString());
     }
   }
 }

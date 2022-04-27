@@ -14,7 +14,6 @@ import 'package:o_spawn_cup/models/tournament/tournament_state.dart';
 part 'tournament.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-// ignore: must_be_immutable
 class Tournament extends Equatable {
   @JsonKey(ignore: true)
   String? documentId;
@@ -86,15 +85,15 @@ class Tournament extends Equatable {
       List<String>.from(value);
 }
 
-@Collection<Tournament>('tournament')
-@Collection<Team>('tournament/*/teams')
-@Collection<Round>('tournament/*/rounds')
+@Collection<Tournament>('Tournament')
+@Collection<Team>('Tournament/*/teams')
+@Collection<Round>('Tournament/*/rounds')
 @Collection<MemberTournament>(
-  'tournament/*/teams/*/membersTournament',
+  'Tournament/*/teams/*/membersTournament',
   name: 'membersTournament',
 )
 @Collection<Member>(
-  'tournament/*/teams/*/membersTournament/*/member',
+  'Tournament/*/teams/*/membersTournament/*/member',
   name: 'members',
 )
 final tournamentsRef = TournamentCollectionReference();

@@ -16,7 +16,6 @@ class TournamentRepository {
     required Filter filter,
   }) {
     final docRef = tournamentCollectionReference.reference;
-
     Query<Object?> queryListTournament;
     queryListTournament =
         addOrderByDateStart(queryListTournament: docRef, isOrder: true);
@@ -120,7 +119,7 @@ class TournamentRepository {
   ) {
     return gameName == null
         ? queryListTournament
-        : queryListTournament.where('game', isEqualTo: gameNameEnum[gameName]);
+        : queryListTournament.where('game', isEqualTo: gameName.name);
   }
 
   Query<Object?> addFilterForName(

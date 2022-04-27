@@ -79,5 +79,4 @@ void main() {
     );
     expect(find.byType(CardCup), findsNWidgets(3));
   });
-  group('Test widget', () {});
 }

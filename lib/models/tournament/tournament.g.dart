@@ -54,7 +54,7 @@ class _$TournamentCollectionReference extends _$TournamentQuery
     firestore ??= FirebaseFirestore.instance;
 
     return _$TournamentCollectionReference._(
-      firestore.collection('tournament').withConverter(
+      firestore.collection('Tournament').withConverter(
             fromFirestore: TournamentCollectionReference.fromFirestore,
             toFirestore: TournamentCollectionReference.toFirestore,
           ),

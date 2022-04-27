@@ -47,7 +47,7 @@ void main() {
     when(
       () => tournamentRepository.listTournaments(
         gameName: null,
-        filter: Filter(),
+        filter: const Filter(),
       ),
     ).thenAnswer((_) => const Stream.empty());
 
@@ -63,7 +63,7 @@ void main() {
       when(
         () => tournamentRepository.listTournaments(
           gameName: null,
-          filter: Filter(),
+          filter: const Filter(),
         ),
       ).thenAnswer((_) => const Stream.empty());
     },
@@ -80,7 +80,7 @@ void main() {
       when(
         () => tournamentRepository.listTournaments(
           gameName: null,
-          filter: Filter(),
+          filter: const Filter(),
         ),
       ).thenAnswer((_) => const Stream.empty());
     },
@@ -101,7 +101,7 @@ void main() {
       when(
         () => tournamentRepository.listTournaments(
           gameName: null,
-          filter: Filter(),
+          filter: const Filter(),
         ),
       ).thenAnswer((_) => Stream.value([tournament1]));
     },

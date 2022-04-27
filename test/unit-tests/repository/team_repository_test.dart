@@ -19,17 +19,17 @@ void main() {
   late TeamRepository teamRepository;
   late TournamentCollectionReference tournamentsRef;
   late TeamCollectionReference teamsRef;
-  List<Team> listTeam = <Team>[
-    Team(
+  final listTeam = <Team>[
+    const Team(
       name: 'MyTeam1',
       documentId: 'id1',
       teamCode: '1234',
     ),
-    Team(
+    const Team(
       name: 'MyTeam2',
       documentId: 'id2',
     ),
-    Team(
+    const Team(
       name: 'MyTeam3',
       documentId: 'id3',
     ),
@@ -67,7 +67,7 @@ void main() {
     instance = FakeFirebaseFirestore();
     tournament4.documentId = 'id4';
     await instance
-        .collection('tournament')
+        .collection('Tournament')
         .doc('id4')
         .set(tournament4.toJson());
     tournamentsRef = TournamentCollectionReference(instance);
@@ -84,7 +84,7 @@ void main() {
   });
   test('list collection member tournament ', () async {
     final list = await teamsRef.doc('id3').membersTournament.get();
-    var listMemberTournament = list.docs.map((e) {
+    final listMemberTournament = list.docs.map((e) {
       return e.data.copyWith(documentId: e.id);
     }).toList();
     expect(
@@ -133,9 +133,11 @@ void main() {
 
   test('check team is full', () async {
     tournament4.tournamentType = TournamentType.solo;
-    List<MemberTournament> list = [];
-    list.addAll(listTeam.first.listMemberTournament);
-    list.add(memberTournament);
+    final list = <MemberTournament>[
+      ...listTeam.first.listMemberTournament,
+      memberTournament,
+    ];
+
     listTeam.first = listTeam.first.copyWith(listMemberTournament: list);
     teamRepository.tournament = tournament4;
     expect(await teamRepository.checkTeamCapacity(listTeam.first), false);
@@ -152,7 +154,8 @@ void main() {
     );
   });
   test('load memberTournament in team', () async {
-    Team team = await teamRepository.addListMemberTournamentInTeam(listTeam[2]);
+    final team =
+        await teamRepository.addListMemberTournamentInTeam(listTeam[2]);
     expect(team.listMemberTournament, isNotEmpty);
   });
   test('get teamDocumentReference', () {
@@ -171,7 +174,7 @@ void main() {
     expect(teamCol.docs.length, numTeam + 1);
   });
   test('add team in tournament with code ', () async {
-    final myTeam = Team(name: 'NouvelleTeam');
+    const myTeam = Team(name: 'NouvelleTeam');
     await teamRepository.addTeamInTournament(myTeam);
     final teamCol = await teamsRef.get();
     expect(teamCol.docs[3].data.teamCode, isNot(''));

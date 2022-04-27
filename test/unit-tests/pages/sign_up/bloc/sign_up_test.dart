@@ -7,24 +7,22 @@ import 'package:o_spawn_cup/models/Member/member.dart';
 import 'package:o_spawn_cup/pages/sign_up/bloc/sign_up_form_bloc.dart';
 import 'package:o_spawn_cup/services/firebase_handler.dart';
 
-class AuthenticationRepositoryMock extends Mock implements AuthenticationRepository {}
-class FirebaseHandlerMock extends Mock implements FirebaseHandler {
+class AuthenticationRepositoryMock extends Mock
+    implements AuthenticationRepository {}
 
-}
+class FirebaseHandlerMock extends Mock implements FirebaseHandler {}
+
 void main() {
   late AuthenticationRepositoryMock authenticationRepository;
   late List<FormBlocState<String, String>> expectedStates;
-  late String pseudo = "";
-  late String uid = "";
   late Member m;
-  setUpAll((){
+  setUpAll(() {
     authenticationRepository = AuthenticationRepositoryMock();
   });
   blocTest(
     'FormSignUpStateInit',
-    build: () => SignUpFormBloc(authenticationRepository: authenticationRepository),
+    build: () =>
+        SignUpFormBloc(authenticationRepository: authenticationRepository),
     expect: () => [],
   );
-
-
 }

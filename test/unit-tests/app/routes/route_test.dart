@@ -25,7 +25,7 @@ void main() {
     gameName = GameName.fornite;
   });
   test('init page', () {
-    var app = const AppState(status: null, user: null);
+    const app = AppState(status: null, user: null);
     expect(
       onGenerateAppViewPages(app: app, pages: []),
       [
@@ -35,7 +35,7 @@ void main() {
   });
   group('Authenticated', () {
     test('authenticated', () {
-      var app = AppState(
+      final app = AppState(
         status: AppStatus.authenticated,
         user: user,
       );
@@ -48,8 +48,11 @@ void main() {
     });
 
     test('gameSelect', () {
-      var app = AppState(
-          status: AppStatus.authenticated, user: user, gameName: gameName);
+      final app = AppState(
+        status: AppStatus.authenticated,
+        user: user,
+        gameName: gameName,
+      );
       expect(
         onGenerateAppViewPages(app: app, pages: []),
         [
@@ -59,11 +62,12 @@ void main() {
       );
     });
     test('tournamentSelect', () {
-      var app = AppState(
-          status: AppStatus.authenticated,
-          user: user,
-          gameName: gameName,
-          tournament: tournament);
+      final app = AppState(
+        status: AppStatus.authenticated,
+        user: user,
+        gameName: gameName,
+        tournament: tournament,
+      );
       expect(
         onGenerateAppViewPages(app: app),
         [
@@ -74,12 +78,13 @@ void main() {
       );
     });
     test('form tournament null', () {
-      var app = AppState(
-          status: AppStatus.authenticated,
-          user: user,
-          gameName: gameName,
-          tournament: tournament,
-          formTournamentStatus: null);
+      final app = AppState(
+        status: AppStatus.authenticated,
+        user: user,
+        gameName: gameName,
+        tournament: tournament,
+        formTournamentStatus: null,
+      );
       expect(
         onGenerateAppViewPages(app: app),
         [
@@ -90,47 +95,51 @@ void main() {
       );
     });
     test('form tournament en creation', () {
-      var app = AppState(
-          status: AppStatus.authenticated,
-          user: user,
-          gameName: gameName,
-          tournament: tournament,
-          formTournamentStatus: FormTournamentStatus.enCreation);
+      final app = AppState(
+        status: AppStatus.authenticated,
+        user: user,
+        gameName: gameName,
+        tournament: tournament,
+        formTournamentStatus: FormTournamentStatus.enCreation,
+      );
       expect(
         onGenerateAppViewPages(app: app),
         [
           isA<MaterialPage>().having((p) => p.child, '', isA<Home>()),
           isA<MaterialPage>().having(
-              (p) => p.child,
-              '',
-              isA<FormTournament>()
-                  .having((p0) => p0.tournament, 'tournois', null)),
+            (p) => p.child,
+            '',
+            isA<FormTournament>()
+                .having((p0) => p0.tournament, 'tournois', null),
+          ),
         ],
       );
     });
     test('form tournament en modification', () {
-      var app = AppState(
-          status: AppStatus.authenticated,
-          user: user,
-          gameName: gameName,
-          tournament: tournament,
-          formTournamentStatus: FormTournamentStatus.enModification);
+      final app = AppState(
+        status: AppStatus.authenticated,
+        user: user,
+        gameName: gameName,
+        tournament: tournament,
+        formTournamentStatus: FormTournamentStatus.enModification,
+      );
       expect(
         onGenerateAppViewPages(app: app),
         [
           isA<MaterialPage>().having((p) => p.child, '', isA<Home>()),
           isA<MaterialPage>().having(
-              (p) => p.child,
-              '',
-              isA<FormTournament>()
-                  .having((p0) => p0.tournament, 'tournois', tournament)),
+            (p) => p.child,
+            '',
+            isA<FormTournament>()
+                .having((p0) => p0.tournament, 'tournois', tournament),
+          ),
         ],
       );
     });
   });
 
   test('unauthenticated', () {
-    var app = const AppState(status: AppStatus.unauthenticated, user: null);
+    const app = AppState(status: AppStatus.unauthenticated, user: null);
     expect(
       onGenerateAppViewPages(app: app, pages: []),
       [

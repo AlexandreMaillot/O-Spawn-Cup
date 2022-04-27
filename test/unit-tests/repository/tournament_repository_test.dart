@@ -106,7 +106,7 @@ void main() {
     for (final element in listTournaments) {
       index++;
       await instance
-          .collection('tournament')
+          .collection('Tournament')
           .doc('id$index')
           .set(element.toJson());
     }
@@ -122,7 +122,7 @@ void main() {
       expect(
         tournamentRepositoryClear.listTournaments(
           gameName: null,
-          filter: Filter(),
+          filter: const Filter(),
         ),
         emits([]),
       );
@@ -135,7 +135,7 @@ void main() {
       expect(
         tournamentRepository.listTournaments(
           gameName: null,
-          filter: Filter(),
+          filter: const Filter(),
         ),
         emits(listTournaments),
       );
@@ -145,20 +145,23 @@ void main() {
         (a, b) => b.dateDebutTournois!
             .compareTo(a.dateDebutTournois ?? DateTime.now()),
       );
+
       expect(
-        tournamentRepository.listTournaments(gameName: null, filter: Filter()),
+        tournamentRepository.listTournaments(
+          gameName: null,
+          filter: const Filter(),
+        ),
         emits(listTournaments),
       );
     });
     test('list tournaments filter by game', () {
       expect(
         tournamentRepository.listTournaments(
-          gameName: GameName.leagueOfLegend,
-          filter: Filter(),
+          gameName: GameName.fornite,
+          filter: const Filter(),
         ),
         emits(
-          listTournaments
-              .where((element) => element.game == GameName.leagueOfLegend),
+          listTournaments.where((element) => element.game == GameName.fornite),
         ),
       );
     });
@@ -167,7 +170,7 @@ void main() {
       expect(
         tournamentRepository.listTournaments(
           gameName: null,
-          filter: Filter(name: 'Tournois 2'),
+          filter: const Filter(name: 'Tournois 2'),
         ),
         emits(listTournaments.where((element) => element.name == 'Tournois 2')),
       );
@@ -189,7 +192,7 @@ void main() {
       expect(
         tournamentRepository.listTournaments(
           gameName: null,
-          filter: Filter(tournamentState: TournamentState.enCours),
+          filter: const Filter(tournamentState: TournamentState.enCours),
         ),
         emits(
           listTournaments
@@ -201,7 +204,7 @@ void main() {
       expect(
         tournamentRepository.listTournaments(
           gameName: null,
-          filter: Filter(tournamentType: TournamentType.trio),
+          filter: const Filter(tournamentType: TournamentType.trio),
         ),
         emits(
           listTournaments.where(
@@ -218,7 +221,7 @@ void main() {
       TournamentState.annuler,
     );
 
-    snapshot = await instance.collection('tournament').get();
+    snapshot = await instance.collection('Tournament').get();
     final snapTournament = await snapshot.docs.first.reference.get();
     final tournament = snapTournament.data();
     expect(tournament!['state'], TournamentState.annuler.name);
@@ -228,17 +231,17 @@ void main() {
       listTournaments.first,
     );
 
-    snapshot = await instance.collection('tournament').get();
+    snapshot = await instance.collection('Tournament').get();
     final snapTournament = await snapshot.docs.first.reference.get();
     final tournament = snapTournament.data();
     expect(tournament!['state'], TournamentState.terminer.name);
   });
   test('add tournament', () async {
     await tournamentRepository.addTournamentInFirebase(tournament4);
-    snapshot = await instance.collection('tournament').get();
+    snapshot = await instance.collection('Tournament').get();
     expect(snapshot.docs.length, 4);
     final snapRounds = await instance
-        .collection('tournament')
+        .collection('Tournament')
         .doc(snapshot.docs.last.id)
         .collection('rounds')
         .get();
@@ -248,14 +251,14 @@ void main() {
     listTournaments.first.name = 'Name modifie';
     tournamentRepository.modifTournamentInFirebase(listTournaments.first);
 
-    snapshot = await instance.collection('tournament').get();
+    snapshot = await instance.collection('Tournament').get();
     final snapTournament = await snapshot.docs.first.reference.get();
     final tournament = snapTournament.data();
     expect(tournament!['name'], 'Name modifie');
   });
   test('delete tournament', () async {
     tournamentRepository.deleteTournamentInFirebase('id3');
-    snapshot = await instance.collection('tournament').get();
+    snapshot = await instance.collection('Tournament').get();
 
     expect(
       snapshot.docs.length,
@@ -270,7 +273,7 @@ void main() {
     expect(
       tournamentRepository.listTournaments(
         gameName: null,
-        filter: Filter(),
+        filter: const Filter(),
       ),
       emits(listTournaments.where((element) => element.documentId != null)),
     );
@@ -283,7 +286,7 @@ void main() {
       listTournaments[2].dateDebutInscription = nexDateInscription;
       tournamentRepository.checkTournamentState(listTournaments[2]);
 
-      snapshot = await instance.collection('tournament').get();
+      snapshot = await instance.collection('Tournament').get();
       final snapTournament = await snapshot.docs[2].reference.get();
       final tournament = snapTournament.data();
       expect(tournament!['state'], TournamentState.inscriptionOuverte.name);
@@ -292,7 +295,7 @@ void main() {
       final nexDateStart = DateTime(now.year, now.month, now.day, now.hour - 1);
       listTournaments[2].dateDebutTournois = nexDateStart;
       tournamentRepository.checkTournamentState(listTournaments[2]);
-      snapshot = await instance.collection('tournament').get();
+      snapshot = await instance.collection('Tournament').get();
       final snapTournament = await snapshot.docs[2].reference.get();
       final tournament = snapTournament.data();
       expect(tournament!['state'], TournamentState.enCours.name);
@@ -307,7 +310,11 @@ void main() {
   test('member is sign', () async {
     const member = Member(uid: 'monUid');
     final listMemberTournament = [
-      MemberTournament(gamerTag: '', role: RoleType.leader, member: member),
+      const MemberTournament(
+        gamerTag: '',
+        role: RoleType.leader,
+        member: member,
+      ),
     ];
     expect(
       tournamentRepository.memberIsSign(member, listMemberTournament),

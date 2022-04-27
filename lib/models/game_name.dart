@@ -5,13 +5,6 @@ enum GameName {
   csgo,
 }
 
-const gameNameEnum = {
-  GameName.fornite: 'fornite',
-  GameName.valorant: 'valorant',
-  GameName.leagueOfLegend: 'leagueOfLegend',
-  GameName.csgo: 'csgo',
-};
-
 extension GameNameExt on GameName {
   String get state {
     switch (this) {
