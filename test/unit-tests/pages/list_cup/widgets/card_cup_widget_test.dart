@@ -20,7 +20,7 @@ void main() {
   setUp(() {
     tournament = MockTournament();
   });
-  group('Initialisation  du widget', () {
+  group('Initialisation du widget', () {
     setUp(() {
       when(
         () => tournament.imageUrl,
