@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:o_spawn_cup/app/bloc/app_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/models/Tournament/tournament_state.dart';
+import 'package:o_spawn_cup/models/tournament/tournament_state.dart';
 import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
 import 'package:o_spawn_cup/shared/widgets/subtiltle_element.dart';
 
