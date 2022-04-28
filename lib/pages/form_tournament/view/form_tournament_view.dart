@@ -6,9 +6,9 @@ import 'package:o_spawn_cup/bloc/select_game_bloc/select_game_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/models/tournament/tournament.dart';
 import 'package:o_spawn_cup/pages/form_tournament/form_tournament.dart';
+import 'package:o_spawn_cup/shared/drawer/view/custom_drawer.dart';
 import 'package:o_spawn_cup/shared/widgets/custom_app_bar.dart';
 import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
-import 'package:o_spawn_cup/shared/widgets/custom_drawer.dart';
 import 'package:o_spawn_cup/shared/widgets/subtiltle_element.dart';
 
 class FormTournamentView extends StatelessWidget {

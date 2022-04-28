@@ -53,6 +53,7 @@ class FloatingActionBottomSheet extends StatelessWidget {
                     RowDatePick(
                       inputFieldBloc: listCupFilterFormBloc.startCupDate,
                       hintText: 'Début tournois',
+                      withSize: screenSize.width * 0.87,
                     ),
                     DropdownTournamentState(
                       selectFieldBloc: listCupFilterFormBloc.tournamentState,

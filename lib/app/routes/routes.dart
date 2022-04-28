@@ -12,6 +12,7 @@ List<Page> onGenerateAppViewPages({
 }) {
   final gameSelect = app.gameName;
   final tournamentSelect = app.tournament;
+  print(app);
   switch (app.status) {
     case AppStatus.authenticated:
       switch (app.formTournamentStatus) {

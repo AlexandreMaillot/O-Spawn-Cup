@@ -1,5 +1,8 @@
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:o_spawn_cup/app/app.dart';
 import 'package:o_spawn_cup/constant.dart';
 import 'package:o_spawn_cup/cubit/google_authentication/google_authentication_cubit.dart';
 import 'package:o_spawn_cup/pages/form_tournament/form_tournament.dart';
@@ -51,12 +54,13 @@ class SignUpForm extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: screenSize.height * 0.022,
-                bottom: screenSize.height * 0.044,
-              ),
-              child: SizedBox(
+            FormBlocListener<SignUpFormBloc, String, String>(
+              onSuccess: (context, state) => onSuccess,
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: screenSize.height * 0.022,
+                  bottom: screenSize.height * 0.044,
+                ),
                 width: screenSize.width * 0.87,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,5 +132,22 @@ class SignUpForm extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void onSuccess(BuildContext context, FormBlocSuccess<String, String> state) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.green,
+        content: Text(state.successResponse ?? 'Inscription réussi !'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+    print(context.read<AppBloc>().state.user);
+    context.flow<AppState>().update(
+          (app) => app.copyWith(
+            status: AppStatus.authenticated,
+            user: context.read<AppBloc>().state.user,
+          ),
+        );
   }
 }

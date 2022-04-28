@@ -11,8 +11,8 @@ import 'package:o_spawn_cup/pages/cup_details/cubit/cup_detail_cubit.dart';
 import 'package:o_spawn_cup/pages/cup_details/cup_details.dart';
 import 'package:o_spawn_cup/pages/cup_details/widgets/container_header.dart';
 import 'package:o_spawn_cup/services/utils.dart';
+import 'package:o_spawn_cup/shared/drawer/view/custom_drawer.dart';
 import 'package:o_spawn_cup/shared/widgets/custom_app_bar.dart';
-import 'package:o_spawn_cup/shared/widgets/custom_drawer.dart';
 
 class CupDetailView extends StatelessWidget {
   final Tournament tournament;

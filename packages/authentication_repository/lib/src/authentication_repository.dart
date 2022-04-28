@@ -230,7 +230,6 @@ class AuthenticationRepository {
           idToken: googleAuth.idToken,
         );
       }
-
       await _firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       throw LogInWithGoogleFailure.fromCode(e.code);
@@ -268,7 +267,6 @@ class AuthenticationRepository {
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
       ]);
-
     } catch (_) {
       throw LogOutFailure();
     }

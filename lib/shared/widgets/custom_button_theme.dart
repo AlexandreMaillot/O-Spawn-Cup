@@ -26,6 +26,7 @@ class CustomButtonTheme extends StatelessWidget {
       width: (width == 0.0) ? screenSize.width * 0.87 : width,
       height: (height == 0.0) ? screenSize.height * 0.05 : height,
       child: ElevatedButton(
+        key: const Key('ElevatedButton'),
         onPressed: onPressedMethod,
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(colorButton),

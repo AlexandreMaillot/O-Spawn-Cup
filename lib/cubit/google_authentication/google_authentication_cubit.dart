@@ -20,10 +20,12 @@ class GoogleAuthenticationCubit extends Cubit<GoogleAuthenticationState> {
     emit(GoogleAuthenticationLoad());
     try {
       await _authenticationRepository.logInWithGoogle();
+      await Future.delayed(const Duration(milliseconds: 500));
       if (await memberRepository
               .currentMember(_authenticationRepository.currentUser.id)
               .first ==
           null) {
+        await Future.delayed(const Duration(milliseconds: 500));
         await memberRepository.addMember(
           Member(
             uid: _authenticationRepository.currentUser.id,

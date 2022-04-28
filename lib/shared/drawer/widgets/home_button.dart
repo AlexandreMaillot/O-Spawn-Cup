@@ -1,6 +1,7 @@
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:o_spawn_cup/app/bloc/app_bloc.dart';
 import 'package:o_spawn_cup/constant.dart';
-import 'package:o_spawn_cup/pages/home/view/home.dart';
 import 'package:o_spawn_cup/shared/widgets/custom_button_theme.dart';
 
 class HomeButton extends StatelessWidget {
@@ -14,8 +15,12 @@ class HomeButton extends StatelessWidget {
       colorText: colorTextTheme,
       colorButton: Colors.white,
       text: 'ACCUEIL',
-      onPressedMethod: () => Navigator.of(context)
-          .pushAndRemoveUntil(Home.route(), (Route<dynamic> route) => false),
+      onPressedMethod: () => context.flow<AppState>().update(
+            (state) => state.copyWith(
+              status: AppStatus.authenticated,
+              user: state.user,
+            ),
+          ),
     );
   }
 }
