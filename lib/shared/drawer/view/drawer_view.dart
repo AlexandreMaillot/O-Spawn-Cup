@@ -26,29 +26,24 @@ class DrawerView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 5),
-                      child: CircleAvatar(
-                        radius: 56,
-                      ),
+                    const CircleAvatar(
+                      radius: 56,
                     ),
                     BlocBuilder<DrawerCubit, DrawerState>(
                       buildWhen: (previous, current) =>
                           current is DrawerMemberChanged,
                       builder: (context, state) {
                         if (state is DrawerMemberChanged) {
-                          return SizedBox(
-                            child: Text(
-                              drawerCubit.member.pseudo,
-                              key: const Key('Pseudo'),
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
+                          return Text(
+                            drawerCubit.member.pseudo,
+                            key: const Key('Pseudo'),
+                            style: const TextStyle(
+                              color: Colors.white,
                             ),
                           );
                         }
 
-                        return Container();
+                        return const Text('');
                       },
                     ),
                   ],

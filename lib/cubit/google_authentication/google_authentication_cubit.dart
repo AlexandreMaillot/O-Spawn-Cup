@@ -10,6 +10,11 @@ class GoogleAuthenticationCubit extends Cubit<GoogleAuthenticationState> {
   late final AuthenticationRepository _authenticationRepository;
   late MemberRepository memberRepository;
 
+  @override
+  Future<void> close() {
+    return super.close();
+  }
+
   GoogleAuthenticationCubit({
     required AuthenticationRepository authenticationRepository,
     required this.memberRepository,
@@ -34,11 +39,12 @@ class GoogleAuthenticationCubit extends Cubit<GoogleAuthenticationState> {
           ),
         );
       }
-      emit(GoogleAuthenticationSuccess());
+
+      // emit(GoogleAuthenticationSuccess());
     } on LogInWithGoogleFailure catch (error) {
       emit(GoogleAuthenticationFailure(error: error.message));
     } catch (error) {
-      // throw ArgumentError(error.toString());
+      throw ArgumentError(error.toString());
     }
   }
 }

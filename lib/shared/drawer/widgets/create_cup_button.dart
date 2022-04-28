@@ -16,19 +16,22 @@ class CreateCupButton extends StatelessWidget {
     final drawerCubit = context.read<DrawerCubit>();
 
     return BlocBuilder<DrawerCubit, DrawerState>(
+      buildWhen: (previous, current) => current is DrawerMemberChanged,
       builder: (context, state) {
-        if (drawerCubit.member.isAdmin) {
-          return CustomButtonTheme(
-            key: const Key('CreateCupButton'),
-            colorText: colorTextTheme,
-            colorButton: Colors.white,
-            text: 'CREER UN TOURNOIS',
-            onPressedMethod: () => context.flow<AppState>().update(
-                  (app) => app.copyWith(
-                    formTournamentStatus: FormTournamentStatus.enCreation,
+        if (state is DrawerMemberChanged) {
+          if (drawerCubit.member.isAdmin) {
+            return CustomButtonTheme(
+              key: const Key('CreateCupButton'),
+              colorText: colorTextTheme,
+              colorButton: Colors.white,
+              text: 'CREER UN TOURNOIS',
+              onPressedMethod: () => context.flow<AppState>().update(
+                    (app) => app.copyWith(
+                      formTournamentStatus: FormTournamentStatus.enCreation,
+                    ),
                   ),
-                ),
-          );
+            );
+          }
         }
 
         return Container();

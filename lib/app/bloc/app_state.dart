@@ -4,6 +4,7 @@ enum AppStatus {
   authenticated,
   unauthenticated,
 }
+
 enum FormTournamentStatus {
   enCreation,
   enModification,
