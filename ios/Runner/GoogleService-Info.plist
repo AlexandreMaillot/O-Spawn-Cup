@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>538595854832-siimqnget0gtb6gc7c7e41qkpbv39435.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.538595854832-siimqnget0gtb6gc7c7e41qkpbv39435</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>538595854832-chdmr2cor6lc6segg50sprhtd581rela.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBJNOFQlQBKMskjbJO7MngxlC6_1545ynM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>538595854832</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.oSpawnCup</string>
+	<key>PROJECT_ID</key>
+	<string>o-spawn-cup-13738</string>
+	<key>STORAGE_BUCKET</key>
+	<string>o-spawn-cup-13738.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:538595854832:ios:764ef363191f84b45d7535</string>
+</dict>
+</plist>
