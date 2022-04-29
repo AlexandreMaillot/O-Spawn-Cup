@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "538595854832-k4mpitopamrh1umc31enepveo7ia8a5g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.o_spawn_cup",
+            "certificate_hash": "386822d2919c4ec2ceff3e856d92a7033c12179a"
+          }
+        },
+        {
           "client_id": "538595854832-fhgggrqpb9v9i4ke8n65kk5td3ahvpla.apps.googleusercontent.com",
           "client_type": 3
         }

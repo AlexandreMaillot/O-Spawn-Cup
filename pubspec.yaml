@@ -20,7 +20,7 @@ dependencies:
   dotted_border: ^2.0.0+2
   dotted_line: ^3.1.0
   equatable: ^2.0.3
-  firebase_auth: ^3.3.14
+  firebase_auth: ^3.3.16
   firebase_core: ^1.14.1
   firebase_storage: ^10.2.12
   flow_builder: ^0.0.6
