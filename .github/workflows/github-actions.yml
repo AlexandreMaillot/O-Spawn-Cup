@@ -5,11 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Very Good Coverage
-        # You may pin to the exact commit or the version.
-        # uses: VeryGoodOpenSource/very_good_coverage@feed99cc060453828a8f12e74b404baace8e4502
         uses: VeryGoodOpenSource/very_good_coverage@v1.2.1
         with:
-          # lcov path
           path: './coverage/lcov.info'
           min_coverage: 80
-          exclude: '**/*_observer.dart **/change.dart'
