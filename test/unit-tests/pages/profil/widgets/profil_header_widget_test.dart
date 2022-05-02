@@ -25,7 +25,7 @@ void main() {
       () => profilCubit.close(),
     ).thenAnswer((invocation) => Future<void>.value());
   });
-  group('Initialisation  du widget', () {
+  group('Initialisation du widget', () {
     testWidgets('initialisation du widget', (WidgetTester tester) async {
       await mockNetworkImagesFor(
         () => tester.pumpWidget(
