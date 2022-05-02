@@ -1,8 +1,26 @@
-name: GitHub Actions Demo
-on: [push]
+name: Build and Release Apps
+on:
+  push:
+    branches:
+      - master
+    # Triggers the workflow on push or pull request events but only for the tagged
+
 jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
+
+  very-good-analytics:
+    name: analytics
+    runs-on: macos-latest
     steps:
-      - name: Very Good Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.2.1
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - name: Install pub Dependencies
+        run: flutter pub get
+
+      - name: analytics
+        uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+        with:
+          min_coverage: 80
