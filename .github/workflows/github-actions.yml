@@ -4,8 +4,9 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+    
       - name: Very Good Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.2.1
+        uses: VeryGoodOpenSource/very_good_coverage@v1
         with:
           path: './coverage/lcov.info'
           min_coverage: 80
