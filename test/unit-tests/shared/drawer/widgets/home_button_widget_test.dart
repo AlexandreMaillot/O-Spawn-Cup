@@ -41,10 +41,6 @@ void main() {
       AppStatus.authenticated,
     );
     await expectLater(
-      stateModified.user,
-      stateModified.user,
-    );
-    await expectLater(
       stateModified.gameName,
       null,
     );

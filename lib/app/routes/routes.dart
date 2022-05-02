@@ -4,6 +4,7 @@ import 'package:o_spawn_cup/pages/cup_details/view/cup_detail_page.dart';
 import 'package:o_spawn_cup/pages/form_tournament/form_tournament.dart';
 import 'package:o_spawn_cup/pages/home/view/home.dart';
 import 'package:o_spawn_cup/pages/list_cup/list_cup.dart';
+import 'package:o_spawn_cup/pages/profil/view/profil.dart';
 import 'package:o_spawn_cup/pages/start_page/view/start_page.dart';
 
 List<Page> onGenerateAppViewPages({
@@ -12,19 +13,23 @@ List<Page> onGenerateAppViewPages({
 }) {
   final gameSelect = app.gameName;
   final tournamentSelect = app.tournament;
-  print(app);
   switch (app.status) {
     case AppStatus.authenticated:
-      switch (app.formTournamentStatus) {
-        case FormTournamentStatus.enCreation:
+      switch (app.appStep) {
+        case AppStep.enCreationFormulaire:
           return [
             Home.page(),
             FormTournament.page(tournois: null),
           ];
-        case FormTournamentStatus.enModification:
+        case AppStep.enModificationFormulaire:
           return [
             Home.page(),
             FormTournament.page(tournois: tournamentSelect),
+          ];
+        case AppStep.enVisualisationProfil:
+          return [
+            Home.page(),
+            Profil.page(),
           ];
         case null:
           return [

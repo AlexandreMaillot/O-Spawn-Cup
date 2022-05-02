@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/app/app.dart';
+import 'package:o_spawn_cup/app/bloc/app_bloc.dart';
 import 'package:o_spawn_cup/models/game_name.dart';
 import 'package:o_spawn_cup/models/tournament/tournament.dart';
 import 'package:o_spawn_cup/pages/cup_details/view/cup_detail_page.dart';
 import 'package:o_spawn_cup/pages/form_tournament/form_tournament.dart';
 import 'package:o_spawn_cup/pages/home/view/home.dart';
 import 'package:o_spawn_cup/pages/list_cup/list_cup.dart';
+import 'package:o_spawn_cup/pages/profil/view/profil.dart';
 import 'package:o_spawn_cup/pages/start_page/view/start_page.dart';
 
 class MockUser extends Mock implements User {}
@@ -61,6 +63,20 @@ void main() {
         ],
       );
     });
+    test('Profil', () {
+      final app = AppState(
+        status: AppStatus.authenticated,
+        user: user,
+        appStep: AppStep.enVisualisationProfil,
+      );
+      expect(
+        onGenerateAppViewPages(app: app, pages: []),
+        [
+          isA<MaterialPage>().having((p) => p.child, '', isA<Home>()),
+          isA<MaterialPage>().having((p) => p.child, '', isA<Profil>()),
+        ],
+      );
+    });
     test('tournamentSelect', () {
       final app = AppState(
         status: AppStatus.authenticated,
@@ -83,7 +99,7 @@ void main() {
         user: user,
         gameName: gameName,
         tournament: tournament,
-        formTournamentStatus: null,
+        appStep: null,
       );
       expect(
         onGenerateAppViewPages(app: app),
@@ -100,7 +116,7 @@ void main() {
         user: user,
         gameName: gameName,
         tournament: tournament,
-        formTournamentStatus: FormTournamentStatus.enCreation,
+        appStep: AppStep.enCreationFormulaire,
       );
       expect(
         onGenerateAppViewPages(app: app),
@@ -121,7 +137,7 @@ void main() {
         user: user,
         gameName: gameName,
         tournament: tournament,
-        formTournamentStatus: FormTournamentStatus.enModification,
+        appStep: AppStep.enModificationFormulaire,
       );
       expect(
         onGenerateAppViewPages(app: app),

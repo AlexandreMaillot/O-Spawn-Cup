@@ -57,7 +57,6 @@ void main() {
     testWidgets(
       'Bouton creation de tournois non visible si pas admin',
       (WidgetTester tester) async {
-        late AppState stateModified;
         await tester.pumpWidget(
           MultiBlocProvider(
             providers: [
@@ -71,8 +70,6 @@ void main() {
             child: MaterialApp(
               home: FlowBuilder<AppState>(
                 onGeneratePages: (state, pages) {
-                  stateModified = state;
-
                   return [
                     const MaterialPage(
                       child: Material(
@@ -100,7 +97,6 @@ void main() {
           () => drawerCubit.member,
         ).thenReturn(const Member(uid: '1234', isAdmin: true));
 
-        late AppState stateModified;
         await tester.pumpWidget(
           MultiBlocProvider(
             providers: [
@@ -114,8 +110,6 @@ void main() {
             child: MaterialApp(
               home: FlowBuilder<AppState>(
                 onGeneratePages: (state, pages) {
-                  stateModified = state;
-
                   return [
                     const MaterialPage(
                       child: Material(
@@ -172,6 +166,19 @@ void main() {
       ),
     );
 
-    await tester.press(find.byKey(const Key('CreateCupButton')));
+    await tester.tap(find.byKey(const Key('CreateCupButton')));
+
+    await expectLater(
+      stateModified.appStep,
+      AppStep.enCreationFormulaire,
+    );
+    await expectLater(
+      stateModified.gameName,
+      null,
+    );
+    await expectLater(
+      stateModified.tournament,
+      null,
+    );
   });
 }

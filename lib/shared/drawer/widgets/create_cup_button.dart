@@ -27,7 +27,7 @@ class CreateCupButton extends StatelessWidget {
               text: 'CREER UN TOURNOIS',
               onPressedMethod: () => context.flow<AppState>().update(
                     (app) => app.copyWith(
-                      formTournamentStatus: FormTournamentStatus.enCreation,
+                      appStep: AppStep.enCreationFormulaire,
                     ),
                   ),
             );

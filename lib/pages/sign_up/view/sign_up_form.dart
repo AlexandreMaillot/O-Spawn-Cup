@@ -1,6 +1,5 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:o_spawn_cup/app/app.dart';
 import 'package:o_spawn_cup/constant.dart';
@@ -142,7 +141,6 @@ class SignUpForm extends StatelessWidget {
         duration: const Duration(seconds: 2),
       ),
     );
-    print(context.read<AppBloc>().state.user);
     context.flow<AppState>().update(
           (app) => app.copyWith(
             status: AppStatus.authenticated,

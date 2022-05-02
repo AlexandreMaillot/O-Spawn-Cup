@@ -14,16 +14,13 @@ class MockAppBloc extends Mock implements AppBloc {}
 class MockUser extends Mock implements User {}
 
 void main() {
-  late DrawerCubit drawerCubit;
   late MockAppBloc appBloc;
-  late MockUser user;
   late Member myMember;
   late MockMemberRepository memberRepository;
 
   setUp(() {
     memberRepository = MockMemberRepository();
     appBloc = MockAppBloc();
-    user = MockUser();
   });
 
   blocTest(

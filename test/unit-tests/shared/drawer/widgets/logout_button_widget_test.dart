@@ -32,15 +32,12 @@ void main() {
     );
   });
   testWidgets('onPressed', (WidgetTester tester) async {
-    late AppState stateModified;
     await tester.pumpWidget(
       BlocProvider<AppBloc>(
         create: (context) => appBloc,
         child: MaterialApp(
           home: FlowBuilder<AppState>(
             onGeneratePages: (state, pages) {
-              stateModified = state;
-
               return [
                 const MaterialPage(
                   child: Material(
@@ -56,5 +53,8 @@ void main() {
     );
     //
     await tester.tap(find.byType(TextButton));
+    verify(
+      () => appBloc.add(AppLogoutRequested()),
+    ).called(1);
   });
 }

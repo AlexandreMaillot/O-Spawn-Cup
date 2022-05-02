@@ -5,9 +5,10 @@ enum AppStatus {
   unauthenticated,
 }
 
-enum FormTournamentStatus {
-  enCreation,
-  enModification,
+enum AppStep {
+  enVisualisationProfil,
+  enCreationFormulaire,
+  enModificationFormulaire,
 }
 
 class AppState extends Equatable {
@@ -16,20 +17,20 @@ class AppState extends Equatable {
     this.user = User.empty,
     this.tournament,
     this.gameName,
-    this.formTournamentStatus,
+    this.appStep,
   });
   AppState copyWith({
     AppStatus? status,
     User? user,
     Tournament? tournament,
     GameName? gameName,
-    FormTournamentStatus? formTournamentStatus,
+    AppStep? appStep,
   }) {
     return AppState(
       status: status ?? this.status,
       gameName: gameName,
       tournament: tournament,
-      formTournamentStatus: formTournamentStatus,
+      appStep: appStep,
       user: user,
     );
   }
@@ -38,9 +39,8 @@ class AppState extends Equatable {
   final User? user;
   final Tournament? tournament;
   final GameName? gameName;
-  final FormTournamentStatus? formTournamentStatus;
+  final AppStep? appStep;
 
   @override
-  List<Object?> get props =>
-      [status, user, gameName, tournament, formTournamentStatus];
+  List<Object?> get props => [status, user, gameName, tournament, appStep];
 }

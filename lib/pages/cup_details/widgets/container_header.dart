@@ -120,15 +120,14 @@ class ContainerHeader extends StatelessWidget {
                                         'assets/images/icon_edit.svg',
                                       )
                                     : Container(),
-                                onPressed: () => context
-                                    .flow<AppState>()
-                                    .update(
-                                      (app) => app.copyWith(
-                                        status: AppStatus.authenticated,
-                                        formTournamentStatus:
-                                            FormTournamentStatus.enModification,
-                                      ),
-                                    ),
+                                onPressed: () =>
+                                    context.flow<AppState>().update(
+                                          (app) => app.copyWith(
+                                            status: AppStatus.authenticated,
+                                            appStep: AppStep
+                                                .enModificationFormulaire,
+                                          ),
+                                        ),
                               ),
                             ),
                           ),

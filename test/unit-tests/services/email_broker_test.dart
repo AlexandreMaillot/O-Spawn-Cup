@@ -21,7 +21,8 @@ void main() {
       // const monMessage = 'MonMessage';
       // const monMessageHtml = 'MonHtmlMessage';
       // Todo(Tamarok): sendEmailMessage
-      // emailBroker.sendEmailMessage(monMessage, monMessageHtml, monSujet, monEmail);
+      // emailBroker.sendEmailMessage
+      // (monMessage, monMessageHtml, monSujet, monEmail);
     });
     test('Create Message', () {
       const monEmail = 'monemail@email.com';

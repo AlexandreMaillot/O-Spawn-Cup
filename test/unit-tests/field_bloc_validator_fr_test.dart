@@ -3,12 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:o_spawn_cup/services/field_bloc_validators_errors_fr.dart';
 
 void main() {
-  late FieldBlocValidatorsFr fieldBlocValidatorsFr;
-  setUpAll(
-    () {
-      fieldBlocValidatorsFr = FieldBlocValidatorsFr();
-    },
-  );
   group('FieldBlocValidator email', () {
     test('error if "" ', () {
       final check = FieldBlocValidatorsFr.email('');

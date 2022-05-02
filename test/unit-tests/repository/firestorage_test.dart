@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart'
@@ -33,25 +32,13 @@ void main() {
   late MockFile file;
   late MockReference reference;
   late MockFirebaseStorage storage;
-  late MockUploadTask uploadTask;
   late MockTaskSnapshot taskSnapshot;
-  late Uint8List uint8list;
-  late ByteData byteData;
-  late MockAssetBundle assetBundle;
-  late MockPlatformAssetBundle platformAssetBundle;
-  late MockDownloadTask downloadTask;
   late MockDefaultCacheManager defaultCacheManager;
 
   setUp(() {
     storage = MockFirebaseStorage();
-    uploadTask = MockUploadTask();
     taskSnapshot = MockTaskSnapshot();
-    downloadTask = MockDownloadTask();
-    assetBundle = MockAssetBundle();
     defaultCacheManager = MockDefaultCacheManager();
-    platformAssetBundle = MockPlatformAssetBundle();
-    uint8list = Uint8List(10);
-    byteData = ByteData(10);
     file = MockFile();
     reference = MockReference();
     firestorageService = FirestorageService(
@@ -70,7 +57,8 @@ void main() {
     // .thenAnswer((invocation) => reference);
     // when(() => reference.writeToFile(file))
     // .thenAnswer((invocation) => downloadTask);
-    // when(() => reference.putFile(file)).thenAnswer((invocation) => uploadTask);
+    // when(() => reference.putFile(file)).
+    // thenAnswer((invocation) => uploadTask);
     // when(() => reference.getDownloadURL())
     // .thenAnswer((invocation) => Future.value('monlien/monimagetest.png'));
     // when(() async => await defaultCacheManager
@@ -100,12 +88,16 @@ void main() {
     // when(() => storage.ref()).thenReturn(reference);
     // when(() => reference.child(any())).thenReturn(reference);
     // when(() => file.path).thenReturn('test');
-    // when(() => assetBundle.load('test')).thenAnswer((invocation) => Future.value(byteData));
-    // when(() => platformAssetBundle.load('test')).thenAnswer((invocation) => Future.value(byteData));
-    // when(() => reference.putData(uint8list)).thenAnswer((invocation) => uploadTask);
+    // when(() => assetBundle.load('test')).
+    // thenAnswer((invocation) => Future.value(byteData));
+    // when(() => platformAssetBundle.load('test')).
+    // thenAnswer((invocation) => Future.value(byteData));
+    // when(() => reference.putData(uint8list)).
+    // thenAnswer((invocation) => uploadTask);
     // when(() => uploadTask.snapshot).thenAnswer((invocation) => taskSnapshot);
     // when(() => taskSnapshot.ref).thenReturn(reference);
-    // when(() => reference.getDownloadURL()).thenAnswer((invocation) => Future.value('url'));
+    // when(() => reference.getDownloadURL()).
+    // thenAnswer((invocation) => Future.value('url'));
     // await firestorageService.addImageToStorage(file, false);
   });
 }

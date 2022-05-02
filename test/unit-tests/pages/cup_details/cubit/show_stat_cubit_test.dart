@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:o_spawn_cup/models/MemberTournament/member_tournament.dart';
@@ -49,26 +48,14 @@ class MockCollectionReference extends Mock
 
 void main() {
   final now = DateTime.now();
-  late FakeFirebaseFirestore instance;
   late ShowStatCubit cubit;
   late MockTeamRepository teamRepository;
-  late MockCollectionReference collectionReference;
   late MockTeam teamMock;
-  late MockTeamCollectionReference teamCollectionReference;
-  late MockTournamentCollectionReference tournamentCollectionReference;
-  late MockMemberTournamentCollectionReference
-      memberTournamentCollectionReference;
   late MockMemberTournament memberTournament;
   late MockTournamentRepository tournamentRepository;
   late MockMemberTournamentRepository memberTournamentRepository;
-  late MockTournamentDocumentReference tournamentDocumentReference;
-  late MockTeamDocumentReference teamDocumentReference;
-  late MockTournamentDocumentSnap tournamentDocumentSnap;
   late MockDocumentReference documentReference;
 
-  const team = Team(
-    name: 'MyTeam',
-  );
   final tournament = Tournament(
     name: 'Tournois 4',
     dateDebutTournois: DateTime(now.year, now.month, now.day + 7),
@@ -90,20 +77,11 @@ void main() {
   );
 
   setUp(() async {
-    instance = FakeFirebaseFirestore();
     teamRepository = MockTeamRepository();
     teamMock = MockTeam();
-    collectionReference = MockCollectionReference();
     tournamentRepository = MockTournamentRepository();
     memberTournamentRepository = MockMemberTournamentRepository();
     memberTournament = MockMemberTournament();
-    teamCollectionReference = MockTeamCollectionReference();
-    tournamentCollectionReference = MockTournamentCollectionReference();
-    memberTournamentCollectionReference =
-        MockMemberTournamentCollectionReference();
-    tournamentDocumentReference = MockTournamentDocumentReference();
-    teamDocumentReference = MockTeamDocumentReference();
-    tournamentDocumentSnap = MockTournamentDocumentSnap();
     documentReference = MockDocumentReference();
 
     when(() => teamRepository.listTeamStream).thenAnswer(
@@ -213,10 +191,6 @@ void main() {
       setUp: () {
         cubit.memberTournamentRepositoryLocal =
             MockMemberTournamentRepository();
-        when(
-          () => cubit.memberTournamentRepositoryLocal
-              .deleteMemberTournament(memberTournament),
-        ).thenAnswer((invocation) => null);
         when(() => cubit.memberTournamentRepositoryLocal.listMemberTournament)
             .thenReturn([]);
         when(() => cubit.teamRepository.disqualifiedTeamWithNoMember(teamMock))
@@ -236,10 +210,6 @@ void main() {
       setUp: () {
         cubit.memberTournamentRepositoryLocal =
             MockMemberTournamentRepository();
-        when(
-          () => cubit.memberTournamentRepositoryLocal
-              .deleteMemberTournament(memberTournament),
-        ).thenAnswer((invocation) => null);
         when(() => cubit.memberTournamentRepositoryLocal.listMemberTournament)
             .thenReturn([]);
         when(() => cubit.teamRepository.disqualifiedTeamWithNoMember(teamMock))

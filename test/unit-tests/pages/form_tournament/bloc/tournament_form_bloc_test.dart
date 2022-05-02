@@ -222,9 +222,6 @@ void main() {
     });
     test('tapOnTileImagepreDef selectionne une fois', () {
       when(
-        () => selectedImagePredefCubit.changedIndexSelect(indexSelect: 1),
-      ).thenAnswer((invocation) => null);
-      when(
         () => selectedImagePredefCubit.state,
       ).thenAnswer(
         (invocation) => const SelectedImagePredefInitial(indexSelected: null),
@@ -234,9 +231,6 @@ void main() {
       verify(() => takeImageGalleryCubit.clearPicture()).called(1);
     });
     test('tapOnTileImagepreDef selectionne meme widget', () {
-      when(
-        () => selectedImagePredefCubit.changedIndexSelect(indexSelect: 1),
-      ).thenAnswer((invocation) => null);
       when(
         () => selectedImagePredefCubit.state,
       ).thenAnswer(

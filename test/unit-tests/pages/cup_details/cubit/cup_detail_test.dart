@@ -57,7 +57,6 @@ void main() {
   late MockTeamRepository mockTeamRepository;
   late MockTeamDocumentSnap teamDocumentSnap;
   late MockEmailMessage emailMessage;
-  late MockTeamDocumentReference teamDocumentReference;
   late MockTournamentDocumentReference tournamentDocumentReference;
   late MockTeamCollectionReference teamCollectionReference;
   late MockTournamentDocumentSnapshot tournamentDocumentSnapshot;
@@ -115,7 +114,6 @@ void main() {
     memberTournamentRepository = MockMemberTournamentRepository();
     tournamentDocumentSnapshot = MockTournamentDocumentSnapshot();
     tournamentDocumentReference = MockTournamentDocumentReference();
-    teamDocumentReference = MockTeamDocumentReference();
     teamCollectionReference = MockTeamCollectionReference();
     mockTeam = MockTeam();
     tournament4.documentId = 'id4';

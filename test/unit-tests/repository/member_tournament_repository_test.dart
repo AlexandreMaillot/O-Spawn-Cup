@@ -22,11 +22,6 @@ void main() {
     const Team(name: 'MyTeam2', documentId: 'id2'),
     const Team(name: 'MyTeam3', documentId: 'id3'),
   ];
-  const memberTournament = MemberTournament(
-    gamerTag: '',
-    role: RoleType.player,
-    member: Member(uid: ''),
-  );
   late final listMemberTournament = <MemberTournament>[
     const MemberTournament(
       gamerTag: '',
